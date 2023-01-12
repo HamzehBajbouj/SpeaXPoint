@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "471129594551",
+    "project_id": "speaxpoint",
+    "storage_bucket": "speaxpoint.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:471129594551:android:231e36b53c758121288b32",
+        "android_client_info": {
+          "package_name": "com.example.speaxpoint"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "471129594551-sevp576523ds3itpi6uliqgikoid72sm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwefnFxk6bkFfJCRCsoHGI3-qFe6-ZH_s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "471129594551-sevp576523ds3itpi6uliqgikoid72sm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -4,7 +4,6 @@ import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/input_regex_validation.dart'
     as input_validators;
 import 'package:speaxpoint/util/ui_widgets/buttons.dart' as ui_widget;
-
 import 'package:speaxpoint/util/ui_widgets/text_fields.dart' as text_field;
 
 class LogInAsToastmaster extends StatefulWidget {
@@ -18,8 +17,15 @@ class _LogInAsToastmasterState extends State<LogInAsToastmaster> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   bool _enable = false;
-
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    _email.dispose();
+    _password.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -131,7 +137,10 @@ class _LogInAsToastmasterState extends State<LogInAsToastmaster> {
                   _enable
                       ? ui_widget.filledTextButton(
                           callBack: () {
-                            if (_formKey.currentState!.validate()) {}
+                            if (_formKey.currentState!.validate()) 
+                            {
+                              
+                            }
                           },
                           content: "Sign In")
                       : ui_widget.outlinedButton(

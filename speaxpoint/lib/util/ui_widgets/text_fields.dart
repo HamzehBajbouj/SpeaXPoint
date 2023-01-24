@@ -14,7 +14,7 @@ TextFormField outlineTextField(
     controller: controller,
     style: const TextStyle(
         fontSize: 17,
-        color: Color(AppMainColors.p30),
+        color: Color(AppMainColors.p80),
         fontFamily: CommonUIProperties.fontType,
         fontWeight: FontWeight.normal),
     autofocus: autoFoucs ?? false,
@@ -44,7 +44,7 @@ TextFormField outlineTextField(
             Radius.circular(CommonUIProperties.textfieldRoundedEdges)),
         borderSide: BorderSide(
           width: CommonUIProperties.textfiledRoundedEdgesWidth,
-          color: AppMainColors.warningError,
+          color: Color(AppMainColors.warningError75),
         ),
       ),
       focusedErrorBorder: const OutlineInputBorder(
@@ -52,7 +52,7 @@ TextFormField outlineTextField(
             Radius.circular(CommonUIProperties.textfieldRoundedEdges)),
         borderSide: BorderSide(
           width: CommonUIProperties.textfiledRoundedEdgesWidth,
-          color: AppMainColors.warningError,
+          color: Color(AppMainColors.warningError75),
         ),
       ),
       enabledBorder: const OutlineInputBorder(

@@ -1,11 +1,8 @@
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart' as ui_widgets;
 import 'package:speaxpoint/util/ui_widgets/text_fields.dart' as text_fields;
-import 'package:speaxpoint/util/ui_widgets/type_selection_options.dart';
 import 'package:speaxpoint/util/ui_widgets/navigation.dart' as navigation;
 
 class GuestFavoriteName extends StatefulWidget {
@@ -22,11 +19,11 @@ class _GuestFavoriteNameState extends State<GuestFavoriteName> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Scaffold(
-        backgroundColor: const Color(AppMainColors.backgroundAndContent),
-        body: SafeArea(
+    return Scaffold(
+      backgroundColor: const Color(AppMainColors.backgroundAndContent),
+      body: Form(
+        key: _formKey,
+        child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: SizedBox(
@@ -88,7 +85,7 @@ class _GuestFavoriteNameState extends State<GuestFavoriteName> {
                       ),
                       text_fields.outlineTextField(
                           controller: _guestName,
-                          hintText: "Enter Your Invitation Code",
+                          hintText: "Enter Your Favorite Name",
                           isRequired: true,
                           onChangeCallBack: () {
                             if (_guestName.text.isNotEmpty) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
+import 'package:speaxpoint/util/constants/router_paths.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart' as ui_widgets;
 import 'package:speaxpoint/util/ui_widgets/navigation.dart' as navigation;
 import 'package:speaxpoint/util/ui_widgets/type_selection_options.dart';
@@ -110,27 +111,30 @@ class _UserTypeSelectionState extends State<UserTypeSelection> {
                   ],
                 ),
                 _selectedItem > -1
-                    ? ui_widgets.filledTextButton(callBack: 
-                        () => {
+                    ? ui_widgets.filledTextButton(
+                        callBack: () => {
                               //0 => presidnet . 1 => toastmaster , 2=>guest
                               if (_selectedItem == 0)
                                 {
-                                  navigation.navigateNewScreen(
-                                      context, const LogInAsClubPresident())
+                                  Navigator.pushNamed(
+                                      context, RouterPaths.clubPresidentSignIn)
+                                  // navigation.navigateNewScreen(
+                                  //     context, const LogInAsClubPresident())
                                 }
                               else if (_selectedItem == 1)
                                 {
-                                  navigation.navigateNewScreen(
-                                      context, const LogInAsToastmaster())
+                                  Navigator.pushNamed(
+                                      context, RouterPaths.toastmasterSignIn)
                                 }
                               else if (_selectedItem == 2)
                                 {
-                                  navigation.navigateNewScreen(
-                                      context, const LogInAsGuest())
+                                  Navigator.pushNamed(
+                                      context, RouterPaths.guestSignIn)
                                 }
                             },
                         content: "Continue")
-                    : ui_widgets.outlinedButton(callBack: () => {}, content: "Continue"),
+                    : ui_widgets.outlinedButton(
+                        callBack: () => {}, content: "Continue"),
               ],
             ),
           ),

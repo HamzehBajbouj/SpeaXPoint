@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
+import 'package:speaxpoint/util/constants/router_paths.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart' as ui_widgets;
 import 'package:speaxpoint/util/ui_widgets/text_fields.dart' as text_fields;
 import 'package:speaxpoint/util/ui_widgets/type_selection_options.dart';
-import 'package:speaxpoint/util/ui_widgets/navigation.dart' as navigation;
-import 'package:speaxpoint/views/log_in_screens/log_in_guest/guest_favorite_name.dart';
 
 class LogInAsGuest extends StatefulWidget {
   const LogInAsGuest({super.key});
@@ -35,11 +34,11 @@ class _LogInAsGuestState extends State<LogInAsGuest> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Scaffold(
-        backgroundColor: const Color(AppMainColors.backgroundAndContent),
-        body: SafeArea(
+    return Scaffold(
+      backgroundColor: const Color(AppMainColors.backgroundAndContent),
+      body: Form(
+        key: _formKey,
+        child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: SizedBox(
@@ -134,19 +133,17 @@ class _LogInAsGuestState extends State<LogInAsGuest> {
                                 //0 => yes . 1 => no
                                 if (_selectedItem == 0)
                                   {
+                                    Navigator.pushNamed(
+                                        context, RouterPaths.guestFavoriteName,
+                                        arguments: true)
                                     //if volunteered direct pass the true to the next page
-                                    navigation.navigateNewScreen(
-                                        context,
-                                        const GuestFavoriteName(
-                                            guestHasRole: true))
                                   }
                                 else if (_selectedItem == 1)
                                   {
                                     //if volunteered direct pass the false to the next page
-                                    navigation.navigateNewScreen(
-                                        context,
-                                        const GuestFavoriteName(
-                                            guestHasRole: false))
+                                    Navigator.pushNamed(
+                                        context, RouterPaths.guestFavoriteName,
+                                        arguments: false)
                                   }
                               },
                           content: "Continue")

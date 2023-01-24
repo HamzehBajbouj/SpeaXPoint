@@ -16,5 +16,8 @@ class AppMainColors {
   static const backgroundAndContent = 0xFFFDFEFF;
   static const selectedOption = 0xFFF7FAFF;
   static const cardBackground = 0xFFFAFCFF;
-  static const warningError = Colors.redAccent;
+  static const warningError100 = 0xFFA12C2C;
+  static const warningError75 = 0xFFB96161;
+  static const warningError50 = 0xFFD09595;
+  static const warningError25 = 0xFFE7CACA;
 }

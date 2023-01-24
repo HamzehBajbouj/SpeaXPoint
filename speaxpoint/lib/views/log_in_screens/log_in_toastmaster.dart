@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
+import 'package:speaxpoint/util/constants/router_paths.dart';
 import 'package:speaxpoint/util/input_regex_validation.dart'
     as input_validators;
 import 'package:speaxpoint/util/ui_widgets/buttons.dart' as ui_widget;
 import 'package:speaxpoint/util/ui_widgets/text_fields.dart' as text_field;
+import 'package:speaxpoint/view_models/authentication_view_models/log_in_view_model.dart';
 
 class LogInAsToastmaster extends StatefulWidget {
   const LogInAsToastmaster({super.key});
@@ -28,11 +31,14 @@ class _LogInAsToastmasterState extends State<LogInAsToastmaster> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Scaffold(
-        backgroundColor: const Color(AppMainColors.backgroundAndContent),
-        body: SafeArea(
+    LogInViewModel logInViewModel =
+        Provider.of<LogInViewModel>(context, listen: false);
+
+    return Scaffold(
+      backgroundColor: const Color(AppMainColors.backgroundAndContent),
+      body: Form(
+        key: _formKey,
+        child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: SizedBox(
@@ -121,7 +127,26 @@ class _LogInAsToastmasterState extends State<LogInAsToastmaster> {
                           isRequired: true,
                           obscured: true),
                       const SizedBox(
-                        height: 15,
+                        height: 7.5,
+                      ),
+                      Consumer<LogInViewModel>(
+                        builder: (_, value, child) {
+                          return Text(
+                              value.logInStatus?.whenError((error) {
+                                    logInViewModel.setlogInStatus(null);
+                                    return error.message;
+                                  }) ??
+                                  "",
+                              style: const TextStyle(
+                                fontFamily: CommonUIProperties.fontType,
+                                fontSize: 16,
+                                fontWeight: FontWeight.normal,
+                                color: Color(AppMainColors.warningError75),
+                              ));
+                        },
+                      ),
+                      const SizedBox(
+                        height: 5,
                       ),
                       const Text(
                         "If you don't have an account, please reach out to your club president.",
@@ -136,15 +161,27 @@ class _LogInAsToastmasterState extends State<LogInAsToastmaster> {
                   ),
                   _enable
                       ? ui_widget.filledTextButton(
-                          callBack: () {
-                            if (_formKey.currentState!.validate()) 
-                            {
-                              
+                          callBack: () async {
+                            if (_formKey.currentState!.validate()) {
+                              await logInViewModel.logIn(
+                                  email: _email.text, password: _password.text);
+
+                              logInViewModel.logInStatus?.whenSuccess((_) {
+                                logInViewModel.setlogInStatus(null);
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    RouterPaths.registrationProfileSetUp,
+                                    ModalRoute.withName(
+                                        RouterPaths.registrationProfileSetUp));
+                              });
                             }
                           },
                           content: "Sign In")
                       : ui_widget.outlinedButton(
-                          callBack: () {}, content: "Sign In")
+                          callBack: () {
+                            //do nothing
+                          },
+                          content: "Sign In")
                 ],
               ),
             ),

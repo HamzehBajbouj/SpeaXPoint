@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:speaxpoint/app/app_router.dart';
+import 'package:speaxpoint/app/service_locator.dart';
 import 'package:speaxpoint/util/constants/router_paths.dart';
-import 'package:speaxpoint/views/log_in_screens/user_type_selection_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:speaxpoint/view_models/authentication_view_models/club_registration_view_model.dart';
+import 'package:speaxpoint/view_models/authentication_view_models/log_in_view_model.dart';
 
 class SpeaxPointApp extends StatelessWidget {
   const SpeaxPointApp({super.key});
@@ -9,58 +12,17 @@ class SpeaxPointApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      onGenerateRoute: createRoute,
-      initialRoute: RouterPaths.root,
-      title: 'SpeaXPoint',
-      home: UserTypeSelection(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+            create: (_) => serviceLocator<ClubRegistrationViewModel>()),
+        ChangeNotifierProvider(create: (_) => serviceLocator<LogInViewModel>()),
+      ],
+      child: const MaterialApp(
+        onGenerateRoute: createRoute,
+        initialRoute: RouterPaths.root,
+        title: 'SpeaXPoint',
+      ),
     );
   }
 }
-
-// class MyHomePage extends StatefulWidget {
-//   const MyHomePage({super.key, required this.title});
-
-//   final String title;
-
-//   @override
-//   State<MyHomePage> createState() => _MyHomePageState();
-// }
-
-// class _MyHomePageState extends State<MyHomePage> {
-//   int _counter = 0;
-
-//   void _incrementCounter() {
-//     setState(() {
-//       _counter++;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(widget.title),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             const Text(
-//               'You have pushed the button this many times:',
-//             ),
-//             Text(
-//               '$_counter',
-//               style: Theme.of(context).textTheme.headline4,
-//             ),
-//           ],
-//         ),
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: _incrementCounter,
-//         tooltip: 'Increment',
-//         child: const Icon(Icons.add),
-//       ),
-//     );
-//   }
-// }

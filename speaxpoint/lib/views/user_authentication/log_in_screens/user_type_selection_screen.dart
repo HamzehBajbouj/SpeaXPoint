@@ -5,9 +5,7 @@ import 'package:speaxpoint/util/constants/router_paths.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart' as ui_widgets;
 import 'package:speaxpoint/util/ui_widgets/navigation.dart' as navigation;
 import 'package:speaxpoint/util/ui_widgets/type_selection_options.dart';
-import 'package:speaxpoint/views/log_in_screens/log_in_club_president/log_in_club_president.dart';
-import 'package:speaxpoint/views/log_in_screens/log_in_guest/log_in_guest.dart';
-import 'package:speaxpoint/views/log_in_screens/log_in_toastmaster.dart';
+import 'package:auto_route/auto_route.dart';
 
 //TODO: in case there is a free time
 /*
@@ -15,14 +13,14 @@ import 'package:speaxpoint/views/log_in_screens/log_in_toastmaster.dart';
  there is not choice selected. the message can be a snackbar or text widget.
  */
 
-class UserTypeSelection extends StatefulWidget {
-  const UserTypeSelection({super.key});
+class UserTypeSelectionScreen extends StatefulWidget {
+  const UserTypeSelectionScreen({super.key});
 
   @override
-  State<UserTypeSelection> createState() => _UserTypeSelectionState();
+  State<UserTypeSelectionScreen> createState() => _UserTypeSelectionState();
 }
 
-class _UserTypeSelectionState extends State<UserTypeSelection> {
+class _UserTypeSelectionState extends State<UserTypeSelectionScreen> {
   final List<String> _userTypes = ["Club President", "Club Member", "Guest"];
 
   int _selectedItem = -1;
@@ -115,22 +113,11 @@ class _UserTypeSelectionState extends State<UserTypeSelection> {
                         callBack: () => {
                               //0 => presidnet . 1 => toastmaster , 2=>guest
                               if (_selectedItem == 0)
-                                {
-                                  Navigator.pushNamed(
-                                      context, RouterPaths.clubPresidentSignIn)
-                                  // navigation.navigateNewScreen(
-                                  //     context, const LogInAsClubPresident())
-                                }
+                                {context.router.pushNamed("/presidentLogin")}
                               else if (_selectedItem == 1)
-                                {
-                                  Navigator.pushNamed(
-                                      context, RouterPaths.toastmasterSignIn)
-                                }
+                                {context.router.pushNamed("/toastmasterLogin")}
                               else if (_selectedItem == 2)
-                                {
-                                  Navigator.pushNamed(
-                                      context, RouterPaths.guestSignIn)
-                                }
+                                {context.router.pushNamed("/guestLogin")}
                             },
                         content: "Continue")
                     : ui_widgets.outlinedButton(

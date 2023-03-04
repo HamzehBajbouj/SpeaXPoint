@@ -1,24 +1,28 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:speaxpoint/app/app_routes.gr.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/constants/router_paths.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart' as ui_widgets;
 import 'package:speaxpoint/util/ui_widgets/text_fields.dart' as text_fields;
 import 'package:speaxpoint/view_models/authentication_view_models/club_registration_view_model.dart';
+import 'package:auto_route/auto_route.dart';
 
-class ClubUsernameRegistration extends StatefulWidget {
-  const ClubUsernameRegistration({super.key});
+class ClubUsernameRegistrationScreen extends StatefulWidget {
+  const ClubUsernameRegistrationScreen({super.key});
 
   @override
-  State<ClubUsernameRegistration> createState() =>
+  State<ClubUsernameRegistrationScreen> createState() =>
       _ClubUsernameRegistrationState();
 }
 
-class _ClubUsernameRegistrationState extends State<ClubUsernameRegistration> {
+class _ClubUsernameRegistrationState
+    extends State<ClubUsernameRegistrationScreen> {
   final TextEditingController _username = TextEditingController();
   bool _enableProcessedButton = false;
+  bool _userHasAusername = false;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -116,7 +120,14 @@ class _ClubUsernameRegistrationState extends State<ClubUsernameRegistration> {
                       Consumer<ClubRegistrationViewModel>(
                         builder: (_, value, child) {
                           return Text(
-                              value.clubUsernameRegistrationStatus?.whenError((error) {
+                              value.clubUsernameRegistrationStatus
+                                      ?.whenError((error) {
+                                    if (error.code == "username-existed") {
+                                      _userHasAusername = true;
+                                    }
+                                    clubRegistrationViewModel
+                                        .clubUsernameRegistrationStatus = null;
+
                                     return error.message;
                                   }) ??
                                   "",
@@ -133,18 +144,23 @@ class _ClubUsernameRegistrationState extends State<ClubUsernameRegistration> {
                   _enableProcessedButton
                       ? ui_widgets.filledTextButton(
                           callBack: () async {
+                            if (_userHasAusername) {
+                              context.router.pushAndPopUntil(
+                                  const ClubSetUpRegistrationRouter(),
+                                  predicate: ModalRoute.withName(
+                                      ClubUsernameRegistrationRouter.name));
+                            }
                             if (_formKey.currentState!.validate()) {
-                              await clubRegistrationViewModel.registerClubUsername(
-                                    username: _username.text
-                                  );
-
-                              clubRegistrationViewModel.clubUsernameRegistrationStatus
+                              await clubRegistrationViewModel
+                                  .registerClubUsername(
+                                      username: _username.text);
+                              clubRegistrationViewModel
+                                  .clubUsernameRegistrationStatus
                                   ?.whenSuccess((_) {
-                                Navigator.pushNamedAndRemoveUntil(
-                                    context,
-                                    RouterPaths.registrationProfileSetUp,
-                                    ModalRoute.withName(
-                                        RouterPaths.registrationProfileSetUp));
+                                context.router.pushAndPopUntil(
+                                    const ClubSetUpRegistrationRouter(),
+                                    predicate: ModalRoute.withName(
+                                        ClubUsernameRegistrationRouter.name));
                               });
                             }
                           },

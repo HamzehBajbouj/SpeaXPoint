@@ -8,15 +8,17 @@ import 'package:speaxpoint/util/input_regex_validation.dart'
 import 'package:speaxpoint/util/ui_widgets/buttons.dart' as ui_widget;
 import 'package:speaxpoint/util/ui_widgets/text_fields.dart' as text_field;
 import 'package:speaxpoint/view_models/authentication_view_models/log_in_view_model.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:speaxpoint/views/user_authentication/club_registration_screens/club_username_registration_screen.dart';
 
-class LogInAsClubPresident extends StatefulWidget {
-  const LogInAsClubPresident({super.key});
+class LogInAsToastmasterScreen extends StatefulWidget {
+  const LogInAsToastmasterScreen({super.key});
 
   @override
-  State<LogInAsClubPresident> createState() => _LogInAsClubPresidentState();
+  State<LogInAsToastmasterScreen> createState() => _LogInAsToastmasterState();
 }
 
-class _LogInAsClubPresidentState extends State<LogInAsClubPresident> {
+class _LogInAsToastmasterState extends State<LogInAsToastmasterScreen> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   bool _enable = false;
@@ -149,7 +151,7 @@ class _LogInAsClubPresidentState extends State<LogInAsClubPresident> {
                         height: 5,
                       ),
                       const Text(
-                        "You don't have a club account?",
+                        "If you don't have an account, please reach out to your club president.",
                         style: TextStyle(
                           fontFamily: CommonUIProperties.fontType,
                           fontSize: 16,
@@ -157,21 +159,6 @@ class _LogInAsClubPresidentState extends State<LogInAsClubPresident> {
                           color: Color(AppMainColors.p50),
                         ),
                       ),
-                      ui_widget.textButton(
-                        callBack: () {
-                          Navigator.pushNamed(
-                              context, RouterPaths.clubRegistration);
-                        },
-                        content: const Text(
-                          "Register my club now!",
-                          style: TextStyle(
-                            fontFamily: CommonUIProperties.fontType,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Color(AppMainColors.p90),
-                          ),
-                        ),
-                      )
                     ],
                   ),
                   _enable
@@ -183,17 +170,18 @@ class _LogInAsClubPresidentState extends State<LogInAsClubPresident> {
 
                               logInViewModel.logInStatus?.whenSuccess((_) {
                                 logInViewModel.setlogInStatus(null);
-                                Navigator.pushNamedAndRemoveUntil(
-                                    context,
-                                    RouterPaths.registrationProfileSetUp,
-                                    ModalRoute.withName(
-                                        RouterPaths.registrationProfileSetUp));
+                                    //here we must navigate to the user main page, and empty the
+                                    //all the log in stack.
+                          
                               });
                             }
                           },
                           content: "Sign In")
                       : ui_widget.outlinedButton(
-                          callBack: () {}, content: "Sign In"),
+                          callBack: () {
+                            //do nothing
+                          },
+                          content: "Sign In")
                 ],
               ),
             ),

@@ -8,15 +8,17 @@ import 'package:speaxpoint/util/input_regex_validation.dart'
 import 'package:speaxpoint/util/ui_widgets/buttons.dart' as ui_widget;
 import 'package:speaxpoint/util/ui_widgets/text_fields.dart' as text_field;
 import 'package:speaxpoint/view_models/authentication_view_models/log_in_view_model.dart';
+import 'package:auto_route/auto_route.dart';
 
-class LogInAsToastmaster extends StatefulWidget {
-  const LogInAsToastmaster({super.key});
+class LogInAsClubPresidentScreen extends StatefulWidget {
+  const LogInAsClubPresidentScreen({super.key});
 
   @override
-  State<LogInAsToastmaster> createState() => _LogInAsToastmasterState();
+  State<LogInAsClubPresidentScreen> createState() =>
+      _LogInAsClubPresidentState();
 }
 
-class _LogInAsToastmasterState extends State<LogInAsToastmaster> {
+class _LogInAsClubPresidentState extends State<LogInAsClubPresidentScreen> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   bool _enable = false;
@@ -149,7 +151,7 @@ class _LogInAsToastmasterState extends State<LogInAsToastmaster> {
                         height: 5,
                       ),
                       const Text(
-                        "If you don't have an account, please reach out to your club president.",
+                        "You don't have a club account?",
                         style: TextStyle(
                           fontFamily: CommonUIProperties.fontType,
                           fontSize: 16,
@@ -157,6 +159,20 @@ class _LogInAsToastmasterState extends State<LogInAsToastmaster> {
                           color: Color(AppMainColors.p50),
                         ),
                       ),
+                      ui_widget.textButton(
+                        callBack: () {
+                          context.router.pushNamed("/clubRegistration");
+                        },
+                        content: const Text(
+                          "Register my club now!",
+                          style: TextStyle(
+                            fontFamily: CommonUIProperties.fontType,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Color(AppMainColors.p90),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                   _enable
@@ -168,20 +184,15 @@ class _LogInAsToastmasterState extends State<LogInAsToastmaster> {
 
                               logInViewModel.logInStatus?.whenSuccess((_) {
                                 logInViewModel.setlogInStatus(null);
-                                Navigator.pushNamedAndRemoveUntil(
-                                    context,
-                                    RouterPaths.registrationProfileSetUp,
-                                    ModalRoute.withName(
-                                        RouterPaths.registrationProfileSetUp));
+                                //TODO: the use should be directed into his dashboard,
+                                //and all the previous navigation stack must be cleared
+                                //so he can't return back to log in page
                               });
                             }
                           },
                           content: "Sign In")
                       : ui_widget.outlinedButton(
-                          callBack: () {
-                            //do nothing
-                          },
-                          content: "Sign In")
+                          callBack: () {}, content: "Sign In"),
                 ],
               ),
             ),

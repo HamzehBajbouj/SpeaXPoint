@@ -25,8 +25,22 @@ class AuthenticationFirebaseService extends IAuthenticationService {
 
       if (querySnapshot.docs.isEmpty) {
         if (_auth.currentUser != null) {
-          _clubAccountCollection
-              .add({"userId": _auth.currentUser?.uid, "username": username});
+          QuerySnapshot checkUserHasExitedUserNameQuery =
+              await _clubAccountCollection
+                  .where("userId", isEqualTo: _auth.currentUser?.uid)
+                  .get();
+
+          if (checkUserHasExitedUserNameQuery.docs.isEmpty) {
+            _clubAccountCollection
+                .add({"userId": _auth.currentUser?.uid, "username": username});
+          } else {
+            return const Error(Failure(
+                code: "username-existed",
+                message:
+                    "There is already registered username with your email.",
+                location:
+                    "AuthenticationFirebaseService.registerClubUserName"));
+          }
         } else {
           return const Error(Failure(
               code: "current-user",
@@ -35,7 +49,7 @@ class AuthenticationFirebaseService extends IAuthenticationService {
         }
       } else {
         return const Error(Failure(
-            code: "username-existed",
+            code: "username-used",
             message: "The username is used",
             location: "AuthenticationFirebaseService.registerClubUserName"));
       }

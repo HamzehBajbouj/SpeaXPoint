@@ -1,6 +1,6 @@
-import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:speaxpoint/app/app_routes.gr.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/constants/router_paths.dart';
@@ -8,18 +8,17 @@ import 'package:speaxpoint/util/input_regex_validation.dart'
     as input_validators;
 import 'package:speaxpoint/util/ui_widgets/buttons.dart' as ui_widget;
 import 'package:speaxpoint/util/ui_widgets/text_fields.dart' as text_field;
-import 'package:speaxpoint/util/ui_widgets/navigation.dart' as navigation;
 import 'package:speaxpoint/view_models/authentication_view_models/club_registration_view_model.dart';
-import 'package:speaxpoint/views/club_registration_screens/club_username_registration.dart';
+import 'package:auto_route/auto_route.dart';
 
-class ClubRegistration extends StatefulWidget {
-  const ClubRegistration({super.key});
+class ClubRegistrationScreen extends StatefulWidget {
+  const ClubRegistrationScreen({super.key});
 
   @override
-  State<ClubRegistration> createState() => _ClubRegistrationState();
+  State<ClubRegistrationScreen> createState() => _ClubRegistrationState();
 }
 
-class _ClubRegistrationState extends State<ClubRegistration> {
+class _ClubRegistrationState extends State<ClubRegistrationScreen> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   final TextEditingController _confirmpassword = TextEditingController();
@@ -212,11 +211,10 @@ class _ClubRegistrationState extends State<ClubRegistration> {
 
                                     clubRegistrationViewModel.registrationStatus
                                         ?.whenSuccess((_) {
-                                      Navigator.pushNamedAndRemoveUntil(
-                                          context,
-                                          RouterPaths.clubUsernameRegistration,
-                                          ModalRoute.withName(
-                                              RouterPaths.clubPresidentSignIn));
+                                      context.router.pushAndPopUntil(
+                                          const ClubUsernameRegistrationRouter(),
+                                          predicate: ModalRoute.withName(
+                                              ClubPresidentLoginRouter.name));
                                     });
                                   }
                                 },
@@ -228,7 +226,7 @@ class _ClubRegistrationState extends State<ClubRegistration> {
                         ),
                         ui_widget.outlinedIconTextButton(
                             callBack: () {
-                              Navigator.pop(context);
+                              context.router.pop();
                             },
                             content: "Previous Page",
                             icon: Icons.arrow_back),

@@ -5,14 +5,14 @@ import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart' as ui_widget;
 import 'package:speaxpoint/util/ui_widgets/navigation.dart' as navigation;
 
-class ClubSetUpRegistration extends StatefulWidget {
-  const ClubSetUpRegistration({super.key});
+class ClubSetUpRegistrationScreen extends StatefulWidget {
+  const ClubSetUpRegistrationScreen({super.key});
 
   @override
-  State<ClubSetUpRegistration> createState() => _ClubSetUpRegistrationState();
+  State<ClubSetUpRegistrationScreen> createState() => _ClubSetUpRegistrationState();
 }
 
-class _ClubSetUpRegistrationState extends State<ClubSetUpRegistration> {
+class _ClubSetUpRegistrationState extends State<ClubSetUpRegistrationScreen> {
   bool _enableProcessedButton = false;
  
 

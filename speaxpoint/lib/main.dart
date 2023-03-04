@@ -7,5 +7,5 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initServiceLocator();
 
-  runApp(const SpeaxPointApp());
+  runApp(SpeaxPointApp());
 }

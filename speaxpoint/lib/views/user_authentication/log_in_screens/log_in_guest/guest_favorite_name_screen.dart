@@ -1,37 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
-import 'package:speaxpoint/util/constants/router_paths.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart' as ui_widgets;
 import 'package:speaxpoint/util/ui_widgets/text_fields.dart' as text_fields;
-import 'package:speaxpoint/util/ui_widgets/type_selection_options.dart';
+import 'package:speaxpoint/util/ui_widgets/navigation.dart' as navigation;
+import 'package:auto_route/auto_route.dart';
 
-class LogInAsGuest extends StatefulWidget {
-  const LogInAsGuest({super.key});
+class GuestFavoriteNameScreen extends StatefulWidget {
+  const GuestFavoriteNameScreen(
+      {super.key, @PathParam('guestHasRole') required this.guestHasRole});
 
+  final bool guestHasRole;
   @override
-  State<LogInAsGuest> createState() => _LogInAsGuestState();
+  State<GuestFavoriteNameScreen> createState() => _GuestFavoriteNameState();
 }
 
-class _LogInAsGuestState extends State<LogInAsGuest> {
-  final TextEditingController _invitationCode = TextEditingController();
-  final List<String> _sectionOptions = ["Yes", "No"];
-  int _selectedItem = -1;
-
+class _GuestFavoriteNameState extends State<GuestFavoriteNameScreen> {
+  final TextEditingController _guestName = TextEditingController();
   bool _enableContinueButton = false;
   final _formKey = GlobalKey<FormState>();
-  selectItem(index) {
-    setState(() {
-      _selectedItem = index;
-    });
-  }
-
-  @override
-  void dispose() {
-    _invitationCode.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,8 +62,7 @@ class _LogInAsGuestState extends State<LogInAsGuest> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const Text(
-                        maxLines: 2,
-                        "As a Guest are you volunteered to a role?",
+                        "Please enter your favorite name",
                         style: TextStyle(
                           fontFamily: CommonUIProperties.fontType,
                           fontSize: 20,
@@ -85,70 +71,41 @@ class _LogInAsGuestState extends State<LogInAsGuest> {
                         ),
                       ),
                       const SizedBox(
-                        height: 15,
-                      ),
-                      SizedBox(
-                        height: 130,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: 2,
-                          itemBuilder: ((context, index) {
-                            return TypeSelectionOptions(selectItem,
-                                index: index,
-                                isSelected: _selectedItem == index,
-                                displayOptions: _sectionOptions[index]);
-                          }),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 15,
+                        height: 10,
                       ),
                       const Text(
-                        "Please Enter your invitation code",
+                        "Your name will be displayed to other\n audience.",
                         style: TextStyle(
                           fontFamily: CommonUIProperties.fontType,
-                          fontSize: 20,
+                          fontSize: 16,
                           fontWeight: FontWeight.normal,
-                          color: Color(AppMainColors.p80),
+                          color: Color(AppMainColors.p50),
                         ),
                       ),
                       const SizedBox(
                         height: 15,
                       ),
                       text_fields.outlineTextField(
-                          controller: _invitationCode,
-                          hintText: "Enter Your Invitation Code",
+                          controller: _guestName,
+                          hintText: "Enter Your Favorite Name",
                           isRequired: true,
                           onChangeCallBack: () {
-                            if (_invitationCode.text.isNotEmpty) {
+                            if (_guestName.text.isNotEmpty) {
                               _enableContinueButton = true;
                               setState(() {});
                             }
                           }),
                     ],
                   ),
-                  _selectedItem > -1 && _enableContinueButton
+                  _enableContinueButton
                       ? ui_widgets.filledTextButton(
                           callBack: () => {
-                                //0 => yes . 1 => no
-                                if (_selectedItem == 0)
-                                  {
-                                    Navigator.pushNamed(
-                                        context, RouterPaths.guestFavoriteName,
-                                        arguments: true)
-                                    //if volunteered direct pass the true to the next page
-                                  }
-                                else if (_selectedItem == 1)
-                                  {
-                                    //if volunteered direct pass the false to the next page
-                                    Navigator.pushNamed(
-                                        context, RouterPaths.guestFavoriteName,
-                                        arguments: false)
-                                  }
+                                // TODO:there should be a viewmodel that handles this page and then
+                                //the user should be directed into his page
                               },
-                          content: "Continue")
+                          content: "Join Now")
                       : ui_widgets.outlinedButton(
-                          callBack: () => {}, content: "Continue"),
+                          callBack: () => {}, content: "Join Now"),
                 ],
               ),
             ),

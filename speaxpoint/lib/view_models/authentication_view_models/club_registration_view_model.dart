@@ -1,4 +1,3 @@
-
 import 'package:multiple_result/multiple_result.dart';
 import 'package:speaxpoint/services/Failure.dart';
 import 'package:speaxpoint/services/authentication/i_authentication_service.dart';
@@ -8,12 +7,17 @@ class ClubRegistrationViewModel extends BaseViewModel {
   final IAuthenticationService _authenticationService;
   ClubRegistrationViewModel(this._authenticationService);
 
-   Result<Unit, Failure>? _registrationStatus;
+  Result<Unit, Failure>? _registrationStatus;
   Result<Unit, Failure>? get registrationStatus => _registrationStatus;
 
   Result<Unit, Failure>? _clubUsernameRegistrationStatus;
   Result<Unit, Failure>? get clubUsernameRegistrationStatus =>
       _clubUsernameRegistrationStatus;
+
+  set clubUsernameRegistrationStatus(
+          Result<Unit, Failure>? clubUsernameRegistrationStatus) =>
+      _clubUsernameRegistrationStatus = clubUsernameRegistrationStatus;
+
   Future<void> registerNewClub({
     required String email,
     required String password,
@@ -30,6 +34,4 @@ class ClubRegistrationViewModel extends BaseViewModel {
         await _authenticationService.registerClubUserName(username: username);
     setLoading(false);
   }
-
- 
 }

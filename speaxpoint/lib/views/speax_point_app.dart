@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:speaxpoint/app/app_routes.gr.dart';
 import 'package:speaxpoint/app/service_locator.dart';
-import 'package:speaxpoint/util/constants/router_paths.dart';
 import 'package:provider/provider.dart';
 import 'package:speaxpoint/view_models/authentication_view_models/club_registration_view_model.dart';
 import 'package:speaxpoint/view_models/authentication_view_models/log_in_view_model.dart';

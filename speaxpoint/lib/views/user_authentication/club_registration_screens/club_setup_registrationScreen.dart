@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:speaxpoint/app/app_routes.gr.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart' as ui_widget;
 import 'package:speaxpoint/util/ui_widgets/navigation.dart' as navigation;
+import 'package:auto_route/auto_route.dart';
 
 class ClubSetUpRegistrationScreen extends StatefulWidget {
   const ClubSetUpRegistrationScreen({super.key});
 
   @override
-  State<ClubSetUpRegistrationScreen> createState() => _ClubSetUpRegistrationState();
+  State<ClubSetUpRegistrationScreen> createState() =>
+      _ClubSetUpRegistrationState();
 }
 
 class _ClubSetUpRegistrationState extends State<ClubSetUpRegistrationScreen> {
-  bool _enableProcessedButton = false;
- 
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: const Color(AppMainColors.backgroundAndContent),
       body: SafeArea(
@@ -64,8 +63,12 @@ class _ClubSetUpRegistrationState extends State<ClubSetUpRegistrationScreen> {
                     const SizedBox(
                       height: 35,
                     ),
-                    GestureDetector(
-                      onTap: () => {},
+                    InkWell(
+                      onTap: () {
+                        context.router
+                            .push(const ClubProfileManagementSetUpRouter());
+                      },
+                      highlightColor: const Color(AppMainColors.selectedOption),
                       child: Container(
                         width: MediaQuery.of(context).size.width,
                         height: 120,
@@ -132,20 +135,17 @@ class _ClubSetUpRegistrationState extends State<ClubSetUpRegistrationScreen> {
                     const SizedBox(
                       height: 35,
                     ),
-                    GestureDetector(
+                    InkWell(
                       onTap: () {
-                        setState(() {
-                          _enableProcessedButton = !_enableProcessedButton;
-                        });
+                        context.router
+                            .push(const ClubMembersManagementSetUpRouter());
                       },
+                      highlightColor: const Color(AppMainColors.selectedOption),
                       child: Container(
                         width: MediaQuery.of(context).size.width,
                         height: 120,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
-                          color: _enableProcessedButton
-                              ? Colors.black
-                              : Colors.blue,
                           border: Border.all(
                             width: 1.3,
                             color: const Color(AppMainColors.p50),
@@ -208,7 +208,13 @@ class _ClubSetUpRegistrationState extends State<ClubSetUpRegistrationScreen> {
                 Column(
                   children: [
                     ui_widget.filledTextButton(
-                        callBack: () {}, content: "Skip For Now"),
+                        callBack: () {
+                          context.router.pushAndPopUntil(
+                              const ClubPresidentHomeRouter(),
+                              predicate: ModalRoute.withName(
+                                  ClubPresidentHomeRouter.name));
+                        },
+                        content: "Skip For Now"),
                   ],
                 )
               ],

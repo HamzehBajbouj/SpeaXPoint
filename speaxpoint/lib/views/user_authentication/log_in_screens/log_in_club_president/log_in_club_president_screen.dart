@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:speaxpoint/app/app_routes.gr.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
-import 'package:speaxpoint/util/constants/router_paths.dart';
 import 'package:speaxpoint/util/input_regex_validation.dart'
     as input_validators;
 import 'package:speaxpoint/util/ui_widgets/buttons.dart' as ui_widget;
@@ -184,9 +184,10 @@ class _LogInAsClubPresidentState extends State<LogInAsClubPresidentScreen> {
 
                               logInViewModel.logInStatus?.whenSuccess((_) {
                                 logInViewModel.setlogInStatus(null);
-                                //TODO: the use should be directed into his dashboard,
-                                //and all the previous navigation stack must be cleared
-                                //so he can't return back to log in page
+                                context.router.pushAndPopUntil(
+                                    const ClubPresidentHomeRouter(),
+                                    predicate: ModalRoute.withName(
+                                        ClubPresidentHomeRouter.name));
                               });
                             }
                           },

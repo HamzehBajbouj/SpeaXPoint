@@ -76,15 +76,15 @@ import '../views/club_president_user/profile_management/club_profile_managment_s
       ],
     ),
     AutoRoute(
-      path: "/clubProfileManagement/:fromRegistrationSetup",
+      path: "/clubProfileManagement",
       name: "ClubProfileManagementSetUpRouter",
       page: ClubProfileManagementScreen,
       children: [RedirectRoute(path: '*', redirectTo: '')],
     ),
     AutoRoute(
-      path: "/clubProfileManagement/:fromRegistrationSetup",
-      name: "ClubProfileManagementSetUpRouter",
-      page: ClubProfileManagementScreen,
+      path: "/clubMembersManagement",
+      name: "ClubMembersManagementSetUpRouter",
+      page: ClubMembersManagementScreen,
       children: [RedirectRoute(path: '*', redirectTo: '')],
     ),
     clubPresidentNav
@@ -98,38 +98,27 @@ const clubPresidentNav = AutoRoute(
   name: "ClubPresidentHomeRouter",
   children: [
     AutoRoute(
-      path: "clubPresidentDashboard",
-      name: "ClubPresidentDashboardRouter",
-      page: PresidentDashboardScreen,
+      path: 'clubPresidentDashboard',
+      name: 'ClubPresidentDashboardRouter',
+      page: EmptyRouterPage,
       children: [
         AutoRoute(
-          path: "clubProfileManagement/:fromRegistrationSetup",
-          name: "ClubProfileManagementRouter",
-          page: EmptyRouterPage,
-          children: [
-            AutoRoute(path: "", page: ClubProfileManagementScreen),
-            RedirectRoute(path: '*', redirectTo: '')
-          ],
+          path: '',
+          page: PresidentDashboardScreen,
+          children: [RedirectRoute(path: '*', redirectTo: '')],
         ),
         AutoRoute(
-          path: "clubMembersManagementScreen/:fromRegistrationSetup",
+          path: 'clubMembersManagement',
           name: "ClubMembersManagementRouter",
-          page: EmptyRouterPage,
-          children: [
-            AutoRoute(path: "", page: ClubMembersManagementScreen),
-            RedirectRoute(path: '*', redirectTo: '')
-          ],
-        ),
+          page: ClubMembersManagementScreen,
+          children: [RedirectRoute(path: '*', redirectTo: '')],
+        )
       ],
     ),
     AutoRoute(
-      path: "clubProfileManagement/:fromRegistrationSetup",
+      path: "clubProfileManagement",
       name: "ClubProfileManagementRouter",
-      page: EmptyRouterPage,
-      children: [
-        AutoRoute(path: "", page: ClubProfileManagementScreen),
-        RedirectRoute(path: '*', redirectTo: '')
-      ],
+      page: ClubProfileManagementScreen,
     ),
   ],
 );

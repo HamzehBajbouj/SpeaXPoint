@@ -14,29 +14,28 @@
 import 'package:auto_route/auto_route.dart' as _i14;
 import 'package:auto_route/empty_router_widgets.dart' as _i4;
 import 'package:flutter/material.dart' as _i15;
-import 'package:flutter/src/widgets/framework.dart' as _i16;
 import 'package:speaxpoint/views/club_president_user/club_member_management_screen/club_members_management_screen.dart'
-    as _i13;
-import 'package:speaxpoint/views/club_president_user/club_president_home_screen.dart'
     as _i6;
+import 'package:speaxpoint/views/club_president_user/club_president_home_screen.dart'
+    as _i7;
 import 'package:speaxpoint/views/club_president_user/dashboard/president_dashboard_screen.dart'
-    as _i12;
+    as _i13;
 import 'package:speaxpoint/views/club_president_user/profile_management/club_profile_managment_screen.dart'
     as _i5;
 import 'package:speaxpoint/views/user_authentication/club_registration_screens/club_registration_screen.dart'
-    as _i9;
-import 'package:speaxpoint/views/user_authentication/club_registration_screens/club_setup_registrationScreen.dart'
-    as _i11;
-import 'package:speaxpoint/views/user_authentication/club_registration_screens/club_username_registration_screen.dart'
     as _i10;
+import 'package:speaxpoint/views/user_authentication/club_registration_screens/club_setup_registrationScreen.dart'
+    as _i12;
+import 'package:speaxpoint/views/user_authentication/club_registration_screens/club_username_registration_screen.dart'
+    as _i11;
 import 'package:speaxpoint/views/user_authentication/log_in_screens/log_in_as_toastmaster_screen.dart'
     as _i3;
 import 'package:speaxpoint/views/user_authentication/log_in_screens/log_in_club_president/log_in_club_president_screen.dart'
     as _i2;
 import 'package:speaxpoint/views/user_authentication/log_in_screens/log_in_guest/guest_favorite_name_screen.dart'
-    as _i8;
+    as _i9;
 import 'package:speaxpoint/views/user_authentication/log_in_screens/log_in_guest/log_in_as_guest_screen.dart'
-    as _i7;
+    as _i8;
 import 'package:speaxpoint/views/user_authentication/log_in_screens/user_type_selection_screen.dart'
     as _i1;
 
@@ -82,16 +81,22 @@ class AppRouter extends _i14.RootStackRouter {
         child: const _i5.ClubProfileManagementScreen(),
       );
     },
+    ClubMembersManagementSetUpRouter.name: (routeData) {
+      return _i14.AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: const _i6.ClubMembersManagementScreen(),
+      );
+    },
     ClubPresidentHomeRouter.name: (routeData) {
       return _i14.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i6.ClubPresidentHomeScreen(),
+        child: const _i7.ClubPresidentHomeScreen(),
       );
     },
     GuestLoginRouter.name: (routeData) {
       return _i14.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i7.LogInAsGuestScreen(),
+        child: const _i8.LogInAsGuestScreen(),
       );
     },
     GuestFavoriteNameRouter.name: (routeData) {
@@ -101,7 +106,7 @@ class AppRouter extends _i14.RootStackRouter {
               guestHasRole: pathParams.getBool('guestHasRole')));
       return _i14.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: _i8.GuestFavoriteNameScreen(
+        child: _i9.GuestFavoriteNameScreen(
           key: args.key,
           guestHasRole: args.guestHasRole,
         ),
@@ -110,49 +115,43 @@ class AppRouter extends _i14.RootStackRouter {
     ClubRegistrationScreenRoute.name: (routeData) {
       return _i14.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i9.ClubRegistrationScreen(),
+        child: const _i10.ClubRegistrationScreen(),
       );
     },
     ClubUsernameRegistrationRouter.name: (routeData) {
       return _i14.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i10.ClubUsernameRegistrationScreen(),
+        child: const _i11.ClubUsernameRegistrationScreen(),
       );
     },
     ClubSetUpRegistrationRouter.name: (routeData) {
       return _i14.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i11.ClubSetUpRegistrationScreen(),
+        child: const _i12.ClubSetUpRegistrationScreen(),
       );
     },
     ClubPresidentDashboardRouter.name: (routeData) {
       return _i14.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i12.PresidentDashboardScreen(),
+        child: const _i4.EmptyRouterPage(),
       );
     },
     ClubProfileManagementRouter.name: (routeData) {
       return _i14.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i4.EmptyRouterPage(),
+        child: const _i5.ClubProfileManagementScreen(),
+      );
+    },
+    PresidentDashboardScreenRoute.name: (routeData) {
+      return _i14.AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: const _i13.PresidentDashboardScreen(),
       );
     },
     ClubMembersManagementRouter.name: (routeData) {
       return _i14.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i4.EmptyRouterPage(),
-      );
-    },
-    ClubProfileManagementScreenRoute.name: (routeData) {
-      return _i14.AdaptivePage<dynamic>(
-        routeData: routeData,
-        child: const _i5.ClubProfileManagementScreen(),
-      );
-    },
-    ClubMembersManagementScreenRoute.name: (routeData) {
-      return _i14.AdaptivePage<dynamic>(
-        routeData: routeData,
-        child: const _i13.ClubMembersManagementScreen(),
+        child: const _i6.ClubMembersManagementScreen(),
       );
     },
   };
@@ -257,7 +256,7 @@ class AppRouter extends _i14.RootStackRouter {
         ),
         _i14.RouteConfig(
           ClubProfileManagementSetUpRouter.name,
-          path: '/clubProfileManagement/:fromRegistrationSetup',
+          path: '/clubProfileManagement',
           children: [
             _i14.RouteConfig(
               '*#redirect',
@@ -269,13 +268,13 @@ class AppRouter extends _i14.RootStackRouter {
           ],
         ),
         _i14.RouteConfig(
-          ClubProfileManagementSetUpRouter.name,
-          path: '/clubProfileManagement/:fromRegistrationSetup',
+          ClubMembersManagementSetUpRouter.name,
+          path: '/clubMembersManagement',
           children: [
             _i14.RouteConfig(
               '*#redirect',
               path: '*',
-              parent: ClubProfileManagementSetUpRouter.name,
+              parent: ClubMembersManagementSetUpRouter.name,
               redirectTo: '',
               fullMatch: true,
             )
@@ -291,63 +290,39 @@ class AppRouter extends _i14.RootStackRouter {
               parent: ClubPresidentHomeRouter.name,
               children: [
                 _i14.RouteConfig(
-                  ClubProfileManagementRouter.name,
-                  path: 'clubProfileManagement/:fromRegistrationSetup',
+                  PresidentDashboardScreenRoute.name,
+                  path: '',
                   parent: ClubPresidentDashboardRouter.name,
                   children: [
                     _i14.RouteConfig(
-                      ClubProfileManagementScreenRoute.name,
-                      path: '',
-                      parent: ClubProfileManagementRouter.name,
-                    ),
-                    _i14.RouteConfig(
                       '*#redirect',
                       path: '*',
-                      parent: ClubProfileManagementRouter.name,
+                      parent: PresidentDashboardScreenRoute.name,
                       redirectTo: '',
                       fullMatch: true,
-                    ),
+                    )
                   ],
                 ),
                 _i14.RouteConfig(
                   ClubMembersManagementRouter.name,
-                  path: 'clubMembersManagementScreen/:fromRegistrationSetup',
+                  path: 'clubMembersManagement',
                   parent: ClubPresidentDashboardRouter.name,
                   children: [
-                    _i14.RouteConfig(
-                      ClubMembersManagementScreenRoute.name,
-                      path: '',
-                      parent: ClubMembersManagementRouter.name,
-                    ),
                     _i14.RouteConfig(
                       '*#redirect',
                       path: '*',
                       parent: ClubMembersManagementRouter.name,
                       redirectTo: '',
                       fullMatch: true,
-                    ),
+                    )
                   ],
                 ),
               ],
             ),
             _i14.RouteConfig(
               ClubProfileManagementRouter.name,
-              path: 'clubProfileManagement/:fromRegistrationSetup',
+              path: 'clubProfileManagement',
               parent: ClubPresidentHomeRouter.name,
-              children: [
-                _i14.RouteConfig(
-                  ClubProfileManagementScreenRoute.name,
-                  path: '',
-                  parent: ClubProfileManagementRouter.name,
-                ),
-                _i14.RouteConfig(
-                  '*#redirect',
-                  path: '*',
-                  parent: ClubProfileManagementRouter.name,
-                  redirectTo: '',
-                  fullMatch: true,
-                ),
-              ],
             ),
           ],
         ),
@@ -425,7 +400,7 @@ class ClubProfileManagementSetUpRouter extends _i14.PageRouteInfo<void> {
   const ClubProfileManagementSetUpRouter({List<_i14.PageRouteInfo>? children})
       : super(
           ClubProfileManagementSetUpRouter.name,
-          path: '/clubProfileManagement/:fromRegistrationSetup',
+          path: '/clubProfileManagement',
           initialChildren: children,
         );
 
@@ -433,7 +408,20 @@ class ClubProfileManagementSetUpRouter extends _i14.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i6.ClubPresidentHomeScreen]
+/// [_i6.ClubMembersManagementScreen]
+class ClubMembersManagementSetUpRouter extends _i14.PageRouteInfo<void> {
+  const ClubMembersManagementSetUpRouter({List<_i14.PageRouteInfo>? children})
+      : super(
+          ClubMembersManagementSetUpRouter.name,
+          path: '/clubMembersManagement',
+          initialChildren: children,
+        );
+
+  static const String name = 'ClubMembersManagementSetUpRouter';
+}
+
+/// generated route for
+/// [_i7.ClubPresidentHomeScreen]
 class ClubPresidentHomeRouter extends _i14.PageRouteInfo<void> {
   const ClubPresidentHomeRouter({List<_i14.PageRouteInfo>? children})
       : super(
@@ -446,7 +434,7 @@ class ClubPresidentHomeRouter extends _i14.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i7.LogInAsGuestScreen]
+/// [_i8.LogInAsGuestScreen]
 class GuestLoginRouter extends _i14.PageRouteInfo<void> {
   const GuestLoginRouter()
       : super(
@@ -458,11 +446,11 @@ class GuestLoginRouter extends _i14.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i8.GuestFavoriteNameScreen]
+/// [_i9.GuestFavoriteNameScreen]
 class GuestFavoriteNameRouter
     extends _i14.PageRouteInfo<GuestFavoriteNameRouterArgs> {
   GuestFavoriteNameRouter({
-    _i16.Key? key,
+    _i15.Key? key,
     required bool guestHasRole,
   }) : super(
           GuestFavoriteNameRouter.name,
@@ -483,7 +471,7 @@ class GuestFavoriteNameRouterArgs {
     required this.guestHasRole,
   });
 
-  final _i16.Key? key;
+  final _i15.Key? key;
 
   final bool guestHasRole;
 
@@ -494,7 +482,7 @@ class GuestFavoriteNameRouterArgs {
 }
 
 /// generated route for
-/// [_i9.ClubRegistrationScreen]
+/// [_i10.ClubRegistrationScreen]
 class ClubRegistrationScreenRoute extends _i14.PageRouteInfo<void> {
   const ClubRegistrationScreenRoute()
       : super(
@@ -506,7 +494,7 @@ class ClubRegistrationScreenRoute extends _i14.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i10.ClubUsernameRegistrationScreen]
+/// [_i11.ClubUsernameRegistrationScreen]
 class ClubUsernameRegistrationRouter extends _i14.PageRouteInfo<void> {
   const ClubUsernameRegistrationRouter()
       : super(
@@ -518,7 +506,7 @@ class ClubUsernameRegistrationRouter extends _i14.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i11.ClubSetUpRegistrationScreen]
+/// [_i12.ClubSetUpRegistrationScreen]
 class ClubSetUpRegistrationRouter extends _i14.PageRouteInfo<void> {
   const ClubSetUpRegistrationRouter()
       : super(
@@ -530,7 +518,7 @@ class ClubSetUpRegistrationRouter extends _i14.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i12.PresidentDashboardScreen]
+/// [_i4.EmptyRouterPage]
 class ClubPresidentDashboardRouter extends _i14.PageRouteInfo<void> {
   const ClubPresidentDashboardRouter({List<_i14.PageRouteInfo>? children})
       : super(
@@ -543,51 +531,39 @@ class ClubPresidentDashboardRouter extends _i14.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i4.EmptyRouterPage]
+/// [_i5.ClubProfileManagementScreen]
 class ClubProfileManagementRouter extends _i14.PageRouteInfo<void> {
-  const ClubProfileManagementRouter({List<_i14.PageRouteInfo>? children})
+  const ClubProfileManagementRouter()
       : super(
           ClubProfileManagementRouter.name,
-          path: 'clubProfileManagement/:fromRegistrationSetup',
-          initialChildren: children,
+          path: 'clubProfileManagement',
         );
 
   static const String name = 'ClubProfileManagementRouter';
 }
 
 /// generated route for
-/// [_i4.EmptyRouterPage]
+/// [_i13.PresidentDashboardScreen]
+class PresidentDashboardScreenRoute extends _i14.PageRouteInfo<void> {
+  const PresidentDashboardScreenRoute({List<_i14.PageRouteInfo>? children})
+      : super(
+          PresidentDashboardScreenRoute.name,
+          path: '',
+          initialChildren: children,
+        );
+
+  static const String name = 'PresidentDashboardScreenRoute';
+}
+
+/// generated route for
+/// [_i6.ClubMembersManagementScreen]
 class ClubMembersManagementRouter extends _i14.PageRouteInfo<void> {
   const ClubMembersManagementRouter({List<_i14.PageRouteInfo>? children})
       : super(
           ClubMembersManagementRouter.name,
-          path: 'clubMembersManagementScreen/:fromRegistrationSetup',
+          path: 'clubMembersManagement',
           initialChildren: children,
         );
 
   static const String name = 'ClubMembersManagementRouter';
-}
-
-/// generated route for
-/// [_i5.ClubProfileManagementScreen]
-class ClubProfileManagementScreenRoute extends _i14.PageRouteInfo<void> {
-  const ClubProfileManagementScreenRoute()
-      : super(
-          ClubProfileManagementScreenRoute.name,
-          path: '',
-        );
-
-  static const String name = 'ClubProfileManagementScreenRoute';
-}
-
-/// generated route for
-/// [_i13.ClubMembersManagementScreen]
-class ClubMembersManagementScreenRoute extends _i14.PageRouteInfo<void> {
-  const ClubMembersManagementScreenRoute()
-      : super(
-          ClubMembersManagementScreenRoute.name,
-          path: '',
-        );
-
-  static const String name = 'ClubMembersManagementScreenRoute';
 }

@@ -161,7 +161,7 @@ class _LogInAsClubPresidentState extends State<LogInAsClubPresidentScreen> {
                       ),
                       ui_widget.textButton(
                         callBack: () {
-                          context.router.pushNamed("/clubRegistration");
+                          context.router.push(ClubRegistrationRouter());
                         },
                         content: const Text(
                           "Register my club now!",

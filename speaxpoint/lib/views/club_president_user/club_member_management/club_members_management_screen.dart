@@ -166,7 +166,8 @@ class _ClubMembersManagementScreenState
                     trailing: IconButton(
                       onPressed: () {
                         if (widget.fromSetUpRouter) {
-                          context.router.pushNamed("/clubProfileManagement");
+                          //here we are able to go to the ClubProfileManagementSetUpRouter but when we try ManageMemberAccountSetUpRouter we go no where
+                          context.pushRoute(ClubProfileManagementSetUpRouter());
                         } else {
                           //this one works but it doesn't include the return navigation button
                           // context.router.pushNamed(

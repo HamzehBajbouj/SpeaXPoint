@@ -58,23 +58,19 @@ import '../views/club_president_user/profile_management/club_profile_managment_s
     AutoRoute(
       path: "/clubRegistration",
       name: "ClubRegistrationRouter",
-      page: EmptyRouterPage,
+      page: ClubRegistrationScreen,
       children: [
-        AutoRoute(
-          path: "",
-          page: ClubRegistrationScreen,
-        ),
-        AutoRoute(
-            path: "clubUsernameRegistration",
-            page: ClubUsernameRegistrationScreen,
-            name: "ClubUsernameRegistrationRouter"),
-        AutoRoute(
-          path: "clubSetUp",
-          page: ClubSetUpRegistrationScreen,
-          name: "ClubSetUpRegistrationRouter",
-        ),
         RedirectRoute(path: '*', redirectTo: ''),
       ],
+    ),
+    AutoRoute(
+        path: "/clubUsernameRegistration",
+        page: ClubUsernameRegistrationScreen,
+        name: "ClubUsernameRegistrationRouter"),
+    AutoRoute(
+      path: "/clubSetUp",
+      page: ClubSetUpRegistrationScreen,
+      name: "ClubSetUpRegistrationRouter",
     ),
     AutoRoute(
       path: "/clubProfileManagement",
@@ -91,19 +87,19 @@ import '../views/club_president_user/profile_management/club_profile_managment_s
         //   path: "",
         //   page: ClubMembersManagementScreen,
         // ),
-        AutoRoute(
-          path: "manageMemberSetUpAccount/:pageMode",
-          name: "ManageMemberAccountSetUpRouter",
-          page: ManageMemberAccountScreen,
-        ),
+        // AutoRoute(
+        //   path: "manageMemberSetUpAccount/:pageMode",
+        //   name: "ManageMemberAccountSetUpRouter",
+        //   page: ManageMemberAccountScreen,
+        // ),
         RedirectRoute(path: '*', redirectTo: '')
       ],
     ),
-    // AutoRoute(
-    //   path: "/manageMemberSetUpAccount/:pageMode",
-    //   name: "ManageMemberAccountSetUpRouter",
-    //   page: ManageMemberAccountScreen,
-    // ),
+    AutoRoute(
+      path: "/manageMemberSetUpAccount/:pageMode",
+      name: "ManageMemberAccountSetUpRouter",
+      page: ManageMemberAccountScreen,
+    ),
     clubPresidentNav
   ],
 )

@@ -136,18 +136,8 @@ class _ClubSetUpRegistrationState extends State<ClubSetUpRegistrationScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        // context.router.push(ClubMembersManagementSetUpRouter(
-                        //     fromSetUpRouter: true));
-                        print(
-                            "dddddd 1" + context.router.currentPath.toString());
-                        // context.router.pushNamed(
-                        //     "/clubRegistration/clubUsernameRegistration/clubMembersManagementSetUp/true");
-
                         context.pushRoute(ClubMembersManagementSetUpRouter(
                             fromSetUpRouter: true));
-
-                        print(
-                            "dddddd 2" + context.router.currentPath.toString());
                       },
                       highlightColor: const Color(AppMainColors.selectedOption),
                       child: Container(

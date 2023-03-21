@@ -63,15 +63,13 @@ class _ClubMembersManagementScreenState
                     ),
                     InkWell(
                       onTap: () {
-                        // if (widget.fromSetUpRouter) {
-                        //   // context.router.push(ManageMemberAccountSetUpRouter(
-                        //   //     isInEditMode: false));
-                        //   context.router.push(ManageMemberAccountSetUpRouter());
-                        // } else {
-                        //   // context.router
-                        //   //     .push(ManageAccountRouter(isInEditMode: false));
-                        //   context.router.push(ManageAccountRouter());
-                        // }
+                        if (widget.fromSetUpRouter) {
+                          context.pushRoute(SetAndManageMemberAccountRouter(
+                              isInEditMode: false));
+                        } else {
+                          context.pushRoute(
+                              ManageAccountRouter(isInEditMode: false));
+                        }
                       },
                       child: Container(
                         height: 30,
@@ -167,7 +165,8 @@ class _ClubMembersManagementScreenState
                       onPressed: () {
                         if (widget.fromSetUpRouter) {
                           //here we are able to go to the ClubProfileManagementSetUpRouter but when we try ManageMemberAccountSetUpRouter we go no where
-                          context.pushRoute(ClubProfileManagementSetUpRouter());
+                          context.pushRoute(SetAndManageMemberAccountRouter(
+                              isInEditMode: true));
                         } else {
                           //this one works but it doesn't include the return navigation button
                           // context.router.pushNamed(

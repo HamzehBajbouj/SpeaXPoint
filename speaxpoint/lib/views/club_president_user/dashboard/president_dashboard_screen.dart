@@ -103,7 +103,8 @@ class PresidentDashboardScreen extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                context.router.push(const ClubMembersManagementRouter());
+                context.pushRoute(
+                    ClubMembersManagementRouter(fromSetUpRouter: false));
               },
               highlightColor: const Color(AppMainColors.selectedOption),
               child: Container(

@@ -81,3 +81,52 @@ TextFormField outlineTextField(
     ),
   );
 }
+
+TextField outlineTextFiledWithLeadingIcon({
+  required TextEditingController controller,
+  required String hintText,
+  required Function(String value) onChangeCallBack,
+  required Icon icon
+}) {
+  return TextField(
+    controller: controller,
+    style: const TextStyle(
+        fontSize: 17,
+        color: Color(AppMainColors.p80),
+        fontFamily: CommonUIProperties.fontType,
+        fontWeight: FontWeight.normal),
+    onChanged: (data) {
+      onChangeCallBack(data);
+    },
+    decoration: InputDecoration(
+      errorStyle: const TextStyle(fontFamily: CommonUIProperties.fontType),
+      isDense: true,
+      contentPadding: const EdgeInsets.fromLTRB(15, 0, 0, 15),
+      enabledBorder: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(
+            Radius.circular(CommonUIProperties.textfieldRoundedEdges)),
+        borderSide: BorderSide(
+          width: CommonUIProperties.textfiledRoundedEdgesWidth,
+          color: Color(AppMainColors.p20),
+        ),
+      ),
+      focusedBorder: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(
+            Radius.circular(CommonUIProperties.textfieldRoundedEdges)),
+        borderSide: BorderSide(
+          width: CommonUIProperties.textfiledRoundedEdgesWidth,
+          color: Color(AppMainColors.p50),
+        ),
+      ),
+      hintText: hintText,
+      hintStyle: const TextStyle(
+        fontSize: 17,
+        fontFamily: CommonUIProperties.fontType,
+        fontWeight: FontWeight.normal,
+        color: Color(AppMainColors.p20),
+      ),
+      prefixIcon: icon,
+    
+    ),
+  );
+}

@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/empty_router_widgets.dart';
-import 'package:speaxpoint/views/club_president_user/club_member_management_screen/club_members_management_screen.dart';
+import 'package:speaxpoint/views/club_president_user/club_member_management/club_members_management_screen.dart';
+import 'package:speaxpoint/views/club_president_user/club_member_management/manage_member_account_screen.dart';
 import 'package:speaxpoint/views/user_authentication/club_registration_screens/club_setup_registrationScreen.dart';
 import 'package:speaxpoint/views/user_authentication/club_registration_screens/club_registration_screen.dart';
 import 'package:speaxpoint/views/user_authentication/club_registration_screens/club_username_registration_screen.dart';
@@ -82,11 +83,27 @@ import '../views/club_president_user/profile_management/club_profile_managment_s
       children: [RedirectRoute(path: '*', redirectTo: '')],
     ),
     AutoRoute(
-      path: "/clubMembersManagement",
+      path: "/clubMembersManagementSetUp/:fromSetUp",
       name: "ClubMembersManagementSetUpRouter",
       page: ClubMembersManagementScreen,
-      children: [RedirectRoute(path: '*', redirectTo: '')],
+      children: [
+        // AutoRoute(
+        //   path: "",
+        //   page: ClubMembersManagementScreen,
+        // ),
+        AutoRoute(
+          path: "manageMemberSetUpAccount/:pageMode",
+          name: "ManageMemberAccountSetUpRouter",
+          page: ManageMemberAccountScreen,
+        ),
+        RedirectRoute(path: '*', redirectTo: '')
+      ],
     ),
+    // AutoRoute(
+    //   path: "/manageMemberSetUpAccount/:pageMode",
+    //   name: "ManageMemberAccountSetUpRouter",
+    //   page: ManageMemberAccountScreen,
+    // ),
     clubPresidentNav
   ],
 )
@@ -108,11 +125,17 @@ const clubPresidentNav = AutoRoute(
           children: [RedirectRoute(path: '*', redirectTo: '')],
         ),
         AutoRoute(
-          path: 'clubMembersManagement',
+          path: 'clubMembersManagement/:fromSetUp',
           name: "ClubMembersManagementRouter",
           page: ClubMembersManagementScreen,
           children: [RedirectRoute(path: '*', redirectTo: '')],
-        )
+        ),
+        AutoRoute(
+          path: "manageMemberAccount/:pageMode",
+          name: "ManageAccountRouter",
+          page: ManageMemberAccountScreen,
+          children: [RedirectRoute(path: '*', redirectTo: '')],
+        ),
       ],
     ),
     AutoRoute(

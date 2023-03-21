@@ -4,7 +4,6 @@ import 'package:speaxpoint/app/app_routes.gr.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart' as ui_widget;
-import 'package:speaxpoint/util/ui_widgets/navigation.dart' as navigation;
 import 'package:auto_route/auto_route.dart';
 
 class ClubSetUpRegistrationScreen extends StatefulWidget {
@@ -65,8 +64,8 @@ class _ClubSetUpRegistrationState extends State<ClubSetUpRegistrationScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        context.router
-                            .push(const ClubProfileManagementSetUpRouter());
+                        context.pushRoute(ClubProfileManagementSetUpRouter());
+                        // .push(const );
                       },
                       highlightColor: const Color(AppMainColors.selectedOption),
                       child: Container(
@@ -137,8 +136,18 @@ class _ClubSetUpRegistrationState extends State<ClubSetUpRegistrationScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        context.router
-                            .push(const ClubMembersManagementSetUpRouter());
+                        // context.router.push(ClubMembersManagementSetUpRouter(
+                        //     fromSetUpRouter: true));
+                        print(
+                            "dddddd 1" + context.router.currentPath.toString());
+                        // context.router.pushNamed(
+                        //     "/clubRegistration/clubUsernameRegistration/clubMembersManagementSetUp/true");
+
+                        context.pushRoute(ClubMembersManagementSetUpRouter(
+                            fromSetUpRouter: true));
+
+                        print(
+                            "dddddd 2" + context.router.currentPath.toString());
                       },
                       highlightColor: const Color(AppMainColors.selectedOption),
                       child: Container(

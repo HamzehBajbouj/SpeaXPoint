@@ -67,8 +67,8 @@ class _ClubMembersManagementScreenState
                           context.pushRoute(SetAndManageMemberAccountRouter(
                               isInEditMode: false));
                         } else {
-                          context.pushRoute(
-                              ManageAccountRouter(isInEditMode: false));
+                          context.pushRoute(ManageAccountRouter(
+                              isInEditMode: false, isTheUserPresidentl: true));
                         }
                       },
                       child: Container(
@@ -133,7 +133,7 @@ class _ClubMembersManagementScreenState
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(25.0),
                       child: CachedNetworkImage(
-                          fit: BoxFit.fill,
+                          fit: BoxFit.cover,
                           width: 45,
                           height: 45,
                           placeholder: (context, url) =>
@@ -172,8 +172,8 @@ class _ClubMembersManagementScreenState
                           // context.router.pushNamed(
                           //     "/clubPresidentHomeScreen/clubPresidentDashboard/manageMemberAccount/true");
                           //this one is the correct one
-                          context.pushRoute(
-                              ManageAccountRouter(isInEditMode: true));
+                          context.pushRoute(ManageAccountRouter(
+                              isInEditMode: true, isTheUserPresidentl: true));
                         }
                       },
                       icon: const Icon(

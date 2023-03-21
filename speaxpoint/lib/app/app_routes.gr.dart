@@ -183,6 +183,7 @@ class AppRouter extends _i16.RootStackRouter {
         child: _i15.ManageMemberAccountScreen(
           key: args.key,
           isInEditMode: args.isInEditMode,
+          isTheUserPresidentl: args.isTheUserPresidentl,
         ),
       );
     },
@@ -701,6 +702,7 @@ class ManageAccountRouter extends _i16.PageRouteInfo<ManageAccountRouterArgs> {
   ManageAccountRouter({
     _i17.Key? key,
     required bool isInEditMode,
+    required bool isTheUserPresidentl,
     List<_i16.PageRouteInfo>? children,
   }) : super(
           ManageAccountRouter.name,
@@ -708,6 +710,7 @@ class ManageAccountRouter extends _i16.PageRouteInfo<ManageAccountRouterArgs> {
           args: ManageAccountRouterArgs(
             key: key,
             isInEditMode: isInEditMode,
+            isTheUserPresidentl: isTheUserPresidentl,
           ),
           initialChildren: children,
         );
@@ -719,14 +722,17 @@ class ManageAccountRouterArgs {
   const ManageAccountRouterArgs({
     this.key,
     required this.isInEditMode,
+    required this.isTheUserPresidentl,
   });
 
   final _i17.Key? key;
 
   final bool isInEditMode;
 
+  final bool isTheUserPresidentl;
+
   @override
   String toString() {
-    return 'ManageAccountRouterArgs{key: $key, isInEditMode: $isInEditMode}';
+    return 'ManageAccountRouterArgs{key: $key, isInEditMode: $isInEditMode, isTheUserPresidentl: $isTheUserPresidentl}';
   }
 }

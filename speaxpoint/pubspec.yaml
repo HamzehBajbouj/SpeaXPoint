@@ -46,6 +46,10 @@ dependencies:
   auto_route: ^5.0.4
   salomon_bottom_bar: ^3.3.1
   cached_network_image: ^3.2.3
+  flutter_datetime_picker: ^1.5.1
+  intl: ^0.17.0
+  dropdown_button2: ^2.0.0
+  basic_utils: ^5.5.2
 
 dev_dependencies:
   flutter_test:

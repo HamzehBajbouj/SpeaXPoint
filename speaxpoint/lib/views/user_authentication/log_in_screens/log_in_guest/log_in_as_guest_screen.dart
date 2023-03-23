@@ -116,10 +116,11 @@ class _LogInAsGuestState extends State<LogInAsGuestScreen> {
                         height: 15,
                       ),
                       text_fields.outlineTextField(
+                        keyboardType: TextInputType.text,
                           controller: _invitationCode,
                           hintText: "Enter Your Invitation Code",
                           isRequired: true,
-                          onChangeCallBack: () {
+                          onChangeCallBack: (data) {
                             if (_invitationCode.text.isNotEmpty) {
                               _enableContinueButton = true;
                               setState(() {});

@@ -6,7 +6,7 @@ import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart' as ui_widgets;
 import 'package:speaxpoint/util/ui_widgets/text_fields.dart' as text_fields;
-import 'package:speaxpoint/view_models/authentication_view_models/club_registration_view_model.dart';
+import 'package:speaxpoint/view_models/authentication_vm/club_registration_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 
 class ClubUsernameRegistrationScreen extends StatefulWidget {
@@ -102,10 +102,11 @@ class _ClubUsernameRegistrationState
                         height: 15,
                       ),
                       text_fields.outlineTextField(
+                        keyboardType: TextInputType.text,
                         controller: _username,
                         hintText: "Enter Your Club's Username",
                         isRequired: true,
-                        onChangeCallBack: () {
+                        onChangeCallBack: (data) {
                           if (_username.text.isNotEmpty) {
                             setState(() {
                               _enableProcessedButton = true;

@@ -86,10 +86,11 @@ class _GuestFavoriteNameState extends State<GuestFavoriteNameScreen> {
                         height: 15,
                       ),
                       text_fields.outlineTextField(
+                        keyboardType: TextInputType.text,
                           controller: _guestName,
                           hintText: "Enter Your Favorite Name",
                           isRequired: true,
-                          onChangeCallBack: () {
+                          onChangeCallBack: (data) {
                             if (_guestName.text.isNotEmpty) {
                               _enableContinueButton = true;
                               setState(() {});

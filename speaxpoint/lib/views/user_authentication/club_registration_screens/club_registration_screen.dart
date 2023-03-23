@@ -7,7 +7,7 @@ import 'package:speaxpoint/util/input_regex_validation.dart'
     as input_validators;
 import 'package:speaxpoint/util/ui_widgets/buttons.dart' as ui_widget;
 import 'package:speaxpoint/util/ui_widgets/text_fields.dart' as text_field;
-import 'package:speaxpoint/view_models/authentication_view_models/club_registration_view_model.dart';
+import 'package:speaxpoint/view_models/authentication_vm/club_registration_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 
 class ClubRegistrationScreen extends StatefulWidget {
@@ -101,7 +101,8 @@ class _ClubRegistrationState extends State<ClubRegistrationScreen> {
                           height: 15,
                         ),
                         text_field.outlineTextField(
-                            onChangeCallBack: () {
+                          keyboardType: TextInputType.text,
+                            onChangeCallBack: (data) {
                               if (_email.text.isEmpty ||
                                   _password.text.isEmpty ||
                                   _confirmpassword.text.isEmpty) {
@@ -124,7 +125,8 @@ class _ClubRegistrationState extends State<ClubRegistrationScreen> {
                           height: 15,
                         ),
                         text_field.outlineTextField(
-                          onChangeCallBack: () {
+                          keyboardType: TextInputType.text,
+                          onChangeCallBack: (data) {
                             if (_email.text.isEmpty ||
                                 _password.text.isEmpty ||
                                 _confirmpassword.text.isEmpty) {
@@ -151,7 +153,8 @@ class _ClubRegistrationState extends State<ClubRegistrationScreen> {
                           height: 15,
                         ),
                         text_field.outlineTextField(
-                          onChangeCallBack: () {
+                          keyboardType: TextInputType.text,
+                          onChangeCallBack: (data) {
                             if (_email.text.isEmpty ||
                                 _password.text.isEmpty ||
                                 _confirmpassword.text.isEmpty) {

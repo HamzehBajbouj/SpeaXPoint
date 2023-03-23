@@ -5,12 +5,16 @@ import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 TextFormField outlineTextField(
     {required TextEditingController controller,
     required String hintText,
-    required VoidCallback onChangeCallBack,
+    Function(String)? onChangeCallBack,
     required bool isRequired,
+    required TextInputType keyboardType,
+    bool readOnly = false,
     List<String?>? validators,
     bool? autoFoucs,
     bool? obscured}) {
   return TextFormField(
+    keyboardType: keyboardType,
+    readOnly: readOnly,
     controller: controller,
     style: const TextStyle(
         fontSize: 17,
@@ -31,9 +35,7 @@ TextFormField outlineTextField(
 
       return null;
     },
-    onChanged: (data) {
-      onChangeCallBack();
-    },
+    onChanged: onChangeCallBack,
     obscureText: obscured ?? false,
     decoration: InputDecoration(
       errorStyle: const TextStyle(fontFamily: CommonUIProperties.fontType),
@@ -83,7 +85,7 @@ TextFormField outlineTextField(
 }
 
 TextField outlineTextFiledWithLeadingIcon(
-    {required TextEditingController controller,
+    {TextEditingController? controller,
     required String hintText,
     required Function(String value) onChangeCallBack,
     required Icon icon}) {
@@ -132,10 +134,11 @@ TextField outlineTextFiledWithLeadingIcon(
 TextFormField outlineTextFieldWithTrailingIcon(
     {required TextEditingController controller,
     required String hintText,
-    required VoidCallback onChangeCallBack,
+    required Function(String data) onChangeCallBack,
     required VoidCallback onTapCallBack,
     required bool isRequired,
     required Icon icon,
+    bool readOnly = false,
     List<String?>? validators,
     bool? autoFoucs,
     bool? obscured}) {
@@ -160,9 +163,8 @@ TextFormField outlineTextFieldWithTrailingIcon(
 
       return null;
     },
-    onChanged: (data) {
-      onChangeCallBack();
-    },
+    readOnly: readOnly,
+    onChanged: onChangeCallBack,
     onTap: onTapCallBack,
     obscureText: obscured ?? false,
     decoration: InputDecoration(

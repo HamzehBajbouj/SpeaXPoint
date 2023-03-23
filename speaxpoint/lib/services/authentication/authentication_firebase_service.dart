@@ -27,12 +27,12 @@ class AuthenticationFirebaseService extends IAuthenticationService {
         if (_auth.currentUser != null) {
           QuerySnapshot checkUserHasExitedUserNameQuery =
               await _clubAccountCollection
-                  .where("userId", isEqualTo: _auth.currentUser?.uid)
+                  .where("clubId", isEqualTo: _auth.currentUser?.uid)
                   .get();
 
           if (checkUserHasExitedUserNameQuery.docs.isEmpty) {
             _clubAccountCollection
-                .add({"userId": _auth.currentUser?.uid, "username": username});
+                .add({"clubId": _auth.currentUser?.uid, "username": username});
           } else {
             return const Error(Failure(
                 code: "username-existed",
@@ -78,7 +78,7 @@ class AuthenticationFirebaseService extends IAuthenticationService {
     required String password,
   }) async {
     try {
-      await _auth.createUserWithEmailAndPassword(
+      _userCredential =await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
 
       return Success.unit();
@@ -103,7 +103,7 @@ class AuthenticationFirebaseService extends IAuthenticationService {
   Future<Result<Unit, Failure>> signIn(
       {required String email, required String password}) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      _userCredential =await _auth.signInWithEmailAndPassword(email: email, password: password);
       return Success.unit();
     } on FirebaseAuthException catch (e) {
       return Error(

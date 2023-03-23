@@ -7,7 +7,7 @@ import 'package:speaxpoint/util/input_regex_validation.dart'
     as input_validators;
 import 'package:speaxpoint/util/ui_widgets/buttons.dart' as ui_widget;
 import 'package:speaxpoint/util/ui_widgets/text_fields.dart' as text_field;
-import 'package:speaxpoint/view_models/authentication_view_models/log_in_view_model.dart';
+import 'package:speaxpoint/view_models/authentication_vm/log_in_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 
 class LogInAsClubPresidentScreen extends StatefulWidget {
@@ -93,7 +93,8 @@ class _LogInAsClubPresidentState extends State<LogInAsClubPresidentScreen> {
                         height: 15,
                       ),
                       text_field.outlineTextField(
-                          onChangeCallBack: () {
+                          keyboardType: TextInputType.text,
+                          onChangeCallBack: (data) {
                             if (_email.text.isEmpty || _password.text.isEmpty) {
                               _enable = false;
                             } else {
@@ -114,7 +115,8 @@ class _LogInAsClubPresidentState extends State<LogInAsClubPresidentScreen> {
                         height: 15,
                       ),
                       text_field.outlineTextField(
-                          onChangeCallBack: () {
+                          keyboardType: TextInputType.text,
+                          onChangeCallBack: (data) {
                             if (_email.text.isEmpty || _password.text.isEmpty) {
                               _enable = false;
                             } else {

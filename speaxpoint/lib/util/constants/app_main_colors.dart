@@ -20,4 +20,15 @@ class AppMainColors {
   static const warningError75 = 0xFFB96161;
   static const warningError50 = 0xFFD09595;
   static const warningError25 = 0xFFE7CACA;
+
+  /*
+  these colors are for the status of the sessions in the Manage Coming sessions page
+  */
+
+  static const completedSessionCard = 0xFFE9F9EA;
+  static const completedSessionCardIcon = 0xFF80D885;
+  static const pendingSessionCard = 0xFFF9ECE9;
+  static const pendingSessionCardIcon = 0xFFF28D8D;
+  static const comingSessionCard = 0xFFF3F5F8;
+  static const comingSessionCardIcon = 0xFF577398;
 }

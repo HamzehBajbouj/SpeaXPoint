@@ -3,10 +3,14 @@ import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 
 SizedBox outlinedButton(
-    {required VoidCallback callBack, required String content}) {
+    {required VoidCallback callBack,
+    required String content,
+    double fontSize = 17,
+    double buttonWidth = CommonUIProperties.buttonWidth,
+    double buttonHeight = CommonUIProperties.buttonHeight}) {
   return SizedBox(
-    width: CommonUIProperties.buttonWidth,
-    height: CommonUIProperties.buttonHeight,
+    width: buttonWidth,
+    height: buttonHeight,
     child: Expanded(
       child: OutlinedButton(
         onPressed: callBack,
@@ -22,11 +26,11 @@ SizedBox outlinedButton(
             )),
         child: Text(
           content,
-          style: const TextStyle(
+          style: TextStyle(
               fontFamily: CommonUIProperties.fontType,
-              color: Color(AppMainColors.p50),
+              color: const Color(AppMainColors.p50),
               fontWeight: FontWeight.normal,
-              fontSize: 17),
+              fontSize: fontSize),
         ),
       ),
     ),
@@ -34,10 +38,13 @@ SizedBox outlinedButton(
 }
 
 SizedBox filledTextButton(
-    {required VoidCallback callBack, required String content}) {
+    {required VoidCallback callBack,
+    required String content,
+    double buttonWidth = CommonUIProperties.buttonWidth,
+    double buttonHeight = CommonUIProperties.buttonHeight}) {
   return SizedBox(
-    width: CommonUIProperties.buttonWidth,
-    height: CommonUIProperties.buttonHeight,
+    width: buttonWidth,
+    height: buttonHeight,
     child: Expanded(
       child: TextButton(
         onPressed: callBack,
@@ -65,7 +72,11 @@ SizedBox filledTextButton(
   );
 }
 
-SizedBox textButton({required VoidCallback callBack, required Text content}) {
+SizedBox textButton(
+    {required VoidCallback callBack,
+    required Text content,
+    double buttonWidth = CommonUIProperties.buttonWidth,
+    double buttonHeight = CommonUIProperties.buttonHeight}) {
   return SizedBox(
     child: TextButton(
         onPressed: callBack,
@@ -78,7 +89,9 @@ SizedBox textButton({required VoidCallback callBack, required Text content}) {
 }
 
 SizedBox outlinedIconTextButton(
-    {required VoidCallback callBack, required String content, required IconData icon}) {
+    {required VoidCallback callBack,
+    required String content,
+    required IconData icon}) {
   return SizedBox(
     width: CommonUIProperties.buttonWidth,
     height: CommonUIProperties.buttonHeight,
@@ -97,7 +110,7 @@ SizedBox outlinedIconTextButton(
                 Radius.circular(CommonUIProperties.buttonRoundedEdges)),
           ),
         ),
-        icon:  Icon(
+        icon: Icon(
           icon,
           color: const Color(AppMainColors.p50),
         ),

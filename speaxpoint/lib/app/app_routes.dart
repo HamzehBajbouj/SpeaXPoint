@@ -3,6 +3,11 @@ import 'package:auto_route/empty_router_widgets.dart';
 import 'package:speaxpoint/views/club_president_user/club_member_management/club_members_management_screen.dart';
 import 'package:speaxpoint/views/club_president_user/club_member_management/manage_member_account_screen.dart';
 import 'package:speaxpoint/views/club_president_user/club_member_management/manage_member_account_from_set_up.dart';
+import 'package:speaxpoint/views/toastmaster_user/dashboard/toastmaster_dashboard_screen.dart';
+import 'package:speaxpoint/views/toastmaster_user/manage_coming_meetings/manage_coming_sessions_screen.dart';
+import 'package:speaxpoint/views/toastmaster_user/profile_management/toastmaster_profile_management_screen.dart';
+import 'package:speaxpoint/views/toastmaster_user/scheduled_meetings/toastmaster_scheduled_meetings_screen.dart';
+import 'package:speaxpoint/views/toastmaster_user/toastmaster_home_screen.dart';
 import 'package:speaxpoint/views/user_authentication/club_registration_screens/club_setup_registrationScreen.dart';
 import 'package:speaxpoint/views/user_authentication/club_registration_screens/club_registration_screen.dart';
 import 'package:speaxpoint/views/user_authentication/club_registration_screens/club_username_registration_screen.dart';
@@ -91,7 +96,8 @@ import '../views/club_president_user/profile_management/club_profile_managment_s
       page: ClubMembersManagementScreen,
       children: [RedirectRoute(path: '*', redirectTo: '')],
     ),
-    clubPresidentNav
+    clubPresidentNav,
+    toastMasterNav,
   ],
 )
 class $AppRouter {}
@@ -129,6 +135,43 @@ const clubPresidentNav = AutoRoute(
       path: "clubProfileManagement",
       name: "ClubProfileManagementRouter",
       page: ClubProfileManagementScreen,
+    ),
+  ],
+);
+
+const toastMasterNav = AutoRoute(
+  path: "/toastmasterHomeScreen",
+  name: "ToastmasterHomeRouter",
+  page: ToastmasterHomeScreen,
+  children: [
+    AutoRoute(
+      path: "toastmasterDashboard",
+      name: "ToastmasterDashboardRouter",
+      page: EmptyRouterPage,
+      children: [
+        AutoRoute(
+          path: '',
+          page: ToastmasterDashboardScreen,
+          children: [
+            RedirectRoute(path: '*', redirectTo: ''),
+          ],
+        ),
+        AutoRoute(
+          path: "manageComingSessions",
+          name: "ManageComingSessionsRouter",
+          page: ManageComingSessionsScreen,
+        ),
+      ],
+    ),
+    AutoRoute(
+      path: "scheduledMeetings",
+      name: "ToastmasterScheduledMeetingsRouter",
+      page: ToastmasterScheduledMeetingsScreen,
+    ),
+    AutoRoute(
+      path: "toastmasterProfileManagement",
+      name: "ToastmasterProfileManagementRouter",
+      page: ToastmasterProfileManagementScreen,
     ),
   ],
 );

@@ -7,4 +7,5 @@ class CommonUIProperties {
   static const textfiledRoundedEdgesWidth = 1.3;
   static const buttonHeight = 45.0;
   static const buttonWidth = double.infinity;
+    static const modalBottomSheetsEdges = 5.0;
 }

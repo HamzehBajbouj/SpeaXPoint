@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:speaxpoint/app/app_routes.gr.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/input_regex_validation.dart'
@@ -8,7 +9,6 @@ import 'package:speaxpoint/util/ui_widgets/buttons.dart' as ui_widget;
 import 'package:speaxpoint/util/ui_widgets/text_fields.dart' as text_field;
 import 'package:speaxpoint/view_models/authentication_vm/log_in_view_model.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:speaxpoint/views/user_authentication/club_registration_screens/club_username_registration_screen.dart';
 
 class LogInAsToastmasterScreen extends StatefulWidget {
   const LogInAsToastmasterScreen({super.key});
@@ -92,7 +92,7 @@ class _LogInAsToastmasterState extends State<LogInAsToastmasterScreen> {
                         height: 15,
                       ),
                       text_field.outlineTextField(
-                        keyboardType: TextInputType.text,
+                          keyboardType: TextInputType.text,
                           onChangeCallBack: (data) {
                             if (_email.text.isEmpty || _password.text.isEmpty) {
                               _enable = false;
@@ -114,7 +114,7 @@ class _LogInAsToastmasterState extends State<LogInAsToastmasterScreen> {
                         height: 15,
                       ),
                       text_field.outlineTextField(
-                        keyboardType: TextInputType.text,
+                          keyboardType: TextInputType.text,
                           onChangeCallBack: (data) {
                             if (_email.text.isEmpty || _password.text.isEmpty) {
                               _enable = false;
@@ -171,9 +171,10 @@ class _LogInAsToastmasterState extends State<LogInAsToastmasterScreen> {
 
                               logInViewModel.logInStatus?.whenSuccess((_) {
                                 logInViewModel.setlogInStatus(null);
-                                    //here we must navigate to the user main page, and empty the
-                                    //all the log in stack.
-                          
+                                context.router.pushAndPopUntil(
+                                    const ToastmasterHomeRouter(),
+                                    predicate: ModalRoute.withName(
+                                        ToastmasterHomeRouter.name));
                               });
                             }
                           },

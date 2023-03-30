@@ -171,7 +171,7 @@ class ManageClubMembersFirebaseService extends IManageClubMembersService {
         //since each user will have only on 1 document always get the first document
 
         toastmaster = Toastmaster.fromJson(
-            checkUserHasExitedDocument.docs.first.data() as Map<String, dynamic>);
+          checkUserHasExitedDocument.docs.first.data() as Map<String, dynamic>);
       } else {
         return const Error(
           Failure(
@@ -187,7 +187,8 @@ class ManageClubMembersFirebaseService extends IManageClubMembersService {
       return Error(
         Failure(
             code: e.code,
-            location: "ManageClubMembersFirebaseService.getToastmasterDetails()",
+            location:
+"ManageClubMembersFirebaseService.getToastmasterDetails()",
             message:
                 e.message ?? "Database Error While getting member detials"),
       );
@@ -195,7 +196,8 @@ class ManageClubMembersFirebaseService extends IManageClubMembersService {
       return Error(
         Failure(
             code: e.toString(),
-            location: "ManageClubMembersFirebaseService.getToastmasterDetails()",
+            location:
+                "ManageClubMembersFirebaseService.getToastmasterDetails()",
             message: e.toString()),
       );
     }

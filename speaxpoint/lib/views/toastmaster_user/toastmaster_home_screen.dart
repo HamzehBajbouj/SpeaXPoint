@@ -1,19 +1,25 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:speaxpoint/app/app_routes.gr.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
-import 'package:flutter/material.dart';
 
-class ClubPresidentHomeScreen extends StatelessWidget {
-  const ClubPresidentHomeScreen({super.key});
+class ToastmasterHomeScreen extends StatefulWidget {
+  const ToastmasterHomeScreen({super.key});
 
+  @override
+  State<ToastmasterHomeScreen> createState() => _ToastmasterHomeScreenState();
+}
+
+class _ToastmasterHomeScreenState extends State<ToastmasterHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
       backgroundColor: const Color(AppMainColors.backgroundAndContent),
       routes: const [
-        ClubPresidentDashboardRouter(),
-        ClubProfileManagementRouter()
+        ToastmasterDashboardRouter(),
+        ToastmasterScheduledMeetingsRouter(),
+        ToastmasterProfileManagementRouter(),
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
         return SalomonBottomBar(
@@ -32,6 +38,15 @@ class ClubPresidentHomeScreen extends StatelessWidget {
                   size: 30,
                 ),
                 title: const Text('Home'),
+              ),
+              SalomonBottomBarItem(
+                selectedColor: const Color(AppMainColors.p70),
+                unselectedColor: const Color(AppMainColors.p40),
+                icon: const Icon(
+                  Icons.calendar_month_outlined,
+                  size: 30,
+                ),
+                title: const Text('Scheduled Meetings'),
               ),
               SalomonBottomBarItem(
                 selectedColor: const Color(AppMainColors.p70),

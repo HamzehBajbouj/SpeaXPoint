@@ -63,20 +63,9 @@ class ManageClubMembersFirebaseService extends IManageClubMembersService {
           .then(
         (value) {
           if (value.user != null) {
-            _toastmasterCollection.add(
-              {
-                'toastmasterId': value.user!.uid,
-                'clubId': toastmaster.clubId,
-                'toastmasterName': toastmaster.toastmasterName,
-                'currentPath': toastmaster.currentPath,
-                'currentProject': toastmaster.currentProject,
-                'currentLevel': toastmaster.currentLevel,
-                'toastmasterBirthDate': toastmaster.toastmasterBirthDate,
-                'gender': toastmaster.gender,
-                'memberOfficalRole': toastmaster.memberOfficalRole,
-                'toastmasterImage': toastmaster.toastmasterImage
-              },
-            );
+            //we are assigning the toastmaster id before we adding it to the firestore
+            toastmaster.toastmasterId = value.user!.uid;
+            _toastmasterCollection.add(toastmaster.toJson());
           } else {
             return const Error(
               Failure(
@@ -117,6 +106,9 @@ class ManageClubMembersFirebaseService extends IManageClubMembersService {
 
       if (checkUserHasExitedDocument.docs.isNotEmpty) {
         //since each user will have only on 1 document always get the first document
+        //we only need to update these fields, if we tried to call this method
+        //toastmaster.toJson() some the fields will be null (e.g.: clubId), as we are passing the data
+        //from the GUI textfeilds
         checkUserHasExitedDocument.docs.first.reference.update(
           {
             'toastmasterName': toastmaster.toastmasterName,
@@ -170,8 +162,8 @@ class ManageClubMembersFirebaseService extends IManageClubMembersService {
       if (checkUserHasExitedDocument.docs.isNotEmpty) {
         //since each user will have only on 1 document always get the first document
 
-        toastmaster = Toastmaster.fromJson(
-          checkUserHasExitedDocument.docs.first.data() as Map<String, dynamic>);
+        toastmaster = Toastmaster.fromJson(checkUserHasExitedDocument.docs.first
+            .data() as Map<String, dynamic>);
       } else {
         return const Error(
           Failure(
@@ -188,7 +180,7 @@ class ManageClubMembersFirebaseService extends IManageClubMembersService {
         Failure(
             code: e.code,
             location:
-"ManageClubMembersFirebaseService.getToastmasterDetails()",
+                "ManageClubMembersFirebaseService.getToastmasterDetails()",
             message:
                 e.message ?? "Database Error While getting member detials"),
       );

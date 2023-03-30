@@ -40,7 +40,7 @@ class _ManageMemberAccountScreenState extends State<ManageMemberAccountScreen> {
   final TextEditingController _currentProject = TextEditingController();
   final TextEditingController _currentLevel = TextEditingController();
   final TextEditingController _toastmasterName = TextEditingController();
-  String _memberRole = StringUtils.capitalize(ToastmasterRoles.member.name);
+  String _memberRole = StringUtils.capitalize(ToastmasterRoles.Member.name);
   Gender _gender = Gender.noCurrentInput;
   List<String> listOfRole = ToastmasterRoles.values
       .map((e) =>

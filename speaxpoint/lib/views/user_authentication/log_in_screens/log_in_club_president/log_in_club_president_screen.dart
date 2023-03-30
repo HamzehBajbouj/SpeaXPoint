@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:speaxpoint/app/app_routes.gr.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
+import 'package:speaxpoint/util/constants/common_enums.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/input_regex_validation.dart'
     as input_validators;
@@ -182,7 +183,10 @@ class _LogInAsClubPresidentState extends State<LogInAsClubPresidentScreen> {
                           callBack: () async {
                             if (_formKey.currentState!.validate()) {
                               await logInViewModel.logIn(
-                                  email: _email.text, password: _password.text);
+                                email: _email.text,
+                                password: _password.text,
+                                userRole: AppRoles.ClubPresident.name,
+                              );
 
                               logInViewModel.logInStatus?.whenSuccess((_) {
                                 logInViewModel.setlogInStatus(null);

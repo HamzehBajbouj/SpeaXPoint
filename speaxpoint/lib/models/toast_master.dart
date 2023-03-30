@@ -1,3 +1,5 @@
+import 'package:speaxpoint/util/constants/common_enums.dart';
+
 class Toastmaster {
   String? toastmasterId;
   String? clubId;
@@ -9,6 +11,7 @@ class Toastmaster {
   String? gender;
   String? memberOfficalRole;
   String? toastmasterImage;
+  String? appRole;
 
   Toastmaster({
     this.clubId,
@@ -21,6 +24,7 @@ class Toastmaster {
     this.memberOfficalRole,
     this.toastmasterBirthDate,
     this.toastmasterImage,
+    this.appRole,
   });
 
   Toastmaster.fromJson(Map<String, dynamic> toastmasterJson)
@@ -35,6 +39,7 @@ class Toastmaster {
           gender: toastmasterJson['gender'],
           memberOfficalRole: toastmasterJson['memberOfficalRole'],
           toastmasterImage: toastmasterJson['toastmasterImage'],
+          appRole: toastmasterJson['appRole'],
         );
 
   Map<String, dynamic> toJson() => {
@@ -47,6 +52,7 @@ class Toastmaster {
         'toastmasterBirthDate': toastmasterBirthDate,
         'gender': gender,
         'memberOfficalRole': memberOfficalRole,
-        'toastmasterImage': toastmasterImage
+        'toastmasterImage': toastmasterImage,
+        'appRole': AppRoles.Toastmaster.name,
       };
 }

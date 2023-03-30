@@ -1,3 +1,5 @@
+import 'package:speaxpoint/util/constants/common_enums.dart';
+
 class ClubAccount {
   String clubId;
   String? usermame;
@@ -8,6 +10,7 @@ class ClubAccount {
   String? clubPhoneNumber;
   String? backGroundImageURL;
   String? profileImageURL;
+  String? appRole = AppRoles.ClubPresident.name;
 
   ClubAccount({
     required this.clubId,
@@ -19,6 +22,7 @@ class ClubAccount {
     this.clubPhoneNumber,
     this.officialEmail,
     this.webSiteLink,
+    this.appRole,
   });
 
   ClubAccount.fromJson(Map<String, dynamic> clubAccountJson)
@@ -32,6 +36,7 @@ class ClubAccount {
           clubPhoneNumber: clubAccountJson['clubPhoneNumber'],
           backGroundImageURL: clubAccountJson['backGroundImageURL'],
           profileImageURL: clubAccountJson['profileImageURL'],
+          appRole: clubAccountJson['appRole'],
         );
 
   Map<String, dynamic> toJson() => {
@@ -44,5 +49,6 @@ class ClubAccount {
         'clubPhoneNumber': clubPhoneNumber,
         'backGroundImageURL': backGroundImageURL,
         'profileImageURL': profileImageURL,
+        'appRole': appRole,
       };
 }

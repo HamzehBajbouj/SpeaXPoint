@@ -9,12 +9,16 @@ class LogInViewModel extends BaseViewModel {
 
   Result<Unit, Failure>? _logInStatus;
   Result<Unit, Failure>? get logInStatus => _logInStatus;
-  setlogInStatus(Result<Unit, Failure>? logInStatus) => _logInStatus = logInStatus;
+  setlogInStatus(Result<Unit, Failure>? logInStatus) =>
+      _logInStatus = logInStatus;
 
-  Future<void> logIn({required String email, required String password}) async {
+  Future<void> logIn(
+      {required String email,
+      required String password,
+      required String userRole}) async {
     setLoading(true);
     _logInStatus =
-        await _authenticationService.signIn(email: email, password: password);
+        await _authenticationService.signIn(email: email, password: password, userRole: userRole);
     setLoading(false);
   }
 }

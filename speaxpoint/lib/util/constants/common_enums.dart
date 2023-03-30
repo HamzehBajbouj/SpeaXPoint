@@ -1,12 +1,19 @@
 enum Gender { male, female, noCurrentInput }
 
 enum ToastmasterRoles {
-  presidnet,
-  member,
-  vice_president_education,
-  vice_president_membership,
-  vice_president_public_relations,
-  treasurer,
-  secretary,
-  sergeant_at_arms,
+  Presidnet,
+  Member,
+  Vice_President_Education,
+  Vice_President_Membership,
+  Vice_President_Public_Relations,
+  Treasurer,
+  Secretary,
+  Sergeant_At_Arms,
+}
+
+
+enum AppRoles{
+  Toastmaster,
+  ClubPresident,
+  Guest,
 }

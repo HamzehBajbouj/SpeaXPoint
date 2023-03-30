@@ -5,7 +5,7 @@ import 'package:speaxpoint/services/Failure.dart';
 abstract class IAuthenticationService {
   UserCredential? get userCredential => null;
   Future<Result<Unit, Failure>> signIn(
-      {required String email, required String password});
+      {required String email, required String password, required String userRole});
 
   Future<Result<Unit, Failure>> signOut();
 

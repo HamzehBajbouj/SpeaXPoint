@@ -22,14 +22,13 @@ Future<void> initServiceLocator() async {
   await firebaseInitializer.initializeFirebase();
 
 //the local database
-
-//this part is for the services objects
-  serviceLocator.registerLazySingleton<IAuthenticationService>(
-      () => AuthenticationFirebaseService());
-
   serviceLocator.registerLazySingleton<ILocalDataBaseService>(
     () => LocalDataBaseSharedPreferencesService(),
   );
+//this part is for the services objects
+  serviceLocator.registerLazySingleton<IAuthenticationService>(
+      () => AuthenticationFirebaseService(serviceLocator<ILocalDataBaseService>()));
+
 
   serviceLocator.registerLazySingleton<IManageClubMembersService>(
     () => ManageClubMembersFirebaseService(),

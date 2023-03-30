@@ -54,36 +54,42 @@ class _ToastmasterProfileManagementScreenState
     _profileManagementViewModel =
         Provider.of<ProfileManagementViewModel>(context, listen: false);
 
-    _profileManagementViewModel.getToastmasterDetails().then((_) {
-      _profileManagementViewModel.getToastmasterDetailsStatus?.when(
-        (success) {
-          _toastmasterName.text = success.toastmasterName!;
-          _dateOfBirth.text = success.toastmasterBirthDate!;
-          _gender =
-              success.gender! == Gender.male.name ? Gender.male : Gender.female;
-          _memberRole.text = success.memberOfficalRole!;
-          _currentPath.text = success.currentPath!;
-          _currentProject.text = success.currentProject!;
-          _currentLevel.text = success.currentLevel!.toString();
-        },
-        (error) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            getSnackBar(
-              text: Text(
-                error.message,
-                style: const TextStyle(
-                  fontFamily: CommonUIProperties.fontType,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Color(AppMainColors.p90),
+    _profileManagementViewModel.getToastmasterDetails().then(
+      (_) {
+        _profileManagementViewModel.getToastmasterDetailsStatus?.when(
+          (success) {
+            _toastmasterName.text = success.toastmasterName!;
+            _dateOfBirth.text = success.toastmasterBirthDate!;
+            setState(() {
+              _gender = success.gender! == Gender.male.name
+                  ? Gender.male
+                  : Gender.female;
+            });
+
+            _memberRole.text = success.memberOfficalRole!;
+            _currentPath.text = success.currentPath!;
+            _currentProject.text = success.currentProject!;
+            _currentLevel.text = success.currentLevel!.toString();
+          },
+          (error) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              getSnackBar(
+                text: Text(
+                  error.message,
+                  style: const TextStyle(
+                    fontFamily: CommonUIProperties.fontType,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Color(AppMainColors.p90),
+                  ),
                 ),
+                color: const Color.fromARGB(255, 201, 79, 79),
               ),
-              color: const Color.fromARGB(255, 201, 79, 79),
-            ),
-          );
-        },
-      );
-    });
+            );
+          },
+        );
+      },
+    );
   }
 
   @override

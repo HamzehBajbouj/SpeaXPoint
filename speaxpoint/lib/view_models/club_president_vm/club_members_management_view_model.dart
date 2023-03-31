@@ -12,9 +12,11 @@ class ClubMembersManagementViewModel extends BaseViewModel {
   ClubMembersManagementViewModel(this._manageClubMembersService);
 
   Future<List<Toastmaster>> getAllMembersDetails() async {
+    super.setLoading(true);
     _getMemberRequestSatus =
         await _manageClubMembersService.getAllClubMembers();
     _getMemberRequestSatus?.whenSuccess((success) => members = success);
+    super.setLoading(false);
     return members;
   }
 }

@@ -52,6 +52,7 @@ dependencies:
   basic_utils: ^5.5.2
   modal_bottom_sheet: ^2.1.2
   shared_preferences: ^2.0.20
+  uuid: ^3.0.7
 
 dev_dependencies:
   flutter_test:

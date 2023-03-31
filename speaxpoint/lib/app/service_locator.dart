@@ -7,10 +7,13 @@ import 'package:speaxpoint/services/local_database/i_local_database_service.dart
 import 'package:speaxpoint/services/local_database/local_database_shared_preferences_service.dart';
 import 'package:speaxpoint/services/manage_club_members/i_manage_club_members_service.dart';
 import 'package:speaxpoint/services/manage_club_members/manage_club_members_firebase_service.dart';
+import 'package:speaxpoint/services/manage_coming_sessions/i_manage_coming_sessions_service.dart';
+import 'package:speaxpoint/services/manage_coming_sessions/manage_coming_sessions_firebase_serivce.dart';
 import 'package:speaxpoint/view_models/authentication_vm/club_registration_view_model.dart';
 import 'package:speaxpoint/view_models/authentication_vm/log_in_view_model.dart';
 import 'package:speaxpoint/view_models/club_president_vm/club_members_management_view_model.dart';
 import 'package:speaxpoint/view_models/club_president_vm/manage_member_account_view_model.dart';
+import 'package:speaxpoint/view_models/toastmaster_vm/manage_coming_sessions_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/profile_management_view_model.dart';
 
 final serviceLocator = GetIt.instance;
@@ -26,12 +29,15 @@ Future<void> initServiceLocator() async {
     () => LocalDataBaseSharedPreferencesService(),
   );
 //this part is for the services objects
-  serviceLocator.registerLazySingleton<IAuthenticationService>(
-      () => AuthenticationFirebaseService(serviceLocator<ILocalDataBaseService>()));
-
+  serviceLocator.registerLazySingleton<IAuthenticationService>(() =>
+      AuthenticationFirebaseService(serviceLocator<ILocalDataBaseService>()));
 
   serviceLocator.registerLazySingleton<IManageClubMembersService>(
     () => ManageClubMembersFirebaseService(),
+  );
+
+  serviceLocator.registerLazySingleton<IManageComingSessionsService>(
+    () => ManageComingSessionsFirebaseSerivce(),
   );
 
 //this part is for the viewmodels objects
@@ -60,8 +66,16 @@ Future<void> initServiceLocator() async {
   );
 
   serviceLocator.registerLazySingleton<ProfileManagementViewModel>(
-      () => ProfileManagementViewModel(
-            serviceLocator<IManageClubMembersService>(),
-            serviceLocator<IAuthenticationService>(),
-          ));
+    () => ProfileManagementViewModel(
+      serviceLocator<IManageClubMembersService>(),
+      serviceLocator<IAuthenticationService>(),
+    ),
+  );
+
+  serviceLocator.registerLazySingleton<ManageComingSessionsViewModel>(
+    () => ManageComingSessionsViewModel(
+      serviceLocator<ILocalDataBaseService>(),
+      serviceLocator<IManageComingSessionsService>(),
+    ),
+  );
 }

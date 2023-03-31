@@ -11,9 +11,14 @@ enum ToastmasterRoles {
   Sergeant_At_Arms,
 }
 
-
-enum AppRoles{
+enum AppRoles {
   Toastmaster,
   ClubPresident,
   Guest,
+}
+
+enum ComingSessionsStatus {
+  Completed,
+  Pending,
+  Coming,
 }

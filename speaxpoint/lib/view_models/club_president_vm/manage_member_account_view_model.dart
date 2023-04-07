@@ -20,8 +20,6 @@ class ManageMemberAccountViewModel extends BaseViewModel {
   Result<Unit, Failure>? get updateToastmasterDetailsStatus =>
       _updateToastmasterDetailsStatus;
 
-
-
   ManageMemberAccountViewModel(
       this._manageClubMembersService, this._authenticationService);
 
@@ -31,6 +29,7 @@ class ManageMemberAccountViewModel extends BaseViewModel {
     required String password,
     required String toastmasterName,
     required String memberRole,
+    required String toastmasterUsername,
     String? gender,
     String? dataOfBirth,
     String? currentPath,
@@ -51,6 +50,7 @@ class ManageMemberAccountViewModel extends BaseViewModel {
           'toastmasterBirthDate': dataOfBirth,
           'gender': gender,
           'memberOfficalRole': memberRole,
+          'toastmasterUsername': toastmasterUsername
         },
       ),
     );
@@ -74,6 +74,7 @@ class ManageMemberAccountViewModel extends BaseViewModel {
     required String currentProject,
     required String toastmasterId,
     required int currentLevel,
+    required String toastmasterUsername,
   }) async {
     setLoading(true);
     _updateToastmasterDetailsStatus =
@@ -88,6 +89,7 @@ class ManageMemberAccountViewModel extends BaseViewModel {
           'gender': gender,
           'memberOfficalRole': memberRole,
           'toastmasterId': toastmasterId,
+          'toastmasterUsername': toastmasterUsername,
         },
       ),
     );

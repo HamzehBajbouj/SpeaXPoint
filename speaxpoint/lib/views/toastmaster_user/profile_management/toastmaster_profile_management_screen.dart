@@ -35,6 +35,7 @@ class _ToastmasterProfileManagementScreenState
   final TextEditingController _currentLevel = TextEditingController();
   final TextEditingController _toastmasterName = TextEditingController();
   final TextEditingController _memberRole = TextEditingController();
+  final TextEditingController _toastmasterUsername = TextEditingController();
   Gender _gender = Gender.noCurrentInput;
 
   bool _editDetailsMode = false;
@@ -46,6 +47,8 @@ class _ToastmasterProfileManagementScreenState
     _currentPath.dispose();
     _currentProject.dispose();
     _currentLevel.dispose();
+    _toastmasterUsername.dispose();
+    _toastmasterName.dispose();
   }
 
   @override
@@ -70,6 +73,7 @@ class _ToastmasterProfileManagementScreenState
             _currentPath.text = success.currentPath!;
             _currentProject.text = success.currentProject!;
             _currentLevel.text = success.currentLevel!.toString();
+            _toastmasterUsername.text = success.toastmasterUsername!;
           },
           (error) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -117,6 +121,7 @@ class _ToastmasterProfileManagementScreenState
                           currentPath: _currentPath.text,
                           currentProject: _currentProject.text,
                           memberRole: _memberRole.text,
+                          toastmasterUsername: _toastmasterUsername.text,
                           currentLevel: _currentLevel.text.isEmpty
                               ? 0
                               : int.parse(_currentLevel.text),
@@ -128,21 +133,20 @@ class _ToastmasterProfileManagementScreenState
                                 ?.when(
                               (success) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                    getSnackBar(
-                                        text: const Text(
-                                          "You have Successfully updated your details",
-                                          style: TextStyle(
-                                            fontFamily:
-                                                CommonUIProperties.fontType,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
-                                            color: Color(AppMainColors.p90),
-                                          ),
-                                        ),
-                                        color: const Color.fromARGB(
-                                            255, 103, 187, 106)));
-
-                                context.popRoute();
+                                  getSnackBar(
+                                    text: const Text(
+                                      "You have Successfully updated your details",
+                                      style: TextStyle(
+                                        fontFamily: CommonUIProperties.fontType,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color(AppMainColors.p90),
+                                      ),
+                                    ),
+                                    color: const Color.fromARGB(
+                                        255, 103, 187, 106),
+                                  ),
+                                );
                               },
                               (error) {
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -294,11 +298,34 @@ class _ToastmasterProfileManagementScreenState
                         height: 10,
                       ),
                       text_field.outlineTextField(
-                          keyboardType: TextInputType.text,
-                          controller: _toastmasterName,
-                          hintText: "Enter Member Name",
-                          isRequired: _editDetailsMode,
-                          readOnly: !_editDetailsMode),
+                        keyboardType: TextInputType.text,
+                        controller: _toastmasterName,
+                        hintText: "Enter Member Name",
+                        isRequired: _editDetailsMode,
+                        readOnly: !_editDetailsMode,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Text(
+                        "Toastmaster Username",
+                        style: TextStyle(
+                          fontFamily: CommonUIProperties.fontType,
+                          fontSize: 17,
+                          fontWeight: FontWeight.normal,
+                          color: Color(AppMainColors.p80),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      text_field.outlineTextField(
+                        keyboardType: TextInputType.text,
+                        controller: _toastmasterUsername,
+                        hintText: "Enter Toastmaster Username",
+                        isRequired: _editDetailsMode,
+                        readOnly: !_editDetailsMode,
+                      ),
                       const SizedBox(
                         height: 10,
                       ),

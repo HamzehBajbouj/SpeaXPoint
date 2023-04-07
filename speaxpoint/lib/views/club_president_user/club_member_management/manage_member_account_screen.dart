@@ -40,6 +40,7 @@ class _ManageMemberAccountScreenState extends State<ManageMemberAccountScreen> {
   final TextEditingController _currentProject = TextEditingController();
   final TextEditingController _currentLevel = TextEditingController();
   final TextEditingController _toastmasterName = TextEditingController();
+  final TextEditingController _toastmasterUsername = TextEditingController();
   String _memberRole = StringUtils.capitalize(ToastmasterRoles.Member.name);
   Gender _gender = Gender.noCurrentInput;
   List<String> listOfRole = ToastmasterRoles.values
@@ -56,13 +57,14 @@ class _ManageMemberAccountScreenState extends State<ManageMemberAccountScreen> {
     _currentPath.dispose();
     _currentProject.dispose();
     _currentLevel.dispose();
+    _toastmasterUsername.dispose();
   }
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     _manageMemberAccountViewModel =
-        Provider.of<ManageMemberAccountViewModel>(context, listen: false);
+        Provider.of<ManageMemberAccountViewModel>(context, listen: true);
     if (widget.isInEditMode) {
       _manageMemberAccountViewModel
           .getToastmasterDetails(widget.userId!)
@@ -78,6 +80,7 @@ class _ManageMemberAccountScreenState extends State<ManageMemberAccountScreen> {
             _currentPath.text = success.currentPath!;
             _currentProject.text = success.currentProject!;
             _currentLevel.text = success.currentLevel!.toString();
+            _toastmasterUsername.text = success.toastmasterUsername!;
           },
           (error) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -124,6 +127,7 @@ class _ManageMemberAccountScreenState extends State<ManageMemberAccountScreen> {
                       dataOfBirth: _dateOfBirth.text,
                       currentPath: _currentPath.text,
                       currentProject: _currentProject.text,
+                      toastmasterUsername: _toastmasterUsername.text,
                       currentLevel: _currentLevel.text.isEmpty
                           ? 0
                           : int.parse(_currentLevel.text),
@@ -177,6 +181,7 @@ class _ManageMemberAccountScreenState extends State<ManageMemberAccountScreen> {
                       email: _email.text,
                       password: _password.text,
                       toastmasterName: _toastmasterName.text,
+                      toastmasterUsername: _toastmasterUsername.text,
                       memberRole: _memberRole,
                       currentLevel: _currentLevel.text.isEmpty
                           ? 0
@@ -343,65 +348,92 @@ class _ManageMemberAccountScreenState extends State<ManageMemberAccountScreen> {
                       ),
                       //these widget will only be displayed if it's in add mode
                       Visibility(
-                          visible: !widget.isInEditMode,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Email",
-                                style: TextStyle(
-                                  fontFamily: CommonUIProperties.fontType,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.normal,
-                                  color: Color(AppMainColors.p80),
-                                ),
+                        visible: !widget.isInEditMode,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Email",
+                              style: TextStyle(
+                                fontFamily: CommonUIProperties.fontType,
+                                fontSize: 17,
+                                fontWeight: FontWeight.normal,
+                                color: Color(AppMainColors.p80),
                               ),
-                              const SizedBox(
-                                height: 10,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            text_field.outlineTextField(
+                              keyboardType: TextInputType.text,
+                              controller: _email,
+                              onChangeCallBack: (data) {},
+                              hintText: "Enter Member Email",
+                              isRequired: !widget.isInEditMode,
+                              readOnly: widget.isInEditMode,
+                              validators: [
+                                input_validators.isValidEmail(
+                                    _email.text.toString(), "invalid emails")
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const Text(
+                              "Password",
+                              style: TextStyle(
+                                fontFamily: CommonUIProperties.fontType,
+                                fontSize: 17,
+                                fontWeight: FontWeight.normal,
+                                color: Color(AppMainColors.p80),
                               ),
-                              text_field.outlineTextField(
-                                keyboardType: TextInputType.text,
-                                controller: _email,
-                                onChangeCallBack: (data) {},
-                                hintText: "Enter Member Email",
-                                isRequired: !widget.isInEditMode,
-                                readOnly: widget.isInEditMode,
-                                validators: [
-                                  input_validators.isValidEmail(
-                                      _email.text.toString(), "invalid emails")
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              const Text(
-                                "Password",
-                                style: TextStyle(
-                                  fontFamily: CommonUIProperties.fontType,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.normal,
-                                  color: Color(AppMainColors.p80),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              text_field.outlineTextField(
-                                keyboardType: TextInputType.text,
-                                controller: _password,
-                                hintText: "Enter Member Password",
-                                obscured: true,
-                                isRequired: !widget.isInEditMode,
-                                readOnly: widget.isInEditMode,
-                                validators: [
-                                  //to enter the password validator
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                            ],
-                          )),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            text_field.outlineTextField(
+                              keyboardType: TextInputType.text,
+                              controller: _password,
+                              hintText: "Enter Member Password",
+                              obscured: true,
+                              isRequired: !widget.isInEditMode,
+                              readOnly: widget.isInEditMode,
+                              validators: [
+                                //to enter the password validator
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const Text(
+                        "Toastmaster Username",
+                        style: TextStyle(
+                          fontFamily: CommonUIProperties.fontType,
+                          fontSize: 17,
+                          fontWeight: FontWeight.normal,
+                          color: Color(AppMainColors.p80),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      text_field.outlineTextField(
+                        keyboardType: TextInputType.text,
+                        controller: _toastmasterUsername,
+                        hintText: "Enter Toastmaster Username",
+                        obscured: false,
+                        isRequired: !widget.isInEditMode,
+                        validators: [
+                          //to enter the password validator
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
 
                       const Text(
                         "Toastmaster Name",

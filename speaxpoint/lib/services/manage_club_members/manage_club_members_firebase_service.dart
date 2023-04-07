@@ -58,25 +58,41 @@ class ManageClubMembersFirebaseService extends IManageClubMembersService {
     FirebaseApp app = await Firebase.initializeApp(
         name: 'Secondary', options: Firebase.app().options);
     try {
-      await FirebaseAuth.instanceFor(app: app)
-          .createUserWithEmailAndPassword(email: email, password: password)
-          .then(
-        (value) {
-          if (value.user != null) {
-            //we are assigning the toastmaster id before we adding it to the firestore
-            toastmaster.toastmasterId = value.user!.uid;
-            _toastmasterCollection.add(toastmaster.toJson());
-          } else {
-            return const Error(
-              Failure(
-                  code: "user is null",
-                  location:
-                      "ManageClubMembersFirebaseService.registerNewMember()",
-                  message: "Database Error While Registration"),
-            );
-          }
-        },
-      );
+      //first check if username is existed or not
+      QuerySnapshot toastmasterUsernameIsTaken = await _toastmasterCollection
+          .where("toastmasterUsername",
+              isEqualTo: toastmaster.toastmasterUsername)
+          .get();
+
+      if (toastmasterUsernameIsTaken.docs.isEmpty) {
+        await FirebaseAuth.instanceFor(app: app)
+            .createUserWithEmailAndPassword(email: email, password: password)
+            .then(
+          (value) {
+            if (value.user != null) {
+              //we are assigning the toastmaster id before we adding it to the firestore
+              toastmaster.toastmasterId = value.user!.uid;
+              _toastmasterCollection.add(toastmaster.toJson());
+            } else {
+              return const Error(
+                Failure(
+                    code: "user is null",
+                    location:
+                        "ManageClubMembersFirebaseService.registerNewMember()",
+                    message: "Database Error While Registration"),
+              );
+            }
+          },
+        );
+      } else {
+        return Error(
+          Failure(
+              code: "username-is-taken",
+              message: "${toastmaster.toastmasterUsername} username is taken.",
+              location: "ManageClubMembersFirebaseService.registerNewMember"),
+        );
+      }
+
       await app.delete();
       return Success.unit();
     } on FirebaseAuthException catch (e) {
@@ -105,22 +121,39 @@ class ManageClubMembersFirebaseService extends IManageClubMembersService {
           .get();
 
       if (checkUserHasExitedDocument.docs.isNotEmpty) {
-        //since each user will have only on 1 document always get the first document
-        //we only need to update these fields, if we tried to call this method
-        //toastmaster.toJson() some the fields will be null (e.g.: clubId), as we are passing the data
-        //from the GUI textfeilds
-        checkUserHasExitedDocument.docs.first.reference.update(
-          {
-            'toastmasterName': toastmaster.toastmasterName,
-            'currentPath': toastmaster.currentPath,
-            'currentProject': toastmaster.currentProject,
-            'currentLevel': toastmaster.currentLevel,
-            'toastmasterBirthDate': toastmaster.toastmasterBirthDate,
-            'gender': toastmaster.gender,
-            'memberOfficalRole': toastmaster.memberOfficalRole,
-            'toastmasterImage': toastmaster.toastmasterImage,
-          },
-        );
+        //check if the updated username is taken or not:
+        QuerySnapshot toastmasterUsernameIsTaken = await _toastmasterCollection
+            .where("toastmasterUsername",
+                isEqualTo: toastmaster.toastmasterUsername)
+            .get();
+        if (toastmasterUsernameIsTaken.docs.isEmpty) {
+          //since each user will have only on 1 document always get the first document
+          //we only need to update these fields, if we tried to call this method
+          //toastmaster.toJson() some the fields will be null (e.g.: clubId), as we are passing the data
+          //from the GUI textfeilds
+          checkUserHasExitedDocument.docs.first.reference.update(
+            {
+              'toastmasterName': toastmaster.toastmasterName,
+              'currentPath': toastmaster.currentPath,
+              'currentProject': toastmaster.currentProject,
+              'currentLevel': toastmaster.currentLevel,
+              'toastmasterBirthDate': toastmaster.toastmasterBirthDate,
+              'gender': toastmaster.gender,
+              'memberOfficalRole': toastmaster.memberOfficalRole,
+              'toastmasterImage': toastmaster.toastmasterImage,
+              'toastmasterUsername': toastmaster.toastmasterUsername
+            },
+          );
+        } else {
+          return Error(
+            Failure(
+                code: "username-is-taken",
+                message:
+                    "${toastmaster.toastmasterUsername} username is taken.",
+                location:
+                    "ManageClubMembersFirebaseService.updateMemberDetails"),
+          );
+        }
       } else {
         return const Error(
           Failure(

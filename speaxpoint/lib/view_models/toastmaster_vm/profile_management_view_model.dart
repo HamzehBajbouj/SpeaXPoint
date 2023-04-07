@@ -36,6 +36,7 @@ class ProfileManagementViewModel extends BaseViewModel {
     required String currentProject,
     required int currentLevel,
     required String memberRole,
+    required String toastmasterUsername,
   }) async {
     setLoading(true);
     _updateToastmasterDetailsStatus =
@@ -50,6 +51,7 @@ class ProfileManagementViewModel extends BaseViewModel {
           'gender': gender,
           'memberOfficalRole': memberRole,
           'toastmasterId': _authenticationService.userCredential!.user!.uid,
+          'toastmasterUsername': toastmasterUsername,
         },
       ),
     );

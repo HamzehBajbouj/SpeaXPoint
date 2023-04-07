@@ -12,6 +12,7 @@ class Toastmaster {
   String? memberOfficalRole;
   String? toastmasterImage;
   String? appRole;
+  String? toastmasterUsername;
 
   Toastmaster({
     this.clubId,
@@ -25,6 +26,7 @@ class Toastmaster {
     this.toastmasterBirthDate,
     this.toastmasterImage,
     this.appRole,
+    this.toastmasterUsername,
   });
 
   Toastmaster.fromJson(Map<String, dynamic> toastmasterJson)
@@ -40,6 +42,7 @@ class Toastmaster {
           memberOfficalRole: toastmasterJson['memberOfficalRole'],
           toastmasterImage: toastmasterJson['toastmasterImage'],
           appRole: toastmasterJson['appRole'],
+          toastmasterUsername : toastmasterJson['toastmasterUsername'],
         );
 
   Map<String, dynamic> toJson() => {
@@ -54,5 +57,6 @@ class Toastmaster {
         'memberOfficalRole': memberOfficalRole,
         'toastmasterImage': toastmasterImage,
         'appRole': AppRoles.Toastmaster.name,
+        'toastmasterUsername':toastmasterUsername,
       };
 }

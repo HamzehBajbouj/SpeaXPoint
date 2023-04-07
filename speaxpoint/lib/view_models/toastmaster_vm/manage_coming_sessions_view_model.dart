@@ -2,7 +2,7 @@ import 'package:multiple_result/multiple_result.dart';
 import 'package:speaxpoint/models/chapter_meeting.dart';
 import 'package:speaxpoint/services/Failure.dart';
 import 'package:speaxpoint/services/local_database/i_local_database_service.dart';
-import 'package:speaxpoint/services/manage_coming_sessions/i_manage_coming_sessions_service.dart';
+import 'package:speaxpoint/services/meeting_arrangement/manage_coming_sessions/i_manage_coming_sessions_service.dart';
 import 'package:speaxpoint/util/constants/common_enums.dart';
 import 'package:speaxpoint/util/constants/shared_preferences_keys.dart';
 import 'package:speaxpoint/view_models/base_view_mode.dart';
@@ -25,8 +25,15 @@ class ManageComingSessionsViewModel extends BaseViewModel {
     Map<String, dynamic> loggedUser =
         await _sharedPreferences.loadData(SharedPrefereneceKeys.loggedUser);
     //create a radom uuid for the invitation code
-    String invitationCode = Uuid().v4();
+    const uuid = Uuid();
+    String invitationCode = uuid.v4();
     invitationCode = invitationCode.substring(0, invitationCode.indexOf("-"));
+
+    //for create the unique id, just create random Id and add the ivitationCode at the end.
+    String chapterRadomMeetingId = uuid.v4();
+    chapterRadomMeetingId =
+        chapterRadomMeetingId.substring(0, chapterRadomMeetingId.indexOf("-")) +
+            invitationCode;
 
     _createdNewSessionStatus =
         await _manageComingSessionsService.createNewSession(
@@ -37,6 +44,7 @@ class ManageComingSessionsViewModel extends BaseViewModel {
         chapterMeetingStatus: ComingSessionsStatus.Pending.name,
         clubId: loggedUser["clubId"],
         toastmasterId: loggedUser["toastmasterName"],
+        chapterMeetingId: chapterRadomMeetingId,
       ),
     );
     super.setLoading(false);

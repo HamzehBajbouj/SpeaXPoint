@@ -1,15 +1,24 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:speaxpoint/app/app_routes.gr.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 
 class ComingSessionOptionBottomSheet extends StatelessWidget {
   final String title;
   final DateTime date;
+  final String chapterMeetingId;
+  final String clubId;
 
-  const ComingSessionOptionBottomSheet(
-      {super.key, required this.title, required this.date});
+  const ComingSessionOptionBottomSheet({
+    super.key,
+    required this.title,
+    required this.date,
+    required this.chapterMeetingId,
+    required this.clubId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +100,14 @@ class ComingSessionOptionBottomSheet extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(right: 20),
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        context.pushRoute(
+                          AllocateRolePlayerRouter(
+                            chapterMeetingId: chapterMeetingId,
+                            clubId: clubId,
+                          ),
+                        );
+                      },
                       child: Container(
                         width: 110,
                         height: 80,
@@ -132,7 +148,10 @@ class ComingSessionOptionBottomSheet extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(right: 20),
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        context.pushRoute(PrepareMeetingAgendaRouter(
+                            chapterMeetingId: chapterMeetingId));
+                      },
                       child: Container(
                         padding: const EdgeInsets.only(top: 8),
                         width: 110,

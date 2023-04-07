@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:speaxpoint/app/app_routes.gr.dart';
-import 'package:speaxpoint/models/toast_master.dart';
+import 'package:speaxpoint/models/toastmaster.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/text_fields.dart';

@@ -64,6 +64,7 @@ DropdownButtonFormField2<String> dropdownMenu({
         return 'Option should not be empty.';
       }
     },
+    isExpanded: true,
     value: initialValue,
     iconStyleData: IconStyleData(icon: icon),
     dropdownStyleData: const DropdownStyleData(

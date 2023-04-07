@@ -11,6 +11,7 @@ class ToastmasterDashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(AppMainColors.backgroundAndContent),
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),

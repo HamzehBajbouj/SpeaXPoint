@@ -6,7 +6,7 @@ import 'package:speaxpoint/models/chapter_meeting.dart';
 import 'package:speaxpoint/services/Failure.dart';
 import 'package:multiple_result/src/unit.dart';
 import 'package:multiple_result/src/result.dart';
-import 'package:speaxpoint/services/manage_coming_sessions/i_manage_coming_sessions_service.dart';
+import 'package:speaxpoint/services/meeting_arrangement/manage_coming_sessions/i_manage_coming_sessions_service.dart';
 
 class ManageComingSessionsFirebaseSerivce extends IManageComingSessionsService {
   final CollectionReference _chapterMeetingsCollection =

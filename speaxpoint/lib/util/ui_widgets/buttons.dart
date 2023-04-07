@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 
-SizedBox outlinedButton(
-    {required VoidCallback callBack,
-    required String content,
-    double fontSize = 17,
-    double buttonWidth = CommonUIProperties.buttonWidth,
-    double buttonHeight = CommonUIProperties.buttonHeight}) {
+SizedBox outlinedButton({
+  required VoidCallback callBack,
+  required String content,
+  double fontSize = 17,
+  double buttonWidth = CommonUIProperties.buttonWidth,
+  double buttonHeight = CommonUIProperties.buttonHeight,
+  Color buttonColor = const Color(AppMainColors.p50),
+}) {
   return SizedBox(
     width: buttonWidth,
     height: buttonHeight,
@@ -17,9 +19,9 @@ SizedBox outlinedButton(
         style: OutlinedButton.styleFrom(
             splashFactory: NoSplash.splashFactory,
             foregroundColor: Colors.transparent,
-            side: const BorderSide(
+            side: BorderSide(
                 width: CommonUIProperties.buttonRoundedEdgesWidth,
-                color: Color(AppMainColors.p50)),
+                color: buttonColor),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
                   Radius.circular(CommonUIProperties.buttonRoundedEdges)),
@@ -28,7 +30,7 @@ SizedBox outlinedButton(
           content,
           style: TextStyle(
               fontFamily: CommonUIProperties.fontType,
-              color: const Color(AppMainColors.p50),
+              color: buttonColor,
               fontWeight: FontWeight.normal,
               fontSize: fontSize),
         ),
@@ -37,11 +39,15 @@ SizedBox outlinedButton(
   );
 }
 
-SizedBox filledTextButton(
-    {required VoidCallback callBack,
-    required String content,
-    double buttonWidth = CommonUIProperties.buttonWidth,
-    double buttonHeight = CommonUIProperties.buttonHeight}) {
+SizedBox filledTextButton({
+  required VoidCallback callBack,
+  required String content,
+  double buttonWidth = CommonUIProperties.buttonWidth,
+  double buttonHeight = CommonUIProperties.buttonHeight,
+  Color backgroundColor = const Color(AppMainColors.p100),
+  Color contentColor = const Color(AppMainColors.backgroundAndContent),
+  Color borderColor = const Color(AppMainColors.p50),
+}) {
   return SizedBox(
     width: buttonWidth,
     height: buttonHeight,
@@ -50,22 +56,25 @@ SizedBox filledTextButton(
         onPressed: callBack,
         style: TextButton.styleFrom(
             splashFactory: NoSplash.splashFactory,
-            backgroundColor: const Color(AppMainColors.p100),
+            backgroundColor: backgroundColor,
             foregroundColor: Colors.transparent,
-            side: const BorderSide(
+            side: BorderSide(
                 width: CommonUIProperties.buttonRoundedEdgesWidth,
-                color: Color(AppMainColors.p50)),
+                color: borderColor),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
                   Radius.circular(CommonUIProperties.buttonRoundedEdges)),
             )),
-        child: Text(
-          content,
-          style: const TextStyle(
-              fontFamily: CommonUIProperties.fontType,
-              color: Color(AppMainColors.backgroundAndContent),
-              fontWeight: FontWeight.normal,
-              fontSize: 17),
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            content,
+            style: TextStyle(
+                fontFamily: CommonUIProperties.fontType,
+                color: contentColor,
+                fontWeight: FontWeight.normal,
+                fontSize: 17),
+          ),
         ),
       ),
     ),

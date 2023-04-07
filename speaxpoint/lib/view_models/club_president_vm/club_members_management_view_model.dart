@@ -1,5 +1,5 @@
 import 'package:multiple_result/multiple_result.dart';
-import 'package:speaxpoint/models/toast_master.dart';
+import 'package:speaxpoint/models/toastmaster.dart';
 import 'package:speaxpoint/services/Failure.dart';
 import 'package:speaxpoint/services/manage_club_members/i_manage_club_members_service.dart';
 import 'package:speaxpoint/view_models/base_view_mode.dart';

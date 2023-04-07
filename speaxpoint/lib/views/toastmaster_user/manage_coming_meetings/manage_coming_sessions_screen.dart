@@ -9,7 +9,7 @@ import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_coming_sessions_view_model.dart';
-import 'package:speaxpoint/views/toastmaster_user/manage_coming_meetings/bottomSheet.dart';
+import 'package:speaxpoint/views/toastmaster_user/manage_coming_meetings/coming_sessions_option_bottom_sheet.dart';
 import 'package:speaxpoint/views/toastmaster_user/manage_coming_meetings/create_new_session_dialog.dart';
 import 'package:provider/provider.dart';
 
@@ -52,6 +52,7 @@ class _ManageComingSessionsScreenState
           ),
         ),
       ),
+      backgroundColor: Color(AppMainColors.backgroundAndContent),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -199,7 +200,11 @@ class _ManageComingSessionsScreenState
                                           ComingSessionOptionBottomSheet(
                                         title: items[index].chapterTitle!,
                                         date: DateTime.parse(
-                                            items[index].dateOfMeeting!),
+                                          items[index].dateOfMeeting!,
+                                        ),
+                                        chapterMeetingId:
+                                            items[index].chapterMeetingId!,
+                                        clubId: items[index].clubId!,
                                       ),
                                     );
                                   },
@@ -306,77 +311,3 @@ class _ManageComingSessionsScreenState
     }
   }
 }
-
-
-
-// Card(
-//                 margin: const EdgeInsets.all(0),
-//                 elevation: 0,
-//                 color: _getCardColor("Completed"),
-//                 shape: RoundedRectangleBorder(
-//                   borderRadius: BorderRadius.circular(
-//                       CommonUIProperties.cardRoundedEdges),
-//                 ),
-//                 child: ListTile(
-//                     onTap: () {
-//                       showMaterialModalBottomSheet(
-//                         shape: const RoundedRectangleBorder(
-//                           borderRadius: BorderRadius.only(
-//                             topLeft: Radius.circular(
-//                                 CommonUIProperties.modalBottomSheetsEdges),
-//                             topRight: Radius.circular(
-//                                 CommonUIProperties.modalBottomSheetsEdges),
-//                           ),
-//                         ),
-//                         context: context,
-//                         builder: (context) => ComingSessionOptionBottomSheet(
-//                           title: "Chapter Meeting 15",
-//                           date: DateTime.now(),
-//                         ),
-//                       );
-//                     },
-//                     contentPadding: const EdgeInsets.only(
-//                       left: 20,
-//                       right: 20,
-//                     ),
-//                     title: const Text(
-//                       "Chapter Meeting 15 ",
-//                       overflow: TextOverflow.ellipsis,
-//                       style: TextStyle(
-//                         fontFamily: CommonUIProperties.fontType,
-//                         fontSize: 17,
-//                         fontWeight: FontWeight.w500,
-//                         color: Color(AppMainColors.p80),
-//                       ),
-//                     ),
-//                     subtitle: Text(
-//                       DateFormat("h:mm a, EEEE, MMM d, yyyy")
-//                           .format(DateTime.now()),
-//                       overflow: TextOverflow.ellipsis,
-//                       style: const TextStyle(
-//                         fontFamily: CommonUIProperties.fontType,
-//                         fontSize: 13,
-//                         fontWeight: FontWeight.normal,
-//                         color: Color(AppMainColors.p50),
-//                       ),
-//                     ),
-//                     trailing: Column(
-//                       mainAxisAlignment: MainAxisAlignment.center,
-//                       children: [
-//                         Icon(
-//                           _getCardTrailingIcon("Completed"),
-//                           color: _getCardIconColor("Completed"),
-//                           size: 29,
-//                         ),
-//                         Text(
-//                           "Completed",
-//                           style: TextStyle(
-//                             fontFamily: CommonUIProperties.fontType,
-//                             fontSize: 11,
-//                             fontWeight: FontWeight.normal,
-//                             color: _getCardIconColor("Completed"),
-//                           ),
-//                         )
-//                       ],
-//                     )),
-//               );

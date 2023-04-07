@@ -52,7 +52,7 @@ class _CreateNewSessionDialog extends State<CreateNewSessionDialog> {
               isRequired: true,
               readOnly: true,
               controller: _sessionDate,
-              hintText: "Enter Member Birth Date",
+              hintText: "Enter Meeting Date",
               onChangeCallBack: (data) {},
               onTapCallBack: () {
                 DatePicker.showDateTimePicker(

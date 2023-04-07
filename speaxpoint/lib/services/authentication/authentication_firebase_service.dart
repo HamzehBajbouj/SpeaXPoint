@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:multiple_result/multiple_result.dart';
-import 'package:speaxpoint/models/toast_master.dart';
+import 'package:speaxpoint/models/toastmaster.dart';
 import 'package:speaxpoint/services/Failure.dart';
 import 'package:speaxpoint/services/authentication/i_authentication_service.dart';
 import 'package:speaxpoint/services/local_database/i_local_database_service.dart';

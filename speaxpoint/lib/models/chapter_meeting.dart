@@ -10,6 +10,7 @@ class ChapterMeeting {
   String? dateOfMeeting;
   String? invitationCode;
   String? chapterMeetingStatus;
+  String? chapterMeetingId;
   ChapterMeeting({
     this.clubId,
     this.toastmasterId,
@@ -17,6 +18,7 @@ class ChapterMeeting {
     this.dateOfMeeting,
     this.invitationCode,
     this.chapterMeetingStatus,
+    this.chapterMeetingId,
   });
 
   ChapterMeeting.fromJson(Map<String, dynamic> json)
@@ -27,6 +29,7 @@ class ChapterMeeting {
           dateOfMeeting: json['dateOfMeeting'],
           invitationCode: json['invitationCode'],
           chapterMeetingStatus: json['chapterMeetingStatus'],
+          chapterMeetingId: json['chapterMeetingId'],
         );
 
   Map<String, dynamic> toJson() => {
@@ -35,6 +38,7 @@ class ChapterMeeting {
         'chapterTitle': chapterTitle,
         'dateOfMeeting': dateOfMeeting,
         'invitationCode': invitationCode,
-        'chapterMeetingStatus': chapterMeetingStatus
+        'chapterMeetingStatus': chapterMeetingStatus,
+        'chapterMeetingId': chapterMeetingId,
       };
 }

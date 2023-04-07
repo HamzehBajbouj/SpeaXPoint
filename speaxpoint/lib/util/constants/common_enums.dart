@@ -22,3 +22,21 @@ enum ComingSessionsStatus {
   Pending,
   Coming,
 }
+
+enum LisrOfRolesPlayers {
+  Speaker,
+  Ah_Counter,
+  Timer,
+  Grammarian,
+  Topicmaster,
+  Speach_Evaluator,
+  General_Evaluator,
+  Toastmaster,
+}
+
+enum AllocatedRolePlayerUserAppType {
+  ClubMember,
+  Guest,
+  OtherClubMember,
+  Volunteer,
+}

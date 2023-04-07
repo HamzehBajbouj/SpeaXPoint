@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:speaxpoint/services/Failure.dart';
-import 'package:speaxpoint/models/toast_master.dart';
+import 'package:speaxpoint/models/toastmaster.dart';
 import 'package:multiple_result/src/unit.dart';
 import 'package:multiple_result/src/result.dart';
 import 'package:speaxpoint/services/manage_club_members/i_manage_club_members_service.dart';

@@ -1,13 +1,13 @@
 class AllocatedRolePlayer {
   int? allocatedRolePlayerUniqueId;
-  String? username;
+  String? toastmasterUsername;
   String? toastmasterId;
   String? rolePlayerName;
   String? roleName;
   //the roleOrderPlace is meant to differenitate between if he is first speaks , or second speaker..etc
   int? rolePlayerOrderPlace;
   String? invitationCode;
-  String? allocatedRolePlayerUserAppType;
+  String? allocatedRolePlayerType;
 
   // we can add the club name in the future , which will be obtained automatically
   // String? clubName;
@@ -19,31 +19,31 @@ class AllocatedRolePlayer {
       this.rolePlayerOrderPlace,
       this.rolePlayerName,
       this.toastmasterId,
-      this.username,
-      this.allocatedRolePlayerUserAppType});
+      this.toastmasterUsername,
+      this.allocatedRolePlayerType});
 
   AllocatedRolePlayer.fromJson(Map<String, dynamic> allocatedRolePlayerJson)
       : this(
           allocatedRolePlayerUniqueId:
               allocatedRolePlayerJson['allocatedRolePlayerUniqueId'],
-          username: allocatedRolePlayerJson['username'],
+          toastmasterUsername: allocatedRolePlayerJson['toastmasterUsername'],
           invitationCode: allocatedRolePlayerJson['invitationCode'],
           roleName: allocatedRolePlayerJson['roleName'],
           rolePlayerOrderPlace: allocatedRolePlayerJson['rolePlayerOrderPlace'],
           rolePlayerName: allocatedRolePlayerJson['rolePlayerName'],
           toastmasterId: allocatedRolePlayerJson['toastmasterId'],
-          allocatedRolePlayerUserAppType:
-              allocatedRolePlayerJson['allocatedRolePlayerUserAppType'],
+          allocatedRolePlayerType:
+              allocatedRolePlayerJson['allocatedRolePlayerType'],
         );
 
   Map<String, dynamic> toJson() => {
         'allocatedRolePlayerUniqueId': allocatedRolePlayerUniqueId,
-        'username': username,
+        'toastmasterUsername': toastmasterUsername,
         'invitationCode': invitationCode,
         'roleName': roleName,
         'rolePlayerOrderPlace': rolePlayerOrderPlace,
         'rolePlayerName': rolePlayerName,
         'toastmasterId': toastmasterId,
-        'allocatedRolePlayerUserAppType': allocatedRolePlayerUserAppType
+        'allocatedRolePlayerType': allocatedRolePlayerType
       };
 }

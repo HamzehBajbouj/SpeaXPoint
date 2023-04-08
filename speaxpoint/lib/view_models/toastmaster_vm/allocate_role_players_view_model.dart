@@ -8,12 +8,15 @@ import 'package:speaxpoint/util/constants/common_enums.dart';
 import 'package:speaxpoint/view_models/base_view_mode.dart';
 
 class AllocateRolePlayersViewModel extends BaseViewModel {
-  IAllocateRolePlayersService _allocateRolePlayersService;
+  final IAllocateRolePlayersService _allocateRolePlayersService;
+
+  Result<Unit, Failure>? _updateRoleStatus;
+  Result<Unit, Failure>? get updateRoleStatus => _updateRoleStatus;
 
   AllocateRolePlayersViewModel(this._allocateRolePlayersService);
 
   Future<void> deleteRolePlayerCard(
-      String chapterMeetingId, String allocatedRolePlayerUniqueId) async {
+      String chapterMeetingId, int allocatedRolePlayerUniqueId) async {
     setLoading(true);
     await _allocateRolePlayersService.deleteAllocatedRolePlayer(
         chapterMeetingId, allocatedRolePlayerUniqueId);
@@ -53,14 +56,41 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
     int memberRolePlace,
   ) async {
     return await _allocateRolePlayersService.allocateClubMemberNewRolePlayer(
-        chapterMeetingId,
-        AllocatedRolePlayer(
-            roleName: roleName,
-            rolePlayerOrderPlace: memberRolePlace,
-            rolePlayerName: toastmaster.toastmasterName,
-            toastmasterId: toastmaster.toastmasterId,
-            allocatedRolePlayerUserAppType:
-                AllocatedRolePlayerUserAppType.ClubMember.name,
-            username: "dummy"));
+      chapterMeetingId,
+      AllocatedRolePlayer(
+        roleName: roleName,
+        rolePlayerOrderPlace: memberRolePlace,
+        rolePlayerName: toastmaster.toastmasterName,
+        toastmasterId: toastmaster.toastmasterId,
+        allocatedRolePlayerType: AllocatedRolePlayerType.ClubMember.name,
+        toastmasterUsername: toastmaster.toastmasterUsername,
+      ),
+    );
   }
+
+  Future<void> updateExitngRoleDetails(
+    String chapterMeetingId,
+    String roleName,
+    int memberRolePlace,
+    Toastmaster toastmaster,
+  ) async {
+    super.setLoading(true);
+    _updateRoleStatus =
+        await _allocateRolePlayersService.updateOccupiedRoleDetails(
+      chapterMeetingId,
+      AllocatedRolePlayer(
+        roleName: roleName,
+        rolePlayerOrderPlace: memberRolePlace,
+        rolePlayerName: toastmaster.toastmasterName,
+        toastmasterId: toastmaster.toastmasterId,
+        allocatedRolePlayerType: AllocatedRolePlayerType.ClubMember.name,
+        toastmasterUsername: toastmaster.toastmasterUsername,
+      ),
+    );
+    super.setLoading(false);
+  }
+
+  Stream<List<AllocatedRolePlayer>> getAllocatedRolePlayers(
+          String chapterMeetingId) =>
+      _allocateRolePlayersService.getAllAllocatedRolePlayers(chapterMeetingId);
 }

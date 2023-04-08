@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:speaxpoint/models/allocated_role_player.dart';
 import 'package:speaxpoint/models/toastmaster.dart';
 import 'package:speaxpoint/services/Failure.dart';
 import 'package:multiple_result/src/result.dart';
@@ -8,6 +11,9 @@ class MeetingArrangementCommonFirebaseServices
     extends IMeetingArrangementCommonServices {
   final CollectionReference _toastmasterCollection =
       FirebaseFirestore.instance.collection("Toastmasters");
+
+  final CollectionReference _chapterMeetingsCollection =
+      FirebaseFirestore.instance.collection('ChapterMeetings');
   @override
   Future<Result<List<Toastmaster>, Failure>> getAllClubMembersList(
       String clubId) async {
@@ -47,6 +53,49 @@ class MeetingArrangementCommonFirebaseServices
                 "MeetingArrangementCommonFirebaseServices.getAllClubMembers()",
             message: e.toString()),
       );
+    }
+  }
+
+  @override
+  Future<CollectionReference> getAllocatedRolePlayerCollectionRef(
+      String chapterMeetingId) async {
+    CollectionReference allocatedRolePlayerCollection =
+        FirebaseFirestore.instance.collection(" ");
+    try {
+      QuerySnapshot ChapterMeetingQS = await _chapterMeetingsCollection
+          .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+          .get();
+      if (ChapterMeetingQS.docs.isNotEmpty) {
+        allocatedRolePlayerCollection = ChapterMeetingQS.docs.first.reference
+            .collection("AllocatedRolePlayers");
+      }
+      return allocatedRolePlayerCollection;
+    } catch (e) {
+      return allocatedRolePlayerCollection;
+    }
+  }
+
+  @override
+  Stream<List<AllocatedRolePlayer>> getAllAllocatedRolePlayers(
+      String chapterMeetingId) async* {
+    Stream<List<AllocatedRolePlayer>> allocatedRolePlayer =
+        const Stream.empty();
+    try {
+      var collectionReference =
+          await getAllocatedRolePlayerCollectionRef(chapterMeetingId);
+      allocatedRolePlayer = collectionReference.snapshots().map(
+            (QuerySnapshot querySnapshot) => querySnapshot.docs.map(
+              (e) {
+                return AllocatedRolePlayer.fromJson(
+                    e.data() as Map<String, dynamic>);
+              },
+            ).toList(),
+          );
+
+      yield* allocatedRolePlayer;
+    } catch (e) {
+      log(e.toString());
+      yield* allocatedRolePlayer;
     }
   }
 }

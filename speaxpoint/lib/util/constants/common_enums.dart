@@ -34,7 +34,7 @@ enum LisrOfRolesPlayers {
   Toastmaster,
 }
 
-enum AllocatedRolePlayerUserAppType {
+enum AllocatedRolePlayerType {
   ClubMember,
   Guest,
   OtherClubMember,

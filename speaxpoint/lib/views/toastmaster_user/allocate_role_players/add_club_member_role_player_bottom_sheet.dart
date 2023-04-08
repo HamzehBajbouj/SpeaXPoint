@@ -8,6 +8,7 @@ import 'package:speaxpoint/util/constants/common_enums.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/allocate_role_players_view_model.dart';
+import 'package:speaxpoint/views/toastmaster_user/allocate_role_players/update_existing_role_player_dialog.dart';
 
 class AddClubMemberRolePlayerBottomSheet extends StatefulWidget {
   final String chapterMeetingId;
@@ -26,20 +27,17 @@ class AddClubMemberRolePlayerBottomSheet extends StatefulWidget {
 class _AddClubMemberRolePlayerBottomSheetState
     extends State<AddClubMemberRolePlayerBottomSheet> {
   late AllocateRolePlayersViewModel _allocateRolePlayersVM;
-
   List<String> listOfRole = LisrOfRolesPlayers.values
       .map((e) => e.name.replaceAll('_', ' '))
       .toList();
 
   bool _showRoleNumber = true;
   bool _clubHasMembers = false;
-
   //these are the initiail data which will be updated whenever the scrollers are change
   String _roleName = LisrOfRolesPlayers.Speaker.name;
   int _rolePlace = 1;
   late Toastmaster _selectedClubMember;
-  late int _lengthOfListMembers;
-
+  int _lengthOfListMembers = 0;
   late Future<List<Toastmaster>> _listMmebers;
 
   @override
@@ -52,18 +50,22 @@ class _AddClubMemberRolePlayerBottomSheetState
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
+    _initMemberListAndStates();
+  }
+
+  void _initMemberListAndStates() async {
     _listMmebers = _allocateRolePlayersVM.getClubMemberList(widget.clubId);
     await _listMmebers.then(
       (list) {
         _clubHasMembers = list.isNotEmpty;
         _selectedClubMember = list[0];
         _lengthOfListMembers = list.length;
+        //we need to call it to update redrae the states/widgets after we got the results
+        //to hide the widgets accroding to _clubHasMembers variable
+        setState(
+          () {},
+        );
       },
-    );
-    //we need to call it to update redrae the states/widgets after we got the results
-    //to hide the widgets accroding to _clubHasMembers variable
-    setState(
-      () {},
     );
   }
 
@@ -95,25 +97,51 @@ class _AddClubMemberRolePlayerBottomSheetState
                     await _allocateRolePlayersVM
                         .validateRoleAvailability(
                             widget.chapterMeetingId, _roleName, _rolePlace)
-                        .then((value) {
-                      value.whenSuccess(
-                        (success) async {
-                          if (success) {
-                            print("fsdfsdfsd " + success.toString());
-
-                            await _allocateRolePlayersVM
-                                .allocateNewPlayerFromTheClub(
-                                    widget.chapterMeetingId,
-                                    _selectedClubMember,
-                                    _roleName,
-                                    _rolePlace);
-                          } else {
-                            //display dialog
-                            print("fsdfsdfsd " + success.toString());
-                          }
-                        },
-                      );
-                    });
+                        .then(
+                      (value) {
+                        value.whenSuccess(
+                          (success) async {
+                            if (success) {
+                              //when succes is true it mean that there is no existing role player
+                              //with the same role and place order
+                              await _allocateRolePlayersVM
+                                  .allocateNewPlayerFromTheClub(
+                                widget.chapterMeetingId,
+                                _selectedClubMember,
+                                _roleName,
+                                _rolePlace,
+                              )
+                                  .then(
+                                (value) {
+                                  value.whenSuccess(
+                                    (_) {
+                                      Navigator.pop(context);
+                                    },
+                                  );
+                                },
+                              );
+                            } else {
+                              //display dialog when the role is occupid by another toastmaster
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return UpdateExitingRolePlayerDialog(
+                                    chapterMeetingId: widget.chapterMeetingId,
+                                    roleName: _roleName,
+                                    rolePlace: _rolePlace,
+                                    selectedToastmaster: _selectedClubMember,
+                                  );
+                                },
+                              ).then(
+                                (_) {
+                                  Navigator.pop(context);
+                                },
+                              );
+                            }
+                          },
+                        );
+                      },
+                    );
                   },
                   content: const Text(
                     "Confirm",
@@ -261,6 +289,10 @@ class _AddClubMemberRolePlayerBottomSheetState
                                 setState(() {
                                   _showRoleNumber = false;
                                   _roleName = listOfRole[value];
+                                  //this part is importantlly need, because when the rolePlace
+                                  //is hidden it will keep the previous value which leads to allow
+                                  //having Ah counter 1 , Ah counter 2 , so it's important to update it
+                                  _rolePlace = 1;
                                 });
                               }
                             },

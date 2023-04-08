@@ -10,6 +10,8 @@ import 'package:speaxpoint/util/ui_widgets/text_fields.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_coming_sessions_view_model.dart';
 
 class CreateNewSessionDialog extends StatefulWidget {
+  const CreateNewSessionDialog({super.key});
+
   @override
   _CreateNewSessionDialog createState() => _CreateNewSessionDialog();
 }
@@ -73,6 +75,7 @@ class _CreateNewSessionDialog extends State<CreateNewSessionDialog> {
             ),
           ],
         ),
+        actionsAlignment: MainAxisAlignment.spaceBetween,
         actions: [
           textButton(
             callBack: () {

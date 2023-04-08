@@ -1,50 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:provider/provider.dart';
+import 'package:speaxpoint/models/meeting_agenda.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
+import 'package:speaxpoint/view_models/toastmaster_vm/prepare_meeting_agenda_view_model.dart';
 import 'package:speaxpoint/views/toastmaster_user/prepare_meeting_agenda/edit_ticket_bottom_sheet.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
 class TimeLineTileItem extends StatefulWidget {
-  const TimeLineTileItem(
-      {super.key,
-      required this.time,
-      required this.title,
-      required this.playerRoleName,
-      required this.playerRole,
-      required this.isFirst,
-      required this.isLast, required this.chapterMeetingId, required this.agendaCardNumber});
-  final String time;
-  final String title;
-  final String playerRoleName;
-  final String playerRole;
+  const TimeLineTileItem({
+    super.key,
+    required this.isFirst,
+    required this.isLast,
+    required this.chapterMeetingId,
+    required this.meetingAgnedaCard,
+  });
+
   final bool isFirst;
   final bool isLast;
   final String chapterMeetingId;
-  final int agendaCardNumber;
-
+  final MeetingAgneda meetingAgnedaCard;
 
   @override
   State<TimeLineTileItem> createState() => _TimeLineTileItemState();
 }
 
 class _TimeLineTileItemState extends State<TimeLineTileItem> {
-  String _updatedTime = "";
-  bool valuePassedFirstTime = true;
+  late PrepareMeetingAgendaViewModel _prepareMeetingAgendaViewModel;
+
   @override
   void initState() {
-    super.initState();
-
-    // _updatedTime = widget.time;
+    // TODO: implement initState
+    _prepareMeetingAgendaViewModel =
+        Provider.of<PrepareMeetingAgendaViewModel>(context, listen: false);
   }
+
+  // String _updatedTime = "";
+  // bool valuePassedFirstTime = true;
 
   @override
   Widget build(BuildContext context) {
-    // _updatedTime = widget.time;
     return TimelineTile(
       isFirst: widget.isFirst,
       isLast: widget.isLast,
@@ -96,11 +94,13 @@ class _TimeLineTileItemState extends State<TimeLineTileItem> {
                   DatePicker.showTime12hPicker(
                     context,
                     showTitleActions: true,
-                    onConfirm: (data) {
-                      setState(() {
-                        valuePassedFirstTime = false;
-                        _updatedTime = DateFormat("h:mm a").format(data);
-                      });
+                    onConfirm: (data) async {
+                      await _prepareMeetingAgendaViewModel.updateTimeSequence(
+                        agendaCardNumber:
+                            widget.meetingAgnedaCard.agendaCardOrder ?? -1,
+                        chapterMeetingId: widget.chapterMeetingId,
+                        timeSequence: DateFormat("h:mm a").format(data),
+                      );
                     },
                   );
                 },
@@ -111,7 +111,7 @@ class _TimeLineTileItemState extends State<TimeLineTileItem> {
                     child: Text(
                       maxLines: 2,
                       textAlign: TextAlign.center,
-                      valuePassedFirstTime ? widget.time : _updatedTime,
+                      widget.meetingAgnedaCard.timeSequence ?? "TIME",
                       style: const TextStyle(
                         fontFamily: CommonUIProperties.fontType,
                         fontSize: 14,
@@ -131,21 +131,29 @@ class _TimeLineTileItemState extends State<TimeLineTileItem> {
                 child: InkWell(
                   onTap: () {
                     showMaterialModalBottomSheet(
-                        backgroundColor:
-                            const Color(AppMainColors.backgroundAndContent),
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(
-                                CommonUIProperties.modalBottomSheetsEdges),
-                            topRight: Radius.circular(
-                                CommonUIProperties.modalBottomSheetsEdges),
-                          ),
+                      backgroundColor:
+                          const Color(AppMainColors.backgroundAndContent),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(
+                              CommonUIProperties.modalBottomSheetsEdges),
+                          topRight: Radius.circular(
+                              CommonUIProperties.modalBottomSheetsEdges),
                         ),
-                        context: context,
-                        builder: (context) =>  EditTicketBottomSheet(
-                          agendaCardNumber: widget.agendaCardNumber,
-                          chapterMeetingId:widget.chapterMeetingId,
-                        ));
+                      ),
+                      context: context,
+                      builder: (context) => EditTicketBottomSheet(
+                        agendaCardNumber:
+                            widget.meetingAgnedaCard.agendaCardOrder ?? -1,
+                        chapterMeetingId: widget.chapterMeetingId,
+                        agendaCardRoleName:
+                            widget.meetingAgnedaCard.roleName ?? "",
+                        agendaCardRoleOrderPlace:
+                            widget.meetingAgnedaCard.roleOrderPlace ?? -1,
+                        agendaCardTitle:
+                            widget.meetingAgnedaCard.agendaTitle ?? "",
+                      ),
+                    );
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(10),
@@ -155,7 +163,10 @@ class _TimeLineTileItemState extends State<TimeLineTileItem> {
                         FittedBox(
                           fit: BoxFit.scaleDown,
                           child: Text(
-                            widget.title,
+                            widget.meetingAgnedaCard.agendaTitle!.isEmpty
+                                ? " "
+                                : widget.meetingAgnedaCard.agendaTitle ??
+                                    "Title",
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                               fontFamily: CommonUIProperties.fontType,
@@ -171,7 +182,8 @@ class _TimeLineTileItemState extends State<TimeLineTileItem> {
                         FittedBox(
                           fit: BoxFit.scaleDown,
                           child: Text(
-                            "By ${widget.playerRole}, ${widget.playerRoleName}",
+                            "${widget.meetingAgnedaCard.roleName ?? 'Role'} ${widget.meetingAgnedaCard.roleOrderPlace ?? '1'}"
+                            " By , ${widget.meetingAgnedaCard.allocatedRolePlayerDetails?.rolePlayerName ?? 'Name'}",
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                               fontFamily: CommonUIProperties.fontType,

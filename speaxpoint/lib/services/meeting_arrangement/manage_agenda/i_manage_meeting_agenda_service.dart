@@ -8,13 +8,18 @@ import 'package:speaxpoint/services/meeting_arrangement/common_services/i_meetin
 abstract class IManageMeetingAgendaService extends IMeetingArrangementCommonServices{
   Future<Result<Unit, Failure>> createEmptyAgendaCard(
       String chapterMeetingId, int agendaCardOrder);
+
   Future<Result<Unit, Failure>> generateListOfEmptyAgendaCards(
       String chapterMeetingId, int numberOfCards);
 
   Future<Result<Unit, Failure>> deleteAgendaCard(
       String chapterMeetingId, int agendaCardNumber);
+
         Future<Result<Unit, Failure>> updateAgendaTime(
-      String chapterMeetingId, int agendaCardNumber);
+      String chapterMeetingId, String timeSequence, int agendaCardNumber);
+
+  Future<Result<Unit, Failure>> updateAgendaCardDetails(
+      String chapterMeetingId, MeetingAgneda agnedaCard);
 
   Stream<List<MeetingAgneda>> getAllMeetingAgenda(String chapterMeetingId);
 }

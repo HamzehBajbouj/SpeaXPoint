@@ -101,7 +101,7 @@ class AllocateRolePlayerFirebaseService
         (value) async {
           QuerySnapshot tempQS = await value
               .where("roleName", isEqualTo: roleName)
-              .where("rolePlayerOrderPlace", isEqualTo: memberRolePlace)
+              .where("roleOrderPlace", isEqualTo: memberRolePlace)
               .get();
 
           if (tempQS.docs.isEmpty) {
@@ -138,18 +138,20 @@ class AllocateRolePlayerFirebaseService
         (value) async {
           QuerySnapshot tempQS = await value
               .where("roleName", isEqualTo: allocatedRolePlayer.roleName)
-              .where("rolePlayerOrderPlace",
-                  isEqualTo: allocatedRolePlayer.rolePlayerOrderPlace)
+              .where("roleOrderPlace",
+                  isEqualTo: allocatedRolePlayer.roleOrderPlace)
               .get();
           if (tempQS.docs.isNotEmpty) {
-            await tempQS.docs.first.reference.update({
-              'toastmasterUsername': allocatedRolePlayer.toastmasterUsername,
-              'invitationCode': allocatedRolePlayer.invitationCode,
-              'rolePlayerName': allocatedRolePlayer.rolePlayerName,
-              'toastmasterId': allocatedRolePlayer.toastmasterId,
-              'allocatedRolePlayerType':
-                  allocatedRolePlayer.allocatedRolePlayerType
-            });
+            await tempQS.docs.first.reference.update(
+              {
+                'toastmasterUsername': allocatedRolePlayer.toastmasterUsername,
+                'invitationCode': allocatedRolePlayer.invitationCode,
+                'rolePlayerName': allocatedRolePlayer.rolePlayerName,
+                'toastmasterId': allocatedRolePlayer.toastmasterId,
+                'allocatedRolePlayerType':
+                    allocatedRolePlayer.allocatedRolePlayerType
+              },
+            );
           } else {
             return const Error(
               Failure(
@@ -199,21 +201,4 @@ class AllocateRolePlayerFirebaseService
     }
   }
 
-  // Future<CollectionReference> _getAllocatedRolePlayerCollectionRef(
-  //     String chapterMeetingId) async {
-  //   CollectionReference allocatedRolePlayerCollection =
-  //       FirebaseFirestore.instance.collection("AllocatedRolePlayers");
-  //   try {
-  //     QuerySnapshot ChapterMeetingQS = await _chapterMeetingsCollection
-  //         .where("chapterMeetingId", isEqualTo: chapterMeetingId)
-  //         .get();
-  //     if (ChapterMeetingQS.docs.isNotEmpty) {
-  //       allocatedRolePlayerCollection = ChapterMeetingQS.docs.first.reference
-  //           .collection("AllocatedRolePlayers");
-  //     }
-  //     return allocatedRolePlayerCollection;
-  //   } catch (e) {
-  //     return allocatedRolePlayerCollection;
-  //   }
-  // }
 }

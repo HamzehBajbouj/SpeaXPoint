@@ -110,12 +110,13 @@ class _ClubMembersTabViewState extends State<ClubMembersTabView> {
                       ),
                       itemBuilder: (context, index) {
                         return allocatedRoleCard(
-                            cardId: items[index].allocatedRolePlayerUniqueId!,
-                            playerName: items[index].rolePlayerName!,
-                            role: items[index].roleName!,
-                            rolePlace: items[index].roleName! == "Speaker" ||
-                                    items[index].roleName! == "Speach Evaluator"
-                                ? items[index].rolePlayerOrderPlace!
+                            cardId:
+                                items[index].allocatedRolePlayerUniqueId ?? -1,
+                            playerName: items[index].rolePlayerName ?? " ",
+                            role: items[index].roleName ?? " ",
+                            rolePlace: items[index].roleName == "Speaker" ||
+                                    items[index].roleName == "Speach Evaluator"
+                                ? items[index].roleOrderPlace
                                 : null);
                       },
                     );

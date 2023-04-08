@@ -1,19 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:speaxpoint/models/meeting_agenda.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
-import 'package:speaxpoint/util/ui_widgets/buttons.dart';
-import 'package:speaxpoint/util/ui_widgets/text_fields.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/prepare_meeting_agenda_view_model.dart';
 import 'package:speaxpoint/views/toastmaster_user/prepare_meeting_agenda/no_agenda_yet_view.dart';
 import 'package:speaxpoint/views/toastmaster_user/prepare_meeting_agenda/time_line_tile_item.dart';
-import 'package:timeline_tile/timeline_tile.dart';
 
 class PrepareMeetingAgendaScreen extends StatefulWidget {
   const PrepareMeetingAgendaScreen({super.key, required this.chapterMeetingId});
@@ -69,9 +61,11 @@ class _PrepareMeetingAgendaScreenState
                 //getList of the meeting agendaDate
                 final List<MeetingAgneda> items = snapshot.data!;
                 //obtain the set the data of fetched from the stream
-                _prepareMeetingAgendaViewModel
-                    .setMeetingAgendaList(snapshot.data!);
-                if (_prepareMeetingAgendaViewModel.meetingAgenda.isEmpty) {
+                //we need to set so we later can get a reference to the stram list element
+                //and get the latest unique agenda card id
+                _prepareMeetingAgendaViewModel.meetingAgendaList =
+                    snapshot.data!;
+                if (_prepareMeetingAgendaViewModel.meetingAgendaList.isEmpty) {
                   return NoAgendaYetView(
                       chapterMeetingId: widget.chapterMeetingId);
                 } else {
@@ -140,24 +134,12 @@ class _PrepareMeetingAgendaScreenState
                             child: ListView.builder(
                               shrinkWrap: true,
                               itemCount: items.length,
-                              itemBuilder: (_, int index) {
+                              itemBuilder: (context, int index) {
                                 return TimeLineTileItem(
                                   chapterMeetingId: widget.chapterMeetingId,
-                                  agendaCardNumber: viewModel
-                                      .meetingAgenda[index].agendaCardOrder!,
-                                  time: viewModel
-                                      .meetingAgenda[index].agendaCardOrder
-                                      .toString(),
-                                  title: viewModel
-                                          .meetingAgenda[index].agendaTitle ??
-                                      " ",
-                                  playerRole:
-                                      viewModel.meetingAgenda[index].roleName ??
-                                          " ",
-                                  playerRoleName: " ",
+                                  meetingAgnedaCard: items[index],
                                   isFirst: index == 0 ? true : false,
-                                  isLast: index ==
-                                          (viewModel.meetingAgenda.length - 1)
+                                  isLast: index == (items.length - 1)
                                       ? true
                                       : false,
                                 );

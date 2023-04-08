@@ -59,7 +59,7 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
       chapterMeetingId,
       AllocatedRolePlayer(
         roleName: roleName,
-        rolePlayerOrderPlace: memberRolePlace,
+        roleOrderPlace: memberRolePlace,
         rolePlayerName: toastmaster.toastmasterName,
         toastmasterId: toastmaster.toastmasterId,
         allocatedRolePlayerType: AllocatedRolePlayerType.ClubMember.name,
@@ -80,7 +80,7 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
       chapterMeetingId,
       AllocatedRolePlayer(
         roleName: roleName,
-        rolePlayerOrderPlace: memberRolePlace,
+        roleOrderPlace: memberRolePlace,
         rolePlayerName: toastmaster.toastmasterName,
         toastmasterId: toastmaster.toastmasterId,
         allocatedRolePlayerType: AllocatedRolePlayerType.ClubMember.name,

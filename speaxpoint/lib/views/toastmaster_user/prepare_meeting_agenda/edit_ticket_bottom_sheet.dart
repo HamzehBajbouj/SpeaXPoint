@@ -1,7 +1,6 @@
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
@@ -12,12 +11,19 @@ import 'package:speaxpoint/view_models/toastmaster_vm/prepare_meeting_agenda_vie
 import 'package:speaxpoint/views/toastmaster_user/prepare_meeting_agenda/select_role_player_bottom_sheet.dart';
 
 class EditTicketBottomSheet extends StatefulWidget {
-  const EditTicketBottomSheet(
-      {super.key,
-      required this.chapterMeetingId,
-      required this.agendaCardNumber});
+  const EditTicketBottomSheet({
+    super.key,
+    required this.chapterMeetingId,
+    required this.agendaCardNumber,
+    required this.agendaCardTitle,
+    required this.agendaCardRoleName,
+    required this.agendaCardRoleOrderPlace,
+  });
   final String chapterMeetingId;
+  final String agendaCardTitle;
+  final String agendaCardRoleName;
   final int agendaCardNumber;
+  final int agendaCardRoleOrderPlace;
 
   @override
   State<EditTicketBottomSheet> createState() => _EditTicketBottomSheetState();
@@ -26,15 +32,21 @@ class EditTicketBottomSheet extends StatefulWidget {
 class _EditTicketBottomSheetState extends State<EditTicketBottomSheet> {
   late PrepareMeetingAgendaViewModel _prepareMeetingAgendaViewModel;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _prepareMeetingAgendaViewModel =
-        Provider.of<PrepareMeetingAgendaViewModel>(context);
-  }
-
   final TextEditingController _titleEditingController = TextEditingController();
-  final TextEditingController _rolePlayerEditingController = TextEditingController();
+  final TextEditingController _rolePlayerEditingController =
+      TextEditingController();
+  String _roleName = " ";
+  int _roleOrderPlace = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    _prepareMeetingAgendaViewModel =
+        Provider.of<PrepareMeetingAgendaViewModel>(context, listen: false);
+    _titleEditingController.text = widget.agendaCardTitle;
+    _rolePlayerEditingController.text =
+        "${widget.agendaCardRoleName} ${widget.agendaCardRoleOrderPlace}";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +72,22 @@ class _EditTicketBottomSheetState extends State<EditTicketBottomSheet> {
                   ),
                 ),
                 textButton(
-                  callBack: () {},
+                  callBack: () async {
+                    await _prepareMeetingAgendaViewModel
+                        .updateAgendaCardDetails(
+                            chapterMeetingId: widget.chapterMeetingId,
+                            agendaCardNumber: widget.agendaCardNumber,
+                            agendaCardTitle: _titleEditingController.text,
+                            roleName: _roleName,
+                            roleOrderPlace: _roleOrderPlace)
+                        .then(
+                      (_) {
+                        Navigator.pop(context);
+                      },
+                    );
+                  },
                   content: const Text(
-                    "Confirm",
+                    "Update Now",
                     style: TextStyle(
                       fontFamily: CommonUIProperties.fontType,
                       fontSize: 15,
@@ -85,7 +110,7 @@ class _EditTicketBottomSheetState extends State<EditTicketBottomSheet> {
               readOnly: true,
               controller: _rolePlayerEditingController,
               hintText: "Select Role Player",
-              onChangeCallBack: (data) {},
+              onChangeCallBack: (_) {},
               onTapCallBack: () {
                 showMaterialModalBottomSheet(
                   enableDrag: false,
@@ -101,6 +126,15 @@ class _EditTicketBottomSheetState extends State<EditTicketBottomSheet> {
                   ),
                   context: context,
                   builder: (context) => const SelectRolePlayerBottomSheet(),
+                ).then(
+                  (value) {
+                    if (value != null) {
+                      _rolePlayerEditingController.text =
+                          "${value['roleName']} ${value['roleOrderPlace']}";
+                      _roleName = value['roleName'];
+                      _roleOrderPlace = value['roleOrderPlace'];
+                    }
+                  },
                 );
               },
               icon: const Icon(

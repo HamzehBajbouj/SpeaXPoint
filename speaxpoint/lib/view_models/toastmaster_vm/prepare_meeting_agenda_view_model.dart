@@ -18,8 +18,19 @@ class PrepareMeetingAgendaViewModel extends BaseViewModel {
   Result<Unit, Failure>? get deteteAgendaCardCardStatus =>
       _deteteAgendaCardCardStatus;
 
+  Result<Unit, Failure>? _updateTimeSequenceStatus;
+  Result<Unit, Failure>? get updateTimeSequenceStatus =>
+      _updateTimeSequenceStatus;
+
+  Result<Unit, Failure>? _updateAgendaCardStatus;
+  Result<Unit, Failure>? get updateAgendaCardStatus => _updateAgendaCardStatus;
+
+  //this list is always updated according to the stream,
   List<MeetingAgneda> _meetingAgendaList = [];
-  List<MeetingAgneda> get meetingAgenda => _meetingAgendaList;
+  List<MeetingAgneda> get meetingAgendaList => _meetingAgendaList;
+  set meetingAgendaList(List<MeetingAgneda> agendaList) {
+    _meetingAgendaList = agendaList;
+  }
 
   PrepareMeetingAgendaViewModel(this._manageMeetingAgendaService);
 
@@ -49,13 +60,6 @@ class PrepareMeetingAgendaViewModel extends BaseViewModel {
     }
   }
 
-  //this list is always updated according to the stream,
-  void setMeetingAgendaList(List<MeetingAgneda> tempList) {
-    super.setLoading(true);
-    _meetingAgendaList = tempList;
-    super.setLoading(false);
-  }
-
   Future<void> addNewAgendaEmptyCard(String chapterMeetingId) async {
     setLoading(true);
     _addingNewCardStatus = await _manageMeetingAgendaService
@@ -68,6 +72,38 @@ class PrepareMeetingAgendaViewModel extends BaseViewModel {
     setLoading(true);
     _deteteAgendaCardCardStatus = await _manageMeetingAgendaService
         .deleteAgendaCard(chapterMeetingId, agendaCardNumber);
+    setLoading(false);
+  }
+
+  Future<void> updateTimeSequence({
+    required String chapterMeetingId,
+    required String timeSequence,
+    required int agendaCardNumber,
+  }) async {
+    setLoading(true);
+    _updateTimeSequenceStatus = await _manageMeetingAgendaService
+        .updateAgendaTime(chapterMeetingId, timeSequence, agendaCardNumber);
+    setLoading(false);
+  }
+
+  Future<void> updateAgendaCardDetails({
+    required String chapterMeetingId,
+    required String roleName,
+    required String agendaCardTitle,
+    required int agendaCardNumber,
+    required int roleOrderPlace,
+  }) async {
+    setLoading(true);
+    _updateAgendaCardStatus =
+        await _manageMeetingAgendaService.updateAgendaCardDetails(
+      chapterMeetingId,
+      MeetingAgneda(
+        agendaCardOrder: agendaCardNumber,
+        agendaTitle: agendaCardTitle,
+        roleName: roleName,
+        roleOrderPlace: roleOrderPlace,
+      ),
+    );
     setLoading(false);
   }
 }

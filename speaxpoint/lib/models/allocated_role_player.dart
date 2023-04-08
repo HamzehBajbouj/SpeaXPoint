@@ -5,7 +5,7 @@ class AllocatedRolePlayer {
   String? rolePlayerName;
   String? roleName;
   //the roleOrderPlace is meant to differenitate between if he is first speaks , or second speaker..etc
-  int? rolePlayerOrderPlace;
+  int? roleOrderPlace;
   String? invitationCode;
   String? allocatedRolePlayerType;
 
@@ -16,7 +16,7 @@ class AllocatedRolePlayer {
       {this.allocatedRolePlayerUniqueId,
       this.invitationCode,
       this.roleName,
-      this.rolePlayerOrderPlace,
+      this.roleOrderPlace,
       this.rolePlayerName,
       this.toastmasterId,
       this.toastmasterUsername,
@@ -29,7 +29,7 @@ class AllocatedRolePlayer {
           toastmasterUsername: allocatedRolePlayerJson['toastmasterUsername'],
           invitationCode: allocatedRolePlayerJson['invitationCode'],
           roleName: allocatedRolePlayerJson['roleName'],
-          rolePlayerOrderPlace: allocatedRolePlayerJson['rolePlayerOrderPlace'],
+          roleOrderPlace: allocatedRolePlayerJson['roleOrderPlace'],
           rolePlayerName: allocatedRolePlayerJson['rolePlayerName'],
           toastmasterId: allocatedRolePlayerJson['toastmasterId'],
           allocatedRolePlayerType:
@@ -41,7 +41,7 @@ class AllocatedRolePlayer {
         'toastmasterUsername': toastmasterUsername,
         'invitationCode': invitationCode,
         'roleName': roleName,
-        'rolePlayerOrderPlace': rolePlayerOrderPlace,
+        'roleOrderPlace': roleOrderPlace,
         'rolePlayerName': rolePlayerName,
         'toastmasterId': toastmasterId,
         'allocatedRolePlayerType': allocatedRolePlayerType

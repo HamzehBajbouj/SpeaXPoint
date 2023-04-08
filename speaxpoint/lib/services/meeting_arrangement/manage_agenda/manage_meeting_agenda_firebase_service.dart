@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:speaxpoint/models/allocated_role_player.dart';
 import 'package:speaxpoint/services/Failure.dart';
 import 'package:speaxpoint/models/meeting_agenda.dart';
 import 'package:multiple_result/src/unit.dart';
 import 'package:multiple_result/src/result.dart';
-import 'package:speaxpoint/services/meeting_arrangement/allocate_role_players/allocate_role_player_firebase_service.dart';
 import 'package:speaxpoint/services/meeting_arrangement/common_services/meeting_arrangement_common_firebase_services.dart';
 import 'package:speaxpoint/services/meeting_arrangement/manage_agenda/i_manage_meeting_agenda_service.dart';
 
@@ -129,9 +128,13 @@ class ManageMeetingAgendaFirebaseSerivce
     Stream<List<MeetingAgneda>> meetingAgendaList = const Stream.empty();
 
     try {
+      Stream<List<AllocatedRolePlayer>> allocatedRolePlayer =
+          super.getAllAllocatedRolePlayers(chapterMeetingId);
+
       QuerySnapshot _chapterMeeting = await _chapterMeetingsCollection
           .where("chapterMeetingId", isEqualTo: chapterMeetingId)
           .get();
+
       CollectionReference meetingAgenda =
           _chapterMeeting.docs.first.reference.collection("MeetingAgenda");
 
@@ -142,8 +145,29 @@ class ManageMeetingAgendaFirebaseSerivce
               },
             ).toList(),
           );
+      Stream<List<MeetingAgneda>> agendaWithAllocatedRolePlayers =
+          Rx.combineLatest2<List<MeetingAgneda>, List<AllocatedRolePlayer>,
+              List<MeetingAgneda>>(
+        meetingAgendaList,
+        allocatedRolePlayer,
+        (agendas, allocatedRolePlayers) {
+          for (var agenda in agendas) {
+            var rolePlayers = allocatedRolePlayers
+                .where(
+                  (rolePlayer) =>
+                      rolePlayer.roleName == agenda.roleName &&
+                      rolePlayer.roleOrderPlace == agenda.roleOrderPlace,
+                )
+                .toList();
 
-      yield* meetingAgendaList;
+            agenda.allocatedRolePlayerDetails =
+                rolePlayers.isNotEmpty ? rolePlayers[0] : null;
+          }
+          return agendas;
+        },
+      );
+
+      yield* agendaWithAllocatedRolePlayers;
     } on FirebaseException catch (e) {
       log("${e.code} ${e.message}");
       yield* meetingAgendaList;
@@ -200,9 +224,96 @@ class ManageMeetingAgendaFirebaseSerivce
   }
 
   @override
-  Future<Result<Unit, Failure>> updateAgendaTime(
-      String chapterMeetingId, int agendaCardNumber) {
-    // TODO: implement updateAgendaTime
-    throw UnimplementedError();
+  Future<Result<Unit, Failure>> updateAgendaTime(String chapterMeetingId,
+      String timeSequence, int agendaCardNumber) async {
+    try {
+      super.getMeetingAgendaCollectionRef(chapterMeetingId).then(
+        (meetingAgendaCR) async {
+          QuerySnapshot agendaQuerySnapshot = await meetingAgendaCR
+              .where("agendaCardOrder", isEqualTo: agendaCardNumber)
+              .get();
+          if (agendaQuerySnapshot.docs.isNotEmpty) {
+            await agendaQuerySnapshot.docs.first.reference.update(
+              {
+                'timeSequence': timeSequence,
+              },
+            );
+          } else {
+            return Error(
+              Failure(
+                  code: "No-Agenda-Card",
+                  location:
+                      "ManageMeetingAgendaFirebaseSerivce.updateAgendaTime()",
+                  message:
+                      "No agenda record found for agenda card $agendaCardNumber"),
+            );
+          }
+        },
+      );
+
+      return Success.unit();
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location: "ManageMeetingAgendaFirebaseSerivce.updateAgendaTime()",
+            message: e.message ?? "Database Error While updating agenda time"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location: "ManageMeetingAgendaFirebaseSerivce.updateAgendaTime()",
+            message: e.toString()),
+      );
+    }
+  }
+
+  @override
+  Future<Result<Unit, Failure>> updateAgendaCardDetails(
+      String chapterMeetingId, MeetingAgneda agnedaCard) async {
+    try {
+      super.getMeetingAgendaCollectionRef(chapterMeetingId).then(
+        (meetingAgendaCR) async {
+          QuerySnapshot agendaQuerySnapshot = await meetingAgendaCR
+              .where("agendaCardOrder", isEqualTo: agnedaCard.agendaCardOrder)
+              .get();
+          if (agendaQuerySnapshot.docs.isNotEmpty) {
+            await agendaQuerySnapshot.docs.first.reference.update(
+              {
+                'roleOrderPlace': agnedaCard.roleOrderPlace,
+                'roleName': agnedaCard.roleName,
+                'agendaTitle': agnedaCard.agendaTitle
+              },
+            );
+          } else {
+            return Error(
+              Failure(
+                  code: "No-Agenda-Card",
+                  location:
+                      "ManageMeetingAgendaFirebaseSerivce.updateAgendaCardDetails()",
+                  message:
+                      "No agenda record found for agenda card ${agnedaCard.agendaCardOrder}"),
+            );
+          }
+        },
+      );
+
+      return Success.unit();
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location: "ManageMeetingAgendaFirebaseSerivce.updateAgendaCardDetails()",
+            message: e.message ?? "Database Error While updating agenda details"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location: "ManageMeetingAgendaFirebaseSerivce.updateAgendaCardDetails()",
+            message: e.toString()),
+      );
+    }
   }
 }

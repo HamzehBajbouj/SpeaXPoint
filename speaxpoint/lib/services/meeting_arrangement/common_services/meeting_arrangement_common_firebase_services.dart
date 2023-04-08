@@ -68,6 +68,9 @@ class MeetingArrangementCommonFirebaseServices
       if (ChapterMeetingQS.docs.isNotEmpty) {
         allocatedRolePlayerCollection = ChapterMeetingQS.docs.first.reference
             .collection("AllocatedRolePlayers");
+      } else {
+        throw Exception(
+            "There are no matching record for chapter meeting with ID ${chapterMeetingId}");
       }
       return allocatedRolePlayerCollection;
     } catch (e) {
@@ -96,6 +99,28 @@ class MeetingArrangementCommonFirebaseServices
     } catch (e) {
       log(e.toString());
       yield* allocatedRolePlayer;
+    }
+  }
+
+  @override
+  Future<CollectionReference<Object?>> getMeetingAgendaCollectionRef(
+      String chapterMeetingId) async {
+    CollectionReference allocatedRolePlayerCollection =
+        FirebaseFirestore.instance.collection(" ");
+    try {
+      QuerySnapshot ChapterMeetingQS = await _chapterMeetingsCollection
+          .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+          .get();
+      if (ChapterMeetingQS.docs.isNotEmpty) {
+        allocatedRolePlayerCollection =
+            ChapterMeetingQS.docs.first.reference.collection("MeetingAgenda");
+      } else {
+        throw Exception(
+            "there are no matching record for chapter meeting with ID ${chapterMeetingId}");
+      }
+      return allocatedRolePlayerCollection;
+    } catch (e) {
+      return allocatedRolePlayerCollection;
     }
   }
 }

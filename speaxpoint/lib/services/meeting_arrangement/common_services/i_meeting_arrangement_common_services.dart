@@ -12,4 +12,6 @@ abstract class IMeetingArrangementCommonServices {
       String chapterMeetingId);
   Future<CollectionReference> getAllocatedRolePlayerCollectionRef(
       String chapterMeetingId);
+   Future<CollectionReference> getMeetingAgendaCollectionRef(
+      String chapterMeetingId);
 }

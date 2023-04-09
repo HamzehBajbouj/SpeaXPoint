@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
+import 'package:speaxpoint/util/constants/common_enums.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart';
 import 'package:speaxpoint/util/ui_widgets/text_fields.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/prepare_meeting_agenda_view_model.dart';
-import 'package:speaxpoint/views/toastmaster_user/prepare_meeting_agenda/select_role_player_bottom_sheet.dart';
+import 'package:speaxpoint/views/toastmaster_user/bottom_sheets_widgets/select_role_bottom_sheet.dart';
 
-class EditTicketBottomSheet extends StatefulWidget {
-  const EditTicketBottomSheet({
+class EditAgendaCardBottomSheet extends StatefulWidget {
+  const EditAgendaCardBottomSheet({
     super.key,
     required this.chapterMeetingId,
     required this.agendaCardNumber,
@@ -26,10 +27,11 @@ class EditTicketBottomSheet extends StatefulWidget {
   final int agendaCardRoleOrderPlace;
 
   @override
-  State<EditTicketBottomSheet> createState() => _EditTicketBottomSheetState();
+  State<EditAgendaCardBottomSheet> createState() =>
+      _EditTicketBottomSheetState();
 }
 
-class _EditTicketBottomSheetState extends State<EditTicketBottomSheet> {
+class _EditTicketBottomSheetState extends State<EditAgendaCardBottomSheet> {
   late PrepareMeetingAgendaViewModel _prepareMeetingAgendaViewModel;
 
   final TextEditingController _titleEditingController = TextEditingController();
@@ -43,9 +45,16 @@ class _EditTicketBottomSheetState extends State<EditTicketBottomSheet> {
     super.initState();
     _prepareMeetingAgendaViewModel =
         Provider.of<PrepareMeetingAgendaViewModel>(context, listen: false);
-    _titleEditingController.text = widget.agendaCardTitle;
-    _rolePlayerEditingController.text =
-        "${widget.agendaCardRoleName} ${widget.agendaCardRoleOrderPlace}";
+    _titleEditingController.text =
+        widget.agendaCardTitle.isEmpty ? "" : widget.agendaCardTitle;
+
+    if (widget.agendaCardRoleOrderPlace > 0 &&
+        widget.agendaCardRoleName.isNotEmpty) {
+      _rolePlayerEditingController.text =
+          "${widget.agendaCardRoleName} ${widget.agendaCardRoleOrderPlace}";
+    } else {
+      _rolePlayerEditingController.text = "";
+    }
   }
 
   @override
@@ -73,6 +82,9 @@ class _EditTicketBottomSheetState extends State<EditTicketBottomSheet> {
                 ),
                 textButton(
                   callBack: () async {
+                    if (_titleEditingController.text.isEmpty) {
+                      _titleEditingController.text = " ";
+                    }
                     await _prepareMeetingAgendaViewModel
                         .updateAgendaCardDetails(
                             chapterMeetingId: widget.chapterMeetingId,
@@ -109,7 +121,7 @@ class _EditTicketBottomSheetState extends State<EditTicketBottomSheet> {
             outlineTextFieldWithTrailingIcon(
               readOnly: true,
               controller: _rolePlayerEditingController,
-              hintText: "Select Role Player",
+              hintText: "Select Role",
               onChangeCallBack: (_) {},
               onTapCallBack: () {
                 showMaterialModalBottomSheet(
@@ -125,12 +137,23 @@ class _EditTicketBottomSheetState extends State<EditTicketBottomSheet> {
                     ),
                   ),
                   context: context,
-                  builder: (context) => const SelectRolePlayerBottomSheet(),
+                  builder: (context) => const SelectRoleBottomSheet(),
                 ).then(
                   (value) {
                     if (value != null) {
-                      _rolePlayerEditingController.text =
-                          "${value['roleName']} ${value['roleOrderPlace']}";
+                      String temp = " ";
+                      //to hide the role order place if the role is not speaker or speach evaluator
+                      if (value['roleName'] ==
+                              LisrOfRolesPlayers.Speaker.name ||
+                          value['roleName'] ==
+                              LisrOfRolesPlayers.Speach_Evaluator.name
+                                  .replaceAll("_", " ")) {
+                        temp =
+                            "${value['roleName']} ${value['roleOrderPlace']}";
+                      } else {
+                        temp = value['roleName'];
+                      }
+                      _rolePlayerEditingController.text = temp;
                       _roleName = value['roleName'];
                       _roleOrderPlace = value['roleOrderPlace'];
                     }

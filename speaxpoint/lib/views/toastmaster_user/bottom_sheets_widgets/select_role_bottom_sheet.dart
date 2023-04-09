@@ -6,16 +6,16 @@ import 'package:speaxpoint/util/constants/common_enums.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart';
 
-class SelectRolePlayerBottomSheet extends StatefulWidget {
-  const SelectRolePlayerBottomSheet({super.key});
+class SelectRoleBottomSheet extends StatefulWidget {
+  const SelectRoleBottomSheet({super.key});
 
   @override
-  State<SelectRolePlayerBottomSheet> createState() =>
+  State<SelectRoleBottomSheet> createState() =>
       _SelectRolePlayerBottomSheetState();
 }
 
 class _SelectRolePlayerBottomSheetState
-    extends State<SelectRolePlayerBottomSheet> {
+    extends State<SelectRoleBottomSheet> {
   List<String> listOfRole = LisrOfRolesPlayers.values
       .map((e) => e.name.replaceAll('_', ' '))
       .toList();
@@ -176,7 +176,7 @@ class _SelectRolePlayerBottomSheetState
                             diameterRatio: 1.2,
                             physics: const FixedExtentScrollPhysics(),
                             childDelegate: ListWheelChildBuilderDelegate(
-                              childCount: listOfRole.length,
+                              childCount: 20,
                               builder: (context, index) {
                                 return FittedBox(
                                   fit: BoxFit.scaleDown,

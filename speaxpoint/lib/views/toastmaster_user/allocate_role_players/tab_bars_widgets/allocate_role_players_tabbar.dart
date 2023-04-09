@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
-import 'package:speaxpoint/views/toastmaster_user/allocate_role_players/club_members_tab_view.dart';
-import 'package:speaxpoint/views/toastmaster_user/allocate_role_players/visitors_tab_view.dart';
+import 'package:speaxpoint/views/toastmaster_user/allocate_role_players/tab_bars_widgets/club_members_tab_view.dart';
+import 'package:speaxpoint/views/toastmaster_user/allocate_role_players/tab_bars_widgets/guests_tab_view.dart';
+import 'package:speaxpoint/views/toastmaster_user/allocate_role_players/tab_bars_widgets/visitors_tab_view.dart';
 
 class AllocateRolePlayersTabBar extends StatefulWidget {
   final String chapterMeetingId;
@@ -121,9 +120,15 @@ class _AllocateRolePlayersTabBarState extends State<AllocateRolePlayersTabBar>
                 chapterMeetingId: widget.chapterMeetingId,
                 clubId: widget.clubId,
               ),
-              const VisitorsTabView(),
-              const VisitorsTabView(),
-              const VisitorsTabView(),
+              VisitorsTabView(
+                  chapterMeetingId: widget.chapterMeetingId,
+                  clubId: widget.clubId),
+              GuestsTabView(
+                  chapterMeetingId: widget.chapterMeetingId,
+                  clubId: widget.clubId),
+              VisitorsTabView(
+                  chapterMeetingId: widget.chapterMeetingId,
+                  clubId: widget.clubId),
             ],
           ),
         ),

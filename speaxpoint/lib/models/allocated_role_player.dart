@@ -6,7 +6,7 @@ class AllocatedRolePlayer {
   String? roleName;
   //the roleOrderPlace is meant to differenitate between if he is first speaks , or second speaker..etc
   int? roleOrderPlace;
-  String? invitationCode;
+  String? guestInvitationCode;
   String? allocatedRolePlayerType;
 
   // we can add the club name in the future , which will be obtained automatically
@@ -14,7 +14,7 @@ class AllocatedRolePlayer {
 
   AllocatedRolePlayer(
       {this.allocatedRolePlayerUniqueId,
-      this.invitationCode,
+      this.guestInvitationCode,
       this.roleName,
       this.roleOrderPlace,
       this.rolePlayerName,
@@ -27,7 +27,7 @@ class AllocatedRolePlayer {
           allocatedRolePlayerUniqueId:
               allocatedRolePlayerJson['allocatedRolePlayerUniqueId'],
           toastmasterUsername: allocatedRolePlayerJson['toastmasterUsername'],
-          invitationCode: allocatedRolePlayerJson['invitationCode'],
+          guestInvitationCode: allocatedRolePlayerJson['guestInvitationCode'],
           roleName: allocatedRolePlayerJson['roleName'],
           roleOrderPlace: allocatedRolePlayerJson['roleOrderPlace'],
           rolePlayerName: allocatedRolePlayerJson['rolePlayerName'],
@@ -39,7 +39,7 @@ class AllocatedRolePlayer {
   Map<String, dynamic> toJson() => {
         'allocatedRolePlayerUniqueId': allocatedRolePlayerUniqueId,
         'toastmasterUsername': toastmasterUsername,
-        'invitationCode': invitationCode,
+        'guestInvitationCode': guestInvitationCode,
         'roleName': roleName,
         'roleOrderPlace': roleOrderPlace,
         'rolePlayerName': rolePlayerName,

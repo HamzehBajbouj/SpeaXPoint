@@ -105,12 +105,12 @@ class _AddClubMemberRolePlayerBottomSheetState
                               //when succes is true it mean that there is no existing role player
                               //with the same role and place order
                               await _allocateRolePlayersVM
-                                  .allocateNewPlayerFromTheClub(
-                                widget.chapterMeetingId,
-                                _selectedClubMember,
-                                _roleName,
-                                _rolePlace,
-                              )
+                                  .allocateNewPlayerFromClub(
+                                      widget.chapterMeetingId,
+                                      _selectedClubMember,
+                                      _roleName,
+                                      _rolePlace,
+                                      AllocatedRolePlayerType.ClubMember.name)
                                   .then(
                                 (value) {
                                   value.whenSuccess(
@@ -126,10 +126,13 @@ class _AddClubMemberRolePlayerBottomSheetState
                                 context: context,
                                 builder: (BuildContext context) {
                                   return UpdateExitingRolePlayerDialog(
+                                    guestName: null,
                                     chapterMeetingId: widget.chapterMeetingId,
                                     roleName: _roleName,
                                     rolePlace: _rolePlace,
                                     selectedToastmaster: _selectedClubMember,
+                                    allocatedRolePlayerType:
+                                        AllocatedRolePlayerType.ClubMember.name,
                                   );
                                 },
                               ).then(

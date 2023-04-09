@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:speaxpoint/models/allocated_role_player.dart';
 import 'package:multiple_result/src/unit.dart';
 import 'package:multiple_result/src/result.dart';
+import 'package:speaxpoint/models/toastmaster.dart';
 import 'package:speaxpoint/services/meeting_arrangement/allocate_role_players/i_allocate_role_players_service.dart';
 import 'package:speaxpoint/services/meeting_arrangement/common_services/meeting_arrangement_common_firebase_services.dart';
 import '../../failure.dart';
@@ -12,8 +13,11 @@ class AllocateRolePlayerFirebaseService
     implements IAllocateRolePlayersService {
   final CollectionReference _chapterMeetingsCollection =
       FirebaseFirestore.instance.collection('ChapterMeetings');
+
+  final CollectionReference _toastmasterCollection =
+      FirebaseFirestore.instance.collection('Toastmasters');
   @override
-  Future<Result<Unit, Failure>> allocateClubMemberNewRolePlayer(
+  Future<Result<Unit, Failure>> allocateNewRolePlayer(
       String chapterMeetingId, AllocatedRolePlayer allocatedRolePlayer) async {
     try {
       await super.getAllocatedRolePlayerCollectionRef(chapterMeetingId).then(
@@ -97,6 +101,7 @@ class AllocateRolePlayerFirebaseService
   ) async {
     bool roleIsExisted = false;
     try {
+      print("dsdsdsfsd fsdfsdf");
       await super.getAllocatedRolePlayerCollectionRef(chapterMeetingId).then(
         (value) async {
           QuerySnapshot tempQS = await value
@@ -145,21 +150,12 @@ class AllocateRolePlayerFirebaseService
             await tempQS.docs.first.reference.update(
               {
                 'toastmasterUsername': allocatedRolePlayer.toastmasterUsername,
-                'invitationCode': allocatedRolePlayer.invitationCode,
+                'guestInvitationCode': allocatedRolePlayer.guestInvitationCode,
                 'rolePlayerName': allocatedRolePlayer.rolePlayerName,
                 'toastmasterId': allocatedRolePlayer.toastmasterId,
                 'allocatedRolePlayerType':
-                    allocatedRolePlayer.allocatedRolePlayerType
+                    allocatedRolePlayer.allocatedRolePlayerType,
               },
-            );
-          } else {
-            return const Error(
-              Failure(
-                  code: "No-Occupied",
-                  location:
-                      "AllocateRolePlayerFirebaseService.updateOccupiedRoleDetails()",
-                  message:
-                      "The Role that you are trying to update its details does not exist!"),
             );
           }
         },
@@ -201,4 +197,47 @@ class AllocateRolePlayerFirebaseService
     }
   }
 
+  @override
+  Future<Result<Toastmaster, Failure>> searchOtherClubsMember(
+      String toastmasterUsername) async {
+    try {
+      Toastmaster toastmaster;
+      QuerySnapshot checkUserHasExitedDocument = await _toastmasterCollection
+          .where("toastmasterUsername", isEqualTo: toastmasterUsername)
+          .get();
+
+      if (checkUserHasExitedDocument.docs.isNotEmpty) {
+        //since each user will have only on 1 document always get the first document
+        toastmaster = Toastmaster.fromJson(checkUserHasExitedDocument.docs.first
+            .data() as Map<String, dynamic>);
+      } else {
+        return const Error(
+          Failure(
+            code: "no-member-found",
+            message: "no member record cannot be found in the database.",
+            location:
+                "AllocateRolePlayerFirebaseService.searchOtherClubsMember()",
+          ),
+        );
+      }
+      return Success(toastmaster);
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location:
+                "AllocateRolePlayerFirebaseService.searchOtherClubsMember()",
+            message:
+                e.message ?? "Database Error While getting member detials"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location:
+                "AllocateRolePlayerFirebaseService.searchOtherClubsMember()",
+            message: e.toString()),
+      );
+    }
+  }
 }

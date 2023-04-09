@@ -5,9 +5,10 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:speaxpoint/models/meeting_agenda.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
+import 'package:speaxpoint/util/constants/common_enums.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/prepare_meeting_agenda_view_model.dart';
-import 'package:speaxpoint/views/toastmaster_user/prepare_meeting_agenda/edit_ticket_bottom_sheet.dart';
+import 'package:speaxpoint/views/toastmaster_user/bottom_sheets_widgets/edit_agenda_card_bottom_sheet.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
 class TimeLineTileItem extends StatefulWidget {
@@ -31,15 +32,19 @@ class TimeLineTileItem extends StatefulWidget {
 class _TimeLineTileItemState extends State<TimeLineTileItem> {
   late PrepareMeetingAgendaViewModel _prepareMeetingAgendaViewModel;
 
+  bool _displayRoleOrderPlace = false;
   @override
   void initState() {
     // TODO: implement initState
     _prepareMeetingAgendaViewModel =
         Provider.of<PrepareMeetingAgendaViewModel>(context, listen: false);
-  }
 
-  // String _updatedTime = "";
-  // bool valuePassedFirstTime = true;
+    if (widget.meetingAgnedaCard.roleName == LisrOfRolesPlayers.Speaker.name ||
+        widget.meetingAgnedaCard.roleName ==
+            LisrOfRolesPlayers.Speach_Evaluator.name.replaceAll("_", " ")) {
+      _displayRoleOrderPlace = true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +147,7 @@ class _TimeLineTileItemState extends State<TimeLineTileItem> {
                         ),
                       ),
                       context: context,
-                      builder: (context) => EditTicketBottomSheet(
+                      builder: (context) => EditAgendaCardBottomSheet(
                         agendaCardNumber:
                             widget.meetingAgnedaCard.agendaCardOrder ?? -1,
                         chapterMeetingId: widget.chapterMeetingId,
@@ -163,10 +168,7 @@ class _TimeLineTileItemState extends State<TimeLineTileItem> {
                         FittedBox(
                           fit: BoxFit.scaleDown,
                           child: Text(
-                            widget.meetingAgnedaCard.agendaTitle!.isEmpty
-                                ? " "
-                                : widget.meetingAgnedaCard.agendaTitle ??
-                                    "Title",
+                            widget.meetingAgnedaCard.agendaTitle ?? "Title",
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                               fontFamily: CommonUIProperties.fontType,
@@ -182,8 +184,8 @@ class _TimeLineTileItemState extends State<TimeLineTileItem> {
                         FittedBox(
                           fit: BoxFit.scaleDown,
                           child: Text(
-                            "${widget.meetingAgnedaCard.roleName ?? 'Role'} ${widget.meetingAgnedaCard.roleOrderPlace ?? '1'}"
-                            " By , ${widget.meetingAgnedaCard.allocatedRolePlayerDetails?.rolePlayerName ?? 'Name'}",
+                            "${widget.meetingAgnedaCard.roleName ?? 'Role'} ${_displayRoleOrderPlace ? (widget.meetingAgnedaCard.roleOrderPlace ?? '') : ''}"
+                            " By , ${widget.meetingAgnedaCard.allocatedRolePlayerDetails?.rolePlayerName ?? ' Not Allocated Yet!'}",
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                               fontFamily: CommonUIProperties.fontType,

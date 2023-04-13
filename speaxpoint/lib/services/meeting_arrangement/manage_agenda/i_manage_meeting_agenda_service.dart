@@ -5,7 +5,8 @@ import 'package:speaxpoint/services/meeting_arrangement/common_services/i_meetin
 
 //since there are some functionlities that are need in the ManageMeetingAgenda screen
 //that is related to rolePlayer allocation, we extended the IAllocateRolePlayersService
-abstract class IManageMeetingAgendaService extends IMeetingArrangementCommonServices{
+abstract class IManageMeetingAgendaService
+    extends IMeetingArrangementCommonServices {
   Future<Result<Unit, Failure>> createEmptyAgendaCard(
       String chapterMeetingId, int agendaCardOrder);
 
@@ -15,11 +16,17 @@ abstract class IManageMeetingAgendaService extends IMeetingArrangementCommonServ
   Future<Result<Unit, Failure>> deleteAgendaCard(
       String chapterMeetingId, int agendaCardNumber);
 
-        Future<Result<Unit, Failure>> updateAgendaTime(
+  Future<Result<Unit, Failure>> updateAgendaTime(
       String chapterMeetingId, String timeSequence, int agendaCardNumber);
 
   Future<Result<Unit, Failure>> updateAgendaCardDetails(
       String chapterMeetingId, MeetingAgneda agnedaCard);
 
   Stream<List<MeetingAgneda>> getAllMeetingAgenda(String chapterMeetingId);
+
+
+  //this method will return a list of all agenda cards that has a role (e.g.: Speaker 1)
+  //where is role has not been allocated yet. 
+  Future<Result<List<MeetingAgneda>, Failure>>
+      getListOfAllAgendaWithNoAllocatedRolePlayers(String chapterMeetingId);
 }

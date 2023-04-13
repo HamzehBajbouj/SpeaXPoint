@@ -50,8 +50,18 @@ class _EditTicketBottomSheetState extends State<EditAgendaCardBottomSheet> {
 
     if (widget.agendaCardRoleOrderPlace > 0 &&
         widget.agendaCardRoleName.isNotEmpty) {
-      _rolePlayerEditingController.text =
-          "${widget.agendaCardRoleName} ${widget.agendaCardRoleOrderPlace}";
+      //note: this part can be improve to make it in a method , since we have duplicated codes.
+      if (widget.agendaCardRoleName == LisrOfRolesPlayers.Speaker.name ||
+          widget.agendaCardRoleName ==
+              LisrOfRolesPlayers.Speach_Evaluator.name.replaceAll("_", " ")) {
+        _rolePlayerEditingController.text =
+            "${widget.agendaCardRoleName} ${widget.agendaCardRoleOrderPlace}";
+      } else {
+        _rolePlayerEditingController.text = widget.agendaCardRoleName;
+      }
+
+      _roleName = widget.agendaCardRoleName;
+      _roleOrderPlace = widget.agendaCardRoleOrderPlace;
     } else {
       _rolePlayerEditingController.text = "";
     }
@@ -83,7 +93,7 @@ class _EditTicketBottomSheetState extends State<EditAgendaCardBottomSheet> {
                 textButton(
                   callBack: () async {
                     if (_titleEditingController.text.isEmpty) {
-                      _titleEditingController.text = " ";
+                      _titleEditingController.text = "Title";
                     }
                     await _prepareMeetingAgendaViewModel
                         .updateAgendaCardDetails(

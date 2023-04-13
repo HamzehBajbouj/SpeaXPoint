@@ -1,8 +1,14 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:provider/provider.dart';
+import 'package:speaxpoint/app/app_routes.gr.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
+import 'package:speaxpoint/util/ui_widgets/buttons.dart';
+import 'package:speaxpoint/view_models/toastmaster_vm/allocate_role_players_view_model.dart';
+import 'package:speaxpoint/view_models/toastmaster_vm/prepare_meeting_agenda_view_model.dart';
 import 'package:speaxpoint/views/toastmaster_user/allocate_role_players/tab_bars_widgets/allocate_role_players_tabbar.dart';
 
 class AllocateRolePlayerScreen extends StatelessWidget {
@@ -16,6 +22,11 @@ class AllocateRolePlayerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final allocateRolePlayersViewModel =
+        context.read<AllocateRolePlayersViewModel>();
+    //this method can be called in a future builder everytime we open this screen
+    //so it checks , but we want to avoid the circuleWaiting icon
+    allocateRolePlayersViewModel.validateAllocationOfAllRoles(chapterMeetingId);
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(
@@ -34,7 +45,7 @@ class AllocateRolePlayerScreen extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor: Color(AppMainColors.backgroundAndContent),
+      backgroundColor: const Color(AppMainColors.backgroundAndContent),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 30),
@@ -67,13 +78,63 @@ class AllocateRolePlayerScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(
-                height: 20,
+                height: 10,
+              ),
+              Consumer<AllocateRolePlayersViewModel>(
+                builder: (_, viewModel, child) {
+                  if (viewModel.agendaWithNoRolePlayersList.isEmpty) {
+                    return Container();
+                  } else {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RichText(
+                          text: const TextSpan(
+                            text: 'Warning ! ',
+                            style: TextStyle(
+                                fontFamily: CommonUIProperties.fontType,
+                                fontSize: 15,
+                                color: Color(AppMainColors.warningError75),
+                                fontWeight: FontWeight.bold),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text:
+                                    "it seems there are some Role that have not been "
+                                    "allocated it, allocate them or click on :",
+                                style: TextStyle(fontWeight: FontWeight.normal),
+                              ),
+                            ],
+                          ),
+                        ),
+                        textButton(
+                          buttonHeight: 10,
+                          callBack: () {
+                            context.pushRoute(const AskForVolunteersRouter());
+                          },
+                          content: const Text(
+                            "Ask For Volunteers",
+                            style: TextStyle(
+                              fontFamily: CommonUIProperties.fontType,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Color(AppMainColors.p70),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                },
+              ),
+              const SizedBox(
+                height: 10,
               ),
               Expanded(
-                  child: AllocateRolePlayersTabBar(
-                chapterMeetingId: chapterMeetingId,
-                clubId: clubId,
-              )),
+                child: AllocateRolePlayersTabBar(
+                  chapterMeetingId: chapterMeetingId,
+                  clubId: clubId,
+                ),
+              ),
             ],
           ),
         ),

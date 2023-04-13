@@ -4,6 +4,7 @@ import 'package:speaxpoint/views/club_president_user/club_member_management/club
 import 'package:speaxpoint/views/club_president_user/club_member_management/manage_member_account_screen.dart';
 import 'package:speaxpoint/views/club_president_user/club_member_management/manage_member_account_from_set_up.dart';
 import 'package:speaxpoint/views/toastmaster_user/allocate_role_players/allocate_role_players_screen.dart';
+import 'package:speaxpoint/views/toastmaster_user/ask_for_volunteers/ask_for_volunteers_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/dashboard/toastmaster_dashboard_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/manage_coming_meetings/manage_coming_sessions_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/prepare_meeting_agenda/prepare_meeting_agenda_screen.dart';
@@ -172,6 +173,11 @@ const toastMasterNav = AutoRoute(
           path: "allocateRolePlayer",
           name: "AllocateRolePlayerRouter",
           page: AllocateRolePlayerScreen,
+        ),
+         AutoRoute(
+          path: "askForVolunteers",
+          name: "AskForVolunteersRouter",
+          page: AskForVolunteersScreen,
         )
       ],
     ),

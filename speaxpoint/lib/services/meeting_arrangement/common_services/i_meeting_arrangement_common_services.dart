@@ -10,8 +10,13 @@ abstract class IMeetingArrangementCommonServices {
 
   Stream<List<AllocatedRolePlayer>> getAllAllocatedRolePlayers(
       String chapterMeetingId);
+
+  Future<Result<List<AllocatedRolePlayer>, Failure>>
+      getAllAllocatedRolePlayersList(String chapterMeetingId);
+
   Future<CollectionReference> getAllocatedRolePlayerCollectionRef(
       String chapterMeetingId);
-   Future<CollectionReference> getMeetingAgendaCollectionRef(
+
+  Future<CollectionReference> getMeetingAgendaCollectionRef(
       String chapterMeetingId);
 }

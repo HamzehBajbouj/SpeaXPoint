@@ -33,11 +33,18 @@ class _TimeLineTileItemState extends State<TimeLineTileItem> {
   late PrepareMeetingAgendaViewModel _prepareMeetingAgendaViewModel;
 
   bool _displayRoleOrderPlace = false;
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+
+  // }
   @override
-  void initState() {
-    // TODO: implement initState
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     _prepareMeetingAgendaViewModel =
-        Provider.of<PrepareMeetingAgendaViewModel>(context, listen: false);
+        Provider.of<PrepareMeetingAgendaViewModel>(context, listen: true);
 
     if (widget.meetingAgnedaCard.roleName == LisrOfRolesPlayers.Speaker.name ||
         widget.meetingAgnedaCard.roleName ==

@@ -87,6 +87,7 @@ SizedBox textButton(
     double buttonWidth = CommonUIProperties.buttonWidth,
     double buttonHeight = CommonUIProperties.buttonHeight}) {
   return SizedBox(
+    height: CommonUIProperties.buttonHeight,
     child: TextButton(
         onPressed: callBack,
         style: TextButton.styleFrom(

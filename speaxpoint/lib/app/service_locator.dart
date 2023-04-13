@@ -101,6 +101,7 @@ Future<void> initServiceLocator() async {
   serviceLocator.registerLazySingleton<AllocateRolePlayersViewModel>(
     () => AllocateRolePlayersViewModel(
       serviceLocator<IAllocateRolePlayersService>(),
+      serviceLocator<IManageMeetingAgendaService>(),
     ),
   );
 }

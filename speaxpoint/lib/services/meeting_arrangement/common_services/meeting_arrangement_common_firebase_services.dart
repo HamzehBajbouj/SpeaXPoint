@@ -42,8 +42,7 @@ class MeetingArrangementCommonFirebaseServices
             code: e.code,
             location:
                 "MeetingArrangementCommonFirebaseServices.getAllClubMembers()",
-            message: e.message ??
-                "Database Error While creating a new meeting agneda"),
+            message: e.message ?? "Database Error While get club members"),
       );
     } catch (e) {
       return Error(
@@ -59,6 +58,7 @@ class MeetingArrangementCommonFirebaseServices
   @override
   Future<CollectionReference> getAllocatedRolePlayerCollectionRef(
       String chapterMeetingId) async {
+    // the collection name must be an empty otherwise we will get an error
     CollectionReference allocatedRolePlayerCollection =
         FirebaseFirestore.instance.collection(" ");
     try {
@@ -105,6 +105,7 @@ class MeetingArrangementCommonFirebaseServices
   @override
   Future<CollectionReference<Object?>> getMeetingAgendaCollectionRef(
       String chapterMeetingId) async {
+    // the collection name must be an empty otherwise we will get an error
     CollectionReference allocatedRolePlayerCollection =
         FirebaseFirestore.instance.collection(" ");
     try {
@@ -121,6 +122,61 @@ class MeetingArrangementCommonFirebaseServices
       return allocatedRolePlayerCollection;
     } catch (e) {
       return allocatedRolePlayerCollection;
+    }
+  }
+
+  @override
+  Future<Result<List<AllocatedRolePlayer>, Failure>>
+      getAllAllocatedRolePlayersList(String chapterMeetingId) async {
+    try {
+      List<AllocatedRolePlayer> allocatedRolePlayersList = [];
+      // the collection name must be an empty otherwise we will get an error
+      CollectionReference allocatedRolePlayerCollection =
+          FirebaseFirestore.instance.collection(" ");
+
+      QuerySnapshot ChapterMeetingQS = await _chapterMeetingsCollection
+          .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+          .get();
+
+      if (ChapterMeetingQS.docs.isNotEmpty) {
+        allocatedRolePlayerCollection = ChapterMeetingQS.docs.first.reference
+            .collection("AllocatedRolePlayers");
+        QuerySnapshot allocatedPlayerSQ =
+            await allocatedRolePlayerCollection.get();
+        if (allocatedPlayerSQ.docs.isNotEmpty) {
+          allocatedRolePlayersList = allocatedPlayerSQ.docs
+              .map((doc) => AllocatedRolePlayer.fromJson(
+                  doc.data() as Map<String, dynamic>))
+              .toList();
+        }
+      } else {
+        return Error(
+          Failure(
+              code: "No-Chapter-Meeting-Is-Found",
+              location:
+                  "MeetingArrangementCommonFirebaseServices.getAllAllocatedRolePlayersList()",
+              message:
+                  "there are no matching record for chapter meeting with ID ${chapterMeetingId}"),
+        );
+      }
+      return Success(allocatedRolePlayersList);
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location:
+                "MeetingArrangementCommonFirebaseServices.getAllAllocatedRolePlayersList()",
+            message: e.message ??
+                "Database Error While getting allocated role players details"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location:
+                "MeetingArrangementCommonFirebaseServices.getAllAllocatedRolePlayersList()",
+            message: e.toString()),
+      );
     }
   }
 }

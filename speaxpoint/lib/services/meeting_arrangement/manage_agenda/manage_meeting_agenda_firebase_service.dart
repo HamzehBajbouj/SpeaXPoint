@@ -298,20 +298,96 @@ class ManageMeetingAgendaFirebaseSerivce
           }
         },
       );
-
       return Success.unit();
     } on FirebaseException catch (e) {
       return Error(
         Failure(
             code: e.code,
-            location: "ManageMeetingAgendaFirebaseSerivce.updateAgendaCardDetails()",
-            message: e.message ?? "Database Error While updating agenda details"),
+            location:
+                "ManageMeetingAgendaFirebaseSerivce.updateAgendaCardDetails()",
+            message:
+                e.message ?? "Database Error While updating agenda details"),
       );
     } catch (e) {
       return Error(
         Failure(
             code: e.toString(),
-            location: "ManageMeetingAgendaFirebaseSerivce.updateAgendaCardDetails()",
+            location:
+                "ManageMeetingAgendaFirebaseSerivce.updateAgendaCardDetails()",
+            message: e.toString()),
+      );
+    }
+  }
+
+  @override
+  Future<Result<List<MeetingAgneda>, Failure>>
+      getListOfAllAgendaWithNoAllocatedRolePlayers(
+          String chapterMeetingId) async {
+    List<MeetingAgneda> meetingAgenda = [];
+    List<AllocatedRolePlayer> allocatedRolePlayerList = [];
+    try {
+      await super.getAllAllocatedRolePlayersList(chapterMeetingId).then(
+        (result) {
+          result.when(
+            (success) {
+              allocatedRolePlayerList = success;
+            },
+            (error) {
+              allocatedRolePlayerList = [];
+            },
+          );
+        },
+      );
+      await super.getMeetingAgendaCollectionRef(chapterMeetingId).then(
+        (coolectionRef) async {
+          QuerySnapshot agendaQS = await coolectionRef.get();
+          if (agendaQS.docs.isNotEmpty) {
+            meetingAgenda = agendaQS.docs
+                .map((e) =>
+                    MeetingAgneda.fromJson(e.data() as Map<String, dynamic>))
+                .toList();
+          }
+          // this will search for the matching role players and assgin them to
+          //agenda.allocatedRolePlayerDetails, if not it returns null,
+          for (var agenda in meetingAgenda) {
+            var rolePlayers = allocatedRolePlayerList
+                .where(
+                  (rolePlayer) =>
+                      rolePlayer.roleName == agenda.roleName &&
+                      rolePlayer.roleOrderPlace == agenda.roleOrderPlace,
+                )
+                .toList();
+
+            agenda.allocatedRolePlayerDetails =
+                rolePlayers.isNotEmpty ? rolePlayers[0] : null;
+          }
+
+          // after we matched everything we want only the value of array where allocatedRolePlayerDetails
+          //is empty
+          meetingAgenda = meetingAgenda
+              .where((element) =>
+                  element.allocatedRolePlayerDetails == null &&
+                  element.roleName != null &&
+                  element.roleOrderPlace != null)
+              .toList();
+        },
+      );
+      return Success(meetingAgenda);
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location:
+                "ManageMeetingAgendaFirebaseSerivce.getListOfAllAgendaWithNoAllocatedRolePlayers()",
+            message:
+                e.message ?? "Database Error While getting meeting agenda"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location:
+                "ManageMeetingAgendaFirebaseSerivce.getListOfAllAgendaWithNoAllocatedRolePlayers()",
             message: e.toString()),
       );
     }

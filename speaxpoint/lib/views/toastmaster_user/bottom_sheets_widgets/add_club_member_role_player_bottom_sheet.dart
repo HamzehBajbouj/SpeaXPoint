@@ -59,7 +59,6 @@ class _AddClubMemberRolePlayerBottomSheetState
       (list) {
         _clubHasMembers = list.isNotEmpty;
         _selectedClubMember = list[0];
-        _lengthOfListMembers = list.length;
         //we need to call it to update redrae the states/widgets after we got the results
         //to hide the widgets accroding to _clubHasMembers variable
         setState(
@@ -360,7 +359,7 @@ class _AddClubMemberRolePlayerBottomSheetState
                             diameterRatio: 1.2,
                             physics: const FixedExtentScrollPhysics(),
                             childDelegate: ListWheelChildBuilderDelegate(
-                              childCount: _lengthOfListMembers,
+                              childCount: 20,
                               builder: (context, index) {
                                 return FittedBox(
                                   fit: BoxFit.scaleDown,

@@ -19,4 +19,7 @@ abstract class IMeetingArrangementCommonServices {
 
   Future<CollectionReference> getMeetingAgendaCollectionRef(
       String chapterMeetingId);
+
+  Future<CollectionReference> getVolunteersSlotsCollectionRef(
+      String chapterMeetingId);
 }

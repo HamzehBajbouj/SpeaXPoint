@@ -215,6 +215,8 @@ class _ManageComingSessionsScreenState
                                   contentPadding: const EdgeInsets.only(
                                     left: 20,
                                     right: 20,
+                                    top: 5,
+                                    bottom: 5,
                                   ),
                                   title: Text(
                                     items[index].chapterTitle!,
@@ -226,17 +228,41 @@ class _ManageComingSessionsScreenState
                                       color: Color(AppMainColors.p80),
                                     ),
                                   ),
-                                  subtitle: Text(
-                                    DateFormat("h:mm a, EEEE, MMM d, yyyy")
-                                        .format(DateTime.parse(
-                                            items[index].dateOfMeeting!)),
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      fontFamily: CommonUIProperties.fontType,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.normal,
-                                      color: Color(AppMainColors.p50),
-                                    ),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(
+                                        height: 3,
+                                      ),
+                                      Text(
+                                        DateFormat("h:mm a, EEEE, MMM d, yyyy")
+                                            .format(DateTime.parse(
+                                                items[index].dateOfMeeting!)),
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontFamily:
+                                              CommonUIProperties.fontType,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.normal,
+                                          color: Color(AppMainColors.p50),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 3,
+                                      ),
+                                      Text(
+                                        "Invitation Code: ${items[index].invitationCode}",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontFamily:
+                                              CommonUIProperties.fontType,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.normal,
+                                          color: Color(AppMainColors.p50),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   trailing: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,

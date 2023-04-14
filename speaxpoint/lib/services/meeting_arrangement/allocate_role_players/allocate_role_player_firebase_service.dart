@@ -35,7 +35,28 @@ class AllocateRolePlayerFirebaseService
           allocatedRolePlayer.allocatedRolePlayerUniqueId = uniqueId;
           await status
               .doc(uniqueId.toString())
-              .set(allocatedRolePlayer.toJson());
+              .set(allocatedRolePlayer.toJson())
+              .then(
+            (_) {
+              /*
+              this part to delete the role from the volunteers slots collection
+              //in case it was announced the need for it but later the VPE, 
+              added the role player from other options like (club members).
+              */
+              super.getVolunteersSlotsCollectionRef(chapterMeetingId).then(
+                (collectionRef) async {
+                  QuerySnapshot slotQS = await collectionRef
+                      .where('roleName',
+                          isEqualTo: allocatedRolePlayer.roleName)
+                      .where('roleOrderPlace',
+                          isEqualTo: allocatedRolePlayer.roleOrderPlace)
+                      .get();
+
+                  await slotQS.docs.first.reference.delete();
+                },
+              );
+            },
+          );
         },
       );
       return Success.unit();
@@ -182,7 +203,7 @@ class AllocateRolePlayerFirebaseService
   }
 
   //this method will search for the last and biggest UniqueId and then add one to it
-  //it can become a genetic to reduce the code depulications since almost the same method 
+  //it can become a genetic to reduce the code depulications since almost the same method
   //is used in differnet loation
   int _getlNewtUniqueIdNumber(List<AllocatedRolePlayer> list) {
     int biggestAgendaCardNumber = 0;

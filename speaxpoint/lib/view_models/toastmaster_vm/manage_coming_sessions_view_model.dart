@@ -20,7 +20,7 @@ class ManageComingSessionsViewModel extends BaseViewModel {
       this._sharedPreferences, this._manageComingSessionsService);
 
   Future<void> createNewSession(String sessionTitle, String sessionDate) async {
-    super.setLoading(true);
+    super.setLoading(loading:true);
     //get currentUserId and club Id
     Map<String, dynamic> loggedUser =
         await _sharedPreferences.loadData(SharedPrefereneceKeys.loggedUser);
@@ -47,7 +47,7 @@ class ManageComingSessionsViewModel extends BaseViewModel {
         chapterMeetingId: chapterRadomMeetingId,
       ),
     );
-    super.setLoading(false);
+    super.setLoading(loading:false);
   }
 
   //this function will return the a Stream,and then we will use the streambuilder for that

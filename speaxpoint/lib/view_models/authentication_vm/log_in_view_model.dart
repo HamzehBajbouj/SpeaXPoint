@@ -16,9 +16,9 @@ class LogInViewModel extends BaseViewModel {
       {required String email,
       required String password,
       required String userRole}) async {
-    setLoading(true);
+    setLoading(loading:true);
     _logInStatus =
         await _authenticationService.signIn(email: email, password: password, userRole: userRole);
-    setLoading(false);
+    setLoading(loading:false);
   }
 }

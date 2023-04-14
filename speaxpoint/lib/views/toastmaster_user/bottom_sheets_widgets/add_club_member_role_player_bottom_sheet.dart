@@ -168,7 +168,9 @@ class _AddClubMemberRolePlayerBottomSheetState
                   ) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(
+                          color: Color(AppMainColors.p40),
+                        ),
                       );
                     } else if (snapshot.connectionState ==
                         ConnectionState.done) {

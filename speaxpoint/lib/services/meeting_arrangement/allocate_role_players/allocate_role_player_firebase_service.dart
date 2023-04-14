@@ -182,6 +182,8 @@ class AllocateRolePlayerFirebaseService
   }
 
   //this method will search for the last and biggest UniqueId and then add one to it
+  //it can become a genetic to reduce the code depulications since almost the same method 
+  //is used in differnet loation
   int _getlNewtUniqueIdNumber(List<AllocatedRolePlayer> list) {
     int biggestAgendaCardNumber = 0;
 

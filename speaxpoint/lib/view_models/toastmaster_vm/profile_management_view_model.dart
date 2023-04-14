@@ -21,11 +21,11 @@ class ProfileManagementViewModel extends BaseViewModel {
       this._manageClubMembersService, this._authenticationService);
 
   Future<void> getToastmasterDetails() async {
-    setLoading(true);
+    setLoading(loading:true);
     _toastmasterDetailsStatus =
         await _manageClubMembersService.getToastmasterDetails(
             _authenticationService.userCredential!.user!.uid);
-    setLoading(false);
+    setLoading(loading:false);
   }
 
   Future<void> updateUserDetails({
@@ -38,7 +38,7 @@ class ProfileManagementViewModel extends BaseViewModel {
     required String memberRole,
     required String toastmasterUsername,
   }) async {
-    setLoading(true);
+    setLoading(loading:true);
     _updateToastmasterDetailsStatus =
         await _manageClubMembersService.updateMemberDetails(
       Toastmaster.fromJson(
@@ -55,6 +55,6 @@ class ProfileManagementViewModel extends BaseViewModel {
         },
       ),
     );
-    setLoading(false);
+    setLoading(loading:false);
   }
 }

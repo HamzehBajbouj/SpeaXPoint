@@ -109,7 +109,18 @@ class AllocateRolePlayerScreen extends StatelessWidget {
                         textButton(
                           buttonHeight: 10,
                           callBack: () {
-                            context.pushRoute(const AskForVolunteersRouter());
+                            context
+                                .pushRoute(AskForVolunteersRouter(
+                                    chapterMeetingId: chapterMeetingId))
+                                .then(
+                              (value) {
+                                //check again after returning to this page, 
+                                //it's needed since this widget is a stateless one
+                                allocateRolePlayersViewModel
+                                    .validateAllocationOfAllRoles(
+                                        chapterMeetingId);
+                              },
+                            );
                           },
                           content: const Text(
                             "Ask For Volunteers",

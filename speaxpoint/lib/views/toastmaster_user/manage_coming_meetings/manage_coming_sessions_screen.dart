@@ -151,7 +151,11 @@ class _ManageComingSessionsScreenState
                       _manageComingSessionsViewModel.getChapterMeetingsList(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
-                      return const Center(child: CircularProgressIndicator());
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: Color(AppMainColors.p40),
+                        ),
+                      );
                     } else {
                       final List<ChapterMeeting> items = snapshot.data!;
                       if (items.isEmpty) {

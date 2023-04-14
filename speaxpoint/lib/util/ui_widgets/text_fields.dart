@@ -9,10 +9,12 @@ TextFormField outlineTextField(
     required bool isRequired,
     required TextInputType keyboardType,
     bool readOnly = false,
+    int maxLines = 1,
     List<String?>? validators,
     bool? autoFoucs,
     bool? obscured}) {
   return TextFormField(
+    maxLines: maxLines,
     keyboardType: keyboardType,
     readOnly: readOnly,
     controller: controller,

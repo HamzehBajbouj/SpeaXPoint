@@ -262,9 +262,13 @@ class AppRouter extends _i24.RootStackRouter {
       );
     },
     AskForVolunteersRouter.name: (routeData) {
+      final args = routeData.argsAs<AskForVolunteersRouterArgs>();
       return _i24.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i23.AskForVolunteersScreen(),
+        child: _i23.AskForVolunteersScreen(
+          key: args.key,
+          chapterMeetingId: args.chapterMeetingId,
+        ),
       );
     },
   };
@@ -1031,12 +1035,35 @@ class AllocateRolePlayerRouterArgs {
 
 /// generated route for
 /// [_i23.AskForVolunteersScreen]
-class AskForVolunteersRouter extends _i24.PageRouteInfo<void> {
-  const AskForVolunteersRouter()
-      : super(
+class AskForVolunteersRouter
+    extends _i24.PageRouteInfo<AskForVolunteersRouterArgs> {
+  AskForVolunteersRouter({
+    _i25.Key? key,
+    required String chapterMeetingId,
+  }) : super(
           AskForVolunteersRouter.name,
           path: 'askForVolunteers',
+          args: AskForVolunteersRouterArgs(
+            key: key,
+            chapterMeetingId: chapterMeetingId,
+          ),
         );
 
   static const String name = 'AskForVolunteersRouter';
+}
+
+class AskForVolunteersRouterArgs {
+  const AskForVolunteersRouterArgs({
+    this.key,
+    required this.chapterMeetingId,
+  });
+
+  final _i25.Key? key;
+
+  final String chapterMeetingId;
+
+  @override
+  String toString() {
+    return 'AskForVolunteersRouterArgs{key: $key, chapterMeetingId: $chapterMeetingId}';
+  }
 }

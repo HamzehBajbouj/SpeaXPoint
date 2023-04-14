@@ -41,7 +41,11 @@ class _AllocatedRolePlayersStreamState
         ),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Color(AppMainColors.p40),
+              ),
+            );
           } else {
             final List<AllocatedRolePlayer> items = snapshot.data!
                 .where((element) =>
@@ -79,13 +83,17 @@ class _AllocatedRolePlayersStreamState
                         },
                         playerName: items[index].rolePlayerName ?? " ",
                         role: items[index].roleName ?? " ",
-                        rolePlace: items[index].roleName == LisrOfRolesPlayers.Speaker.name ||
-                                items[index].roleName == LisrOfRolesPlayers.Speach_Evaluator.name.replaceAll("_", " ")
+                        rolePlace: items[index].roleName ==
+                                    LisrOfRolesPlayers.Speaker.name ||
+                                items[index].roleName ==
+                                    LisrOfRolesPlayers.Speach_Evaluator.name
+                                        .replaceAll("_", " ")
                             ? items[index].roleOrderPlace
                             : null);
                   } else {
                     return allocatedGuestRoleCard(
-                        guestInvitationCode: items[index].guestInvitationCode ?? " ",
+                        guestInvitationCode:
+                            items[index].guestInvitationCode ?? " ",
                         deleteAction: () async {
                           await _allocateRolePlayersVM.deleteRolePlayerCard(
                               widget.chapterMeetingId,
@@ -93,8 +101,11 @@ class _AllocatedRolePlayersStreamState
                         },
                         playerName: items[index].rolePlayerName ?? " ",
                         role: items[index].roleName ?? " ",
-                        rolePlace: items[index].roleName == LisrOfRolesPlayers.Speaker.name||
-                                items[index].roleName == LisrOfRolesPlayers.Speach_Evaluator.name.replaceAll("_", " ")
+                        rolePlace: items[index].roleName ==
+                                    LisrOfRolesPlayers.Speaker.name ||
+                                items[index].roleName ==
+                                    LisrOfRolesPlayers.Speach_Evaluator.name
+                                        .replaceAll("_", " ")
                             ? items[index].roleOrderPlace
                             : null);
                   }

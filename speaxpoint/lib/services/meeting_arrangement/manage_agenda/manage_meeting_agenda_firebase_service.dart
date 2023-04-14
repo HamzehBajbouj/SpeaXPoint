@@ -123,9 +123,9 @@ class ManageMeetingAgendaFirebaseSerivce
   //the resoan behined using streams
 
   @override
-  Stream<List<MeetingAgneda>> getAllMeetingAgenda(
+  Stream<List<MeetingAgenda>> getAllMeetingAgenda(
       String chapterMeetingId) async* {
-    Stream<List<MeetingAgneda>> meetingAgendaList = const Stream.empty();
+    Stream<List<MeetingAgenda>> meetingAgendaList = const Stream.empty();
 
     try {
       Stream<List<AllocatedRolePlayer>> allocatedRolePlayer =
@@ -141,13 +141,13 @@ class ManageMeetingAgendaFirebaseSerivce
       meetingAgendaList = meetingAgenda.snapshots().map(
             (QuerySnapshot querySnapshot) => querySnapshot.docs.map(
               (e) {
-                return MeetingAgneda.fromJson(e.data() as Map<String, dynamic>);
+                return MeetingAgenda.fromJson(e.data() as Map<String, dynamic>);
               },
             ).toList(),
           );
-      Stream<List<MeetingAgneda>> agendaWithAllocatedRolePlayers =
-          Rx.combineLatest2<List<MeetingAgneda>, List<AllocatedRolePlayer>,
-              List<MeetingAgneda>>(
+      Stream<List<MeetingAgenda>> agendaWithAllocatedRolePlayers =
+          Rx.combineLatest2<List<MeetingAgenda>, List<AllocatedRolePlayer>,
+              List<MeetingAgenda>>(
         meetingAgendaList,
         allocatedRolePlayer,
         (agendas, allocatedRolePlayers) {
@@ -271,7 +271,7 @@ class ManageMeetingAgendaFirebaseSerivce
 
   @override
   Future<Result<Unit, Failure>> updateAgendaCardDetails(
-      String chapterMeetingId, MeetingAgneda agnedaCard) async {
+      String chapterMeetingId, MeetingAgenda agnedaCard) async {
     try {
       super.getMeetingAgendaCollectionRef(chapterMeetingId).then(
         (meetingAgendaCR) async {
@@ -320,10 +320,10 @@ class ManageMeetingAgendaFirebaseSerivce
   }
 
   @override
-  Future<Result<List<MeetingAgneda>, Failure>>
+  Future<Result<List<MeetingAgenda>, Failure>>
       getListOfAllAgendaWithNoAllocatedRolePlayers(
           String chapterMeetingId) async {
-    List<MeetingAgneda> meetingAgenda = [];
+    List<MeetingAgenda> meetingAgenda = [];
     List<AllocatedRolePlayer> allocatedRolePlayerList = [];
     try {
       await super.getAllAllocatedRolePlayersList(chapterMeetingId).then(
@@ -344,7 +344,7 @@ class ManageMeetingAgendaFirebaseSerivce
           if (agendaQS.docs.isNotEmpty) {
             meetingAgenda = agendaQS.docs
                 .map((e) =>
-                    MeetingAgneda.fromJson(e.data() as Map<String, dynamic>))
+                    MeetingAgenda.fromJson(e.data() as Map<String, dynamic>))
                 .toList();
           }
           // this will search for the matching role players and assgin them to
@@ -370,6 +370,19 @@ class ManageMeetingAgendaFirebaseSerivce
                   element.roleName != null &&
                   element.roleOrderPlace != null)
               .toList();
+
+          //filter the list from dupliocated elements  e.g.:
+          //List<String> A = ['apple', 'banana', 'cherry', 'apple', 'banana', 'grape'];
+          //to become : A = ['cherry', 'apple', 'grape'];
+          meetingAgenda.fold<List<MeetingAgenda>>(
+            [],
+            (List<MeetingAgenda> previousValue, element) => previousValue.any(
+                    (p) =>
+                        p.roleName == element.roleName &&
+                        p.roleOrderPlace == element.roleOrderPlace)
+                ? previousValue
+                : [...previousValue, element]);
+
         },
       );
       return Success(meetingAgenda);

@@ -1,6 +1,6 @@
 import 'allocated_role_player.dart';
 
-class MeetingAgneda {
+class MeetingAgenda {
   String? timeSequence;
   String? agendaTitle;
   //agendaCardOrder will act as well as a unique id since we will have list of agenda
@@ -22,7 +22,7 @@ class MeetingAgneda {
   //the roleOrderPlace is meant to differenitate between if he is first speaks , or second speaker..etc
   int? roleOrderPlace;
 
-  MeetingAgneda({
+  MeetingAgenda({
     this.agendaCardOrder,
     this.roleName,
     this.roleOrderPlace,
@@ -30,7 +30,7 @@ class MeetingAgneda {
     this.agendaTitle,
   });
 
-  MeetingAgneda.fromJson(Map<String, dynamic> agendaJson)
+  MeetingAgenda.fromJson(Map<String, dynamic> agendaJson)
       : this(
           timeSequence: agendaJson['timeSequence'],
           roleName: agendaJson['roleName'],

@@ -143,8 +143,8 @@ class _ToastmasterProfileManagementScreenState
                                         color: Color(AppMainColors.p90),
                                       ),
                                     ),
-                                    color: const Color.fromARGB(
-                                        255, 103, 187, 106),
+                                    color: const Color(
+                                        AppMainColors.successSnapBarMessage),
                                   ),
                                 );
                               },
@@ -238,7 +238,9 @@ class _ToastmasterProfileManagementScreenState
                                     width: 100,
                                     height: 100,
                                     placeholder: (context, url) =>
-                                        const CircularProgressIndicator(),
+                                        const CircularProgressIndicator(
+                                      color: Color(AppMainColors.p40),
+                                    ),
                                     errorWidget: (context, url, error) =>
                                         const Icon(Icons.error),
                                     imageUrl:

@@ -36,7 +36,7 @@ class ManageMemberAccountViewModel extends BaseViewModel {
     String? currentProject,
     int? currentLevel,
   }) async {
-    setLoading(true);
+    setLoading(loading:true);
     _registrationStatus = await _manageClubMembersService.registerNewMember(
       email,
       password,
@@ -55,14 +55,14 @@ class ManageMemberAccountViewModel extends BaseViewModel {
       ),
     );
 
-    setLoading(false);
+    setLoading(loading:false);
   }
 
   Future<void> getToastmasterDetails(String toastmasterId) async {
-    setLoading(true);
+    setLoading(loading:true);
     _toastmasterDetailsStatus =
         await _manageClubMembersService.getToastmasterDetails(toastmasterId);
-    setLoading(false);
+    setLoading(loading:false);
   }
 
   Future<void> updateUserDetails({
@@ -76,7 +76,7 @@ class ManageMemberAccountViewModel extends BaseViewModel {
     required int currentLevel,
     required String toastmasterUsername,
   }) async {
-    setLoading(true);
+    setLoading(loading:true);
     _updateToastmasterDetailsStatus =
         await _manageClubMembersService.updateMemberDetails(
       Toastmaster.fromJson(
@@ -93,6 +93,6 @@ class ManageMemberAccountViewModel extends BaseViewModel {
         },
       ),
     );
-    setLoading(false);
+    setLoading(loading:false);
   }
 }

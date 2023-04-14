@@ -20,13 +20,13 @@ abstract class IManageMeetingAgendaService
       String chapterMeetingId, String timeSequence, int agendaCardNumber);
 
   Future<Result<Unit, Failure>> updateAgendaCardDetails(
-      String chapterMeetingId, MeetingAgneda agnedaCard);
+      String chapterMeetingId, MeetingAgenda agnedaCard);
 
-  Stream<List<MeetingAgneda>> getAllMeetingAgenda(String chapterMeetingId);
+  Stream<List<MeetingAgenda>> getAllMeetingAgenda(String chapterMeetingId);
 
 
   //this method will return a list of all agenda cards that has a role (e.g.: Speaker 1)
   //where is role has not been allocated yet. 
-  Future<Result<List<MeetingAgneda>, Failure>>
+  Future<Result<List<MeetingAgenda>, Failure>>
       getListOfAllAgendaWithNoAllocatedRolePlayers(String chapterMeetingId);
 }

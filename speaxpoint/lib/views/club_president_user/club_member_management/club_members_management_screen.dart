@@ -148,7 +148,9 @@ class _ClubMembersManagementScreenState
                     ) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(
-                          child: CircularProgressIndicator(),
+                          child: CircularProgressIndicator(
+                            color: Color(AppMainColors.p40),
+                          ),
                         );
                       } else if (snapshot.connectionState ==
                           ConnectionState.done) {
@@ -190,7 +192,10 @@ class _ClubMembersManagementScreenState
                                                 width: 45,
                                                 height: 45,
                                                 placeholder: (context, url) =>
-                                                    const CircularProgressIndicator(),
+                                                    const CircularProgressIndicator(
+                                                                    color: Color(AppMainColors.p40),
+
+                                                    ),
                                                 errorWidget:
                                                     (context, url, error) =>
                                                         const Icon(Icons.error),

@@ -21,6 +21,8 @@ class AppMainColors {
   static const warningError50 = 0xFFD09595;
   static const warningError25 = 0xFFE7CACA;
 
+  static const successSnapBarMessage = 0xFFE9F9EA;
+
   /*
   these colors are for the status of the sessions in the Manage Coming sessions page
   */
@@ -31,4 +33,6 @@ class AppMainColors {
   static const pendingSessionCardIcon = 0xFFF28D8D;
   static const comingSessionCard = 0xFFF3F5F8;
   static const comingSessionCardIcon = 0xFF577398;
+
+  static const announcedVolunteerSlot = 0xFF8ED4A6;
 }

@@ -51,15 +51,19 @@ class _PrepareMeetingAgendaScreenState
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(right: 30, left: 30, top: 20),
-          child: StreamBuilder<List<MeetingAgneda>>(
+          child: StreamBuilder<List<MeetingAgenda>>(
             stream: _prepareMeetingAgendaViewModel
                 .getChapterMeetingAgenda(widget.chapterMeetingId),
-            builder: (context, AsyncSnapshot<List<MeetingAgneda>> snapshot) {
+            builder: (context, AsyncSnapshot<List<MeetingAgenda>> snapshot) {
               if (!snapshot.hasData) {
-                return const Center(child: CircularProgressIndicator());
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: Color(AppMainColors.p40),
+                  ),
+                );
               } else {
                 //getList of the meeting agendaDate
-                final List<MeetingAgneda> items = snapshot.data!;
+                final List<MeetingAgenda> items = snapshot.data!;
                 //obtain the set the data of fetched from the stream
                 //we need to set so we later can get a reference to the stram list element
                 //and get the latest unique agenda card id

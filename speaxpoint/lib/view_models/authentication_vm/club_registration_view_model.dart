@@ -22,16 +22,16 @@ class ClubRegistrationViewModel extends BaseViewModel {
     required String email,
     required String password,
   }) async {
-    setLoading(true);
+    setLoading(loading:true);
     _registrationStatus = await _authenticationService.registerNewClub(
         email: email, password: password);
-    setLoading(false);
+    setLoading(loading:false);
   }
 
   Future<void> registerClubUsername({required String username}) async {
-    setLoading(true);
+    setLoading(loading:true);
     _clubUsernameRegistrationStatus =
         await _authenticationService.registerClubUserName(username: username);
-    setLoading(false);
+    setLoading(loading:false);
   }
 }

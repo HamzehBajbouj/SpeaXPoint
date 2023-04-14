@@ -26,9 +26,9 @@ class PrepareMeetingAgendaViewModel extends BaseViewModel {
   Result<Unit, Failure>? get updateAgendaCardStatus => _updateAgendaCardStatus;
 
   //this list is always updated according to the stream,
-  List<MeetingAgneda> _meetingAgendaList = [];
-  List<MeetingAgneda> get meetingAgendaList => _meetingAgendaList;
-  set meetingAgendaList(List<MeetingAgneda> agendaList) {
+  List<MeetingAgenda> _meetingAgendaList = [];
+  List<MeetingAgenda> get meetingAgendaList => _meetingAgendaList;
+  set meetingAgendaList(List<MeetingAgenda> agendaList) {
     _meetingAgendaList = agendaList;
   }
 
@@ -40,7 +40,7 @@ class PrepareMeetingAgendaViewModel extends BaseViewModel {
         .generateListOfEmptyAgendaCards(chapterMeetingId, numberOfCards);
   }
 
-  Stream<List<MeetingAgneda>> getChapterMeetingAgenda(
+  Stream<List<MeetingAgenda>> getChapterMeetingAgenda(
           String chapterMeetingId) =>
       _manageMeetingAgendaService.getAllMeetingAgenda(chapterMeetingId);
 
@@ -61,18 +61,18 @@ class PrepareMeetingAgendaViewModel extends BaseViewModel {
   }
 
   Future<void> addNewAgendaEmptyCard(String chapterMeetingId) async {
-    setLoading(true);
+    setLoading(loading:true);
     _addingNewCardStatus = await _manageMeetingAgendaService
         .createEmptyAgendaCard(chapterMeetingId, _getNewCardOrder());
-    setLoading(false);
+    setLoading(loading:false);
   }
 
   Future<void> deleteAgendaCard(
       String chapterMeetingId, int agendaCardNumber) async {
-    setLoading(true);
+    setLoading(loading:true);
     _deteteAgendaCardCardStatus = await _manageMeetingAgendaService
         .deleteAgendaCard(chapterMeetingId, agendaCardNumber);
-    setLoading(false);
+    setLoading(loading:false);
   }
 
   Future<void> updateTimeSequence({
@@ -80,10 +80,10 @@ class PrepareMeetingAgendaViewModel extends BaseViewModel {
     required String timeSequence,
     required int agendaCardNumber,
   }) async {
-    setLoading(true);
+    setLoading(loading:true);
     _updateTimeSequenceStatus = await _manageMeetingAgendaService
         .updateAgendaTime(chapterMeetingId, timeSequence, agendaCardNumber);
-    setLoading(false);
+    setLoading(loading:false);
   }
 
   Future<void> updateAgendaCardDetails({
@@ -93,17 +93,17 @@ class PrepareMeetingAgendaViewModel extends BaseViewModel {
     required int agendaCardNumber,
     required int roleOrderPlace,
   }) async {
-    setLoading(true);
+    setLoading(loading:true);
     _updateAgendaCardStatus =
         await _manageMeetingAgendaService.updateAgendaCardDetails(
       chapterMeetingId,
-      MeetingAgneda(
+      MeetingAgenda(
         agendaCardOrder: agendaCardNumber,
         agendaTitle: agendaCardTitle,
         roleName: roleName,
         roleOrderPlace: roleOrderPlace,
       ),
     );
-    setLoading(false);
+    setLoading(loading:false);
   }
 }

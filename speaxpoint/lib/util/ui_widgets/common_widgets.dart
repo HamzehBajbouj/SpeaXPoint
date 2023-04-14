@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
+import 'package:speaxpoint/util/constants/common_enums.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 
 SnackBar getSnackBar({required Text text, required Color color}) {
@@ -183,6 +184,67 @@ Widget allocatedGuestRoleCard({
                   icon: const Icon(
                     Icons.remove_circle_outline,
                     color: Color(AppMainColors.p30),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget availableVolunteersSlots({
+  required String role,
+  required int? rolePlace,
+  required void Function() deleteAction,
+  required String slotStatus,
+}) {
+  return Container(
+    constraints: const BoxConstraints(
+      minHeight: 30,
+      maxHeight: 40,
+    ),
+    decoration: BoxDecoration(
+      border: Border.all(
+        color: slotStatus == AppVolunteerSlotStatus.Announced.name
+            ? const Color(AppMainColors.announcedVolunteerSlot)
+            : const Color(AppMainColors.p30),
+        width: 1.3,
+      ),
+      borderRadius: BorderRadius.circular(CommonUIProperties.cardRoundedEdges),
+    ),
+    child: Row(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    "$role ${rolePlace ?? " "}",
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontFamily: CommonUIProperties.fontType,
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                      color: slotStatus == AppVolunteerSlotStatus.Announced.name
+                          ? const Color(AppMainColors.announcedVolunteerSlot)
+                          : const Color(AppMainColors.p30),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  onPressed: deleteAction,
+                  icon: Icon(
+                    Icons.remove_circle_outline,
+                    color: slotStatus == AppVolunteerSlotStatus.Announced.name
+                        ? const Color(AppMainColors.announcedVolunteerSlot)
+                        : const Color(AppMainColors.p30),
                   ),
                 )
               ],

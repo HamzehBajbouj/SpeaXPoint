@@ -299,7 +299,10 @@ class _ManageMemberAccountScreenState extends State<ManageMemberAccountScreen> {
                                     width: 100,
                                     height: 100,
                                     placeholder: (context, url) =>
-                                        const CircularProgressIndicator(),
+                                        const CircularProgressIndicator(
+                                                        color: Color(AppMainColors.p40),
+
+                                        ),
                                     errorWidget: (context, url, error) =>
                                         const Icon(Icons.error),
                                     imageUrl:

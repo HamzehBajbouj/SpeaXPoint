@@ -23,7 +23,7 @@ class TimeLineTileItem extends StatefulWidget {
   final bool isFirst;
   final bool isLast;
   final String chapterMeetingId;
-  final MeetingAgneda meetingAgnedaCard;
+  final MeetingAgenda meetingAgnedaCard;
 
   @override
   State<TimeLineTileItem> createState() => _TimeLineTileItemState();

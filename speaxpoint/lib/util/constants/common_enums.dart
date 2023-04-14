@@ -40,3 +40,25 @@ enum AllocatedRolePlayerType {
   OtherClubMember,
   Volunteer,
 }
+
+enum AnnouncementType {
+  ChapterMeetingAnnouncement,
+  VolunteersAnnouncement,
+}
+
+enum AnnouncementStatus {
+  Posted,
+  NotPosted,
+}
+
+//these are used for slots status in the firestore
+enum VolunteerSlotStatus {
+  NoApplicant,
+  PendingApplicant,
+  AcceptedApplicant,
+}
+
+enum AppVolunteerSlotStatus {
+  Announced,
+  UnAnnounced,
+}

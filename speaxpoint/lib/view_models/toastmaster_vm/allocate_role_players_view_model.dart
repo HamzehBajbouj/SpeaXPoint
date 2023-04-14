@@ -4,8 +4,10 @@ import 'package:speaxpoint/app/service_locator.dart';
 import 'package:speaxpoint/models/allocated_role_player.dart';
 import 'package:speaxpoint/models/meeting_agenda.dart';
 import 'package:speaxpoint/models/toastmaster.dart';
+import 'package:speaxpoint/models/volunteer_slot.dart';
 import 'package:speaxpoint/services/failure.dart';
 import 'package:speaxpoint/services/meeting_arrangement/allocate_role_players/i_allocate_role_players_service.dart';
+import 'package:speaxpoint/services/meeting_arrangement/ask_for_volunteers/i_ask_for_volunteers_service.dart';
 import 'package:speaxpoint/services/meeting_arrangement/manage_agenda/i_manage_meeting_agenda_service.dart';
 import 'package:speaxpoint/util/constants/common_enums.dart';
 import 'package:speaxpoint/view_models/base_view_mode.dart';
@@ -14,6 +16,7 @@ import 'package:uuid/uuid.dart';
 class AllocateRolePlayersViewModel extends BaseViewModel {
   final IAllocateRolePlayersService _allocateRolePlayersService;
   final IManageMeetingAgendaService _manageMeetingAgendaService;
+  final IAskForVolunteersService _askForVolunteersService;
 
   Result<Unit, Failure>? _updateRoleStatus;
   Result<Unit, Failure>? get updateRoleStatus => _updateRoleStatus;
@@ -25,23 +28,24 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
   Result<Toastmaster, Failure>? get searchToastmasterUsername =>
       _searchToastmasterUsername;
 
-  List<MeetingAgneda> _agendaWithNoRolePlayersList = [];
-  List<MeetingAgneda> get agendaWithNoRolePlayersList =>
+  List<MeetingAgenda> _agendaWithNoRolePlayersList = [];
+  List<MeetingAgenda> get agendaWithNoRolePlayersList =>
       _agendaWithNoRolePlayersList;
+  List<VolunteerSlot> _listOfAnnouncedVolunteers = [];
 
   //we make it true to hide the warning message in the begining
   bool toastmasterUsernameIsfound = true;
 
-  AllocateRolePlayersViewModel(
-      this._allocateRolePlayersService, this._manageMeetingAgendaService);
+  AllocateRolePlayersViewModel(this._allocateRolePlayersService,
+      this._manageMeetingAgendaService, this._askForVolunteersService);
 
   Future<void> deleteRolePlayerCard(
       String chapterMeetingId, int allocatedRolePlayerUniqueId) async {
-    setLoading(true);
+    setLoading(loading: true);
     await _allocateRolePlayersService.deleteAllocatedRolePlayer(
         chapterMeetingId, allocatedRolePlayerUniqueId);
     validateAllocationOfAllRoles(chapterMeetingId);
-    setLoading(false);
+    setLoading(loading: false);
   }
 
   Future<List<Toastmaster>> getClubMemberList(String clubId) async {
@@ -76,7 +80,7 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
       String roleName,
       int memberRolePlace,
       String allocatedRolePlayerType) async {
-    super.setLoading(true);
+    super.setLoading(loading: true);
     var temp = await _allocateRolePlayersService.allocateNewRolePlayer(
       chapterMeetingId,
       AllocatedRolePlayer(
@@ -89,7 +93,7 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
       ),
     );
     await validateAllocationOfAllRoles(chapterMeetingId);
-    super.setLoading(false);
+    super.setLoading(loading: false);
     return temp;
   }
 
@@ -101,7 +105,7 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
       required String allocatedRolePlayerType}) async {
     //generate random guestInvitationCode, start from the second letter, so we don't get
     //the same code as the chapter meeting inivtation code
-    super.setLoading(true);
+    super.setLoading(loading: true);
     var temp = await _allocateRolePlayersService.allocateNewRolePlayer(
       chapterMeetingId,
       AllocatedRolePlayer(
@@ -113,7 +117,7 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
       ),
     );
     await validateAllocationOfAllRoles(chapterMeetingId);
-    super.setLoading(false);
+    super.setLoading(loading: false);
 
     return temp;
   }
@@ -125,7 +129,7 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
     Toastmaster? toastmaster,
     String allocatedRolePlayerType,
   ) async {
-    super.setLoading(true);
+    super.setLoading(loading: true);
 
     _updateRoleStatus =
         await _allocateRolePlayersService.updateOccupiedRoleDetails(
@@ -140,7 +144,7 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
       ),
     );
     await validateAllocationOfAllRoles(chapterMeetingId);
-    super.setLoading(false);
+    super.setLoading(loading: false);
   }
 
   Future<void> updateExitngGuestRoleDetails({
@@ -150,7 +154,7 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
     required String? guestName,
     required String allocatedRolePlayerType,
   }) async {
-    super.setLoading(true);
+    super.setLoading(loading: true);
     _updateGuestRoleStatus =
         await _allocateRolePlayersService.updateOccupiedRoleDetails(
       chapterMeetingId,
@@ -165,7 +169,7 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
       ),
     );
     await validateAllocationOfAllRoles(chapterMeetingId);
-    super.setLoading(false);
+    super.setLoading(loading: false);
   }
 
   Stream<List<AllocatedRolePlayer>> getAllocatedRolePlayers(
@@ -174,7 +178,7 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
 
   Future<void> searchForToastmasterUsername(
       {required String toastmasterUsername}) async {
-    super.setLoading(true);
+    super.setLoading(loading: true);
     await _allocateRolePlayersService
         .searchOtherClubsMember(toastmasterUsername)
         .then(
@@ -190,7 +194,7 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
         );
       },
     );
-    super.setLoading(false);
+    super.setLoading(loading: false);
   }
 
   String _generateRandomGuestId() {
@@ -208,7 +212,7 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
   //it's mainly attached to the warning message in the allocate role players screen
 
   Future<void> validateAllocationOfAllRoles(String chpaterMeetingId) async {
-    setLoading(true);
+    setLoading(loading: true);
 
     await _manageMeetingAgendaService
         .getListOfAllAgendaWithNoAllocatedRolePlayers(chpaterMeetingId)
@@ -216,11 +220,30 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
       (value) {
         value.whenSuccess(
           (success) {
-            _agendaWithNoRolePlayersList = success;
+            _agendaWithNoRolePlayersList = List.from(success);
           },
         );
       },
     );
-    setLoading(false);
+    await _askForVolunteersService
+        .getVolunteersAnnouncedSlot(chapterMeetingId: chpaterMeetingId)
+        .then(
+      (value) {
+        value.whenSuccess(
+          (success) {
+            _listOfAnnouncedVolunteers = List.from(success);
+          },
+        );
+      },
+    );
+
+    _agendaWithNoRolePlayersList.removeWhere(
+      (agenda) => _listOfAnnouncedVolunteers.any((slot) =>
+          slot.roleName == agenda.roleName &&
+          slot.roleOrderPlace == agenda.roleOrderPlace),
+    );
+
+    print("dsadsadas " + _agendaWithNoRolePlayersList.length.toString());
+    setLoading(loading: false);
   }
 }

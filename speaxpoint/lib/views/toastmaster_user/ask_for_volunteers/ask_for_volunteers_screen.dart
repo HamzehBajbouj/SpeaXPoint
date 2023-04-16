@@ -103,8 +103,8 @@ class _AskForVolunteersScreenState extends State<AskForVolunteersScreen> {
                                   children: <TextSpan>[
                                     TextSpan(
                                       text:
-                                          "it seems there are some Role that have not been "
-                                          "allocated it, allocate them or click on :",
+                                          "it seems you have an exiting announcement"
+                                          "update the details to update the announcement.",
                                       style: TextStyle(
                                           fontWeight: FontWeight.normal),
                                     ),

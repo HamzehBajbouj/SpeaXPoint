@@ -8,8 +8,8 @@ import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/common_widgets.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/allocate_role_players_view_model.dart';
 
-class AllocatedRolePlayersStream extends StatefulWidget {
-  const AllocatedRolePlayersStream(
+class AllocatedRolePlayersLists extends StatefulWidget {
+  const AllocatedRolePlayersLists(
       {super.key,
       required this.allocatedRolePlayerType,
       required this.chapterMeetingId});
@@ -18,12 +18,12 @@ class AllocatedRolePlayersStream extends StatefulWidget {
   final String chapterMeetingId;
 
   @override
-  State<AllocatedRolePlayersStream> createState() =>
+  State<AllocatedRolePlayersLists> createState() =>
       _AllocatedRolePlayersStreamState();
 }
 
 class _AllocatedRolePlayersStreamState
-    extends State<AllocatedRolePlayersStream> {
+    extends State<AllocatedRolePlayersLists> {
   late AllocateRolePlayersViewModel _allocateRolePlayersVM;
   @override
   void initState() {

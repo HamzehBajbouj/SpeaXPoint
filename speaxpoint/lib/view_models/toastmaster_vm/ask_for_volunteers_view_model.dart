@@ -39,23 +39,6 @@ class AskForVolunteersViewModel extends BaseViewModel {
       this._manageMeetingAgendaService,
       this._manageChapterMeeingAnnouncementsService);
 
-  Future<void> validateAllocationOfAllRoles(String chpaterMeetingId) async {
-    setLoading(loading: true);
-    enableAnnounceNowButton = false;
-    isTherePreviousAnnouncement = false;
-    await _manageMeetingAgendaService
-        .getListOfAllAgendaWithNoAllocatedRolePlayers(chpaterMeetingId)
-        .then(
-      (value) {
-        value.whenSuccess(
-          (success) {
-            _agendaWithNoRolePlayersList = success;
-          },
-        );
-      },
-    );
-    setLoading(loading: false);
-  }
 
   Future<void> initiateScreenElements(String chpaterMeetingId) async {
     setLoading(loading: true);
@@ -166,7 +149,7 @@ class AskForVolunteersViewModel extends BaseViewModel {
         VolunteerSlot(
           roleName: item.roleName,
           roleOrderPlace: item.roleOrderPlace,
-          slotStatus: VolunteerSlotStatus.NoApplicant.name,
+          slotStatus: VolunteerSlotStatus.NoApplication.name,
         ),
       );
     }
@@ -189,9 +172,9 @@ class AskForVolunteersViewModel extends BaseViewModel {
   }
 
   void _validatedIfThereIsVolunteersAnnouncemenet() {
-    if (_listOfAnnouncedVolunteers.isEmpty ||
-        _announcementDescription.isEmpty ||
-        _announcementTitle.isEmpty) {
+    if (_listOfAnnouncedVolunteers.isNotEmpty ||
+        _announcementDescription.isNotEmpty ||
+        _announcementTitle.isNotEmpty) {
       isTherePreviousAnnouncement = true;
     }
   }

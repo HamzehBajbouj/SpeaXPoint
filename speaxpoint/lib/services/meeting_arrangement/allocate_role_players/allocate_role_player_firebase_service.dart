@@ -3,9 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:speaxpoint/models/allocated_role_player.dart';
 import 'package:multiple_result/src/unit.dart';
 import 'package:multiple_result/src/result.dart';
+import 'package:speaxpoint/models/slot_applicant.dart';
 import 'package:speaxpoint/models/toastmaster.dart';
+import 'package:speaxpoint/models/volunteer_slot.dart';
 import 'package:speaxpoint/services/meeting_arrangement/allocate_role_players/i_allocate_role_players_service.dart';
 import 'package:speaxpoint/services/meeting_arrangement/common_services/meeting_arrangement_common_firebase_services.dart';
+import 'package:speaxpoint/util/constants/common_enums.dart';
 import '../../failure.dart';
 
 class AllocateRolePlayerFirebaseService
@@ -17,8 +20,8 @@ class AllocateRolePlayerFirebaseService
   final CollectionReference _toastmasterCollection =
       FirebaseFirestore.instance.collection('Toastmasters');
   @override
-  Future<Result<Unit, Failure>> allocateNewRolePlayer(
-      String chapterMeetingId, AllocatedRolePlayer allocatedRolePlayer) async {
+  Future<Result<Unit, Failure>> allocateNewRolePlayer(String chapterMeetingId,
+      AllocatedRolePlayer allocatedRolePlayer, bool deteleVolunteerSlot) async {
     try {
       await super.getAllocatedRolePlayerCollectionRef(chapterMeetingId).then(
         (status) async {
@@ -42,19 +45,38 @@ class AllocateRolePlayerFirebaseService
               this part to delete the role from the volunteers slots collection
               //in case it was announced the need for it but later the VPE, 
               added the role player from other options like (club members).
-              */
-              super.getVolunteersSlotsCollectionRef(chapterMeetingId).then(
-                (collectionRef) async {
-                  QuerySnapshot slotQS = await collectionRef
-                      .where('roleName',
-                          isEqualTo: allocatedRolePlayer.roleName)
-                      .where('roleOrderPlace',
-                          isEqualTo: allocatedRolePlayer.roleOrderPlace)
-                      .get();
 
-                  await slotQS.docs.first.reference.delete();
-                },
-              );
+              the deteleVolunteerSlot is ued to diffeneitate whether this serivce api
+              was used from the volunteersTabview or not,
+              becuase when we are accepting a volunteer applicant , we want to add
+              him into the allocatedRolePlayer, but we also don't want to delete 
+              the volunteerSlot in the collection if otherwise we will not be able 
+              to see the accepted volunteers card in the volunteerTabView or other tabs
+              */
+              if (deteleVolunteerSlot) {
+                super.getVolunteersSlotsCollectionRef(chapterMeetingId).then(
+                  (collectionRef) async {
+                    QuerySnapshot slotQS = await collectionRef
+                        .where('roleName',
+                            isEqualTo: allocatedRolePlayer.roleName)
+                        .where('roleOrderPlace',
+                            isEqualTo: allocatedRolePlayer.roleOrderPlace)
+                        .get();
+                    //first delete the subcollection , then delete the document
+                    QuerySnapshot slotApplicantCollection = await slotQS
+                        .docs.first.reference
+                        .collection("SlotApplicants")
+                        .get();
+                    final List<Future<void>> futures = [];
+
+                    for (DocumentSnapshot doc in slotApplicantCollection.docs) {
+                      futures.add(doc.reference.delete());
+                    }
+                    await Future.wait(futures);
+                    await slotQS.docs.first.reference.delete();
+                  },
+                );
+              }
             },
           );
         },
@@ -122,7 +144,6 @@ class AllocateRolePlayerFirebaseService
   ) async {
     bool roleIsExisted = false;
     try {
-      print("dsdsdsfsd fsdfsdf");
       await super.getAllocatedRolePlayerCollectionRef(chapterMeetingId).then(
         (value) async {
           QuerySnapshot tempQS = await value
@@ -259,6 +280,216 @@ class AllocateRolePlayerFirebaseService
             code: e.toString(),
             location:
                 "AllocateRolePlayerFirebaseService.searchOtherClubsMember()",
+            message: e.toString()),
+      );
+    }
+  }
+
+  @override
+  Future<Result<Unit, Failure>> deleteAnnouncedVolunteerSlot({
+    required String chapterMeetingId,
+    required int volunteerSlotId,
+    required String roleName,
+    required int roleOderPlace,
+  }) async {
+    try {
+      //delte if first in the volunteersSlot collection
+      await super.getVolunteersSlotsCollectionRef(chapterMeetingId).then(
+        (collectionRef) async {
+          QuerySnapshot slotQS = await collectionRef
+              .where("slotUnqiueId", isEqualTo: volunteerSlotId)
+              .get();
+
+          if (slotQS.docs.isNotEmpty) {
+            QuerySnapshot slotApplicantCollection = await slotQS
+                .docs.first.reference
+                .collection("SlotApplicants")
+                .get();
+            final List<Future<void>> futures = [];
+
+            for (DocumentSnapshot doc in slotApplicantCollection.docs) {
+              futures.add(doc.reference.delete());
+            }
+            await Future.wait(futures);
+            await slotQS.docs.first.reference.delete();
+            await slotQS.docs.first.reference.delete();
+            
+          } else {
+            return Error(
+              Failure(
+                  code: "no-volunteer-slot-found",
+                  location:
+                      "AllocateRolePlayerFirebaseService.deleteAnnouncedVolunteerSlot()",
+                  message:
+                      "could not find the volunteer slot with Id : $volunteerSlotId"),
+            );
+          }
+        },
+      );
+      //in case that there was an accepted applicant, then this applicant details
+      //are now in the allocaedRolePlayers collection we need to delete it there as well.
+      await super.getAllocatedRolePlayerCollectionRef(chapterMeetingId).then(
+        (collectionRef) async {
+          QuerySnapshot allocatedRoleQS = await collectionRef
+              .where("roleName", isEqualTo: roleName)
+              .where("roleOrderPlace", isEqualTo: roleOderPlace)
+              .get();
+          if (allocatedRoleQS.docs.isNotEmpty) {
+            await allocatedRoleQS.docs.first.reference.delete();
+          }
+        },
+      );
+      return Success.unit();
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location:
+                "AllocateRolePlayerFirebaseService.deleteAnnouncedVolunteerSlot()",
+            message: e.message ??
+                "Database Error While deleting volunteer slot with Id : $volunteerSlotId"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location:
+                "AllocateRolePlayerFirebaseService.deleteAnnouncedVolunteerSlot()",
+            message: e.toString()),
+      );
+    }
+  }
+
+  @override
+  Future<Result<List<Toastmaster>, Failure>>
+      getListOfAllVolunteerSlotApplicants(
+          {required String chapterMeetingId,
+          required int volunteerSlotId}) async {
+    final CollectionReference toastmastersCollection =
+        FirebaseFirestore.instance.collection('Toastmasters');
+    List<Toastmaster> toastmasterApplicants = [];
+
+    try {
+      //delte if first in the volunteersSlot collection
+      await super.getVolunteersSlotsCollectionRef(chapterMeetingId).then(
+        (collectionRef) async {
+          QuerySnapshot slotQS = await collectionRef
+              .where("slotUnqiueId", isEqualTo: volunteerSlotId)
+              .get();
+
+          if (slotQS.docs.isNotEmpty) {
+            //to get the list of applicant docs
+            QuerySnapshot applicantQS = await slotQS.docs.first.reference
+                .collection("SlotApplicants")
+                .get();
+
+            for (var doc in applicantQS.docs) {
+              String toastmasterId = doc["toastmasterId"] as String;
+              QuerySnapshot toastmasterQS = await toastmastersCollection
+                  .where("toastmasterId", isEqualTo: toastmasterId)
+                  .get();
+              if (toastmasterQS.docs.isNotEmpty) {
+                toastmasterApplicants.add(
+                  Toastmaster.fromJson(
+                      toastmasterQS.docs.first.data() as Map<String, dynamic>),
+                );
+              }
+            }
+          } else {
+            return Error(
+              Failure(
+                  code: "no-volunteer-slot-found",
+                  location:
+                      "AllocateRolePlayerFirebaseService.getListOfAllVolunteerSlotApplicants()",
+                  message:
+                      "could not find the volunteer slot with Id : $volunteerSlotId"),
+            );
+          }
+        },
+      );
+
+      return Success(toastmasterApplicants);
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location:
+                "AllocateRolePlayerFirebaseService.getListOfAllVolunteerSlotApplicants()",
+            message: e.message ??
+                "Database Error While getting volunteer slot applicants list with Id : $volunteerSlotId"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location:
+                "AllocateRolePlayerFirebaseService.getListOfAllVolunteerSlotApplicants()",
+            message: e.toString()),
+      );
+    }
+  }
+
+  @override
+  Future<Result<Unit, Failure>> acceptVolunteerSlotApplicant(
+      {required String chapterMeetingId,
+      required int volunteerSlotId,
+      required SlotApplicant slotApplicant}) async {
+    try {
+      //delte if first in the volunteersSlot collection
+      await super.getVolunteersSlotsCollectionRef(chapterMeetingId).then(
+        (collectionRef) async {
+          QuerySnapshot slotQS = await collectionRef
+              .where("slotUnqiueId", isEqualTo: volunteerSlotId)
+              .get();
+
+          if (slotQS.docs.isNotEmpty) {
+            //to get the list of applicant docs
+            await slotQS.docs.first.reference.update({
+              'slotStatus': VolunteerSlotStatus.AcceptedApplication.name
+            }).then(
+              (_) async {
+                QuerySnapshot applicantQS = await slotQS.docs.first.reference
+                    .collection("SlotApplicants")
+                    .where("toastmasterId",
+                        isEqualTo: slotApplicant.toastmasterId)
+                    .get();
+                await applicantQS.docs.first.reference.update(
+                  {
+                    'applicantStatus ': slotApplicant.applicantStatus,
+                    'acceptanceDate': slotApplicant.acceptanceDate
+                  },
+                );
+              },
+            );
+          } else {
+            return Error(
+              Failure(
+                  code: "no-volunteer-slot-found",
+                  location:
+                      "AllocateRolePlayerFirebaseService.getListOfAllVolunteerSlotApplicants()",
+                  message:
+                      "could not find the volunteer slot with Id : $volunteerSlotId"),
+            );
+          }
+        },
+      );
+
+      return Success.unit();
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location:
+                "AllocateRolePlayerFirebaseService.acceptVolunteerSlotApplicant()",
+            message: e.message ??
+                "Database Error While accepting volunteer slot applicants list with Id : $volunteerSlotId"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location:
+                "AllocateRolePlayerFirebaseService.acceptVolunteerSlotApplicant()",
             message: e.toString()),
       );
     }

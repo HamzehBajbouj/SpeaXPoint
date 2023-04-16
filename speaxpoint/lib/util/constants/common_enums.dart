@@ -53,12 +53,17 @@ enum AnnouncementStatus {
 
 //these are used for slots status in the firestore
 enum VolunteerSlotStatus {
-  NoApplicant,
-  PendingApplicant,
-  AcceptedApplicant,
+  NoApplication,
+  PendingApplication,
+  AcceptedApplication,
 }
 
 enum AppVolunteerSlotStatus {
   Announced,
   UnAnnounced,
+}
+
+enum ApplicantStatus{
+  Accepted,
+  Pending
 }

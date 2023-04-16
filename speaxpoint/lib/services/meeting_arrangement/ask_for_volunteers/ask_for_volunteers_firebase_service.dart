@@ -39,6 +39,8 @@ class AskForVolunteersFirebaseService
         //we need this to update the entire collection with the new data (from the one were existed)
         //before then fetched where some deleted and some are not
         //and from the newlly add slots
+        // we need this in case the new announcement has less slots than the previous
+        //meaning the VPE deleted/excluded some slots in the Ask for Volunteers Page
         for (var doc in slotQS.docs) {
           batch.delete(doc.reference);
         }

@@ -374,15 +374,14 @@ class ManageMeetingAgendaFirebaseSerivce
           //filter the list from dupliocated elements  e.g.:
           //List<String> A = ['apple', 'banana', 'cherry', 'apple', 'banana', 'grape'];
           //to become : A = ['cherry', 'apple', 'grape'];
-          meetingAgenda.fold<List<MeetingAgenda>>(
-            [],
-            (List<MeetingAgenda> previousValue, element) => previousValue.any(
-                    (p) =>
-                        p.roleName == element.roleName &&
-                        p.roleOrderPlace == element.roleOrderPlace)
-                ? previousValue
-                : [...previousValue, element]);
-
+          meetingAgenda = meetingAgenda.fold<List<MeetingAgenda>>(
+              [],
+              (List<MeetingAgenda> previousValue, element) => previousValue.any(
+                      (p) =>
+                          p.roleName == element.roleName &&
+                          p.roleOrderPlace == element.roleOrderPlace)
+                  ? previousValue
+                  : [...previousValue, element]);
         },
       );
       return Success(meetingAgenda);

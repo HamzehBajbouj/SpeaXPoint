@@ -11,7 +11,7 @@ import 'package:speaxpoint/util/ui_widgets/buttons.dart';
 import 'package:speaxpoint/util/ui_widgets/common_widgets.dart';
 import 'package:speaxpoint/util/ui_widgets/options_selections.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/allocate_role_players_view_model.dart';
-import 'package:speaxpoint/views/toastmaster_user/allocate_role_players/tab_bars_widgets/allocated_role_player_stream.dart';
+import 'package:speaxpoint/views/toastmaster_user/allocate_role_players/tab_bars_widgets/allocated_role_player_lists.dart';
 import 'package:speaxpoint/views/toastmaster_user/bottom_sheets_widgets/add_club_member_role_player_bottom_sheet.dart';
 
 class ClubMembersTabView extends StatefulWidget {
@@ -78,7 +78,7 @@ class _ClubMembersTabViewState extends State<ClubMembersTabView> {
           const SizedBox(
             height: 15,
           ),
-          AllocatedRolePlayersStream(
+          AllocatedRolePlayersLists(
             allocatedRolePlayerType: AllocatedRolePlayerType.ClubMember.name,
             chapterMeetingId: widget.chapterMeetingId,
           ),

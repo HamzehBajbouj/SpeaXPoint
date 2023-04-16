@@ -9,7 +9,7 @@ import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart';
 import 'package:speaxpoint/util/ui_widgets/common_widgets.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/allocate_role_players_view_model.dart';
-import 'package:speaxpoint/views/toastmaster_user/allocate_role_players/tab_bars_widgets/allocated_role_player_stream.dart';
+import 'package:speaxpoint/views/toastmaster_user/allocate_role_players/tab_bars_widgets/allocated_role_player_lists.dart';
 import 'package:speaxpoint/views/toastmaster_user/allocate_role_players/update_existing_role_player_dialog.dart';
 import 'package:speaxpoint/views/toastmaster_user/bottom_sheets_widgets/add_non_club_member_role_player_bottom_sheet.dart';
 
@@ -152,7 +152,7 @@ class _VisitorsTabViewState extends State<VisitorsTabView> {
           const SizedBox(
             height: 15,
           ),
-          AllocatedRolePlayersStream(
+          AllocatedRolePlayersLists(
             allocatedRolePlayerType:
                 AllocatedRolePlayerType.OtherClubMember.name,
             chapterMeetingId: widget.chapterMeetingId,

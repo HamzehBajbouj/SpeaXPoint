@@ -3,6 +3,7 @@ import 'package:multiple_result/multiple_result.dart';
 import 'package:speaxpoint/app/service_locator.dart';
 import 'package:speaxpoint/models/allocated_role_player.dart';
 import 'package:speaxpoint/models/meeting_agenda.dart';
+import 'package:speaxpoint/models/slot_applicant.dart';
 import 'package:speaxpoint/models/toastmaster.dart';
 import 'package:speaxpoint/models/volunteer_slot.dart';
 import 'package:speaxpoint/services/failure.dart';
@@ -32,6 +33,9 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
   List<MeetingAgenda> get agendaWithNoRolePlayersList =>
       _agendaWithNoRolePlayersList;
   List<VolunteerSlot> _listOfAnnouncedVolunteers = [];
+
+  List<Toastmaster> _volunteerSlotsApplicant = [];
+  List<Toastmaster> get volunteerSlotsApplicant => _volunteerSlotsApplicant;
 
   //we make it true to hide the warning message in the begining
   bool toastmasterUsernameIsfound = true;
@@ -91,6 +95,7 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
         allocatedRolePlayerType: allocatedRolePlayerType,
         toastmasterUsername: toastmaster.toastmasterUsername,
       ),
+      true,
     );
     await validateAllocationOfAllRoles(chapterMeetingId);
     super.setLoading(loading: false);
@@ -115,6 +120,7 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
         rolePlayerName: guestName,
         allocatedRolePlayerType: allocatedRolePlayerType,
       ),
+      true,
     );
     await validateAllocationOfAllRoles(chapterMeetingId);
     super.setLoading(loading: false);
@@ -176,6 +182,9 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
           String chapterMeetingId) =>
       _allocateRolePlayersService.getAllAllocatedRolePlayers(chapterMeetingId);
 
+  Stream<List<VolunteerSlot>> getVolunteersSlots(String chapterMeetingId) =>
+      _allocateRolePlayersService.getVolunteersSlots(chapterMeetingId);
+
   Future<void> searchForToastmasterUsername(
       {required String toastmasterUsername}) async {
     super.setLoading(loading: true);
@@ -210,7 +219,6 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
   // this is need to know what are the roles in the agenda that have not been assigned/allocated yet
   //it shall be called whenever we open alloacate role players and do any kind of operation.
   //it's mainly attached to the warning message in the allocate role players screen
-
   Future<void> validateAllocationOfAllRoles(String chpaterMeetingId) async {
     setLoading(loading: true);
 
@@ -236,14 +244,90 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
         );
       },
     );
-
+    //this is will search in the _agendaWithNoRolePlayersList list to remove all the
+    //role that have been announced
     _agendaWithNoRolePlayersList.removeWhere(
       (agenda) => _listOfAnnouncedVolunteers.any((slot) =>
           slot.roleName == agenda.roleName &&
           slot.roleOrderPlace == agenda.roleOrderPlace),
     );
-
-    print("dsadsadas " + _agendaWithNoRolePlayersList.length.toString());
     setLoading(loading: false);
+  }
+
+  Future<void> deleteVolunteerSlot(
+      {required String chapterMeetingId,
+      required int slotUnqiueId,
+      required String roleName,
+      required int roleOrderPlace}) async {
+    await _allocateRolePlayersService
+        .deleteAnnouncedVolunteerSlot(
+      chapterMeetingId: chapterMeetingId,
+      roleName: roleName,
+      roleOderPlace: roleOrderPlace,
+      volunteerSlotId: slotUnqiueId,
+    )
+        .then(
+      (value) {
+        value.whenSuccess(
+          (success) async {
+            await validateAllocationOfAllRoles(chapterMeetingId);
+          },
+        );
+      },
+    );
+  }
+
+  // _volunteerSlotsApplicant
+
+  Future<List<Toastmaster>> getSlotApplicants({
+    required String chapterMeetingId,
+    required int slotUnqiueId,
+  }) async {
+    await _allocateRolePlayersService
+        .getListOfAllVolunteerSlotApplicants(
+            chapterMeetingId: chapterMeetingId, volunteerSlotId: slotUnqiueId)
+        .then(
+      (value) {
+        value.whenSuccess(
+          (success) {
+            _volunteerSlotsApplicant = success;
+          },
+        );
+      },
+    );
+    return _volunteerSlotsApplicant;
+  }
+
+  Future<void> acceptSlotApplicant(
+      {required String chapterMeetingId,
+      required VolunteerSlot slot,
+      required Toastmaster selectedApplicant}) async {
+    SlotApplicant slotApplicant = SlotApplicant(
+        acceptanceDate: DateTime.now().toString(),
+        applicantStatus: ApplicantStatus.Accepted.name,
+        toastmasterId: selectedApplicant.toastmasterId);
+
+    AllocatedRolePlayer newAllocatedRolePlayer = AllocatedRolePlayer(
+      roleName: slot.roleName,
+      roleOrderPlace: slot.roleOrderPlace,
+      rolePlayerName: selectedApplicant.toastmasterName,
+      toastmasterId: selectedApplicant.toastmasterId,
+      allocatedRolePlayerType: AllocatedRolePlayerType.Volunteer.name,
+      toastmasterUsername: selectedApplicant.toastmasterUsername,
+    );
+
+    await _allocateRolePlayersService
+        .acceptVolunteerSlotApplicant(
+            chapterMeetingId: chapterMeetingId,
+            volunteerSlotId: slot.slotUnqiueId!,
+            slotApplicant: slotApplicant)
+        .then(
+      (value) {
+        value.whenSuccess((_) async {
+          await _allocateRolePlayersService.allocateNewRolePlayer(
+              chapterMeetingId, newAllocatedRolePlayer, false);
+        });
+      },
+    );
   }
 }

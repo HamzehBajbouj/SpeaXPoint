@@ -1,5 +1,6 @@
 import 'package:multiple_result/multiple_result.dart';
 import 'package:speaxpoint/models/allocated_role_player.dart';
+import 'package:speaxpoint/models/slot_applicant.dart';
 import 'package:speaxpoint/models/toastmaster.dart';
 
 import '../../failure.dart';
@@ -10,7 +11,7 @@ abstract class IAllocateRolePlayersService
   Future<Result<Unit, Failure>> deleteAllocatedRolePlayer(
       String chapterMeetingId, int allocatedRolePlayerUniqueId);
   Future<Result<Unit, Failure>> allocateNewRolePlayer(
-      String chapterMeetingId, AllocatedRolePlayer allocatedRolePlayer);
+      String chapterMeetingId, AllocatedRolePlayer allocatedRolePlayer, bool deteleVolunteerSlot);
 
   //return false if existed else true
   Future<Result<bool, Failure>> validateIfRoleIsTaken(
@@ -21,12 +22,26 @@ abstract class IAllocateRolePlayersService
 
   //there should be another method here to update an exiting role player if it's taken
   Future<Result<Unit, Failure>> updateOccupiedRoleDetails(
-    String chapterMeetingId,
-AllocatedRolePlayer allocatedRolePlayer
-  );
-   Future<Result<Toastmaster, Failure>> searchOtherClubsMember(String toastmasterUsername);
+      String chapterMeetingId, AllocatedRolePlayer allocatedRolePlayer);
 
-  //will search in the toastmasters collection and get the club member id if not existed then display error
+  Future<Result<Toastmaster, Failure>> searchOtherClubsMember(
+      String toastmasterUsername);
 
+  Future<Result<Unit, Failure>> deleteAnnouncedVolunteerSlot(
+      {required String chapterMeetingId,
+      required int volunteerSlotId,
+      required String roleName,
+      required int roleOderPlace});
 
+  Future<Result<List<Toastmaster>, Failure>>
+      getListOfAllVolunteerSlotApplicants({
+    required String chapterMeetingId,
+    required int volunteerSlotId,
+  });
+
+  Future<Result<Unit, Failure>> acceptVolunteerSlotApplicant({
+    required String chapterMeetingId,
+    required int volunteerSlotId,
+    required SlotApplicant slotApplicant,
+  });
 }

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:multiple_result/multiple_result.dart';
 import 'package:speaxpoint/models/allocated_role_player.dart';
 import 'package:speaxpoint/models/toastmaster.dart';
+import 'package:speaxpoint/models/volunteer_slot.dart';
 import 'package:speaxpoint/services/Failure.dart';
 
 abstract class IMeetingArrangementCommonServices {
@@ -10,6 +11,8 @@ abstract class IMeetingArrangementCommonServices {
 
   Stream<List<AllocatedRolePlayer>> getAllAllocatedRolePlayers(
       String chapterMeetingId);
+
+  Stream<List<VolunteerSlot>> getVolunteersSlots(String chapterMeetingId);
 
   Future<Result<List<AllocatedRolePlayer>, Failure>>
       getAllAllocatedRolePlayersList(String chapterMeetingId);

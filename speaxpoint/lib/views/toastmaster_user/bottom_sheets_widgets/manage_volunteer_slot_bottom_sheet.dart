@@ -1,3 +1,4 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
@@ -120,7 +121,117 @@ class _EditTicketBottomSheetState
 
   Widget getSlotStatusRespectiveView(String? status) {
     if (status == VolunteerSlotStatus.AcceptedApplication.name) {
-      return Container(child: Text("applicants details"));
+      return FutureBuilder(
+        future: _allocateRolePlayersViewModel.getAcceptedVolunteerDetails(
+            chapterMeetingId: widget.chapterMeetingId,
+            slotUnqiueId: widget.slotDetails.slotUnqiueId!),
+        builder: (
+          context,
+          AsyncSnapshot<Toastmaster> snapshot,
+        ) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Color(AppMainColors.p40),
+              ),
+            );
+          } else if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasData) {
+              return snapshot.data!.toastmasterId == null
+                  ? const Center(
+                      child: Text(
+                        "Can not find any details for the applicant.",
+                        style: TextStyle(
+                          fontFamily: CommonUIProperties.fontType,
+                          fontSize: 19,
+                          fontWeight: FontWeight.normal,
+                          color: Color(AppMainColors.p50),
+                        ),
+                      ),
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              "Applicant Name",
+                              style: TextStyle(
+                                fontFamily: CommonUIProperties.fontType,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Color(AppMainColors.p80),
+                              ),
+                            ),
+                            FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                StringUtils.capitalize(
+                                  snapshot.data!.toastmasterName ??
+                                      "No Name Found",
+                                  allWords: true,
+                                ),
+                                style: const TextStyle(
+                                  fontFamily: CommonUIProperties.fontType,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.normal,
+                                  color: Color(AppMainColors.p80),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              "Applicant Gender",
+                              style: TextStyle(
+                                fontFamily: CommonUIProperties.fontType,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Color(AppMainColors.p80),
+                              ),
+                            ),
+                            FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                StringUtils.capitalize(
+                                  snapshot.data!.gender ?? "No Gender Found",
+                                  allWords: false,
+                                ),
+                                style: const TextStyle(
+                                  fontFamily: CommonUIProperties.fontType,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.normal,
+                                  color: Color(AppMainColors.p80),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+            } else {
+              return const Text("Error: unable to fetch applicant details");
+            }
+          } else {
+            return Text(
+              'State: ${snapshot.connectionState}',
+              style: const TextStyle(
+                fontFamily: CommonUIProperties.fontType,
+                fontSize: 15,
+                fontWeight: FontWeight.normal,
+                color: Color(AppMainColors.warningError75),
+              ),
+            );
+          }
+        },
+      );
     } else if (status == VolunteerSlotStatus.PendingApplication.name) {
       return FutureBuilder(
         future: _applicants,

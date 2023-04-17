@@ -200,7 +200,7 @@ Widget availableVolunteersSlots({
   required String role,
   required int? rolePlace,
   required void Function() deleteAction,
-  required String slotStatus,
+  required String announcementStatus,
 }) {
   return Container(
     constraints: const BoxConstraints(
@@ -209,7 +209,7 @@ Widget availableVolunteersSlots({
     ),
     decoration: BoxDecoration(
       border: Border.all(
-        color: slotStatus == AppVolunteerSlotStatus.Announced.name
+        color: announcementStatus == AppVolunteerSlotStatus.Announced.name
             ? const Color(AppMainColors.announcedVolunteerSlot)
             : const Color(AppMainColors.p30),
         width: 1.3,
@@ -227,14 +227,15 @@ Widget availableVolunteersSlots({
                 FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(
-                    "$role ${rolePlace ?? " "} ${slotStatus == AppVolunteerSlotStatus.Announced.name ? '*Announced' : ''}"
-                    "${slotStatus == AppVolunteerSlotStatus.UnAnnounced.name ? '*Un-Announced' : ''}",
+                    "$role ${rolePlace ?? " "} ${announcementStatus == AppVolunteerSlotStatus.Announced.name ? '*Announced' : ''}"
+                    "${announcementStatus == AppVolunteerSlotStatus.UnAnnounced.name ? '*Un-Announced' : ''}",
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontFamily: CommonUIProperties.fontType,
                       fontSize: 14,
                       fontWeight: FontWeight.normal,
-                      color: slotStatus == AppVolunteerSlotStatus.Announced.name
+                      color: announcementStatus ==
+                              AppVolunteerSlotStatus.Announced.name
                           ? const Color(AppMainColors.announcedVolunteerSlot)
                           : const Color(AppMainColors.p30),
                     ),
@@ -244,7 +245,8 @@ Widget availableVolunteersSlots({
                   onPressed: deleteAction,
                   icon: Icon(
                     Icons.remove_circle_outline,
-                    color: slotStatus == AppVolunteerSlotStatus.Announced.name
+                    color: announcementStatus ==
+                            AppVolunteerSlotStatus.Announced.name
                         ? const Color(AppMainColors.announcedVolunteerSlot)
                         : const Color(AppMainColors.p30),
                   ),

@@ -10,8 +10,8 @@ abstract class IAllocateRolePlayersService
     extends IMeetingArrangementCommonServices {
   Future<Result<Unit, Failure>> deleteAllocatedRolePlayer(
       String chapterMeetingId, int allocatedRolePlayerUniqueId);
-  Future<Result<Unit, Failure>> allocateNewRolePlayer(
-      String chapterMeetingId, AllocatedRolePlayer allocatedRolePlayer, bool deteleVolunteerSlot);
+  Future<Result<Unit, Failure>> allocateNewRolePlayer(String chapterMeetingId,
+      AllocatedRolePlayer allocatedRolePlayer, bool deteleVolunteerSlot);
 
   //return false if existed else true
   Future<Result<bool, Failure>> validateIfRoleIsTaken(
@@ -35,6 +35,10 @@ abstract class IAllocateRolePlayersService
 
   Future<Result<List<Toastmaster>, Failure>>
       getListOfAllVolunteerSlotApplicants({
+    required String chapterMeetingId,
+    required int volunteerSlotId,
+  });
+  Future<Result<Toastmaster, Failure>> getAcceptedVolunteerDetails({
     required String chapterMeetingId,
     required int volunteerSlotId,
   });

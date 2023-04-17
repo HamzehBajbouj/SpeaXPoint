@@ -231,12 +231,13 @@ class _AskForVolunteersScreenState extends State<AskForVolunteersScreen> {
                                           viewModel.deleteSlot(index);
                                         },
                                         role: viewModel
-                                            .volunteersSlots[index].roleName,
+                                            .volunteersSlots[index].roleName!,
                                         rolePlace: viewModel
                                             .volunteersSlots[index]
                                             .roleOrderPlace,
-                                        slotStatus: viewModel
-                                            .volunteersSlots[index].slotStatus);
+                                        announcementStatus: viewModel
+                                            .volunteersSlots[index]
+                                            .isItAnnouncedBefore!);
                                   },
                                 ),
                               );

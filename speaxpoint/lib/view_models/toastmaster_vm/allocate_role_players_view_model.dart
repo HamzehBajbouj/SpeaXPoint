@@ -330,4 +330,29 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
       },
     );
   }
+
+  Future<Toastmaster> getAcceptedVolunteerDetails({
+    required String chapterMeetingId,
+    required int slotUnqiueId,
+  }) async {
+    Toastmaster applicantDetails = Toastmaster();
+    print("fsdfsdfs ");
+    await _allocateRolePlayersService
+        .getAcceptedVolunteerDetails(
+            chapterMeetingId: chapterMeetingId, volunteerSlotId: slotUnqiueId)
+        .then(
+      (value) {
+        value.whenSuccess(
+          (success) {
+            applicantDetails = success;
+            print("fsdfsdfs " + applicantDetails.toastmasterId!);
+          },
+        );
+        value.whenError((error) {
+          print("fsdfsdfs " + error.message);
+        });
+      },
+    );
+    return applicantDetails;
+  }
 }

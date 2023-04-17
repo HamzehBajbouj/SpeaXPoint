@@ -5,7 +5,6 @@ import 'package:multiple_result/src/unit.dart';
 import 'package:multiple_result/src/result.dart';
 import 'package:speaxpoint/models/slot_applicant.dart';
 import 'package:speaxpoint/models/toastmaster.dart';
-import 'package:speaxpoint/models/volunteer_slot.dart';
 import 'package:speaxpoint/services/meeting_arrangement/allocate_role_players/i_allocate_role_players_service.dart';
 import 'package:speaxpoint/services/meeting_arrangement/common_services/meeting_arrangement_common_firebase_services.dart';
 import 'package:speaxpoint/util/constants/common_enums.dart';
@@ -312,8 +311,6 @@ class AllocateRolePlayerFirebaseService
             }
             await Future.wait(futures);
             await slotQS.docs.first.reference.delete();
-            await slotQS.docs.first.reference.delete();
-            
           } else {
             return Error(
               Failure(
@@ -455,7 +452,7 @@ class AllocateRolePlayerFirebaseService
                     .get();
                 await applicantQS.docs.first.reference.update(
                   {
-                    'applicantStatus ': slotApplicant.applicantStatus,
+                    'applicantStatus': slotApplicant.applicantStatus,
                     'acceptanceDate': slotApplicant.acceptanceDate
                   },
                 );
@@ -490,6 +487,69 @@ class AllocateRolePlayerFirebaseService
             code: e.toString(),
             location:
                 "AllocateRolePlayerFirebaseService.acceptVolunteerSlotApplicant()",
+            message: e.toString()),
+      );
+    }
+  }
+
+  @override
+  Future<Result<Toastmaster, Failure>> getAcceptedVolunteerDetails(
+      {required String chapterMeetingId, required int volunteerSlotId}) async {
+    final CollectionReference toastmastersCollection =
+        FirebaseFirestore.instance.collection('Toastmasters');
+    Toastmaster toastmasterApplicant = Toastmaster();
+
+    try {
+      await super.getVolunteersSlotsCollectionRef(chapterMeetingId).then(
+        (collectionRef) async {
+          QuerySnapshot slotQS = await collectionRef
+              .where("slotUnqiueId", isEqualTo: volunteerSlotId)
+              .get();
+          if (slotQS.docs.isNotEmpty) {
+            QuerySnapshot applicantQS = await slotQS.docs.first.reference
+                .collection("SlotApplicants")
+                .where("applicantStatus", isEqualTo: "Accepted")
+                .get();
+            if (applicantQS.docs.isNotEmpty) {
+              String toastmasterId =
+                  applicantQS.docs.first["toastmasterId"] as String;
+              QuerySnapshot toastmasterQS = await toastmastersCollection
+                  .where("toastmasterId", isEqualTo: toastmasterId)
+                  .get();
+              if (toastmasterQS.docs.isNotEmpty) {
+                toastmasterApplicant = Toastmaster.fromJson(
+                    toastmasterQS.docs.first.data() as Map<String, dynamic>);
+              }
+            }
+          } else {
+            return Error(
+              Failure(
+                  code: "no-volunteer-slot-found",
+                  location:
+                      "AllocateRolePlayerFirebaseService.getAcceptedVolunteerDetails()",
+                  message:
+                      "could not find the volunteer slot with Id : $volunteerSlotId"),
+            );
+          }
+        },
+      );
+
+      return Success(toastmasterApplicant);
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location:
+                "AllocateRolePlayerFirebaseService.getAcceptedVolunteerDetails()",
+            message: e.message ??
+                "Database Error While getting accepted volunteer applicants details for slot with Id : $volunteerSlotId"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location:
+                "AllocateRolePlayerFirebaseService.getAcceptedVolunteerDetails()",
             message: e.toString()),
       );
     }

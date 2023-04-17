@@ -14,8 +14,8 @@ class AskForVolunteersViewModel extends BaseViewModel {
   bool enableAnnounceNowButton = false;
   bool isTherePreviousAnnouncement = false;
 
-  List<Slots> _volunteersSlots = [];
-  List<Slots> get volunteersSlots => _volunteersSlots;
+  List<VolunteerSlot> _volunteersSlots = [];
+  List<VolunteerSlot> get volunteersSlots => _volunteersSlots;
 
   List<MeetingAgenda> _agendaWithNoRolePlayersList = [];
   List<MeetingAgenda> get agendaWithNoRolePlayersList =>
@@ -38,7 +38,6 @@ class AskForVolunteersViewModel extends BaseViewModel {
       this._askForVolunteersService,
       this._manageMeetingAgendaService,
       this._manageChapterMeeingAnnouncementsService);
-
 
   Future<void> initiateScreenElements(String chpaterMeetingId) async {
     setLoading(loading: true);
@@ -105,23 +104,24 @@ class AskForVolunteersViewModel extends BaseViewModel {
     _agendaWithNoRolePlayersList.forEach(
       (element) {
         volunteersSlots.add(
-          Slots(
-            roleName: element.roleName!,
-            roleOrderPlace: element.roleOrderPlace!,
-            slotUnqiueId: -1, //because it's not existed yet
-            slotStatus: AppVolunteerSlotStatus.UnAnnounced.name,
-          ),
+          VolunteerSlot(
+              roleName: element.roleName!,
+              roleOrderPlace: element.roleOrderPlace!,
+              slotUnqiueId: -1, //because it's not existed yet
+              isItAnnouncedBefore: AppVolunteerSlotStatus.UnAnnounced.name,
+              slotStatus: VolunteerSlotStatus.NoApplication.name),
         );
       },
     );
     _listOfAnnouncedVolunteers.forEach(
       (element) {
         volunteersSlots.add(
-          Slots(
+          VolunteerSlot(
             roleName: element.roleName!,
             roleOrderPlace: element.roleOrderPlace!,
             slotUnqiueId: element.slotUnqiueId!,
-            slotStatus: AppVolunteerSlotStatus.Announced.name,
+            slotStatus: element.slotStatus,
+            isItAnnouncedBefore: AppVolunteerSlotStatus.Announced.name,
           ),
         );
       },
@@ -142,20 +142,10 @@ class AskForVolunteersViewModel extends BaseViewModel {
       annoucementDescription: annnoucementDescription,
       annoucementTitle: annnoucementTitle,
     );
-    List<VolunteerSlot> slots = [];
 
-    for (Slots item in _volunteersSlots) {
-      slots.add(
-        VolunteerSlot(
-          roleName: item.roleName,
-          roleOrderPlace: item.roleOrderPlace,
-          slotStatus: VolunteerSlotStatus.NoApplication.name,
-        ),
-      );
-    }
     var temp = await _askForVolunteersService.announceForVolunteers(
         chapterMeetingId: chapterMeetingId,
-        volunteerSlots: slots,
+        volunteerSlots: _volunteersSlots,
         announcement: volunteerAnnoucement);
     setLoading(loading: false);
     return temp;

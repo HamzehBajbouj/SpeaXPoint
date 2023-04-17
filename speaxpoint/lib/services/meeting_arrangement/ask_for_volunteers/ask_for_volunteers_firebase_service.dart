@@ -8,6 +8,7 @@ import 'package:multiple_result/src/unit.dart';
 import 'package:multiple_result/src/result.dart';
 import 'package:speaxpoint/services/meeting_arrangement/ask_for_volunteers/i_ask_for_volunteers_service.dart';
 import 'package:speaxpoint/services/meeting_arrangement/common_services/meeting_arrangement_common_firebase_services.dart';
+import 'package:speaxpoint/util/constants/common_enums.dart';
 
 class AskForVolunteersFirebaseService
     extends MeetingArrangementCommonFirebaseServices
@@ -35,28 +36,73 @@ class AskForVolunteersFirebaseService
             chapterMeetingQS.docs.first.reference.collection("VolunteersSlots");
         QuerySnapshot slotQS = await volunteersSlotsCollection.get();
 
-        //first empty the collection from all existing slots,
-        //we need this to update the entire collection with the new data (from the one were existed)
-        //before then fetched where some deleted and some are not
-        //and from the newlly add slots
-        // we need this in case the new announcement has less slots than the previous
-        //meaning the VPE deleted/excluded some slots in the Ask for Volunteers Page
+
+        /*
+
+        first empty the collection from all existing slots,
+        we need this to update the entire collection with the new data (from the one were existed)
+        before then fetched where some deleted and some are not
+        and from the newlly add slots
+        we need this in case the new announcement has less slots than the previous
+        meaning the VPE deleted/excluded some slots in the Ask for Volunteers Page
+        
+      the app will check from the coming volunteerSlots, AND the once that are coming
+      from the screen (ask for volunteers).
+      then it will delete from the VolunteersSlots collection every elemenet that 
+      is in the VolunteersSlots firestore collection  but not in the screen list.
+
+      then i will delete all the slots that are in  VolunteersSlots collection but 
+      in the screen there is state is unAnnounced.
+      then after emptying the deleting the docuements in the collection
+      we will set all the slots we got from the screen that their state is un-anounced
+      */
+
         for (var doc in slotQS.docs) {
-          batch.delete(doc.reference);
+          VolunteerSlot tempSlot =
+              VolunteerSlot.fromJson(doc.data() as Map<String, dynamic>);
+          //chek
+          bool slotIsExisted = volunteerSlots.any((element) =>
+              element.roleName == tempSlot.roleName &&
+              element.roleOrderPlace == tempSlot.roleOrderPlace);
+          if (!slotIsExisted) {
+            //if you didn't find the one that fetched from the firestore , in the list
+            //of the slots that are fetched from the screen, immeditally delete
+            //as the VPE has deleted some slots in the ask for volunteers screen
+            batch.delete(doc.reference);
+          } else {
+            //now check in the list that is passed from the ask for volunteer screen
+            //to exclude the elements that have been announced previouslly
+            //so we don't delete them and then create a new instance.
+            //it will chek from the un-announced slots from the screen
+            //if it found a match then return true
+            bool slotIsNotAnnounced = volunteerSlots.any((element) =>
+                element.roleName == tempSlot.roleName &&
+                element.roleOrderPlace == tempSlot.roleOrderPlace &&
+                element.isItAnnouncedBefore !=
+                    AppVolunteerSlotStatus.Announced.name);
+            if (slotIsNotAnnounced) {
+
+                batch.delete(doc.reference);
+            }
+          }
         }
 
-        int unquieID = 1;
+        //to get the biggest unqiue id and starting from there we will increment
+        int unquieID = _getlNewtUniqueIdNumber(volunteerSlots);
+        //set only the once that have not been announced
         volunteerSlots.forEach(
           (element) {
-            element.slotUnqiueId = unquieID;
-
-            batch.set(
-              volunteersSlotsCollection.doc(
-                unquieID.toString(),
-              ),
-              element.toJson(),
-            );
-            unquieID++;
+            if (element.isItAnnouncedBefore !=
+                AppVolunteerSlotStatus.Announced.name) {
+              element.slotUnqiueId = unquieID;
+              batch.set(
+                volunteersSlotsCollection.doc(
+                  unquieID.toString(),
+                ),
+                element.toJson(),
+              );
+              unquieID++;
+            }
           },
         );
 

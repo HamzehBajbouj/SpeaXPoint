@@ -98,13 +98,16 @@ SizedBox textButton(
   );
 }
 
-SizedBox outlinedIconTextButton(
-    {required VoidCallback callBack,
-    required String content,
-    required IconData icon}) {
+SizedBox outlinedIconTextButton({
+  required VoidCallback callBack,
+  required String content,
+  required IconData icon,
+  double buttonHeight = CommonUIProperties.buttonHeight,
+  double buttonWidth = CommonUIProperties.buttonWidth,
+}) {
   return SizedBox(
-    width: CommonUIProperties.buttonWidth,
-    height: CommonUIProperties.buttonHeight,
+    width: buttonWidth,
+    height: buttonHeight,
     child: Expanded(
       child: OutlinedButton.icon(
         onPressed: callBack,

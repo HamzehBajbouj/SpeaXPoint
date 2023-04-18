@@ -191,7 +191,13 @@ class ComingSessionOptionBottomSheet extends StatelessWidget {
                     ),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      context.pushRoute(
+                        ManageChapterMeetingAnnouncementsRouter(
+                          chapterMeetingId: chapterMeetingId,
+                        ),
+                      );
+                    },
                     child: Container(
                       padding: const EdgeInsets.only(top: 8),
                       width: 110,

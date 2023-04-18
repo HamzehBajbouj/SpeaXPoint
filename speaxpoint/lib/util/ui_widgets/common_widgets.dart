@@ -201,6 +201,7 @@ Widget availableVolunteersSlots({
   required int? rolePlace,
   required void Function() deleteAction,
   required String announcementStatus,
+  bool viewMode = true,
 }) {
   return Container(
     constraints: const BoxConstraints(
@@ -241,14 +242,17 @@ Widget availableVolunteersSlots({
                     ),
                   ),
                 ),
-                IconButton(
-                  onPressed: deleteAction,
-                  icon: Icon(
-                    Icons.remove_circle_outline,
-                    color: announcementStatus ==
-                            AppVolunteerSlotStatus.Announced.name
-                        ? const Color(AppMainColors.announcedVolunteerSlot)
-                        : const Color(AppMainColors.p30),
+                Visibility(
+                  visible: viewMode,
+                  child: IconButton(
+                    onPressed: deleteAction,
+                    icon: Icon(
+                      Icons.remove_circle_outline,
+                      color: announcementStatus ==
+                              AppVolunteerSlotStatus.Announced.name
+                          ? const Color(AppMainColors.announcedVolunteerSlot)
+                          : const Color(AppMainColors.p30),
+                    ),
                   ),
                 )
               ],
@@ -345,6 +349,73 @@ Widget volunteerSlotCard({
                   )
                 ],
               ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget announcementCard({
+  required String title,
+  required String description,
+  required void Function() onCardTap,
+  required Future<void> Function() onIconButtonTap,
+}) {
+  return InkWell(
+    onTap: onCardTap,
+    highlightColor: const Color(AppMainColors.selectedOption),
+    child: Container(
+      padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: const Color(AppMainColors.p30),
+          width: 1.3,
+        ),
+        borderRadius:
+            BorderRadius.circular(CommonUIProperties.cardRoundedEdges),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontFamily: CommonUIProperties.fontType,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
+                    color: Color(AppMainColors.p80),
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  description,
+                  style: const TextStyle(
+                    fontFamily: CommonUIProperties.fontType,
+                    fontSize: 14,
+                    fontWeight: FontWeight.normal,
+                    color: Color(AppMainColors.p50),
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            onPressed: onIconButtonTap,
+            icon: const Icon(
+              Icons.remove_circle_outline_rounded,
+              size: 30,
+              color: const Color(AppMainColors.p30),
             ),
           ),
         ],

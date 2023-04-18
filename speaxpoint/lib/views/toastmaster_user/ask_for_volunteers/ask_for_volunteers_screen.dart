@@ -11,9 +11,11 @@ import 'package:speaxpoint/util/ui_widgets/text_fields.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/ask_for_volunteers_view_model.dart';
 
 class AskForVolunteersScreen extends StatefulWidget {
-  const AskForVolunteersScreen({super.key, required this.chapterMeetingId});
+  const AskForVolunteersScreen(
+      {super.key, required this.chapterMeetingId, required this.viewMode});
 
   final String chapterMeetingId;
+  final bool viewMode;
 
   @override
   State<AskForVolunteersScreen> createState() => _AskForVolunteersScreenState();
@@ -67,9 +69,11 @@ class _AskForVolunteersScreenState extends State<AskForVolunteersScreen> {
               backgroundColor: Colors.transparent,
               elevation: 0,
               centerTitle: true,
-              title: const Text(
-                "Ask For Volunteers",
-                style: TextStyle(
+              title: Text(
+                widget.viewMode
+                    ? "Volunteers Request Announcement"
+                    : "Ask For Volunteers",
+                style: const TextStyle(
                   fontFamily: CommonUIProperties.fontType,
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
@@ -88,33 +92,36 @@ class _AskForVolunteersScreenState extends State<AskForVolunteersScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Consumer<AskForVolunteersViewModel>(
-                          builder: (_, viewModel, child) {
-                            if (viewModel.isTherePreviousAnnouncement) {
-                              return RichText(
-                                text: const TextSpan(
-                                  text: 'Warning ! ',
-                                  style: TextStyle(
-                                      fontFamily: CommonUIProperties.fontType,
-                                      fontSize: 15,
-                                      color:
-                                          Color(AppMainColors.warningError75),
-                                      fontWeight: FontWeight.bold),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text:
-                                          "it seems you have an exiting announcement"
-                                          "update the details to update the announcement.",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.normal),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            } else {
-                              return Container();
-                            }
-                          },
+                        Visibility(
+                          visible: !widget.viewMode,
+                          child: Consumer<AskForVolunteersViewModel>(
+                            builder: (_, viewModel, child) {
+                              if (viewModel.isTherePreviousAnnouncement) {
+                                return RichText(
+                                  text: const TextSpan(
+                                    text: 'Warning ! ',
+                                    style: TextStyle(
+                                        fontFamily: CommonUIProperties.fontType,
+                                        fontSize: 15,
+                                        color:
+                                            Color(AppMainColors.warningError75),
+                                        fontWeight: FontWeight.bold),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text:
+                                            "it seems you have an exiting announcement"
+                                            "update the details to update the announcement.",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.normal),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              } else {
+                                return Container();
+                              }
+                            },
+                          ),
                         ),
 
                         const SizedBox(
@@ -137,6 +144,7 @@ class _AskForVolunteersScreenState extends State<AskForVolunteersScreen> {
                           controller: _annoucementTitleController,
                           hintText: "Enter The Announcement Title",
                           isRequired: true,
+                          readOnly: widget.viewMode,
                           onChangeCallBack: (data) {
                             if (_annoucementTitleController.text.isEmpty ||
                                 _annoucementDescriptionController
@@ -170,6 +178,7 @@ class _AskForVolunteersScreenState extends State<AskForVolunteersScreen> {
                           hintText: "Enter The Announcement Description",
                           isRequired: true,
                           maxLines: 3,
+                          readOnly: widget.viewMode,
                           onChangeCallBack: (data) {
                             if (_annoucementTitleController.text.isEmpty ||
                                 _annoucementDescriptionController
@@ -199,7 +208,7 @@ class _AskForVolunteersScreenState extends State<AskForVolunteersScreen> {
                         ),
                         Consumer<AskForVolunteersViewModel>(
                           builder: (_, viewModel, child) {
-                            if (viewModel.agendaWithNoRolePlayersList.isEmpty) {
+                            if (viewModel.volunteersSlots.isEmpty) {
                               return const SizedBox(
                                 height: 200,
                                 child: Center(
@@ -227,6 +236,7 @@ class _AskForVolunteersScreenState extends State<AskForVolunteersScreen> {
                                   ),
                                   itemBuilder: (context, index) {
                                     return availableVolunteersSlots(
+                                        viewMode: !widget.viewMode,
                                         deleteAction: () {
                                           viewModel.deleteSlot(index);
                                         },
@@ -247,111 +257,118 @@ class _AskForVolunteersScreenState extends State<AskForVolunteersScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        Consumer<AskForVolunteersViewModel>(
-                          builder: (_, viewModel, child) {
-                            return viewModel.enableAnnounceNowButton
-                                ? filledTextButton(
-                                    callBack: () async {
-                                      if (_formKey.currentState!.validate()) {
-                                        if (_askForVolunteersViewModel
-                                            .agendaWithNoRolePlayersList
-                                            .isNotEmpty) {
-                                          await _askForVolunteersViewModel
-                                              .announceNeedOfVolunteers(
-                                                  chapterMeetingId:
-                                                      widget.chapterMeetingId,
-                                                  annnoucementDescription:
-                                                      _annoucementDescriptionController
-                                                          .text,
-                                                  annnoucementTitle:
-                                                      _annoucementTitleController
-                                                          .text)
-                                              .then(
-                                            (value) {
-                                              value.when(
-                                                (success) {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    getSnackBar(
-                                                      text: const Text(
-                                                        "You have Successfully Announced The Volunteers Request",
-                                                        style: TextStyle(
-                                                          fontFamily:
-                                                              CommonUIProperties
-                                                                  .fontType,
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          color: Color(
-                                                              AppMainColors
-                                                                  .p90),
+                        Visibility(
+                          visible: !widget.viewMode,
+                          child: Consumer<AskForVolunteersViewModel>(
+                            builder: (_, viewModel, child) {
+                              return viewModel.enableAnnounceNowButton
+                                  ? filledTextButton(
+                                      callBack: () async {
+                                        if (_formKey.currentState!.validate()) {
+                                          if (_askForVolunteersViewModel
+                                              .agendaWithNoRolePlayersList
+                                              .isNotEmpty) {
+                                            await _askForVolunteersViewModel
+                                                .announceNeedOfVolunteers(
+                                                    chapterMeetingId:
+                                                        widget.chapterMeetingId,
+                                                    annnoucementDescription:
+                                                        _annoucementDescriptionController
+                                                            .text,
+                                                    annnoucementTitle:
+                                                        _annoucementTitleController
+                                                            .text)
+                                                .then(
+                                              (value) {
+                                                value.when(
+                                                  (success) {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                      getSnackBar(
+                                                        text: const Text(
+                                                          "You have Successfully Announced The Volunteers Request",
+                                                          style: TextStyle(
+                                                            fontFamily:
+                                                                CommonUIProperties
+                                                                    .fontType,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Color(
+                                                                AppMainColors
+                                                                    .p90),
+                                                          ),
                                                         ),
+                                                        color: const Color(
+                                                            AppMainColors
+                                                                .successSnapBarMessage),
                                                       ),
-                                                      color: const Color(
-                                                          AppMainColors
-                                                              .successSnapBarMessage),
-                                                    ),
-                                                  );
+                                                    );
 
-                                                  context.popRoute();
-                                                },
-                                                (error) {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    getSnackBar(
-                                                      text: Text(
-                                                        error.message,
-                                                        style: const TextStyle(
-                                                          fontFamily:
-                                                              CommonUIProperties
-                                                                  .fontType,
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          color: Color(
-                                                              AppMainColors
-                                                                  .p90),
+                                                    context.popRoute();
+                                                  },
+                                                  (error) {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                      getSnackBar(
+                                                        text: Text(
+                                                          error.message,
+                                                          style:
+                                                              const TextStyle(
+                                                            fontFamily:
+                                                                CommonUIProperties
+                                                                    .fontType,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Color(
+                                                                AppMainColors
+                                                                    .p90),
+                                                          ),
                                                         ),
+                                                        color: const Color(
+                                                            AppMainColors
+                                                                .warningError50),
                                                       ),
-                                                      color: const Color(
-                                                          AppMainColors
-                                                              .warningError50),
-                                                    ),
-                                                  );
-                                                },
-                                              );
-                                            },
-                                          );
-                                        } else {
-                                          //show warning message here
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            getSnackBar(
-                                              text: const Text(
-                                                "You can't Announce While not having any roles",
-                                                style: TextStyle(
-                                                  fontFamily: CommonUIProperties
-                                                      .fontType,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500,
-                                                  color:
-                                                      Color(AppMainColors.p90),
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                            );
+                                          } else {
+                                            //show warning message here
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              getSnackBar(
+                                                text: const Text(
+                                                  "You can't Announce While not having any roles",
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                        CommonUIProperties
+                                                            .fontType,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Color(
+                                                        AppMainColors.p90),
+                                                  ),
                                                 ),
+                                                color: const Color(AppMainColors
+                                                    .warningError50),
                                               ),
-                                              color: const Color(
-                                                  AppMainColors.warningError50),
-                                            ),
-                                          );
+                                            );
+                                          }
                                         }
-                                      }
-                                    },
-                                    content: "Announce Now")
-                                : outlinedButton(
-                                    callBack: () {
-                                      //do nothing
-                                    },
-                                    content: "Announce Now");
-                          },
+                                      },
+                                      content: "Announce Now")
+                                  : outlinedButton(
+                                      callBack: () {
+                                        //do nothing
+                                      },
+                                      content: "Announce Now");
+                            },
+                          ),
                         ),
                         // _enable
                       ],

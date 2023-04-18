@@ -4,6 +4,8 @@ import 'package:speaxpoint/views/club_president_user/club_member_management/club
 import 'package:speaxpoint/views/club_president_user/club_member_management/manage_member_account_screen.dart';
 import 'package:speaxpoint/views/club_president_user/club_member_management/manage_member_account_from_set_up.dart';
 import 'package:speaxpoint/views/toastmaster_user/allocate_role_players/allocate_role_players_screen.dart';
+import 'package:speaxpoint/views/toastmaster_user/manage_chapter_meeting_announcements/announce_chapter_meeting_screen.dart';
+import 'package:speaxpoint/views/toastmaster_user/manage_chapter_meeting_announcements/manage_chapter_meeting_announcement_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/ask_for_volunteers/ask_for_volunteers_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/dashboard/toastmaster_dashboard_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/manage_coming_meetings/manage_coming_sessions_screen.dart';
@@ -174,11 +176,21 @@ const toastMasterNav = AutoRoute(
           name: "AllocateRolePlayerRouter",
           page: AllocateRolePlayerScreen,
         ),
-         AutoRoute(
+        AutoRoute(
           path: "askForVolunteers",
           name: "AskForVolunteersRouter",
           page: AskForVolunteersScreen,
-        )
+        ),
+        AutoRoute(
+          path: "manageChapterMeetingAnnouncements",
+          name: "ManageChapterMeetingAnnouncementsRouter",
+          page: ManageChapterMeetingAnnouncementsScreen,
+        ),
+        AutoRoute(
+          path: "announceChapterMeeting",
+          name: "AnnounceChapterMeetingRouter",
+          page: AnnounceChapterMeetingScreen,
+        ),
       ],
     ),
     AutoRoute(

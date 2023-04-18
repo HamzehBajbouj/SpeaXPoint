@@ -78,6 +78,8 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
         chapterMeetingId, roleName, memberRolePlace);
   }
 
+// this method is similar to allocateGuestRolePlayer , we can refactor them into one method
+//by adding a bool check variable
   Future<Result<Unit, Failure>> allocateNewPlayerFromClub(
       String chapterMeetingId,
       Toastmaster toastmaster,

@@ -110,11 +110,15 @@ class AllocateRolePlayerScreen extends StatelessWidget {
                           buttonHeight: 10,
                           callBack: () {
                             context
-                                .pushRoute(AskForVolunteersRouter(
-                                    chapterMeetingId: chapterMeetingId))
+                                .pushRoute(
+                              AskForVolunteersRouter(
+                                chapterMeetingId: chapterMeetingId,
+                                viewMode: false,
+                              ),
+                            )
                                 .then(
                               (value) {
-                                //check again after returning to this page, 
+                                //check again after returning to this page,
                                 //it's needed since this widget is a stateless one
                                 allocateRolePlayersViewModel
                                     .validateAllocationOfAllRoles(

@@ -22,10 +22,12 @@ abstract class IManageMeetingAgendaService
   Future<Result<Unit, Failure>> updateAgendaCardDetails(
       String chapterMeetingId, MeetingAgenda agnedaCard);
 
+//this is a stream , which is used in the UI widgets
   Stream<List<MeetingAgenda>> getAllMeetingAgenda(String chapterMeetingId);
-
-
-  //this method will return a list of all agenda cards that has a role (e.g.: Speaker 1)
+  
+//this one will return a list of all meeting agenda , it's used for validation purposes
+   Future<Result<List<MeetingAgenda>, Failure>> getMeetingAgenda(String chapterMeetingId);
+    //this method will return a list of all agenda cards that has a role (e.g.: Speaker 1)
   //where is role has not been allocated yet. 
   Future<Result<List<MeetingAgenda>, Failure>>
       getListOfAllAgendaWithNoAllocatedRolePlayers(String chapterMeetingId);

@@ -1,18 +1,22 @@
 import 'package:speaxpoint/models/annoucement/announcement.dart';
 
 class ChapterMeetingAnnouncement extends Announcement {
-  String meetingStreamLink;
-  String meetingDescription;
-  String meetingTtile;
-  String meetingDate;
+  String? meetingStreamLink;
+  String? meetingDescription;
+  String? meetingTtile;
+  String? meetingDate;
   String? contactNumber;
+  String? brushureFileName;
+  String? brushureLink;
 
   ChapterMeetingAnnouncement(
       {this.contactNumber,
-      required this.meetingDate,
-      required this.meetingDescription,
-      required this.meetingStreamLink,
-      required this.meetingTtile,
+      this.meetingDate,
+      this.meetingDescription,
+      this.meetingStreamLink,
+      this.meetingTtile,
+      this.brushureFileName,
+      this.brushureLink,
       required super.annoucementDate,
       required super.annoucementStatus,
       required super.annoucementType});
@@ -27,6 +31,8 @@ class ChapterMeetingAnnouncement extends Announcement {
           meetingStreamLink: cmAnnoucement['meetingStreamLink'],
           meetingTtile: cmAnnoucement['meetingTtile'],
           contactNumber: cmAnnoucement['contactNumber'],
+          brushureFileName: cmAnnoucement['brushureFileName'],
+          brushureLink: cmAnnoucement['brushureLink'],
         );
 
   Map<String, dynamic> toJson() => {
@@ -38,5 +44,7 @@ class ChapterMeetingAnnouncement extends Announcement {
         'meetingStreamLink': meetingStreamLink,
         'meetingTtile': meetingTtile,
         'contactNumber': contactNumber,
+        'brushureLink': brushureLink,
+        'brushureFileName': brushureFileName,
       };
 }

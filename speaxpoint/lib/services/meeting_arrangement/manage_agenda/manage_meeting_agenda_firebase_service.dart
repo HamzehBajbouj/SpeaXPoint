@@ -404,4 +404,39 @@ class ManageMeetingAgendaFirebaseSerivce
       );
     }
   }
+
+  @override
+  Future<Result<List<MeetingAgenda>, Failure>> getMeetingAgenda(
+      String chapterMeetingId) async {
+    List<MeetingAgenda> meetingAgenda = [];
+    try {
+      await super.getMeetingAgendaCollectionRef(chapterMeetingId).then(
+        (coolectionRef) async {
+          QuerySnapshot agendaQS = await coolectionRef.get();
+          if (agendaQS.docs.isNotEmpty) {
+            meetingAgenda = agendaQS.docs
+                .map((e) =>
+                    MeetingAgenda.fromJson(e.data() as Map<String, dynamic>))
+                .toList();
+          }
+        },
+      );
+      return Success(meetingAgenda);
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location: "ManageMeetingAgendaFirebaseSerivce.getMeetingAgenda()",
+            message:
+                e.message ?? "Database Error While getting meeting agenda"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location: "ManageMeetingAgendaFirebaseSerivce.getMeetingAgenda()",
+            message: e.toString()),
+      );
+    }
+  }
 }

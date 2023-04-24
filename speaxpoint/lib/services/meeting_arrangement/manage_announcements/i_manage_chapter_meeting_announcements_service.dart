@@ -7,4 +7,10 @@ abstract class IManageChapterMeeingAnnouncementsService
     extends IMeetingArrangementCommonServices {
   Future<Result<VolunteerAnnouncement, Failure>> getVolunteersAnnouncement(
       {required String chapterMeetingId});
+
+  Future<Result<Unit, Failure>> deletePublishedAnnouncement(
+      {required String chapterMeetingId, required String announcementType});
+
+  Stream<List<Map<String, dynamic>>> getChapterMeetingAnnouncement(
+      {required String chapterMeetingId});
 }

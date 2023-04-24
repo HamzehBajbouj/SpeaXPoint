@@ -162,8 +162,8 @@ class AskForVolunteersViewModel extends BaseViewModel {
   }
 
   void _validatedIfThereIsVolunteersAnnouncemenet() {
-    if (_listOfAnnouncedVolunteers.isNotEmpty ||
-        _announcementDescription.isNotEmpty ||
+    if (_listOfAnnouncedVolunteers.isNotEmpty &&
+        _announcementDescription.isNotEmpty &&
         _announcementTitle.isNotEmpty) {
       isTherePreviousAnnouncement = true;
     }

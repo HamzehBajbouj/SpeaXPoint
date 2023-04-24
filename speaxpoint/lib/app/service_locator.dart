@@ -23,6 +23,7 @@ import 'package:speaxpoint/view_models/club_president_vm/club_members_management
 import 'package:speaxpoint/view_models/club_president_vm/manage_member_account_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/allocate_role_players_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/ask_for_volunteers_view_model.dart';
+import 'package:speaxpoint/view_models/toastmaster_vm/manage_chapter_meeting_announcement_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_coming_sessions_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/prepare_meeting_agenda_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/profile_management_view_model.dart';
@@ -125,6 +126,13 @@ Future<void> initServiceLocator() async {
       serviceLocator<IAskForVolunteersService>(),
       serviceLocator<IManageMeetingAgendaService>(),
       serviceLocator<IManageChapterMeeingAnnouncementsService>(),
+    ),
+  );
+
+  serviceLocator.registerLazySingleton(
+    () => ManageChapterMeetingAnnouncementViewModel(
+      serviceLocator<IManageChapterMeeingAnnouncementsService>(),
+      serviceLocator<IManageMeetingAgendaService>(),
     ),
   );
 }

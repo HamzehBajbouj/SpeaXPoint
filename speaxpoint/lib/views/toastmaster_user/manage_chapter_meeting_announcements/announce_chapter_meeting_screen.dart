@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart';
 import 'package:speaxpoint/util/ui_widgets/text_fields.dart';
+import 'package:speaxpoint/view_models/toastmaster_vm/manage_chapter_meeting_announcement_view_model.dart';
 
 class AnnounceChapterMeetingScreen extends StatefulWidget {
   const AnnounceChapterMeetingScreen({super.key});
@@ -16,6 +18,8 @@ class AnnounceChapterMeetingScreen extends StatefulWidget {
 
 class _AnnounceChapterMeetingScreenState
     extends State<AnnounceChapterMeetingScreen> {
+  late ManageChapterMeetingAnnouncementViewModel _manageAnnouncementVM;
+
   final TextEditingController _anunBrochure = TextEditingController();
   final TextEditingController _anunTitle = TextEditingController();
   final TextEditingController _anunDescription = TextEditingController();
@@ -47,6 +51,14 @@ class _AnnounceChapterMeetingScreenState
     true,
     false,
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _manageAnnouncementVM =
+        Provider.of<ManageChapterMeetingAnnouncementViewModel>(context,
+            listen: false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -306,7 +318,15 @@ class _AnnounceChapterMeetingScreenState
                   height: 30,
                 ),
                 _enableButton
-                    ? filledTextButton(callBack: () {}, content: "Announce Now")
+                    ? filledTextButton(
+                        callBack: () async {
+                          _manageAnnouncementVM.announceChapterMeeting(
+                              meetingDescription: _anunDescription.text,
+                              meetingTtile: _anunTitle.text,
+                              meetingDate: _meetingRawDate,
+                              annoucementType: _anunSelectType);
+                        },
+                        content: "Announce Now")
                     : outlinedButton(callBack: () {}, content: "Announce Now"),
               ],
             ),

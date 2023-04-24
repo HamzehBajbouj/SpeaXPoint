@@ -221,6 +221,7 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
   // this is need to know what are the roles in the agenda that have not been assigned/allocated yet
   //it shall be called whenever we open alloacate role players and do any kind of operation.
   //it's mainly attached to the warning message in the allocate role players screen
+  //it will also check whether the unallocated role has been announced or not
   Future<void> validateAllocationOfAllRoles(String chpaterMeetingId) async {
     setLoading(loading: true);
 

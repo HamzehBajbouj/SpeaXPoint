@@ -1,6 +1,9 @@
+import 'dart:io';
+import 'package:multiple_result/multiple_result.dart';
 import 'package:speaxpoint/models/annoucement/chapter_meeting_announcement.dart';
 import 'package:speaxpoint/models/annoucement/volunteer_annoucement.dart';
 import 'package:speaxpoint/models/meeting_agenda.dart';
+import 'package:speaxpoint/services/failure.dart';
 import 'package:speaxpoint/services/meeting_arrangement/manage_agenda/i_manage_meeting_agenda_service.dart';
 import 'package:speaxpoint/services/meeting_arrangement/manage_announcements/i_manage_chapter_meeting_announcements_service.dart';
 import 'package:speaxpoint/util/constants/common_enums.dart';
@@ -32,6 +35,9 @@ class ManageChapterMeetingAnnouncementViewModel extends BaseViewModel {
   set meetingAgendaStatus(bool value) {
     _meetingAgendaStatus = value;
   }
+
+  Result<Unit, Failure>? _deleteStatus;
+  Result<Unit, Failure>? get deleteStatus => _deleteStatus;
 
   bool allowToAnnounceChpater = false;
 
@@ -85,7 +91,7 @@ class ManageChapterMeetingAnnouncementViewModel extends BaseViewModel {
   Future<void> deleteAnExistingAnnouncement(
       {required String chapterMeetingId,
       required String announcementType}) async {
-    await _manageChapterMeeingAnnouncementsService
+    _deleteStatus = await _manageChapterMeeingAnnouncementsService
         .deletePublishedAnnouncement(
             chapterMeetingId: chapterMeetingId,
             announcementType: announcementType)
@@ -93,7 +99,13 @@ class ManageChapterMeetingAnnouncementViewModel extends BaseViewModel {
       (value) {
         value.whenSuccess(
           (success) {
-            _chapterMeetingAnnouncement = null;
+            if (announcementType ==
+                AnnouncementType.VolunteersAnnouncement.name) {
+              _volunteerAnnouncement = null;
+            } else if (announcementType ==
+                AnnouncementType.ChapterMeetingAnnouncement.name) {
+              _chapterMeetingAnnouncement = null;
+            }
           },
         );
       },
@@ -152,19 +164,21 @@ class ManageChapterMeetingAnnouncementViewModel extends BaseViewModel {
     }
     //check that there are at least one meeting agenda with a role(even if it's un-allocatated)
     //and that not all the agenda are empty.
-    bool agendaAreNotEmpty = false;
-    for (MeetingAgenda item in _agendaWithPlayersList) {
-      if (item.roleName != null && item.roleOrderPlace != null) {
-        agendaAreNotEmpty = true;
+    if (_agendaWithPlayersList.isNotEmpty) {
+      bool agendaAreNotEmpty = false;
+
+      for (MeetingAgenda item in _agendaWithPlayersList) {
+        if (item.roleName != null && item.roleOrderPlace != null) {
+          agendaAreNotEmpty = true;
+        }
+      }
+
+      if (!agendaAreNotEmpty) {
+        _meetingAgendaStatus = false;
+        _meetingAgendaWarningMessage =
+            "Your Agenda have some empty cards, please assign some data e.g.: roles";
       }
     }
-
-    if (!agendaAreNotEmpty) {
-      _meetingAgendaStatus = false;
-      _meetingAgendaWarningMessage =
-          "Your Agenda are empty cards, please assign some data e.g.: roles";
-    }
-
     setLoading(loading: false);
   }
 
@@ -173,12 +187,37 @@ class ManageChapterMeetingAnnouncementViewModel extends BaseViewModel {
   /*
     check 
   */
-  Future<void> announceChapterMeeting({
-    required String meetingDescription, 
+  Future<Result<Unit, Failure>> announceChapterMeeting({
+    required String meetingDescription,
     required String meetingTtile,
     required String meetingDate,
-    required String annoucementType,
-    String? contactNumber,
-    String? meetingStreamLink,
-  }) async {}
+    required String annoucementLevel,
+    required String chapterMeetingId,
+    required String clubId,
+    required String contactNumber,
+    required String meetingStreamLink,
+    required File? brochureFile,
+  }) async {
+    ChapterMeetingAnnouncement chapterMeetingAnnouncement =
+        ChapterMeetingAnnouncement(
+      annoucementDate: DateTime.now().toString(),
+      annoucementStatus: AnnouncementStatus.Posted.name,
+      annoucementType: AnnouncementType.ChapterMeetingAnnouncement.name,
+      chapterMeetingId: chapterMeetingId,
+      clubId: clubId,
+      annoucementLevel: annoucementLevel,
+      meetingDate: meetingDate,
+      contactNumber: contactNumber.isEmpty ? null : contactNumber,
+      meetingDescription: meetingDescription,
+      meetingTtile: meetingTtile,
+      meetingStreamLink: meetingStreamLink.isEmpty ? null : meetingStreamLink,
+    );
+
+    return await _manageChapterMeeingAnnouncementsService
+        .announceChapterMeeting(
+      chapterMeetingAnnouncement: chapterMeetingAnnouncement,
+      brochureFile: brochureFile,
+      chapterMeetingId: chapterMeetingId,
+    );
+  }
 }

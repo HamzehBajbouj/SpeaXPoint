@@ -9,7 +9,8 @@ class ChapterMeetingAnnouncement extends Announcement {
   String? contactNumber;
   String? brushureFileName;
   String? brushureLink;
-
+  String? annoucementLevel;
+  
   ChapterMeetingAnnouncement({
     this.contactNumber,
     this.meetingDate,
@@ -18,6 +19,7 @@ class ChapterMeetingAnnouncement extends Announcement {
     this.meetingTtile,
     this.brushureFileName,
     this.brushureLink,
+    this.annoucementLevel,
     required super.annoucementDate,
     required super.annoucementStatus,
     required super.annoucementType,
@@ -39,6 +41,7 @@ class ChapterMeetingAnnouncement extends Announcement {
           brushureLink: cmAnnoucement['brushureLink'],
           chapterMeetingId: cmAnnoucement['chapterMeetingId'],
           clubId: cmAnnoucement['clubId'],
+          annoucementLevel: cmAnnoucement['annoucementLevel'],
         );
 
   Map<String, dynamic> toJson() => {
@@ -54,5 +57,6 @@ class ChapterMeetingAnnouncement extends Announcement {
         'contactNumber': contactNumber,
         'brushureLink': brushureLink,
         'brushureFileName': brushureFileName,
+        'annoucementLevel': annoucementLevel,
       };
 }

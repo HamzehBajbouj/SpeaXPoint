@@ -1,3 +1,6 @@
+import 'dart:developer';
+import 'dart:io';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
@@ -7,9 +10,17 @@ import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart';
 import 'package:speaxpoint/util/ui_widgets/text_fields.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_chapter_meeting_announcement_view_model.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
+
+import 'dialogs/announce_chapter_confirmation_dialog.dart';
 
 class AnnounceChapterMeetingScreen extends StatefulWidget {
-  const AnnounceChapterMeetingScreen({super.key});
+  const AnnounceChapterMeetingScreen(
+      {super.key, required this.chapterMeetingId, required this.clubId});
+
+  final String chapterMeetingId;
+  final String clubId;
 
   @override
   State<AnnounceChapterMeetingScreen> createState() =>
@@ -23,9 +34,10 @@ class _AnnounceChapterMeetingScreenState
   final TextEditingController _anunBrochure = TextEditingController();
   final TextEditingController _anunTitle = TextEditingController();
   final TextEditingController _anunDescription = TextEditingController();
-  final TextEditingController __anunContactNumber = TextEditingController();
+  final TextEditingController _anunContactNumber = TextEditingController();
   final TextEditingController _anunMeetingLink = TextEditingController();
   final TextEditingController _anunMeetingDate = TextEditingController();
+  File? brochureFile;
   String _meetingRawDate = "";
   String _anunSelectType = "Public";
   bool _enableButton = false;
@@ -56,7 +68,7 @@ class _AnnounceChapterMeetingScreenState
   void initState() {
     super.initState();
     _manageAnnouncementVM =
-        Provider.of<ManageChapterMeetingAnnouncementViewModel>(context,
+        Provider.of<ManageChapterMeetingAnnouncementViewModel>(this.context,
             listen: false);
   }
 
@@ -127,6 +139,7 @@ class _AnnounceChapterMeetingScreenState
                 outlineTextFieldWithTrailingIcon(
                   controller: _anunBrochure,
                   hintText: "Select Photo",
+                  readOnly: true,
                   icon: const Icon(
                     Icons.arrow_forward_ios_rounded,
                     size: 30,
@@ -134,7 +147,22 @@ class _AnnounceChapterMeetingScreenState
                   ),
                   isRequired: false,
                   onChangeCallBack: (_) {},
-                  onTapCallBack: () {},
+                  onTapCallBack: () async {
+                    try {
+                      final pickedPhoto = await ImagePicker()
+                          .pickImage(source: ImageSource.gallery);
+                      if (pickedPhoto != null) {
+                        brochureFile = File(pickedPhoto.path);
+                        _anunBrochure.text = basename(brochureFile!.path);
+                      } else {
+                        ScaffoldMessenger.of(this.context).showSnackBar(
+                            const SnackBar(
+                                content: Text("No Image Is Selected!")));
+                      }
+                    } catch (e) {
+                      log(e.toString());
+                    }
+                  },
                 ),
                 const SizedBox(
                   height: 10,
@@ -248,7 +276,7 @@ class _AnnounceChapterMeetingScreenState
                 ),
                 outlineTextField(
                   keyboardType: TextInputType.text,
-                  controller: __anunContactNumber,
+                  controller: _anunContactNumber,
                   hintText: "Contact Number",
                   isRequired: false,
                 ),
@@ -320,11 +348,28 @@ class _AnnounceChapterMeetingScreenState
                 _enableButton
                     ? filledTextButton(
                         callBack: () async {
-                          _manageAnnouncementVM.announceChapterMeeting(
-                              meetingDescription: _anunDescription.text,
-                              meetingTtile: _anunTitle.text,
-                              meetingDate: _meetingRawDate,
-                              annoucementType: _anunSelectType);
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AnnounceChapterConfirmationDialog(
+                                meetingDescription: _anunDescription.text,
+                                meetingTtile: _anunTitle.text,
+                                meetingDate: _meetingRawDate,
+                                annoucementLevel: _anunSelectType,
+                                chapterMeetingId: widget.chapterMeetingId,
+                                clubId: widget.clubId,
+                                contactNumber: _anunContactNumber.text,
+                                meetingStreamLink: _anunMeetingLink.text,
+                                brochureFile: brochureFile,
+                              );
+                            },
+                          ).then(
+                            (value) {
+                              if (value != null && (value as bool == true)) {
+                                context.popRoute();
+                              }
+                            },
+                          );
                         },
                         content: "Announce Now")
                     : outlinedButton(callBack: () {}, content: "Announce Now"),

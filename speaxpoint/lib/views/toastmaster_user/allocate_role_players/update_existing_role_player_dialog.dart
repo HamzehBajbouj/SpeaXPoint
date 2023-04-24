@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
 import 'package:speaxpoint/models/toastmaster.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
@@ -10,7 +8,7 @@ import 'package:speaxpoint/util/ui_widgets/buttons.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/allocate_role_players_view_model.dart';
 
 class UpdateExitingRolePlayerDialog extends StatefulWidget {
-  UpdateExitingRolePlayerDialog({
+ const UpdateExitingRolePlayerDialog({
     super.key,
     required this.chapterMeetingId,
     required this.roleName,

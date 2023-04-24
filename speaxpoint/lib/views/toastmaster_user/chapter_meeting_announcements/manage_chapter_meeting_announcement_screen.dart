@@ -9,7 +9,7 @@ import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart';
 import 'package:speaxpoint/util/ui_widgets/common_widgets.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_chapter_meeting_announcement_view_model.dart';
-import 'package:speaxpoint/views/toastmaster_user/manage_chapter_meeting_announcements/dialogs/announce_chapter_error_dialog.dart';
+import 'package:speaxpoint/views/toastmaster_user/chapter_meeting_announcements/dialogs/announce_chapter_error_dialog.dart';
 
 class ManageChapterMeetingAnnouncementsScreen extends StatefulWidget {
   const ManageChapterMeetingAnnouncementsScreen(
@@ -173,7 +173,7 @@ class _ManageChapterMeetingAnnouncementsScreenState
                                           "no description provided",
                                       onCardTap: () {
                                         context.pushRoute(
-                                          AnnounceChapterMeetingRouter(),
+                                          ChapterMeetingAnnouncementViewRouter(),
                                         );
                                       },
                                       onIconButtonTap: () async {
@@ -210,7 +210,9 @@ class _ManageChapterMeetingAnnouncementsScreenState
                             (value) {
                               if (viewModel.meetingAgendaStatus) {
                                 context.pushRoute(
-                                  const AnnounceChapterMeetingRouter(),
+                                  AnnounceChapterMeetingRouter(
+                                      chapterMeetingId: widget.chapterMeetingId,
+                                      clubId: widget.clubId),
                                 );
                                 // context.pushRoute();
                               }

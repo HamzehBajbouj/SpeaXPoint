@@ -11,9 +11,9 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i26;
+import 'package:auto_route/auto_route.dart' as _i27;
 import 'package:auto_route/empty_router_widgets.dart' as _i4;
-import 'package:flutter/material.dart' as _i27;
+import 'package:flutter/material.dart' as _i28;
 import 'package:speaxpoint/views/club_president_user/club_member_management/club_members_management_screen.dart'
     as _i10;
 import 'package:speaxpoint/views/club_president_user/club_member_management/manage_member_account_from_set_up.dart'
@@ -30,12 +30,14 @@ import 'package:speaxpoint/views/toastmaster_user/allocate_role_players/allocate
     as _i22;
 import 'package:speaxpoint/views/toastmaster_user/ask_for_volunteers/ask_for_volunteers_screen.dart'
     as _i23;
+import 'package:speaxpoint/views/toastmaster_user/chapter_meeting_announcements/announce_chapter_meeting_screen.dart'
+    as _i25;
+import 'package:speaxpoint/views/toastmaster_user/chapter_meeting_announcements/chapter_meeting_announcement_view_screen.dart'
+    as _i26;
+import 'package:speaxpoint/views/toastmaster_user/chapter_meeting_announcements/manage_chapter_meeting_announcement_screen.dart'
+    as _i24;
 import 'package:speaxpoint/views/toastmaster_user/dashboard/toastmaster_dashboard_screen.dart'
     as _i19;
-import 'package:speaxpoint/views/toastmaster_user/manage_chapter_meeting_announcements/announce_chapter_meeting_screen.dart'
-    as _i25;
-import 'package:speaxpoint/views/toastmaster_user/manage_chapter_meeting_announcements/manage_chapter_meeting_announcement_screen.dart'
-    as _i24;
 import 'package:speaxpoint/views/toastmaster_user/manage_coming_meetings/manage_coming_sessions_screen.dart'
     as _i20;
 import 'package:speaxpoint/views/toastmaster_user/prepare_meeting_agenda/prepare_meeting_agenda_screen.dart'
@@ -63,63 +65,63 @@ import 'package:speaxpoint/views/user_authentication/log_in_screens/log_in_guest
 import 'package:speaxpoint/views/user_authentication/log_in_screens/user_type_selection_screen.dart'
     as _i1;
 
-class AppRouter extends _i26.RootStackRouter {
-  AppRouter([_i27.GlobalKey<_i27.NavigatorState>? navigatorKey])
+class AppRouter extends _i27.RootStackRouter {
+  AppRouter([_i28.GlobalKey<_i28.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
-  final Map<String, _i26.PageFactory> pagesMap = {
+  final Map<String, _i27.PageFactory> pagesMap = {
     UserTypeSelectionRouter.name: (routeData) {
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i1.UserTypeSelectionScreen(),
       );
     },
     ClubPresidentLoginRouter.name: (routeData) {
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i2.LogInAsClubPresidentScreen(),
       );
     },
     ToastmasterLoginRouter.name: (routeData) {
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i3.LogInAsToastmasterScreen(),
       );
     },
     EmptyRouterPageRoute.name: (routeData) {
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i4.EmptyRouterPage(),
       );
     },
     ClubRegistrationRouter.name: (routeData) {
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i5.ClubRegistrationScreen(),
       );
     },
     ClubUsernameRegistrationRouter.name: (routeData) {
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i6.ClubUsernameRegistrationScreen(),
       );
     },
     ClubSetUpRegistrationRouter.name: (routeData) {
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i7.ClubSetUpRegistrationScreen(),
       );
     },
     ClubProfileManagementSetUpRouter.name: (routeData) {
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i8.ClubProfileManagementScreen(),
       );
     },
     SetAndManageMemberAccountRouter.name: (routeData) {
       final args = routeData.argsAs<SetAndManageMemberAccountRouterArgs>();
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i9.ManageMemeberAccountFromSetUpScreen(
           key: args.key,
@@ -132,7 +134,7 @@ class AppRouter extends _i26.RootStackRouter {
       final args = routeData.argsAs<ClubMembersManagementSetUpRouterArgs>(
           orElse: () => ClubMembersManagementSetUpRouterArgs(
               fromSetUpRouter: pathParams.getBool('fromSetUp')));
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i10.ClubMembersManagementScreen(
           key: args.key,
@@ -141,19 +143,19 @@ class AppRouter extends _i26.RootStackRouter {
       );
     },
     ClubPresidentHomeRouter.name: (routeData) {
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i11.ClubPresidentHomeScreen(),
       );
     },
     ToastmasterHomeRouter.name: (routeData) {
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i12.ToastmasterHomeScreen(),
       );
     },
     GuestLoginRouter.name: (routeData) {
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i13.LogInAsGuestScreen(),
       );
@@ -163,7 +165,7 @@ class AppRouter extends _i26.RootStackRouter {
       final args = routeData.argsAs<GuestFavoriteNameRouterArgs>(
           orElse: () => GuestFavoriteNameRouterArgs(
               guestHasRole: pathParams.getBool('guestHasRole')));
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i14.GuestFavoriteNameScreen(
           key: args.key,
@@ -172,19 +174,19 @@ class AppRouter extends _i26.RootStackRouter {
       );
     },
     ClubPresidentDashboardRouter.name: (routeData) {
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i4.EmptyRouterPage(),
       );
     },
     ClubProfileManagementRouter.name: (routeData) {
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i8.ClubProfileManagementScreen(),
       );
     },
     PresidentDashboardScreenRoute.name: (routeData) {
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i15.PresidentDashboardScreen(),
       );
@@ -194,7 +196,7 @@ class AppRouter extends _i26.RootStackRouter {
       final args = routeData.argsAs<ClubMembersManagementRouterArgs>(
           orElse: () => ClubMembersManagementRouterArgs(
               fromSetUpRouter: pathParams.getBool('fromSetUp')));
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i10.ClubMembersManagementScreen(
           key: args.key,
@@ -204,7 +206,7 @@ class AppRouter extends _i26.RootStackRouter {
     },
     ManageAccountRouter.name: (routeData) {
       final args = routeData.argsAs<ManageAccountRouterArgs>();
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i16.ManageMemberAccountScreen(
           key: args.key,
@@ -215,38 +217,38 @@ class AppRouter extends _i26.RootStackRouter {
       );
     },
     ToastmasterDashboardRouter.name: (routeData) {
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i4.EmptyRouterPage(),
       );
     },
     ToastmasterScheduledMeetingsRouter.name: (routeData) {
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i17.ToastmasterScheduledMeetingsScreen(),
       );
     },
     ToastmasterProfileManagementRouter.name: (routeData) {
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i18.ToastmasterProfileManagementScreen(),
       );
     },
     ToastmasterDashboardScreenRoute.name: (routeData) {
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i19.ToastmasterDashboardScreen(),
       );
     },
     ManageComingSessionsRouter.name: (routeData) {
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i20.ManageComingSessionsScreen(),
       );
     },
     PrepareMeetingAgendaRouter.name: (routeData) {
       final args = routeData.argsAs<PrepareMeetingAgendaRouterArgs>();
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i21.PrepareMeetingAgendaScreen(
           key: args.key,
@@ -256,7 +258,7 @@ class AppRouter extends _i26.RootStackRouter {
     },
     AllocateRolePlayerRouter.name: (routeData) {
       final args = routeData.argsAs<AllocateRolePlayerRouterArgs>();
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i22.AllocateRolePlayerScreen(
           key: args.key,
@@ -267,7 +269,7 @@ class AppRouter extends _i26.RootStackRouter {
     },
     AskForVolunteersRouter.name: (routeData) {
       final args = routeData.argsAs<AskForVolunteersRouterArgs>();
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i23.AskForVolunteersScreen(
           key: args.key,
@@ -280,7 +282,7 @@ class AppRouter extends _i26.RootStackRouter {
     ManageChapterMeetingAnnouncementsRouter.name: (routeData) {
       final args =
           routeData.argsAs<ManageChapterMeetingAnnouncementsRouterArgs>();
-      return _i26.AdaptivePage<dynamic>(
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i24.ManageChapterMeetingAnnouncementsScreen(
           key: args.key,
@@ -290,26 +292,37 @@ class AppRouter extends _i26.RootStackRouter {
       );
     },
     AnnounceChapterMeetingRouter.name: (routeData) {
-      return _i26.AdaptivePage<dynamic>(
+      final args = routeData.argsAs<AnnounceChapterMeetingRouterArgs>();
+      return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i25.AnnounceChapterMeetingScreen(),
+        child: _i25.AnnounceChapterMeetingScreen(
+          key: args.key,
+          chapterMeetingId: args.chapterMeetingId,
+          clubId: args.clubId,
+        ),
+      );
+    },
+    ChapterMeetingAnnouncementViewRouter.name: (routeData) {
+      return _i27.AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: const _i26.ChapterMeetingAnnouncementViewScreen(),
       );
     },
   };
 
   @override
-  List<_i26.RouteConfig> get routes => [
-        _i26.RouteConfig(
+  List<_i27.RouteConfig> get routes => [
+        _i27.RouteConfig(
           '/#redirect',
           path: '/',
           redirectTo: '/userType',
           fullMatch: true,
         ),
-        _i26.RouteConfig(
+        _i27.RouteConfig(
           UserTypeSelectionRouter.name,
           path: '/userType',
           children: [
-            _i26.RouteConfig(
+            _i27.RouteConfig(
               '*#redirect',
               path: '*',
               parent: UserTypeSelectionRouter.name,
@@ -318,11 +331,11 @@ class AppRouter extends _i26.RootStackRouter {
             )
           ],
         ),
-        _i26.RouteConfig(
+        _i27.RouteConfig(
           ClubPresidentLoginRouter.name,
           path: '/presidentLogin',
           children: [
-            _i26.RouteConfig(
+            _i27.RouteConfig(
               '*#redirect',
               path: '*',
               parent: ClubPresidentLoginRouter.name,
@@ -331,11 +344,11 @@ class AppRouter extends _i26.RootStackRouter {
             )
           ],
         ),
-        _i26.RouteConfig(
+        _i27.RouteConfig(
           ToastmasterLoginRouter.name,
           path: '/toastmasterLogin',
           children: [
-            _i26.RouteConfig(
+            _i27.RouteConfig(
               '*#redirect',
               path: '*',
               parent: ToastmasterLoginRouter.name,
@@ -344,21 +357,21 @@ class AppRouter extends _i26.RootStackRouter {
             )
           ],
         ),
-        _i26.RouteConfig(
+        _i27.RouteConfig(
           EmptyRouterPageRoute.name,
           path: '/guestLogin',
           children: [
-            _i26.RouteConfig(
+            _i27.RouteConfig(
               GuestLoginRouter.name,
               path: '',
               parent: EmptyRouterPageRoute.name,
             ),
-            _i26.RouteConfig(
+            _i27.RouteConfig(
               GuestFavoriteNameRouter.name,
               path: 'favoriteName/:guestHasRole',
               parent: EmptyRouterPageRoute.name,
             ),
-            _i26.RouteConfig(
+            _i27.RouteConfig(
               '*#redirect',
               path: '*',
               parent: EmptyRouterPageRoute.name,
@@ -367,11 +380,11 @@ class AppRouter extends _i26.RootStackRouter {
             ),
           ],
         ),
-        _i26.RouteConfig(
+        _i27.RouteConfig(
           ClubRegistrationRouter.name,
           path: '/clubRegistration',
           children: [
-            _i26.RouteConfig(
+            _i27.RouteConfig(
               '*#redirect',
               path: '*',
               parent: ClubRegistrationRouter.name,
@@ -380,19 +393,19 @@ class AppRouter extends _i26.RootStackRouter {
             )
           ],
         ),
-        _i26.RouteConfig(
+        _i27.RouteConfig(
           ClubUsernameRegistrationRouter.name,
           path: '/clubUsernameRegistration',
         ),
-        _i26.RouteConfig(
+        _i27.RouteConfig(
           ClubSetUpRegistrationRouter.name,
           path: '/clubSetUp',
         ),
-        _i26.RouteConfig(
+        _i27.RouteConfig(
           ClubProfileManagementSetUpRouter.name,
           path: '/clubProfileManagggement',
           children: [
-            _i26.RouteConfig(
+            _i27.RouteConfig(
               '*#redirect',
               path: '*',
               parent: ClubProfileManagementSetUpRouter.name,
@@ -401,11 +414,11 @@ class AppRouter extends _i26.RootStackRouter {
             )
           ],
         ),
-        _i26.RouteConfig(
+        _i27.RouteConfig(
           SetAndManageMemberAccountRouter.name,
           path: '/setAndManageMemberAccount',
           children: [
-            _i26.RouteConfig(
+            _i27.RouteConfig(
               '*#redirect',
               path: '*',
               parent: SetAndManageMemberAccountRouter.name,
@@ -414,11 +427,11 @@ class AppRouter extends _i26.RootStackRouter {
             )
           ],
         ),
-        _i26.RouteConfig(
+        _i27.RouteConfig(
           ClubMembersManagementSetUpRouter.name,
           path: '/clubMembersManagementSetUp/:fromSetUp',
           children: [
-            _i26.RouteConfig(
+            _i27.RouteConfig(
               '*#redirect',
               path: '*',
               parent: ClubMembersManagementSetUpRouter.name,
@@ -427,21 +440,21 @@ class AppRouter extends _i26.RootStackRouter {
             )
           ],
         ),
-        _i26.RouteConfig(
+        _i27.RouteConfig(
           ClubPresidentHomeRouter.name,
           path: '/clubPresidentHomeScreen',
           children: [
-            _i26.RouteConfig(
+            _i27.RouteConfig(
               ClubPresidentDashboardRouter.name,
               path: 'clubPresidentDashboard',
               parent: ClubPresidentHomeRouter.name,
               children: [
-                _i26.RouteConfig(
+                _i27.RouteConfig(
                   PresidentDashboardScreenRoute.name,
                   path: '',
                   parent: ClubPresidentDashboardRouter.name,
                   children: [
-                    _i26.RouteConfig(
+                    _i27.RouteConfig(
                       '*#redirect',
                       path: '*',
                       parent: PresidentDashboardScreenRoute.name,
@@ -450,12 +463,12 @@ class AppRouter extends _i26.RootStackRouter {
                     )
                   ],
                 ),
-                _i26.RouteConfig(
+                _i27.RouteConfig(
                   ClubMembersManagementRouter.name,
                   path: 'clubMembersManagement/:fromSetUp',
                   parent: ClubPresidentDashboardRouter.name,
                   children: [
-                    _i26.RouteConfig(
+                    _i27.RouteConfig(
                       '*#redirect',
                       path: '*',
                       parent: ClubMembersManagementRouter.name,
@@ -464,12 +477,12 @@ class AppRouter extends _i26.RootStackRouter {
                     )
                   ],
                 ),
-                _i26.RouteConfig(
+                _i27.RouteConfig(
                   ManageAccountRouter.name,
                   path: 'manageMemberAccount',
                   parent: ClubPresidentDashboardRouter.name,
                   children: [
-                    _i26.RouteConfig(
+                    _i27.RouteConfig(
                       '*#redirect',
                       path: '*',
                       parent: ManageAccountRouter.name,
@@ -480,28 +493,28 @@ class AppRouter extends _i26.RootStackRouter {
                 ),
               ],
             ),
-            _i26.RouteConfig(
+            _i27.RouteConfig(
               ClubProfileManagementRouter.name,
               path: 'clubProfileManagement',
               parent: ClubPresidentHomeRouter.name,
             ),
           ],
         ),
-        _i26.RouteConfig(
+        _i27.RouteConfig(
           ToastmasterHomeRouter.name,
           path: '/toastmasterHomeScreen',
           children: [
-            _i26.RouteConfig(
+            _i27.RouteConfig(
               ToastmasterDashboardRouter.name,
               path: 'toastmasterDashboard',
               parent: ToastmasterHomeRouter.name,
               children: [
-                _i26.RouteConfig(
+                _i27.RouteConfig(
                   ToastmasterDashboardScreenRoute.name,
                   path: '',
                   parent: ToastmasterDashboardRouter.name,
                   children: [
-                    _i26.RouteConfig(
+                    _i27.RouteConfig(
                       '*#redirect',
                       path: '*',
                       parent: ToastmasterDashboardScreenRoute.name,
@@ -510,44 +523,49 @@ class AppRouter extends _i26.RootStackRouter {
                     )
                   ],
                 ),
-                _i26.RouteConfig(
+                _i27.RouteConfig(
                   ManageComingSessionsRouter.name,
                   path: 'manageComingSessions',
                   parent: ToastmasterDashboardRouter.name,
                 ),
-                _i26.RouteConfig(
+                _i27.RouteConfig(
                   PrepareMeetingAgendaRouter.name,
                   path: 'prepareMeetingAgenda',
                   parent: ToastmasterDashboardRouter.name,
                 ),
-                _i26.RouteConfig(
+                _i27.RouteConfig(
                   AllocateRolePlayerRouter.name,
                   path: 'allocateRolePlayer',
                   parent: ToastmasterDashboardRouter.name,
                 ),
-                _i26.RouteConfig(
+                _i27.RouteConfig(
                   AskForVolunteersRouter.name,
                   path: 'askForVolunteers',
                   parent: ToastmasterDashboardRouter.name,
                 ),
-                _i26.RouteConfig(
+                _i27.RouteConfig(
                   ManageChapterMeetingAnnouncementsRouter.name,
                   path: 'manageChapterMeetingAnnouncements',
                   parent: ToastmasterDashboardRouter.name,
                 ),
-                _i26.RouteConfig(
+                _i27.RouteConfig(
                   AnnounceChapterMeetingRouter.name,
                   path: 'announceChapterMeeting',
                   parent: ToastmasterDashboardRouter.name,
                 ),
+                _i27.RouteConfig(
+                  ChapterMeetingAnnouncementViewRouter.name,
+                  path: 'chapterMeetingAnnouncementView',
+                  parent: ToastmasterDashboardRouter.name,
+                ),
               ],
             ),
-            _i26.RouteConfig(
+            _i27.RouteConfig(
               ToastmasterScheduledMeetingsRouter.name,
               path: 'scheduledMeetings',
               parent: ToastmasterHomeRouter.name,
             ),
-            _i26.RouteConfig(
+            _i27.RouteConfig(
               ToastmasterProfileManagementRouter.name,
               path: 'toastmasterProfileManagement',
               parent: ToastmasterHomeRouter.name,
@@ -559,8 +577,8 @@ class AppRouter extends _i26.RootStackRouter {
 
 /// generated route for
 /// [_i1.UserTypeSelectionScreen]
-class UserTypeSelectionRouter extends _i26.PageRouteInfo<void> {
-  const UserTypeSelectionRouter({List<_i26.PageRouteInfo>? children})
+class UserTypeSelectionRouter extends _i27.PageRouteInfo<void> {
+  const UserTypeSelectionRouter({List<_i27.PageRouteInfo>? children})
       : super(
           UserTypeSelectionRouter.name,
           path: '/userType',
@@ -572,8 +590,8 @@ class UserTypeSelectionRouter extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.LogInAsClubPresidentScreen]
-class ClubPresidentLoginRouter extends _i26.PageRouteInfo<void> {
-  const ClubPresidentLoginRouter({List<_i26.PageRouteInfo>? children})
+class ClubPresidentLoginRouter extends _i27.PageRouteInfo<void> {
+  const ClubPresidentLoginRouter({List<_i27.PageRouteInfo>? children})
       : super(
           ClubPresidentLoginRouter.name,
           path: '/presidentLogin',
@@ -585,8 +603,8 @@ class ClubPresidentLoginRouter extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i3.LogInAsToastmasterScreen]
-class ToastmasterLoginRouter extends _i26.PageRouteInfo<void> {
-  const ToastmasterLoginRouter({List<_i26.PageRouteInfo>? children})
+class ToastmasterLoginRouter extends _i27.PageRouteInfo<void> {
+  const ToastmasterLoginRouter({List<_i27.PageRouteInfo>? children})
       : super(
           ToastmasterLoginRouter.name,
           path: '/toastmasterLogin',
@@ -598,8 +616,8 @@ class ToastmasterLoginRouter extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i4.EmptyRouterPage]
-class EmptyRouterPageRoute extends _i26.PageRouteInfo<void> {
-  const EmptyRouterPageRoute({List<_i26.PageRouteInfo>? children})
+class EmptyRouterPageRoute extends _i27.PageRouteInfo<void> {
+  const EmptyRouterPageRoute({List<_i27.PageRouteInfo>? children})
       : super(
           EmptyRouterPageRoute.name,
           path: '/guestLogin',
@@ -611,8 +629,8 @@ class EmptyRouterPageRoute extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.ClubRegistrationScreen]
-class ClubRegistrationRouter extends _i26.PageRouteInfo<void> {
-  const ClubRegistrationRouter({List<_i26.PageRouteInfo>? children})
+class ClubRegistrationRouter extends _i27.PageRouteInfo<void> {
+  const ClubRegistrationRouter({List<_i27.PageRouteInfo>? children})
       : super(
           ClubRegistrationRouter.name,
           path: '/clubRegistration',
@@ -624,7 +642,7 @@ class ClubRegistrationRouter extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i6.ClubUsernameRegistrationScreen]
-class ClubUsernameRegistrationRouter extends _i26.PageRouteInfo<void> {
+class ClubUsernameRegistrationRouter extends _i27.PageRouteInfo<void> {
   const ClubUsernameRegistrationRouter()
       : super(
           ClubUsernameRegistrationRouter.name,
@@ -636,7 +654,7 @@ class ClubUsernameRegistrationRouter extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i7.ClubSetUpRegistrationScreen]
-class ClubSetUpRegistrationRouter extends _i26.PageRouteInfo<void> {
+class ClubSetUpRegistrationRouter extends _i27.PageRouteInfo<void> {
   const ClubSetUpRegistrationRouter()
       : super(
           ClubSetUpRegistrationRouter.name,
@@ -648,8 +666,8 @@ class ClubSetUpRegistrationRouter extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i8.ClubProfileManagementScreen]
-class ClubProfileManagementSetUpRouter extends _i26.PageRouteInfo<void> {
-  const ClubProfileManagementSetUpRouter({List<_i26.PageRouteInfo>? children})
+class ClubProfileManagementSetUpRouter extends _i27.PageRouteInfo<void> {
+  const ClubProfileManagementSetUpRouter({List<_i27.PageRouteInfo>? children})
       : super(
           ClubProfileManagementSetUpRouter.name,
           path: '/clubProfileManagggement',
@@ -662,11 +680,11 @@ class ClubProfileManagementSetUpRouter extends _i26.PageRouteInfo<void> {
 /// generated route for
 /// [_i9.ManageMemeberAccountFromSetUpScreen]
 class SetAndManageMemberAccountRouter
-    extends _i26.PageRouteInfo<SetAndManageMemberAccountRouterArgs> {
+    extends _i27.PageRouteInfo<SetAndManageMemberAccountRouterArgs> {
   SetAndManageMemberAccountRouter({
-    _i27.Key? key,
+    _i28.Key? key,
     required bool isInEditMode,
-    List<_i26.PageRouteInfo>? children,
+    List<_i27.PageRouteInfo>? children,
   }) : super(
           SetAndManageMemberAccountRouter.name,
           path: '/setAndManageMemberAccount',
@@ -686,7 +704,7 @@ class SetAndManageMemberAccountRouterArgs {
     required this.isInEditMode,
   });
 
-  final _i27.Key? key;
+  final _i28.Key? key;
 
   final bool isInEditMode;
 
@@ -699,11 +717,11 @@ class SetAndManageMemberAccountRouterArgs {
 /// generated route for
 /// [_i10.ClubMembersManagementScreen]
 class ClubMembersManagementSetUpRouter
-    extends _i26.PageRouteInfo<ClubMembersManagementSetUpRouterArgs> {
+    extends _i27.PageRouteInfo<ClubMembersManagementSetUpRouterArgs> {
   ClubMembersManagementSetUpRouter({
-    _i27.Key? key,
+    _i28.Key? key,
     required bool fromSetUpRouter,
-    List<_i26.PageRouteInfo>? children,
+    List<_i27.PageRouteInfo>? children,
   }) : super(
           ClubMembersManagementSetUpRouter.name,
           path: '/clubMembersManagementSetUp/:fromSetUp',
@@ -724,7 +742,7 @@ class ClubMembersManagementSetUpRouterArgs {
     required this.fromSetUpRouter,
   });
 
-  final _i27.Key? key;
+  final _i28.Key? key;
 
   final bool fromSetUpRouter;
 
@@ -736,8 +754,8 @@ class ClubMembersManagementSetUpRouterArgs {
 
 /// generated route for
 /// [_i11.ClubPresidentHomeScreen]
-class ClubPresidentHomeRouter extends _i26.PageRouteInfo<void> {
-  const ClubPresidentHomeRouter({List<_i26.PageRouteInfo>? children})
+class ClubPresidentHomeRouter extends _i27.PageRouteInfo<void> {
+  const ClubPresidentHomeRouter({List<_i27.PageRouteInfo>? children})
       : super(
           ClubPresidentHomeRouter.name,
           path: '/clubPresidentHomeScreen',
@@ -749,8 +767,8 @@ class ClubPresidentHomeRouter extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i12.ToastmasterHomeScreen]
-class ToastmasterHomeRouter extends _i26.PageRouteInfo<void> {
-  const ToastmasterHomeRouter({List<_i26.PageRouteInfo>? children})
+class ToastmasterHomeRouter extends _i27.PageRouteInfo<void> {
+  const ToastmasterHomeRouter({List<_i27.PageRouteInfo>? children})
       : super(
           ToastmasterHomeRouter.name,
           path: '/toastmasterHomeScreen',
@@ -762,7 +780,7 @@ class ToastmasterHomeRouter extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i13.LogInAsGuestScreen]
-class GuestLoginRouter extends _i26.PageRouteInfo<void> {
+class GuestLoginRouter extends _i27.PageRouteInfo<void> {
   const GuestLoginRouter()
       : super(
           GuestLoginRouter.name,
@@ -775,9 +793,9 @@ class GuestLoginRouter extends _i26.PageRouteInfo<void> {
 /// generated route for
 /// [_i14.GuestFavoriteNameScreen]
 class GuestFavoriteNameRouter
-    extends _i26.PageRouteInfo<GuestFavoriteNameRouterArgs> {
+    extends _i27.PageRouteInfo<GuestFavoriteNameRouterArgs> {
   GuestFavoriteNameRouter({
-    _i27.Key? key,
+    _i28.Key? key,
     required bool guestHasRole,
   }) : super(
           GuestFavoriteNameRouter.name,
@@ -798,7 +816,7 @@ class GuestFavoriteNameRouterArgs {
     required this.guestHasRole,
   });
 
-  final _i27.Key? key;
+  final _i28.Key? key;
 
   final bool guestHasRole;
 
@@ -810,8 +828,8 @@ class GuestFavoriteNameRouterArgs {
 
 /// generated route for
 /// [_i4.EmptyRouterPage]
-class ClubPresidentDashboardRouter extends _i26.PageRouteInfo<void> {
-  const ClubPresidentDashboardRouter({List<_i26.PageRouteInfo>? children})
+class ClubPresidentDashboardRouter extends _i27.PageRouteInfo<void> {
+  const ClubPresidentDashboardRouter({List<_i27.PageRouteInfo>? children})
       : super(
           ClubPresidentDashboardRouter.name,
           path: 'clubPresidentDashboard',
@@ -823,7 +841,7 @@ class ClubPresidentDashboardRouter extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i8.ClubProfileManagementScreen]
-class ClubProfileManagementRouter extends _i26.PageRouteInfo<void> {
+class ClubProfileManagementRouter extends _i27.PageRouteInfo<void> {
   const ClubProfileManagementRouter()
       : super(
           ClubProfileManagementRouter.name,
@@ -835,8 +853,8 @@ class ClubProfileManagementRouter extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i15.PresidentDashboardScreen]
-class PresidentDashboardScreenRoute extends _i26.PageRouteInfo<void> {
-  const PresidentDashboardScreenRoute({List<_i26.PageRouteInfo>? children})
+class PresidentDashboardScreenRoute extends _i27.PageRouteInfo<void> {
+  const PresidentDashboardScreenRoute({List<_i27.PageRouteInfo>? children})
       : super(
           PresidentDashboardScreenRoute.name,
           path: '',
@@ -849,11 +867,11 @@ class PresidentDashboardScreenRoute extends _i26.PageRouteInfo<void> {
 /// generated route for
 /// [_i10.ClubMembersManagementScreen]
 class ClubMembersManagementRouter
-    extends _i26.PageRouteInfo<ClubMembersManagementRouterArgs> {
+    extends _i27.PageRouteInfo<ClubMembersManagementRouterArgs> {
   ClubMembersManagementRouter({
-    _i27.Key? key,
+    _i28.Key? key,
     required bool fromSetUpRouter,
-    List<_i26.PageRouteInfo>? children,
+    List<_i27.PageRouteInfo>? children,
   }) : super(
           ClubMembersManagementRouter.name,
           path: 'clubMembersManagement/:fromSetUp',
@@ -874,7 +892,7 @@ class ClubMembersManagementRouterArgs {
     required this.fromSetUpRouter,
   });
 
-  final _i27.Key? key;
+  final _i28.Key? key;
 
   final bool fromSetUpRouter;
 
@@ -886,13 +904,13 @@ class ClubMembersManagementRouterArgs {
 
 /// generated route for
 /// [_i16.ManageMemberAccountScreen]
-class ManageAccountRouter extends _i26.PageRouteInfo<ManageAccountRouterArgs> {
+class ManageAccountRouter extends _i27.PageRouteInfo<ManageAccountRouterArgs> {
   ManageAccountRouter({
-    _i27.Key? key,
+    _i28.Key? key,
     required bool isInEditMode,
     required bool isTheUserPresidentl,
     String? userId,
-    List<_i26.PageRouteInfo>? children,
+    List<_i27.PageRouteInfo>? children,
   }) : super(
           ManageAccountRouter.name,
           path: 'manageMemberAccount',
@@ -916,7 +934,7 @@ class ManageAccountRouterArgs {
     this.userId,
   });
 
-  final _i27.Key? key;
+  final _i28.Key? key;
 
   final bool isInEditMode;
 
@@ -932,8 +950,8 @@ class ManageAccountRouterArgs {
 
 /// generated route for
 /// [_i4.EmptyRouterPage]
-class ToastmasterDashboardRouter extends _i26.PageRouteInfo<void> {
-  const ToastmasterDashboardRouter({List<_i26.PageRouteInfo>? children})
+class ToastmasterDashboardRouter extends _i27.PageRouteInfo<void> {
+  const ToastmasterDashboardRouter({List<_i27.PageRouteInfo>? children})
       : super(
           ToastmasterDashboardRouter.name,
           path: 'toastmasterDashboard',
@@ -945,7 +963,7 @@ class ToastmasterDashboardRouter extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i17.ToastmasterScheduledMeetingsScreen]
-class ToastmasterScheduledMeetingsRouter extends _i26.PageRouteInfo<void> {
+class ToastmasterScheduledMeetingsRouter extends _i27.PageRouteInfo<void> {
   const ToastmasterScheduledMeetingsRouter()
       : super(
           ToastmasterScheduledMeetingsRouter.name,
@@ -957,7 +975,7 @@ class ToastmasterScheduledMeetingsRouter extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i18.ToastmasterProfileManagementScreen]
-class ToastmasterProfileManagementRouter extends _i26.PageRouteInfo<void> {
+class ToastmasterProfileManagementRouter extends _i27.PageRouteInfo<void> {
   const ToastmasterProfileManagementRouter()
       : super(
           ToastmasterProfileManagementRouter.name,
@@ -969,8 +987,8 @@ class ToastmasterProfileManagementRouter extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i19.ToastmasterDashboardScreen]
-class ToastmasterDashboardScreenRoute extends _i26.PageRouteInfo<void> {
-  const ToastmasterDashboardScreenRoute({List<_i26.PageRouteInfo>? children})
+class ToastmasterDashboardScreenRoute extends _i27.PageRouteInfo<void> {
+  const ToastmasterDashboardScreenRoute({List<_i27.PageRouteInfo>? children})
       : super(
           ToastmasterDashboardScreenRoute.name,
           path: '',
@@ -982,7 +1000,7 @@ class ToastmasterDashboardScreenRoute extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i20.ManageComingSessionsScreen]
-class ManageComingSessionsRouter extends _i26.PageRouteInfo<void> {
+class ManageComingSessionsRouter extends _i27.PageRouteInfo<void> {
   const ManageComingSessionsRouter()
       : super(
           ManageComingSessionsRouter.name,
@@ -995,9 +1013,9 @@ class ManageComingSessionsRouter extends _i26.PageRouteInfo<void> {
 /// generated route for
 /// [_i21.PrepareMeetingAgendaScreen]
 class PrepareMeetingAgendaRouter
-    extends _i26.PageRouteInfo<PrepareMeetingAgendaRouterArgs> {
+    extends _i27.PageRouteInfo<PrepareMeetingAgendaRouterArgs> {
   PrepareMeetingAgendaRouter({
-    _i27.Key? key,
+    _i28.Key? key,
     required String chapterMeetingId,
   }) : super(
           PrepareMeetingAgendaRouter.name,
@@ -1017,7 +1035,7 @@ class PrepareMeetingAgendaRouterArgs {
     required this.chapterMeetingId,
   });
 
-  final _i27.Key? key;
+  final _i28.Key? key;
 
   final String chapterMeetingId;
 
@@ -1030,9 +1048,9 @@ class PrepareMeetingAgendaRouterArgs {
 /// generated route for
 /// [_i22.AllocateRolePlayerScreen]
 class AllocateRolePlayerRouter
-    extends _i26.PageRouteInfo<AllocateRolePlayerRouterArgs> {
+    extends _i27.PageRouteInfo<AllocateRolePlayerRouterArgs> {
   AllocateRolePlayerRouter({
-    _i27.Key? key,
+    _i28.Key? key,
     required String chapterMeetingId,
     required String clubId,
   }) : super(
@@ -1055,7 +1073,7 @@ class AllocateRolePlayerRouterArgs {
     required this.clubId,
   });
 
-  final _i27.Key? key;
+  final _i28.Key? key;
 
   final String chapterMeetingId;
 
@@ -1070,9 +1088,9 @@ class AllocateRolePlayerRouterArgs {
 /// generated route for
 /// [_i23.AskForVolunteersScreen]
 class AskForVolunteersRouter
-    extends _i26.PageRouteInfo<AskForVolunteersRouterArgs> {
+    extends _i27.PageRouteInfo<AskForVolunteersRouterArgs> {
   AskForVolunteersRouter({
-    _i27.Key? key,
+    _i28.Key? key,
     required String chapterMeetingId,
     required bool viewMode,
     required String clubId,
@@ -1098,7 +1116,7 @@ class AskForVolunteersRouterArgs {
     required this.clubId,
   });
 
-  final _i27.Key? key;
+  final _i28.Key? key;
 
   final String chapterMeetingId;
 
@@ -1115,9 +1133,9 @@ class AskForVolunteersRouterArgs {
 /// generated route for
 /// [_i24.ManageChapterMeetingAnnouncementsScreen]
 class ManageChapterMeetingAnnouncementsRouter
-    extends _i26.PageRouteInfo<ManageChapterMeetingAnnouncementsRouterArgs> {
+    extends _i27.PageRouteInfo<ManageChapterMeetingAnnouncementsRouterArgs> {
   ManageChapterMeetingAnnouncementsRouter({
-    _i27.Key? key,
+    _i28.Key? key,
     required String chapterMeetingId,
     required String clubId,
   }) : super(
@@ -1140,7 +1158,7 @@ class ManageChapterMeetingAnnouncementsRouterArgs {
     required this.clubId,
   });
 
-  final _i27.Key? key;
+  final _i28.Key? key;
 
   final String chapterMeetingId;
 
@@ -1154,12 +1172,52 @@ class ManageChapterMeetingAnnouncementsRouterArgs {
 
 /// generated route for
 /// [_i25.AnnounceChapterMeetingScreen]
-class AnnounceChapterMeetingRouter extends _i26.PageRouteInfo<void> {
-  const AnnounceChapterMeetingRouter()
-      : super(
+class AnnounceChapterMeetingRouter
+    extends _i27.PageRouteInfo<AnnounceChapterMeetingRouterArgs> {
+  AnnounceChapterMeetingRouter({
+    _i28.Key? key,
+    required String chapterMeetingId,
+    required String clubId,
+  }) : super(
           AnnounceChapterMeetingRouter.name,
           path: 'announceChapterMeeting',
+          args: AnnounceChapterMeetingRouterArgs(
+            key: key,
+            chapterMeetingId: chapterMeetingId,
+            clubId: clubId,
+          ),
         );
 
   static const String name = 'AnnounceChapterMeetingRouter';
+}
+
+class AnnounceChapterMeetingRouterArgs {
+  const AnnounceChapterMeetingRouterArgs({
+    this.key,
+    required this.chapterMeetingId,
+    required this.clubId,
+  });
+
+  final _i28.Key? key;
+
+  final String chapterMeetingId;
+
+  final String clubId;
+
+  @override
+  String toString() {
+    return 'AnnounceChapterMeetingRouterArgs{key: $key, chapterMeetingId: $chapterMeetingId, clubId: $clubId}';
+  }
+}
+
+/// generated route for
+/// [_i26.ChapterMeetingAnnouncementViewScreen]
+class ChapterMeetingAnnouncementViewRouter extends _i27.PageRouteInfo<void> {
+  const ChapterMeetingAnnouncementViewRouter()
+      : super(
+          ChapterMeetingAnnouncementViewRouter.name,
+          path: 'chapterMeetingAnnouncementView',
+        );
+
+  static const String name = 'ChapterMeetingAnnouncementViewRouter';
 }

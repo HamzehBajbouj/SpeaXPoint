@@ -1,6 +1,9 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:multiple_result/src/unit.dart';
+import 'package:speaxpoint/models/annoucement/chapter_meeting_announcement.dart';
 import 'package:speaxpoint/services/failure.dart';
 import 'package:speaxpoint/models/annoucement/volunteer_annoucement.dart';
 import 'package:multiple_result/src/result.dart';
@@ -13,6 +16,9 @@ class ManageChapterMeetingAnnouncementsFirebaseService
     implements IManageChapterMeeingAnnouncementsService {
   final CollectionReference _announcementCollection =
       FirebaseFirestore.instance.collection("Announcements");
+  final FirebaseStorage storage = FirebaseStorage.instance;
+  final CollectionReference _chapterMeetingsCollection =
+      FirebaseFirestore.instance.collection('ChapterMeetings');
   @override
   Future<Result<VolunteerAnnouncement, Failure>> getVolunteersAnnouncement(
       {required String chapterMeetingId}) async {
@@ -104,7 +110,37 @@ class ManageChapterMeetingAnnouncementsFirebaseService
           .get();
 
       if (announcementQS.docs.isNotEmpty) {
-        await announcementQS.docs.first.reference.delete();
+        await announcementQS.docs.first.reference.delete().then(
+          (_) async {
+            if (announcementType ==
+                AnnouncementType.ChapterMeetingAnnouncement.name) {
+              QuerySnapshot chapterMeetingsQS = await _chapterMeetingsCollection
+                  .where('chapterMeetingId', isEqualTo: chapterMeetingId)
+                  .get();
+              if (chapterMeetingsQS.docs.isNotEmpty) {
+                await chapterMeetingsQS.docs.first.reference.update(
+                  {'chapterMeetingStatus': ComingSessionsStatus.Pending.name},
+                );
+              }
+            }
+          },
+        );
+        //then delete the brushure from the storgae
+        final ref = storage.ref(
+            'chpaterMeetingsAnnouncements/chapterAnnouncementBrushure_$chapterMeetingId');
+        await ref.delete().then((_) {
+          //we need to handle the try and catch for this statemenet as this, otherwise
+          //it might effect the entire deletePublishedAnnouncement return results.
+          log('File deleted successfully');
+        }).catchError(
+          (error) {
+            if (error.code == 'storage/object-not-found') {
+              log('File does not exist');
+            } else {
+              log('Error deleting file: $error');
+            }
+          },
+        );
       } else {
         return Error(
           Failure(
@@ -131,6 +167,59 @@ class ManageChapterMeetingAnnouncementsFirebaseService
           code: e.toString(),
           location:
               "ManageChapterMeetingAnnouncementsFirebaseService.deletePublishedAnnouncement()",
+          message: e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Result<Unit, Failure>> announceChapterMeeting({
+    required ChapterMeetingAnnouncement chapterMeetingAnnouncement,
+    required File? brochureFile,
+    required String chapterMeetingId,
+  }) async {
+    try {
+      if (brochureFile != null) {
+        UploadTask uploadTask = storage
+            .ref(
+                "chpaterMeetingsAnnouncements/chapterAnnouncementBrushure_${chapterMeetingAnnouncement.chapterMeetingId}")
+            .putFile(brochureFile);
+        TaskSnapshot taskSnapshot = await uploadTask;
+        String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+        chapterMeetingAnnouncement.brushureLink = downloadUrl;
+      }
+
+      await _announcementCollection
+          .add(chapterMeetingAnnouncement.toJson())
+          .then(
+        (_) async {
+          QuerySnapshot chapterMeetingsQS = await _chapterMeetingsCollection
+              .where('chapterMeetingId', isEqualTo: chapterMeetingId)
+              .get();
+          if (chapterMeetingsQS.docs.isNotEmpty) {
+            await chapterMeetingsQS.docs.first.reference.update(
+              {'chapterMeetingStatus': ComingSessionsStatus.Coming.name},
+            );
+          }
+        },
+      );
+      return Success.unit();
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location:
+                "ManageChapterMeetingAnnouncementsFirebaseService.announceChapterMeeting()",
+            message: e.message ??
+                "Database Error While announcing the chapter meeting"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+          code: e.toString(),
+          location:
+              "ManageChapterMeetingAnnouncementsFirebaseService.announceChapterMeeting()",
           message: e.toString(),
         ),
       );

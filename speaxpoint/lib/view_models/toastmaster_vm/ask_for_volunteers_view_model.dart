@@ -141,6 +141,7 @@ class AskForVolunteersViewModel extends BaseViewModel {
       annoucementStatus: AnnouncementStatus.Posted.name,
       annoucementDescription: annnoucementDescription,
       annoucementTitle: annnoucementTitle,
+      chapterMeetingId: chapterMeetingId,
     );
 
     var temp = await _askForVolunteersService.announceForVolunteers(
@@ -175,16 +176,16 @@ This is only an internal class that is meant to be used to display the
 data in the screen in a certain way, this shall never be used to in any other
 places or purposes.
 */
-class Slots {
-  String roleName;
-  int roleOrderPlace;
-  String slotStatus; // either announced or not
-  int slotUnqiueId;
+// class Slots {
+//   String roleName;
+//   int roleOrderPlace;
+//   String slotStatus; // either announced or not
+//   int slotUnqiueId;
 
-  Slots({
-    required this.roleName,
-    required this.roleOrderPlace,
-    required this.slotStatus,
-    required this.slotUnqiueId,
-  });
-}
+//   Slots({
+//     required this.roleName,
+//     required this.roleOrderPlace,
+//     required this.slotStatus,
+//     required this.slotUnqiueId,
+//   });
+// }

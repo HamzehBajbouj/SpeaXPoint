@@ -25,7 +25,7 @@ class AskForVolunteersFirebaseService
     CollectionReference volunteersSlotsCollection =
         FirebaseFirestore.instance.collection(" ");
     CollectionReference announcementsCollection =
-        FirebaseFirestore.instance.collection(" ");
+        FirebaseFirestore.instance.collection("Announcements");
     try {
       QuerySnapshot chapterMeetingQS = await _chapterMeetingsCollection
           .where("chapterMeetingId", isEqualTo: chapterMeetingId)
@@ -35,7 +35,6 @@ class AskForVolunteersFirebaseService
         volunteersSlotsCollection =
             chapterMeetingQS.docs.first.reference.collection("VolunteersSlots");
         QuerySnapshot slotQS = await volunteersSlotsCollection.get();
-
 
         /*
 
@@ -81,8 +80,7 @@ class AskForVolunteersFirebaseService
                 element.isItAnnouncedBefore !=
                     AppVolunteerSlotStatus.Announced.name);
             if (slotIsNotAnnounced) {
-
-                batch.delete(doc.reference);
+              batch.delete(doc.reference);
             }
           }
         }
@@ -107,12 +105,19 @@ class AskForVolunteersFirebaseService
         );
 
         await batch.commit().then(
-          (_) {
-            announcementsCollection = chapterMeetingQS.docs.first.reference
-                .collection("Announcements");
-            announcementsCollection.doc("volunteersAnnouncement").set(
-                  announcement.toJson(),
-                );
+          (_) async {
+            QuerySnapshot announcementQS = await announcementsCollection
+                .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+                .where('annoucementType',
+                    isEqualTo: AnnouncementType.VolunteersAnnouncement.name)
+                .get();
+            if (announcementQS.docs.isNotEmpty) {
+              await announcementQS.docs.first.reference.set(
+                announcement.toJson(),
+              );
+            } else {
+              await announcementsCollection.add(announcement.toJson());
+            }
           },
         );
       } else {

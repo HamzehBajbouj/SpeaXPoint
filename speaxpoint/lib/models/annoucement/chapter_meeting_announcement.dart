@@ -19,26 +19,28 @@ class ChapterMeetingAnnouncement extends Announcement {
       this.brushureLink,
       required super.annoucementDate,
       required super.annoucementStatus,
-      required super.annoucementType});
+      required super.annoucementType,
+      required super.chapterMeetingId});
 
   ChapterMeetingAnnouncement.fromJson(Map<String, dynamic> cmAnnoucement)
       : this(
-          annoucementDate: cmAnnoucement['annoucementDate'],
-          annoucementStatus: cmAnnoucement['annoucementStatus'],
-          annoucementType: cmAnnoucement['annoucementType'],
-          meetingDate: cmAnnoucement['meetingDate'],
-          meetingDescription: cmAnnoucement['meetingDescription'],
-          meetingStreamLink: cmAnnoucement['meetingStreamLink'],
-          meetingTtile: cmAnnoucement['meetingTtile'],
-          contactNumber: cmAnnoucement['contactNumber'],
-          brushureFileName: cmAnnoucement['brushureFileName'],
-          brushureLink: cmAnnoucement['brushureLink'],
-        );
+            annoucementDate: cmAnnoucement['annoucementDate'],
+            annoucementStatus: cmAnnoucement['annoucementStatus'],
+            annoucementType: cmAnnoucement['annoucementType'],
+            meetingDate: cmAnnoucement['meetingDate'],
+            meetingDescription: cmAnnoucement['meetingDescription'],
+            meetingStreamLink: cmAnnoucement['meetingStreamLink'],
+            meetingTtile: cmAnnoucement['meetingTtile'],
+            contactNumber: cmAnnoucement['contactNumber'],
+            brushureFileName: cmAnnoucement['brushureFileName'],
+            brushureLink: cmAnnoucement['brushureLink'],
+            chapterMeetingId: cmAnnoucement['chapterMeetingId']);
 
   Map<String, dynamic> toJson() => {
         'annoucementDate': super.annoucementDate,
         'annoucementStatus': super.annoucementStatus,
         'annoucementType': super.annoucementType,
+        'chapterMeetingId': super.chapterMeetingId,
         'meetingDate': meetingDate,
         'meetingDescription': meetingDescription,
         'meetingStreamLink': meetingStreamLink,

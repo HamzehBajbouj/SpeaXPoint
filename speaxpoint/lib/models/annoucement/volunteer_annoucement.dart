@@ -1,3 +1,4 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:speaxpoint/models/annoucement/announcement.dart';
 
 class VolunteerAnnouncement extends Announcement {
@@ -10,6 +11,7 @@ class VolunteerAnnouncement extends Announcement {
      super.annoucementDate,
      super.annoucementStatus,
      super.annoucementType,
+     super.chapterMeetingId
   });
 
   VolunteerAnnouncement.fromJson(Map<String, dynamic> volunteerAnnoucementJson)
@@ -19,13 +21,16 @@ class VolunteerAnnouncement extends Announcement {
                 volunteerAnnoucementJson['annoucementDescription'],
             annoucementStatus: volunteerAnnoucementJson['annoucementStatus'],
             annoucementTitle: volunteerAnnoucementJson['annoucementTitle'],
-            annoucementType: volunteerAnnoucementJson['annoucementType']);
+            annoucementType: volunteerAnnoucementJson['annoucementType'],
+            chapterMeetingId: volunteerAnnoucementJson['chapterMeetingId'],
+            );
 
   Map<String, dynamic> toJson() => {
         'annoucementDescription': annoucementDescription,
         'annoucementTitle': annoucementTitle,
         'annoucementDate': super.annoucementDate,
         'annoucementStatus': super.annoucementStatus,
-        'annoucementType': super.annoucementType
+        'annoucementType': super.annoucementType,
+        'chapterMeetingId' : super.chapterMeetingId,
       };
 }

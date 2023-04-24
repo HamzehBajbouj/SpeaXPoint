@@ -1,8 +1,6 @@
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:multiple_result/src/unit.dart';
-import 'package:speaxpoint/models/annoucement/chapter_meeting_announcement.dart';
 import 'package:speaxpoint/services/failure.dart';
 import 'package:speaxpoint/models/annoucement/volunteer_annoucement.dart';
 import 'package:multiple_result/src/result.dart';
@@ -13,13 +11,11 @@ import 'package:speaxpoint/util/constants/common_enums.dart';
 class ManageChapterMeetingAnnouncementsFirebaseService
     extends MeetingArrangementCommonFirebaseServices
     implements IManageChapterMeeingAnnouncementsService {
-  final CollectionReference _chapterMeetingsCollection =
-      FirebaseFirestore.instance.collection('ChapterMeetings');
+  final CollectionReference _announcementCollection =
+      FirebaseFirestore.instance.collection("Announcements");
   @override
   Future<Result<VolunteerAnnouncement, Failure>> getVolunteersAnnouncement(
       {required String chapterMeetingId}) async {
-    CollectionReference announcementCollection =
-        FirebaseFirestore.instance.collection(" ");
     try {
       VolunteerAnnouncement volunteerAnnouncement = VolunteerAnnouncement(
         annoucementDate: null,
@@ -28,20 +24,15 @@ class ManageChapterMeetingAnnouncementsFirebaseService
         annoucementTitle: null,
         annoucementType: null,
       );
-      QuerySnapshot chapterMeetingQS = await _chapterMeetingsCollection
+      QuerySnapshot announcementQS = await _announcementCollection
           .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+          .where("annoucementType",
+              isEqualTo: AnnouncementType.VolunteersAnnouncement.name)
           .get();
 
-      if (chapterMeetingQS.docs.isNotEmpty) {
-        announcementCollection =
-            chapterMeetingQS.docs.first.reference.collection("Announcements");
-        var slotDR =
-            await announcementCollection.doc("volunteersAnnouncement").get();
-
-        if (slotDR.exists) {
-          volunteerAnnouncement = VolunteerAnnouncement.fromJson(
-              slotDR.data() as Map<String, dynamic>);
-        }
+      if (announcementQS.docs.isNotEmpty) {
+        volunteerAnnouncement = VolunteerAnnouncement.fromJson(
+            announcementQS.docs.first.data() as Map<String, dynamic>);
       } else {
         return const Error(
           Failure(
@@ -79,18 +70,16 @@ class ManageChapterMeetingAnnouncementsFirebaseService
       {required String chapterMeetingId}) async* {
     Stream<List<Map<String, dynamic>>> announcements = Stream.empty();
     try {
-      QuerySnapshot chapterMeetingQS = await _chapterMeetingsCollection
+      var announcementgQS = _announcementCollection
           .where("chapterMeetingId", isEqualTo: chapterMeetingId)
-          .get();
-      CollectionReference announcementCollection =
-          chapterMeetingQS.docs.first.reference.collection("Announcements");
-      announcements = announcementCollection.snapshots().map(
-            (QuerySnapshot querySnapshot) => querySnapshot.docs
-                .map(
-                  (e) => e.data() as Map<String, dynamic>,
-                )
-                .toList(),
-          );
+          .snapshots();
+      announcements = announcementgQS.map(
+        (QuerySnapshot querySnapshot) => querySnapshot.docs
+            .map(
+              (e) => e.data() as Map<String, dynamic>,
+            )
+            .toList(),
+      );
 
       yield* announcements;
     } on FirebaseException catch (e) {
@@ -107,36 +96,21 @@ class ManageChapterMeetingAnnouncementsFirebaseService
       {required String chapterMeetingId,
       required String announcementType}) async {
     try {
-      QuerySnapshot chapterMeetingQS = await _chapterMeetingsCollection
+      QuerySnapshot announcementQS = await _announcementCollection
           .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+          .where("annoucementType", isEqualTo: announcementType)
           .get();
 
-      if (chapterMeetingQS.docs.isNotEmpty) {
-        QuerySnapshot announcementQS = await chapterMeetingQS
-            .docs.first.reference
-            .collection("Announcements")
-            .where('annoucementType', isEqualTo: announcementType)
-            .get();
-        if (announcementQS.docs.isNotEmpty) {
-          await announcementQS.docs.first.reference.delete();
-        } else {
-          return Error(
-            Failure(
-                code: 'No-Announcement-Found',
-                location:
-                    "ManageChapterMeetingAnnouncementsFirebaseService.deletePublishedAnnouncement()",
-                message:
-                    "It seems there is no annoucement record for $announcementType in the databases."),
-          );
-        }
+      if (announcementQS.docs.isNotEmpty) {
+        await announcementQS.docs.first.reference.delete();
       } else {
-        return const Error(
+        return Error(
           Failure(
-              code: 'no-chapter-meeting-is-found',
+              code: 'No-Announcement-Found',
               location:
                   "ManageChapterMeetingAnnouncementsFirebaseService.deletePublishedAnnouncement()",
               message:
-                  "It seems the app can't find the chapter meeting record in the databases."),
+                  "It seems there is no annoucement record for $announcementType in the databases."),
         );
       }
       return Success.unit();

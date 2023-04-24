@@ -12,9 +12,13 @@ import 'package:speaxpoint/view_models/toastmaster_vm/ask_for_volunteers_view_mo
 
 class AskForVolunteersScreen extends StatefulWidget {
   const AskForVolunteersScreen(
-      {super.key, required this.chapterMeetingId, required this.viewMode});
+      {super.key,
+      required this.chapterMeetingId,
+      required this.viewMode,
+      required this.clubId});
 
   final String chapterMeetingId;
+  final String clubId;
   final bool viewMode;
 
   @override
@@ -270,14 +274,16 @@ class _AskForVolunteersScreenState extends State<AskForVolunteersScreen> {
                                               .isNotEmpty) {
                                             await _askForVolunteersViewModel
                                                 .announceNeedOfVolunteers(
-                                                    chapterMeetingId:
-                                                        widget.chapterMeetingId,
-                                                    annnoucementDescription:
-                                                        _annoucementDescriptionController
-                                                            .text,
-                                                    annnoucementTitle:
-                                                        _annoucementTitleController
-                                                            .text)
+                                              chapterMeetingId:
+                                                  widget.chapterMeetingId,
+                                              annnoucementDescription:
+                                                  _annoucementDescriptionController
+                                                      .text,
+                                              annnoucementTitle:
+                                                  _annoucementTitleController
+                                                      .text,
+                                              clubId: widget.clubId,
+                                            )
                                                 .then(
                                               (value) {
                                                 value.when(

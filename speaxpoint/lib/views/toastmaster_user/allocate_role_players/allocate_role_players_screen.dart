@@ -114,6 +114,7 @@ class AllocateRolePlayerScreen extends StatelessWidget {
                               AskForVolunteersRouter(
                                 chapterMeetingId: chapterMeetingId,
                                 viewMode: false,
+                                clubId: clubId,
                               ),
                             )
                                 .then(

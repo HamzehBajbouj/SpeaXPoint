@@ -273,6 +273,7 @@ class AppRouter extends _i26.RootStackRouter {
           key: args.key,
           chapterMeetingId: args.chapterMeetingId,
           viewMode: args.viewMode,
+          clubId: args.clubId,
         ),
       );
     },
@@ -284,6 +285,7 @@ class AppRouter extends _i26.RootStackRouter {
         child: _i24.ManageChapterMeetingAnnouncementsScreen(
           key: args.key,
           chapterMeetingId: args.chapterMeetingId,
+          clubId: args.clubId,
         ),
       );
     },
@@ -1073,6 +1075,7 @@ class AskForVolunteersRouter
     _i27.Key? key,
     required String chapterMeetingId,
     required bool viewMode,
+    required String clubId,
   }) : super(
           AskForVolunteersRouter.name,
           path: 'askForVolunteers',
@@ -1080,6 +1083,7 @@ class AskForVolunteersRouter
             key: key,
             chapterMeetingId: chapterMeetingId,
             viewMode: viewMode,
+            clubId: clubId,
           ),
         );
 
@@ -1091,6 +1095,7 @@ class AskForVolunteersRouterArgs {
     this.key,
     required this.chapterMeetingId,
     required this.viewMode,
+    required this.clubId,
   });
 
   final _i27.Key? key;
@@ -1099,9 +1104,11 @@ class AskForVolunteersRouterArgs {
 
   final bool viewMode;
 
+  final String clubId;
+
   @override
   String toString() {
-    return 'AskForVolunteersRouterArgs{key: $key, chapterMeetingId: $chapterMeetingId, viewMode: $viewMode}';
+    return 'AskForVolunteersRouterArgs{key: $key, chapterMeetingId: $chapterMeetingId, viewMode: $viewMode, clubId: $clubId}';
   }
 }
 
@@ -1112,12 +1119,14 @@ class ManageChapterMeetingAnnouncementsRouter
   ManageChapterMeetingAnnouncementsRouter({
     _i27.Key? key,
     required String chapterMeetingId,
+    required String clubId,
   }) : super(
           ManageChapterMeetingAnnouncementsRouter.name,
           path: 'manageChapterMeetingAnnouncements',
           args: ManageChapterMeetingAnnouncementsRouterArgs(
             key: key,
             chapterMeetingId: chapterMeetingId,
+            clubId: clubId,
           ),
         );
 
@@ -1128,15 +1137,18 @@ class ManageChapterMeetingAnnouncementsRouterArgs {
   const ManageChapterMeetingAnnouncementsRouterArgs({
     this.key,
     required this.chapterMeetingId,
+    required this.clubId,
   });
 
   final _i27.Key? key;
 
   final String chapterMeetingId;
 
+  final String clubId;
+
   @override
   String toString() {
-    return 'ManageChapterMeetingAnnouncementsRouterArgs{key: $key, chapterMeetingId: $chapterMeetingId}';
+    return 'ManageChapterMeetingAnnouncementsRouterArgs{key: $key, chapterMeetingId: $chapterMeetingId, clubId: $clubId}';
   }
 }
 

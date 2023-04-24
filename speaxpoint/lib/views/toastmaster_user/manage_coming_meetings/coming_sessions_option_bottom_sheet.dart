@@ -195,6 +195,7 @@ class ComingSessionOptionBottomSheet extends StatelessWidget {
                       context.pushRoute(
                         ManageChapterMeetingAnnouncementsRouter(
                           chapterMeetingId: chapterMeetingId,
+                          clubId: clubId,
                         ),
                       );
                     },

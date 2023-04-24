@@ -133,7 +133,8 @@ class AskForVolunteersViewModel extends BaseViewModel {
   Future<Result<Unit, Failure>> announceNeedOfVolunteers(
       {required String chapterMeetingId,
       required String annnoucementTitle,
-      required String annnoucementDescription}) async {
+      required String annnoucementDescription,
+      required String clubId}) async {
     setLoading(loading: true);
     VolunteerAnnouncement volunteerAnnoucement = VolunteerAnnouncement(
       annoucementDate: DateTime.now().toString(),
@@ -142,6 +143,7 @@ class AskForVolunteersViewModel extends BaseViewModel {
       annoucementDescription: annnoucementDescription,
       annoucementTitle: annnoucementTitle,
       chapterMeetingId: chapterMeetingId,
+      clubId: clubId,
     );
 
     var temp = await _askForVolunteersService.announceForVolunteers(

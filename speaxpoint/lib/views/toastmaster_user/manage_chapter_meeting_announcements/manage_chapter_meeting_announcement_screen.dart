@@ -12,9 +12,10 @@ import 'package:speaxpoint/view_models/toastmaster_vm/manage_chapter_meeting_ann
 import 'package:speaxpoint/views/toastmaster_user/manage_chapter_meeting_announcements/dialogs/announce_chapter_error_dialog.dart';
 
 class ManageChapterMeetingAnnouncementsScreen extends StatefulWidget {
-  final String chapterMeetingId;
   const ManageChapterMeetingAnnouncementsScreen(
-      {super.key, required this.chapterMeetingId});
+      {super.key, required this.chapterMeetingId, required this.clubId});
+  final String chapterMeetingId;
+  final String clubId;
 
   @override
   State<ManageChapterMeetingAnnouncementsScreen> createState() =>
@@ -141,6 +142,7 @@ class _ManageChapterMeetingAnnouncementsScreenState
                                             chapterMeetingId:
                                                 widget.chapterMeetingId,
                                             viewMode: true,
+                                            clubId: widget.clubId,
                                           ),
                                         );
                                       },

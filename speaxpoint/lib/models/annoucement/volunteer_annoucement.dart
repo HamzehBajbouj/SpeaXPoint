@@ -5,25 +5,26 @@ class VolunteerAnnouncement extends Announcement {
   String? annoucementTitle;
   String? annoucementDescription;
 
-  VolunteerAnnouncement({
-     this.annoucementDescription,
-     this.annoucementTitle,
-     super.annoucementDate,
-     super.annoucementStatus,
-     super.annoucementType,
-     super.chapterMeetingId
-  });
+  VolunteerAnnouncement(
+      {this.annoucementDescription,
+      this.annoucementTitle,
+      required super.annoucementDate,
+      required super.annoucementStatus,
+      super.annoucementType,
+      required super.chapterMeetingId,
+      required super.clubId});
 
   VolunteerAnnouncement.fromJson(Map<String, dynamic> volunteerAnnoucementJson)
       : this(
-            annoucementDate: volunteerAnnoucementJson['annoucementDate'],
-            annoucementDescription:
-                volunteerAnnoucementJson['annoucementDescription'],
-            annoucementStatus: volunteerAnnoucementJson['annoucementStatus'],
-            annoucementTitle: volunteerAnnoucementJson['annoucementTitle'],
-            annoucementType: volunteerAnnoucementJson['annoucementType'],
-            chapterMeetingId: volunteerAnnoucementJson['chapterMeetingId'],
-            );
+          annoucementDate: volunteerAnnoucementJson['annoucementDate'],
+          annoucementDescription:
+              volunteerAnnoucementJson['annoucementDescription'],
+          annoucementStatus: volunteerAnnoucementJson['annoucementStatus'],
+          annoucementTitle: volunteerAnnoucementJson['annoucementTitle'],
+          annoucementType: volunteerAnnoucementJson['annoucementType'],
+          chapterMeetingId: volunteerAnnoucementJson['chapterMeetingId'],
+          clubId: volunteerAnnoucementJson['clubId'],
+        );
 
   Map<String, dynamic> toJson() => {
         'annoucementDescription': annoucementDescription,
@@ -31,6 +32,7 @@ class VolunteerAnnouncement extends Announcement {
         'annoucementDate': super.annoucementDate,
         'annoucementStatus': super.annoucementStatus,
         'annoucementType': super.annoucementType,
-        'chapterMeetingId' : super.chapterMeetingId,
+        'chapterMeetingId': super.chapterMeetingId,
+        'clubId': super.clubId,
       };
 }

@@ -23,6 +23,8 @@ class ManageChapterMeetingAnnouncementsFirebaseService
         annoucementStatus: null,
         annoucementTitle: null,
         annoucementType: null,
+        chapterMeetingId: null,
+        clubId: null,
       );
       QuerySnapshot announcementQS = await _announcementCollection
           .where("chapterMeetingId", isEqualTo: chapterMeetingId)

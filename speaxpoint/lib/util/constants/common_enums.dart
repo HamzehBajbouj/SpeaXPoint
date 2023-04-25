@@ -46,9 +46,9 @@ enum AnnouncementType {
   VolunteersAnnouncement,
 }
 
-enum AnnouncementStatus {
-  Posted,
-  NotPosted,
+enum AnnouncementLevel {
+  Public,
+  Private,
 }
 
 //these are used for slots status in the firestore

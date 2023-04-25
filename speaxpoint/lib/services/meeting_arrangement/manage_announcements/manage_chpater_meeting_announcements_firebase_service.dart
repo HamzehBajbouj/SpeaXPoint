@@ -23,15 +23,7 @@ class ManageChapterMeetingAnnouncementsFirebaseService
   Future<Result<VolunteerAnnouncement, Failure>> getVolunteersAnnouncement(
       {required String chapterMeetingId}) async {
     try {
-      VolunteerAnnouncement volunteerAnnouncement = VolunteerAnnouncement(
-        annoucementDate: null,
-        annoucementDescription: null,
-        annoucementStatus: null,
-        annoucementTitle: null,
-        annoucementType: null,
-        chapterMeetingId: null,
-        clubId: null,
-      );
+      VolunteerAnnouncement volunteerAnnouncement = VolunteerAnnouncement();
       QuerySnapshot announcementQS = await _announcementCollection
           .where("chapterMeetingId", isEqualTo: chapterMeetingId)
           .where("annoucementType",
@@ -74,7 +66,7 @@ class ManageChapterMeetingAnnouncementsFirebaseService
   }
 
   @override
-  Stream<List<Map<String, dynamic>>> getChapterMeetingAnnouncement(
+  Stream<List<Map<String, dynamic>>> getAllChapterMeetingAnnouncements(
       {required String chapterMeetingId}) async* {
     Stream<List<Map<String, dynamic>>> announcements = Stream.empty();
     try {
@@ -220,6 +212,53 @@ class ManageChapterMeetingAnnouncementsFirebaseService
           code: e.toString(),
           location:
               "ManageChapterMeetingAnnouncementsFirebaseService.announceChapterMeeting()",
+          message: e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Result<ChapterMeetingAnnouncement, Failure>>
+      getChapterMeetingAnnouncement({required String chapterMeetingId}) async {
+    try {
+      ChapterMeetingAnnouncement chapterMeetingAnnouncement =
+          ChapterMeetingAnnouncement();
+      QuerySnapshot announcementQS = await _announcementCollection
+          .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+          .where("annoucementType",
+              isEqualTo: AnnouncementType.ChapterMeetingAnnouncement.name)
+          .get();
+
+      if (announcementQS.docs.isNotEmpty) {
+        chapterMeetingAnnouncement = ChapterMeetingAnnouncement.fromJson(
+            announcementQS.docs.first.data() as Map<String, dynamic>);
+      } else {
+        return const Error(
+          Failure(
+              code: 'no-chapter-meeting-is-found',
+              location:
+                  "ManageChapterMeetingAnnouncementsFirebaseService.getChapterMeetingAnnouncement()",
+              message:
+                  "It seems the app can't find the chapter meeting record in the databases."),
+        );
+      }
+      return Success(chapterMeetingAnnouncement);
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location:
+                "ManageChapterMeetingAnnouncementsFirebaseService.getChapterMeetingAnnouncement()",
+            message: e.message ??
+                "Database Error While fetching chapter meeting announcement details"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+          code: e.toString(),
+          location:
+              "ManageChapterMeetingAnnouncementsFirebaseService.getChapterMeetingAnnouncement()",
           message: e.toString(),
         ),
       );

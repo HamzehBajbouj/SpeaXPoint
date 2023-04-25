@@ -165,7 +165,7 @@ class _ManageChapterMeetingAnnouncementsScreenState
                                     announcementCard(
                                       title: viewModel
                                               .chapterMeetingAnnouncement
-                                              ?.meetingTtile ??
+                                              ?.meetingTitle ??
                                           "no title provided",
                                       description: viewModel
                                               .chapterMeetingAnnouncement
@@ -173,7 +173,10 @@ class _ManageChapterMeetingAnnouncementsScreenState
                                           "no description provided",
                                       onCardTap: () {
                                         context.pushRoute(
-                                          ChapterMeetingAnnouncementViewRouter(),
+                                          ChapterMeetingAnnouncementViewRouter(
+                                              chapterMeetingId:
+                                                  widget.chapterMeetingId,
+                                              viewedFromSearchPage: false),
                                         );
                                       },
                                       onIconButtonTap: () async {

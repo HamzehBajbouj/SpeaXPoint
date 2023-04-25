@@ -49,7 +49,7 @@ class ManageChapterMeetingAnnouncementViewModel extends BaseViewModel {
   Stream<List<Map<String, dynamic>>> loadAllAnnouncements(
       {required String chapterMeetingId}) {
     return _manageChapterMeeingAnnouncementsService
-        .getChapterMeetingAnnouncement(chapterMeetingId: chapterMeetingId);
+        .getAllChapterMeetingAnnouncements(chapterMeetingId: chapterMeetingId);
   }
 
   void setAnnouncementObject(List<Map<String, dynamic>> announcements) {
@@ -189,7 +189,7 @@ class ManageChapterMeetingAnnouncementViewModel extends BaseViewModel {
   */
   Future<Result<Unit, Failure>> announceChapterMeeting({
     required String meetingDescription,
-    required String meetingTtile,
+    required String meetingTitle,
     required String meetingDate,
     required String annoucementLevel,
     required String chapterMeetingId,
@@ -201,7 +201,6 @@ class ManageChapterMeetingAnnouncementViewModel extends BaseViewModel {
     ChapterMeetingAnnouncement chapterMeetingAnnouncement =
         ChapterMeetingAnnouncement(
       annoucementDate: DateTime.now().toString(),
-      annoucementStatus: AnnouncementStatus.Posted.name,
       annoucementType: AnnouncementType.ChapterMeetingAnnouncement.name,
       chapterMeetingId: chapterMeetingId,
       clubId: clubId,
@@ -209,7 +208,7 @@ class ManageChapterMeetingAnnouncementViewModel extends BaseViewModel {
       meetingDate: meetingDate,
       contactNumber: contactNumber.isEmpty ? null : contactNumber,
       meetingDescription: meetingDescription,
-      meetingTtile: meetingTtile,
+      meetingTitle: meetingTitle,
       meetingStreamLink: meetingStreamLink.isEmpty ? null : meetingStreamLink,
     );
 
@@ -219,5 +218,23 @@ class ManageChapterMeetingAnnouncementViewModel extends BaseViewModel {
       brochureFile: brochureFile,
       chapterMeetingId: chapterMeetingId,
     );
+  }
+
+  Future<ChapterMeetingAnnouncement?> getChapterMeetingAnnouncementDetails(
+      {required String chapterMeetingId}) async {
+    ChapterMeetingAnnouncement? chapterMeetingAnnouncement;
+    await _manageChapterMeeingAnnouncementsService
+        .getChapterMeetingAnnouncement(chapterMeetingId: chapterMeetingId)
+        .then(
+      (value) {
+        value.whenSuccess(
+          (announcement) {
+            chapterMeetingAnnouncement = announcement;
+          },
+        );
+      },
+    );
+
+    return chapterMeetingAnnouncement;
   }
 }

@@ -303,9 +303,14 @@ class AppRouter extends _i27.RootStackRouter {
       );
     },
     ChapterMeetingAnnouncementViewRouter.name: (routeData) {
+      final args = routeData.argsAs<ChapterMeetingAnnouncementViewRouterArgs>();
       return _i27.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i26.ChapterMeetingAnnouncementViewScreen(),
+        child: _i26.ChapterMeetingAnnouncementViewScreen(
+          key: args.key,
+          chapterMeetingId: args.chapterMeetingId,
+          viewedFromSearchPage: args.viewedFromSearchPage,
+        ),
       );
     },
   };
@@ -1212,12 +1217,40 @@ class AnnounceChapterMeetingRouterArgs {
 
 /// generated route for
 /// [_i26.ChapterMeetingAnnouncementViewScreen]
-class ChapterMeetingAnnouncementViewRouter extends _i27.PageRouteInfo<void> {
-  const ChapterMeetingAnnouncementViewRouter()
-      : super(
+class ChapterMeetingAnnouncementViewRouter
+    extends _i27.PageRouteInfo<ChapterMeetingAnnouncementViewRouterArgs> {
+  ChapterMeetingAnnouncementViewRouter({
+    _i28.Key? key,
+    required String chapterMeetingId,
+    required bool viewedFromSearchPage,
+  }) : super(
           ChapterMeetingAnnouncementViewRouter.name,
           path: 'chapterMeetingAnnouncementView',
+          args: ChapterMeetingAnnouncementViewRouterArgs(
+            key: key,
+            chapterMeetingId: chapterMeetingId,
+            viewedFromSearchPage: viewedFromSearchPage,
+          ),
         );
 
   static const String name = 'ChapterMeetingAnnouncementViewRouter';
+}
+
+class ChapterMeetingAnnouncementViewRouterArgs {
+  const ChapterMeetingAnnouncementViewRouterArgs({
+    this.key,
+    required this.chapterMeetingId,
+    required this.viewedFromSearchPage,
+  });
+
+  final _i28.Key? key;
+
+  final String chapterMeetingId;
+
+  final bool viewedFromSearchPage;
+
+  @override
+  String toString() {
+    return 'ChapterMeetingAnnouncementViewRouterArgs{key: $key, chapterMeetingId: $chapterMeetingId, viewedFromSearchPage: $viewedFromSearchPage}';
+  }
 }

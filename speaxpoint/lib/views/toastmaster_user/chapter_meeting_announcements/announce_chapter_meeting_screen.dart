@@ -353,7 +353,7 @@ class _AnnounceChapterMeetingScreenState
                             builder: (BuildContext context) {
                               return AnnounceChapterConfirmationDialog(
                                 meetingDescription: _anunDescription.text,
-                                meetingTtile: _anunTitle.text,
+                                meetingTitle: _anunTitle.text,
                                 meetingDate: _meetingRawDate,
                                 annoucementLevel: _anunSelectType,
                                 chapterMeetingId: widget.chapterMeetingId,

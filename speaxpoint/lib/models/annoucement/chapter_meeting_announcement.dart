@@ -4,38 +4,35 @@ import 'package:speaxpoint/models/annoucement/announcement.dart';
 class ChapterMeetingAnnouncement extends Announcement {
   String? meetingStreamLink;
   String? meetingDescription;
-  String? meetingTtile;
+  String? meetingTitle;
   String? meetingDate;
   String? contactNumber;
   String? brushureFileName;
   String? brushureLink;
-  String? annoucementLevel;
-  
+
   ChapterMeetingAnnouncement({
     this.contactNumber,
     this.meetingDate,
     this.meetingDescription,
     this.meetingStreamLink,
-    this.meetingTtile,
+    this.meetingTitle,
     this.brushureFileName,
     this.brushureLink,
-    this.annoucementLevel,
-    required super.annoucementDate,
-    required super.annoucementStatus,
-    required super.annoucementType,
-    required super.chapterMeetingId,
-    required super.clubId,
+    super.annoucementLevel,
+    super.annoucementDate,
+    super.annoucementType,
+    super.chapterMeetingId,
+    super.clubId,
   });
 
   ChapterMeetingAnnouncement.fromJson(Map<String, dynamic> cmAnnoucement)
       : this(
           annoucementDate: cmAnnoucement['annoucementDate'],
-          annoucementStatus: cmAnnoucement['annoucementStatus'],
           annoucementType: cmAnnoucement['annoucementType'],
           meetingDate: cmAnnoucement['meetingDate'],
           meetingDescription: cmAnnoucement['meetingDescription'],
           meetingStreamLink: cmAnnoucement['meetingStreamLink'],
-          meetingTtile: cmAnnoucement['meetingTtile'],
+          meetingTitle: cmAnnoucement['meetingTitle'],
           contactNumber: cmAnnoucement['contactNumber'],
           brushureFileName: cmAnnoucement['brushureFileName'],
           brushureLink: cmAnnoucement['brushureLink'],
@@ -46,14 +43,13 @@ class ChapterMeetingAnnouncement extends Announcement {
 
   Map<String, dynamic> toJson() => {
         'annoucementDate': super.annoucementDate,
-        'annoucementStatus': super.annoucementStatus,
         'annoucementType': super.annoucementType,
         'chapterMeetingId': super.chapterMeetingId,
         'clubId': super.clubId,
         'meetingDate': meetingDate,
         'meetingDescription': meetingDescription,
         'meetingStreamLink': meetingStreamLink,
-        'meetingTtile': meetingTtile,
+        'meetingTitle': meetingTitle,
         'contactNumber': contactNumber,
         'brushureLink': brushureLink,
         'brushureFileName': brushureFileName,

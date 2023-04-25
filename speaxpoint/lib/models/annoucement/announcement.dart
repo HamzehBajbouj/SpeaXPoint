@@ -1,14 +1,14 @@
 class Announcement {
   String? annoucementType;
-  String? annoucementStatus;
   String? annoucementDate;
   String? chapterMeetingId;
   String? clubId;
+  String? annoucementLevel;
 
   Announcement(
       {this.annoucementDate,
-      this.annoucementStatus,
       this.annoucementType,
       this.chapterMeetingId,
-      this.clubId});
+      this.clubId,
+      this.annoucementLevel});
 }

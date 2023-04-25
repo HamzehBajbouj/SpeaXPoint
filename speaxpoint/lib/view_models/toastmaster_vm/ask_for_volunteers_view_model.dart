@@ -139,11 +139,11 @@ class AskForVolunteersViewModel extends BaseViewModel {
     VolunteerAnnouncement volunteerAnnoucement = VolunteerAnnouncement(
       annoucementDate: DateTime.now().toString(),
       annoucementType: AnnouncementType.VolunteersAnnouncement.name,
-      annoucementStatus: AnnouncementStatus.Posted.name,
       annoucementDescription: annnoucementDescription,
       annoucementTitle: annnoucementTitle,
       chapterMeetingId: chapterMeetingId,
       clubId: clubId,
+      annoucementLevel: AnnouncementLevel.Public.name,
     );
 
     var temp = await _askForVolunteersService.announceForVolunteers(

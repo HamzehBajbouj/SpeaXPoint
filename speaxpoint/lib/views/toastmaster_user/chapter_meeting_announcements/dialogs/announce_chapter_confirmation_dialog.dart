@@ -14,7 +14,7 @@ class AnnounceChapterConfirmationDialog extends StatefulWidget {
   const AnnounceChapterConfirmationDialog({
     super.key,
     required this.meetingDescription,
-    required this.meetingTtile,
+    required this.meetingTitle,
     required this.meetingDate,
     required this.annoucementLevel,
     required this.chapterMeetingId,
@@ -25,7 +25,7 @@ class AnnounceChapterConfirmationDialog extends StatefulWidget {
   });
 
   final String meetingDescription;
-  final String meetingTtile;
+  final String meetingTitle;
   final String meetingDate;
   final String annoucementLevel;
   final String chapterMeetingId;
@@ -99,7 +99,7 @@ class _UpdateExitingRolePlayerDialogState
               await _manageAnnouncementVM
                   .announceChapterMeeting(
                 meetingDescription: widget.meetingDescription,
-                meetingTtile: widget.meetingTtile,
+                meetingTitle: widget.meetingTitle,
                 meetingDate: widget.meetingDate,
                 annoucementLevel: widget.annoucementLevel,
                 chapterMeetingId: widget.chapterMeetingId,

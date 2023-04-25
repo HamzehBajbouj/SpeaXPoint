@@ -1,4 +1,3 @@
-import 'package:basic_utils/basic_utils.dart';
 import 'package:speaxpoint/models/annoucement/announcement.dart';
 
 class VolunteerAnnouncement extends Announcement {
@@ -8,31 +7,30 @@ class VolunteerAnnouncement extends Announcement {
   VolunteerAnnouncement(
       {this.annoucementDescription,
       this.annoucementTitle,
-      required super.annoucementDate,
-      required super.annoucementStatus,
+      super.annoucementDate,
       super.annoucementType,
-      required super.chapterMeetingId,
-      required super.clubId});
+      super.annoucementLevel,
+      super.chapterMeetingId,
+      super.clubId});
 
   VolunteerAnnouncement.fromJson(Map<String, dynamic> volunteerAnnoucementJson)
       : this(
-          annoucementDate: volunteerAnnoucementJson['annoucementDate'],
-          annoucementDescription:
-              volunteerAnnoucementJson['annoucementDescription'],
-          annoucementStatus: volunteerAnnoucementJson['annoucementStatus'],
-          annoucementTitle: volunteerAnnoucementJson['annoucementTitle'],
-          annoucementType: volunteerAnnoucementJson['annoucementType'],
-          chapterMeetingId: volunteerAnnoucementJson['chapterMeetingId'],
-          clubId: volunteerAnnoucementJson['clubId'],
-        );
+            annoucementDate: volunteerAnnoucementJson['annoucementDate'],
+            annoucementDescription:
+                volunteerAnnoucementJson['annoucementDescription'],
+            annoucementTitle: volunteerAnnoucementJson['annoucementTitle'],
+            annoucementType: volunteerAnnoucementJson['annoucementType'],
+            chapterMeetingId: volunteerAnnoucementJson['chapterMeetingId'],
+            clubId: volunteerAnnoucementJson['clubId'],
+            annoucementLevel: volunteerAnnoucementJson['annoucementLevel']);
 
   Map<String, dynamic> toJson() => {
         'annoucementDescription': annoucementDescription,
         'annoucementTitle': annoucementTitle,
         'annoucementDate': super.annoucementDate,
-        'annoucementStatus': super.annoucementStatus,
         'annoucementType': super.annoucementType,
         'chapterMeetingId': super.chapterMeetingId,
         'clubId': super.clubId,
+        'annoucementLevel': super.annoucementLevel,
       };
 }

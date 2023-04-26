@@ -13,6 +13,7 @@ import 'package:speaxpoint/view_models/toastmaster_vm/manage_chapter_meeting_ann
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_coming_sessions_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/prepare_meeting_agenda_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/profile_management_view_model.dart';
+import 'package:speaxpoint/view_models/toastmaster_vm/search_chapter_meeting_view_model.dart';
 
 class SpeaxPointApp extends StatelessWidget {
   SpeaxPointApp({super.key});
@@ -42,6 +43,8 @@ class SpeaxPointApp extends StatelessWidget {
         ChangeNotifierProvider(
             create: (_) =>
                 serviceLocator<ManageChapterMeetingAnnouncementViewModel>()),
+        ChangeNotifierProvider(
+            create: (_) => serviceLocator<SearchChapterMeetingViewModel>()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

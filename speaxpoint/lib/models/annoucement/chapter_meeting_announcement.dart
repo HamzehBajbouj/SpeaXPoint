@@ -1,4 +1,3 @@
-import 'package:basic_utils/basic_utils.dart';
 import 'package:speaxpoint/models/annoucement/announcement.dart';
 
 class ChapterMeetingAnnouncement extends Announcement {
@@ -7,7 +6,6 @@ class ChapterMeetingAnnouncement extends Announcement {
   String? meetingTitle;
   String? meetingDate;
   String? contactNumber;
-  String? brushureFileName;
   String? brushureLink;
 
   ChapterMeetingAnnouncement({
@@ -16,7 +14,6 @@ class ChapterMeetingAnnouncement extends Announcement {
     this.meetingDescription,
     this.meetingStreamLink,
     this.meetingTitle,
-    this.brushureFileName,
     this.brushureLink,
     super.annoucementLevel,
     super.annoucementDate,
@@ -34,7 +31,6 @@ class ChapterMeetingAnnouncement extends Announcement {
           meetingStreamLink: cmAnnoucement['meetingStreamLink'],
           meetingTitle: cmAnnoucement['meetingTitle'],
           contactNumber: cmAnnoucement['contactNumber'],
-          brushureFileName: cmAnnoucement['brushureFileName'],
           brushureLink: cmAnnoucement['brushureLink'],
           chapterMeetingId: cmAnnoucement['chapterMeetingId'],
           clubId: cmAnnoucement['clubId'],
@@ -52,7 +48,6 @@ class ChapterMeetingAnnouncement extends Announcement {
         'meetingTitle': meetingTitle,
         'contactNumber': contactNumber,
         'brushureLink': brushureLink,
-        'brushureFileName': brushureFileName,
         'annoucementLevel': annoucementLevel,
       };
 }

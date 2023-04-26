@@ -1,5 +1,8 @@
 import 'package:speaxpoint/models/annoucement/announcement.dart';
 
+
+//since the two variables are almost the same with chapterMeetingAnnouncement,
+//it can be in the parenet tag
 class VolunteerAnnouncement extends Announcement {
   String? annoucementTitle;
   String? annoucementDescription;

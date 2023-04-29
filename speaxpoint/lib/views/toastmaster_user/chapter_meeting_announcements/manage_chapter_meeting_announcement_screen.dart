@@ -165,11 +165,11 @@ class _ManageChapterMeetingAnnouncementsScreenState
                                     announcementCard(
                                       title: viewModel
                                               .chapterMeetingAnnouncement
-                                              ?.meetingTitle ??
+                                              ?.annoucementTitle ??
                                           "no title provided",
                                       description: viewModel
                                               .chapterMeetingAnnouncement
-                                              ?.meetingDescription ??
+                                              ?.annoucementDescription ??
                                           "no description provided",
                                       onCardTap: () {
                                         context.pushRoute(

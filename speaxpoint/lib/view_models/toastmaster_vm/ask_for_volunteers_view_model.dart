@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multiple_result/multiple_result.dart';
-import 'package:speaxpoint/models/annoucement/volunteer_annoucement.dart';
+import 'package:speaxpoint/models/annoucement/announcement.dart';
 import 'package:speaxpoint/models/meeting_agenda.dart';
 import 'package:speaxpoint/models/volunteer_slot.dart';
 import 'package:speaxpoint/services/Failure.dart';
@@ -136,7 +136,7 @@ class AskForVolunteersViewModel extends BaseViewModel {
       required String annnoucementDescription,
       required String clubId}) async {
     setLoading(loading: true);
-    VolunteerAnnouncement volunteerAnnoucement = VolunteerAnnouncement(
+    Announcement volunteerAnnoucement = Announcement(
       annoucementDate: DateTime.now().toString(),
       annoucementType: AnnouncementType.VolunteersAnnouncement.name,
       annoucementDescription: annnoucementDescription,
@@ -172,22 +172,3 @@ class AskForVolunteersViewModel extends BaseViewModel {
     }
   }
 }
-
-/*
-This is only an internal class that is meant to be used to display the 
-data in the screen in a certain way, this shall never be used to in any other
-places or purposes.
-*/
-// class Slots {
-//   String roleName;
-//   int roleOrderPlace;
-//   String slotStatus; // either announced or not
-//   int slotUnqiueId;
-
-//   Slots({
-//     required this.roleName,
-//     required this.roleOrderPlace,
-//     required this.slotStatus,
-//     required this.slotUnqiueId,
-//   });
-// }

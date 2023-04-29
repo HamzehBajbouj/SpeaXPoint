@@ -9,11 +9,21 @@ class SearchChapterMeetingViewModel extends BaseViewModel {
 
   bool _hasMore = true;
   DocumentSnapshot? _lastDocument;
-  final List<Map<String, dynamic>> _publishedAnnouncements = [];
+  List<Map<String, dynamic>> _publishedAnnouncements = [];
   // Getters
   bool get hasMore => _hasMore;
+
   List<Map<String, dynamic>> get publishedAnnouncements =>
       _publishedAnnouncements;
+
+//Setters
+  set hasMore(bool hasMore) {
+    _hasMore = hasMore;
+  }
+
+  set publishedAnnouncements(List<Map<String, dynamic>> list) {
+    _publishedAnnouncements = list;
+  }
 
   Future<void> fetchItems() async {
     if (super.loading || !_hasMore) return;
@@ -36,9 +46,11 @@ class SearchChapterMeetingViewModel extends BaseViewModel {
       _hasMore = false;
     }
     _lastDocument = documents.isNotEmpty ? documents.last : null;
+    if (documents.isNotEmpty) {
+      _publishedAnnouncements.addAll(
+          documents.map((e) => e.data() as Map<String, dynamic>).toList());
+    }
 
-    _publishedAnnouncements.addAll(
-        documents.map((e) => e.data() as Map<String, dynamic>).toList());
     setLoading(loading: false);
   }
 

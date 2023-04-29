@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:multiple_result/src/unit.dart';
+import 'package:speaxpoint/models/annoucement/announcement.dart';
 import 'package:speaxpoint/models/annoucement/chapter_meeting_announcement.dart';
 import 'package:speaxpoint/services/failure.dart';
-import 'package:speaxpoint/models/annoucement/volunteer_annoucement.dart';
 import 'package:multiple_result/src/result.dart';
 import 'package:speaxpoint/services/meeting_arrangement/common_services/meeting_arrangement_common_firebase_services.dart';
 import 'package:speaxpoint/services/meeting_arrangement/manage_announcements/i_manage_chapter_meeting_announcements_service.dart';
@@ -20,10 +20,10 @@ class ManageChapterMeetingAnnouncementsFirebaseService
   final CollectionReference _chapterMeetingsCollection =
       FirebaseFirestore.instance.collection('ChapterMeetings');
   @override
-  Future<Result<VolunteerAnnouncement, Failure>> getVolunteersAnnouncement(
+  Future<Result<Announcement, Failure>> getVolunteersAnnouncement(
       {required String chapterMeetingId}) async {
     try {
-      VolunteerAnnouncement volunteerAnnouncement = VolunteerAnnouncement();
+      Announcement volunteerAnnouncement = Announcement();
       QuerySnapshot announcementQS = await _announcementCollection
           .where("chapterMeetingId", isEqualTo: chapterMeetingId)
           .where("annoucementType",
@@ -31,7 +31,7 @@ class ManageChapterMeetingAnnouncementsFirebaseService
           .get();
 
       if (announcementQS.docs.isNotEmpty) {
-        volunteerAnnouncement = VolunteerAnnouncement.fromJson(
+        volunteerAnnouncement = Announcement.fromJson(
             announcementQS.docs.first.data() as Map<String, dynamic>);
       } else {
         return const Error(

@@ -1,6 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:speaxpoint/app/app_routes.gr.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
+import 'package:speaxpoint/util/constants/common_enums.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/text_fields.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/search_chapter_meeting_view_model.dart';
@@ -16,7 +19,8 @@ class SearchChapterMeetingScreen extends StatefulWidget {
 class _SearchChapterMeetingScreenState
     extends State<SearchChapterMeetingScreen> {
   late SearchChapterMeetingViewModel _searchChapterMeetingViewModel;
-  TextEditingController _searchMeetingController = TextEditingController();
+  final TextEditingController _searchMeetingController =
+      TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -24,8 +28,9 @@ class _SearchChapterMeetingScreenState
     super.initState();
     _searchChapterMeetingViewModel =
         Provider.of<SearchChapterMeetingViewModel>(context, listen: false);
-    _scrollController.addListener(_scrollListener);
+    _searchChapterMeetingViewModel.clearSearch();
     _searchChapterMeetingViewModel.fetchItems();
+    _scrollController.addListener(_scrollListener);
   }
 
   @override
@@ -45,7 +50,6 @@ class _SearchChapterMeetingScreenState
 
   @override
   Widget build(BuildContext context) {
-    _searchChapterMeetingViewModel.fetchItems();
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(
@@ -126,10 +130,11 @@ class _SearchChapterMeetingScreenState
                               viewmodel.publishedAnnouncements[index];
 
                           return _getAnnouncementCard(
-                              announcementType: announcement['annoucementType'],
-                              description:
-                                  announcement['annoucementDescription'],
-                              title: announcement['annoucementTitle']);
+                            chapterMeetingId: announcement['chapterMeetingId'],
+                            announcementType: announcement['annoucementType'],
+                            description: announcement['annoucementDescription'],
+                            title: announcement['annoucementTitle'],
+                          );
                         },
                       );
                     }
@@ -144,7 +149,8 @@ class _SearchChapterMeetingScreenState
   }
 
   Card _getAnnouncementCard(
-      {required String title,
+      {required String chapterMeetingId,
+      required String title,
       required String description,
       required String announcementType}) {
     return Card(
@@ -160,20 +166,32 @@ class _SearchChapterMeetingScreenState
         ),
       ),
       child: ListTile(
-        onTap: () {},
+        onTap: () {
+          if (announcementType ==
+              AnnouncementType.ChapterMeetingAnnouncement.name) {
+            context.pushRoute(
+              ChapterMeetingAnnouncementViewRouter(
+                chapterMeetingId: chapterMeetingId,
+                viewedFromSearchPage: true,
+              ),
+            );
+          }
+        },
         contentPadding: const EdgeInsets.only(
           left: 15,
           right: 15,
           top: 2.5,
           bottom: 2.5,
         ),
-        leading: const Icon(
-          Icons.public,
-          color: Color(AppMainColors.p40),
+        leading: Icon(
+          announcementType == AnnouncementType.ChapterMeetingAnnouncement.name
+              ? Icons.public
+              : Icons.emoji_people_rounded,
+          color: const Color(AppMainColors.p40),
           size: 35,
         ),
         title: Text(
-          "Titile",
+          title,
           overflow: TextOverflow.ellipsis,
           style: const TextStyle(
             fontFamily: CommonUIProperties.fontType,
@@ -183,7 +201,7 @@ class _SearchChapterMeetingScreenState
           ),
         ),
         subtitle: Text(
-          "Descriptiion here",
+          description,
           overflow: TextOverflow.ellipsis,
           style: const TextStyle(
             fontFamily: CommonUIProperties.fontType,
@@ -192,13 +210,10 @@ class _SearchChapterMeetingScreenState
             color: Color(AppMainColors.p50),
           ),
         ),
-        trailing: IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            Icons.arrow_forward_ios_rounded,
-            color: Color(AppMainColors.p40),
-            size: 35,
-          ),
+        trailing: const Icon(
+          Icons.arrow_forward_ios_rounded,
+          color: Color(AppMainColors.p40),
+          size: 35,
         ),
       ),
     );

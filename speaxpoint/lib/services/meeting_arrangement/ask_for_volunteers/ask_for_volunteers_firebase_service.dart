@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:speaxpoint/models/annoucement/announcement.dart';
 import 'package:speaxpoint/services/Failure.dart';
 import 'package:speaxpoint/models/volunteer_slot.dart';
-import 'package:speaxpoint/models/annoucement/volunteer_annoucement.dart';
 import 'package:multiple_result/src/unit.dart';
 import 'package:multiple_result/src/result.dart';
 import 'package:speaxpoint/services/meeting_arrangement/ask_for_volunteers/i_ask_for_volunteers_service.dart';
@@ -20,7 +20,7 @@ class AskForVolunteersFirebaseService
   Future<Result<Unit, Failure>> announceForVolunteers(
       {required String chapterMeetingId,
       required List<VolunteerSlot> volunteerSlots,
-      required VolunteerAnnouncement announcement}) async {
+      required Announcement announcement}) async {
     WriteBatch batch = FirebaseFirestore.instance.batch();
     CollectionReference volunteersSlotsCollection =
         FirebaseFirestore.instance.collection(" ");

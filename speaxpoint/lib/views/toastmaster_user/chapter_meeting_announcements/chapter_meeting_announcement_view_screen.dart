@@ -114,7 +114,7 @@ class ChapterMeetingAnnouncementViewScreen extends StatelessWidget {
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Text(
-                                          snapshot.data!.meetingTitle ??
+                                          snapshot.data!.annoucementTitle ??
                                               "No Title Is Provided!",
                                           style: const TextStyle(
                                             fontFamily:
@@ -126,7 +126,7 @@ class ChapterMeetingAnnouncementViewScreen extends StatelessWidget {
                                         ),
                                         const SizedBox(height: 5),
                                         Text(
-                                          snapshot.data!.meetingDescription ??
+                                          snapshot.data!.annoucementDescription ??
                                               "No Description Is Provided!",
                                           style: const TextStyle(
                                             fontFamily:

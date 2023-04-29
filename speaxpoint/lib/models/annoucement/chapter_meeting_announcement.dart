@@ -2,8 +2,8 @@ import 'package:speaxpoint/models/annoucement/announcement.dart';
 
 class ChapterMeetingAnnouncement extends Announcement {
   String? meetingStreamLink;
-  String? meetingDescription;
-  String? meetingTitle;
+  // String? meetingDescription;
+  // String? meetingTitle;
   String? meetingDate;
   String? contactNumber;
   String? brushureLink;
@@ -11,10 +11,10 @@ class ChapterMeetingAnnouncement extends Announcement {
   ChapterMeetingAnnouncement({
     this.contactNumber,
     this.meetingDate,
-    this.meetingDescription,
     this.meetingStreamLink,
-    this.meetingTitle,
     this.brushureLink,
+    super.annoucementDescription,
+    super.annoucementTitle,
     super.annoucementLevel,
     super.annoucementDate,
     super.annoucementType,
@@ -27,9 +27,9 @@ class ChapterMeetingAnnouncement extends Announcement {
           annoucementDate: cmAnnoucement['annoucementDate'],
           annoucementType: cmAnnoucement['annoucementType'],
           meetingDate: cmAnnoucement['meetingDate'],
-          meetingDescription: cmAnnoucement['meetingDescription'],
+          annoucementDescription: cmAnnoucement['annoucementDescription'],
           meetingStreamLink: cmAnnoucement['meetingStreamLink'],
-          meetingTitle: cmAnnoucement['meetingTitle'],
+          annoucementTitle: cmAnnoucement['annoucementTitle'],
           contactNumber: cmAnnoucement['contactNumber'],
           brushureLink: cmAnnoucement['brushureLink'],
           chapterMeetingId: cmAnnoucement['chapterMeetingId'],
@@ -37,15 +37,16 @@ class ChapterMeetingAnnouncement extends Announcement {
           annoucementLevel: cmAnnoucement['annoucementLevel'],
         );
 
+  @override
   Map<String, dynamic> toJson() => {
         'annoucementDate': super.annoucementDate,
         'annoucementType': super.annoucementType,
         'chapterMeetingId': super.chapterMeetingId,
+        'annoucementTitle': super.annoucementTitle,
+        'annoucementDescription': super.annoucementDescription,
         'clubId': super.clubId,
         'meetingDate': meetingDate,
-        'meetingDescription': meetingDescription,
         'meetingStreamLink': meetingStreamLink,
-        'meetingTitle': meetingTitle,
         'contactNumber': contactNumber,
         'brushureLink': brushureLink,
         'annoucementLevel': annoucementLevel,

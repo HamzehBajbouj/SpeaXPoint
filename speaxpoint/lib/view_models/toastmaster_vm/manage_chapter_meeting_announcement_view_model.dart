@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:multiple_result/multiple_result.dart';
+import 'package:speaxpoint/models/annoucement/announcement.dart';
 import 'package:speaxpoint/models/annoucement/chapter_meeting_announcement.dart';
-import 'package:speaxpoint/models/annoucement/volunteer_annoucement.dart';
 import 'package:speaxpoint/models/meeting_agenda.dart';
 import 'package:speaxpoint/services/failure.dart';
 import 'package:speaxpoint/services/meeting_arrangement/manage_agenda/i_manage_meeting_agenda_service.dart';
@@ -18,8 +18,8 @@ class ManageChapterMeetingAnnouncementViewModel extends BaseViewModel {
   ChapterMeetingAnnouncement? get chapterMeetingAnnouncement =>
       _chapterMeetingAnnouncement;
 
-  VolunteerAnnouncement? _volunteerAnnouncement;
-  VolunteerAnnouncement? get volunteerAnnouncement => _volunteerAnnouncement;
+  Announcement? _volunteerAnnouncement;
+  Announcement? get volunteerAnnouncement => _volunteerAnnouncement;
 
   List<MeetingAgenda> _agendaWithPlayersList = [];
   List<MeetingAgenda> get agendaWithPlayersList => _agendaWithPlayersList;
@@ -59,7 +59,7 @@ class ManageChapterMeetingAnnouncementViewModel extends BaseViewModel {
             element.containsValue(AnnouncementType.VolunteersAnnouncement.name),
         orElse: () => {});
     if (value1.isNotEmpty) {
-      _volunteerAnnouncement = VolunteerAnnouncement.fromJson(value1);
+      _volunteerAnnouncement = Announcement.fromJson(value1);
     } else {
       _volunteerAnnouncement = null;
     }
@@ -207,8 +207,8 @@ class ManageChapterMeetingAnnouncementViewModel extends BaseViewModel {
       annoucementLevel: annoucementLevel,
       meetingDate: meetingDate,
       contactNumber: contactNumber.isEmpty ? null : contactNumber,
-      meetingDescription: meetingDescription,
-      meetingTitle: meetingTitle,
+      annoucementDescription: meetingDescription,
+      annoucementTitle: meetingTitle,
       meetingStreamLink: meetingStreamLink.isEmpty ? null : meetingStreamLink,
     );
 

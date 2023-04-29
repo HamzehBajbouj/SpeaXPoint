@@ -16,6 +16,7 @@ class SearchChapterMeetingFirebaseService
       {int limit = 10, DocumentSnapshot? startAfter}) async {
     try {
       Query query = _announcementCollection
+          .where('annoucementLevel', isEqualTo: AnnouncementLevel.Public.name)
           .orderBy('annoucementDate', descending: true)
           .limit(limit);
       if (startAfter != null) {

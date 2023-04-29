@@ -36,10 +36,10 @@ class AnnounceChapterConfirmationDialog extends StatefulWidget {
 
   @override
   State<AnnounceChapterConfirmationDialog> createState() =>
-      _UpdateExitingRolePlayerDialogState();
+      _AnnounceChapterConfirmationDialogState();
 }
 
-class _UpdateExitingRolePlayerDialogState
+class _AnnounceChapterConfirmationDialogState
     extends State<AnnounceChapterConfirmationDialog> {
   late ManageChapterMeetingAnnouncementViewModel _manageAnnouncementVM;
 

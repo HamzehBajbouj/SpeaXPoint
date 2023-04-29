@@ -8,6 +8,7 @@ import 'package:speaxpoint/views/toastmaster_user/chapter_meeting_announcements/
 import 'package:speaxpoint/views/toastmaster_user/chapter_meeting_announcements/chapter_meeting_announcement_view_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/chapter_meeting_announcements/manage_chapter_meeting_announcement_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/ask_for_volunteers/ask_for_volunteers_screen.dart';
+import 'package:speaxpoint/views/toastmaster_user/chapter_meeting_announcements/volunteer_announcement_view_details_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/dashboard/toastmaster_dashboard_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/manage_coming_meetings/manage_coming_sessions_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/prepare_meeting_agenda/prepare_meeting_agenda_screen.dart';
@@ -202,6 +203,11 @@ const toastMasterNav = AutoRoute(
           path: "searchChapterMeeting",
           name: "SearchChapterMeetingRouter",
           page: SearchChapterMeetingScreen,
+        ),
+        AutoRoute(
+          path: "volunteerAnnouncementViewDetails",
+          name: "VolunteerAnnouncementViewDetailsRouter",
+          page: VolunteerAnnouncementViewDetailsScreen,
         ),
       ],
     ),

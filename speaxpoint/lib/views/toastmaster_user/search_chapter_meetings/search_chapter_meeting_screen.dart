@@ -134,6 +134,7 @@ class _SearchChapterMeetingScreenState
                             announcementType: announcement['annoucementType'],
                             description: announcement['annoucementDescription'],
                             title: announcement['annoucementTitle'],
+                            clubId: announcement['clubId'],
                           );
                         },
                       );
@@ -148,11 +149,13 @@ class _SearchChapterMeetingScreenState
     );
   }
 
-  Card _getAnnouncementCard(
-      {required String chapterMeetingId,
-      required String title,
-      required String description,
-      required String announcementType}) {
+  Card _getAnnouncementCard({
+    required String chapterMeetingId,
+    required String title,
+    required String description,
+    required String announcementType,
+    required String clubId,
+  }) {
     return Card(
       margin: const EdgeInsets.all(0),
       elevation: 0,
@@ -173,6 +176,15 @@ class _SearchChapterMeetingScreenState
               ChapterMeetingAnnouncementViewRouter(
                 chapterMeetingId: chapterMeetingId,
                 viewedFromSearchPage: true,
+                clubId: clubId,
+              ),
+            );
+          } else if (announcementType ==
+              AnnouncementType.VolunteersAnnouncement.name) {
+            context.pushRoute(
+              VolunteerAnnouncementViewDetailsRouter(
+                clubId: clubId,
+                chapterMeetingId: chapterMeetingId,
               ),
             );
           }

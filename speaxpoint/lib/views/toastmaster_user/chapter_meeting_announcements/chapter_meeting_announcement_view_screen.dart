@@ -14,11 +14,12 @@ class ChapterMeetingAnnouncementViewScreen extends StatelessWidget {
   const ChapterMeetingAnnouncementViewScreen(
       {super.key,
       required this.chapterMeetingId,
-      required this.viewedFromSearchPage});
+      required this.viewedFromSearchPage,
+      required this.clubId});
 
   final String chapterMeetingId;
   final bool viewedFromSearchPage;
-
+  final String clubId;
   @override
   Widget build(BuildContext context) {
     final ManageChapterMeetingAnnouncementViewModel manageAnnouncementVM =
@@ -79,8 +80,14 @@ class ChapterMeetingAnnouncementViewScreen extends StatelessWidget {
                             child: Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: const Color(0xFFF4F8FF),
+                                borderRadius: BorderRadius.circular(
+                                    CommonUIProperties.buttonRoundedEdges),
+                                color: const Color(AppMainColors
+                                    .announcementDetailsCardBackground),
+                                border: Border.all(
+                                  color: const Color(AppMainColors.p40),
+                                  width: 1.3,
+                                ),
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,6 +108,26 @@ class ChapterMeetingAnnouncementViewScreen extends StatelessWidget {
                                         child: Image.network(
                                           snapshot.data!.brushureLink ?? " ",
                                           fit: BoxFit.cover,
+                                          loadingBuilder: (BuildContext context,
+                                              Widget child,
+                                              ImageChunkEvent?
+                                                  loadingProgress) {
+                                            if (loadingProgress == null) {
+                                              return child;
+                                            }
+                                            return Center(
+                                              child: CircularProgressIndicator(
+                                                value: loadingProgress
+                                                            .expectedTotalBytes !=
+                                                        null
+                                                    ? loadingProgress
+                                                            .cumulativeBytesLoaded /
+                                                        loadingProgress
+                                                            .expectedTotalBytes!
+                                                    : null,
+                                              ),
+                                            );
+                                          },
                                         ),
                                       ),
                                     ),
@@ -119,14 +146,17 @@ class ChapterMeetingAnnouncementViewScreen extends StatelessWidget {
                                           style: const TextStyle(
                                             fontFamily:
                                                 CommonUIProperties.fontType,
-                                            fontSize: 20,
+                                            fontSize: 18,
                                             fontWeight: FontWeight.bold,
                                             color: Color(AppMainColors.p80),
                                           ),
+                                          maxLines: 3,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                         const SizedBox(height: 5),
                                         Text(
-                                          snapshot.data!.annoucementDescription ??
+                                          snapshot.data!
+                                                  .annoucementDescription ??
                                               "No Description Is Provided!",
                                           style: const TextStyle(
                                             fontFamily:
@@ -135,7 +165,7 @@ class ChapterMeetingAnnouncementViewScreen extends StatelessWidget {
                                             fontWeight: FontWeight.normal,
                                             color: Color(AppMainColors.p50),
                                           ),
-                                          maxLines: 5,
+                                          maxLines: 8,
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         const SizedBox(height: 15),

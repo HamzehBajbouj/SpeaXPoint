@@ -196,7 +196,7 @@ Widget allocatedGuestRoleCard({
 }
 
 //this is only used in the announce for voluntters
-Widget availableVolunteersSlots({
+Widget announcedVolunteersSlots({
   required String role,
   required int? rolePlace,
   required void Function() deleteAction,
@@ -255,6 +255,53 @@ Widget availableVolunteersSlots({
                     ),
                   ),
                 )
+              ],
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+//this widget is only used in view volunteers announcement details in the search for announcements
+Widget volunteerViewDetailsSlotCard({
+  required String roleName,
+  required int rolePlace,
+}) {
+  return Container(
+    constraints: const BoxConstraints(
+      minHeight: 40,
+      maxHeight: 50,
+    ),
+    decoration: BoxDecoration(
+      border: Border.all(
+        color: const Color(AppMainColors.p40),
+        width: 1.3,
+      ),
+      borderRadius: BorderRadius.circular(CommonUIProperties.cardRoundedEdges),
+    ),
+    child: Row(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    "$roleName ${rolePlace == 0 ? "" : rolePlace}",
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontFamily: CommonUIProperties.fontType,
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                      color: Color(AppMainColors.p40),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

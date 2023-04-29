@@ -91,7 +91,8 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
       chapterMeetingId,
       AllocatedRolePlayer(
         roleName: roleName,
-        roleOrderPlace: memberRolePlace,
+        roleOrderPlace: super.getCorrectRoleOrderPlace(
+            roleName: roleName, roleOrder: memberRolePlace),
         rolePlayerName: toastmaster.toastmasterName,
         toastmasterId: toastmaster.toastmasterId,
         allocatedRolePlayerType: allocatedRolePlayerType,
@@ -118,7 +119,8 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
       AllocatedRolePlayer(
         guestInvitationCode: _generateRandomGuestId(),
         roleName: roleName,
-        roleOrderPlace: memberRolePlace,
+        roleOrderPlace: super.getCorrectRoleOrderPlace(
+            roleName: roleName, roleOrder: memberRolePlace),
         rolePlayerName: guestName,
         allocatedRolePlayerType: allocatedRolePlayerType,
       ),
@@ -144,7 +146,8 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
       chapterMeetingId,
       AllocatedRolePlayer(
         roleName: roleName,
-        roleOrderPlace: memberRolePlace,
+        roleOrderPlace: super.getCorrectRoleOrderPlace(
+            roleName: roleName, roleOrder: memberRolePlace),
         rolePlayerName: toastmaster?.toastmasterName,
         toastmasterId: toastmaster?.toastmasterId,
         allocatedRolePlayerType: allocatedRolePlayerType,
@@ -168,7 +171,8 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
       chapterMeetingId,
       AllocatedRolePlayer(
         roleName: roleName,
-        roleOrderPlace: memberRolePlace,
+        roleOrderPlace: super.getCorrectRoleOrderPlace(
+            roleName: roleName, roleOrder: memberRolePlace),
         rolePlayerName: guestName,
         toastmasterId: null,
         allocatedRolePlayerType: allocatedRolePlayerType,
@@ -312,7 +316,8 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
 
     AllocatedRolePlayer newAllocatedRolePlayer = AllocatedRolePlayer(
       roleName: slot.roleName,
-      roleOrderPlace: slot.roleOrderPlace,
+      roleOrderPlace:super.getCorrectRoleOrderPlace(
+            roleName: slot.roleName!, roleOrder: slot.roleOrderPlace!), 
       rolePlayerName: selectedApplicant.toastmasterName,
       toastmasterId: selectedApplicant.toastmasterId,
       allocatedRolePlayerType: AllocatedRolePlayerType.Volunteer.name,
@@ -339,7 +344,6 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
     required int slotUnqiueId,
   }) async {
     Toastmaster applicantDetails = Toastmaster();
-    print("fsdfsdfs ");
     await _allocateRolePlayersService
         .getAcceptedVolunteerDetails(
             chapterMeetingId: chapterMeetingId, volunteerSlotId: slotUnqiueId)
@@ -348,11 +352,9 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
         value.whenSuccess(
           (success) {
             applicantDetails = success;
-            print("fsdfsdfs " + applicantDetails.toastmasterId!);
           },
         );
         value.whenError((error) {
-          print("fsdfsdfs " + error.message);
         });
       },
     );

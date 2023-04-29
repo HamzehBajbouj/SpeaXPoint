@@ -23,6 +23,7 @@ class AppMainColors {
 
   static const successSnapBarMessage = 0xFFE9F9EA;
 
+  static const announcementDetailsCardBackground = 0xFFF4F8FF;
   /*
   these colors are for the status of the sessions in the Manage Coming sessions page
   */

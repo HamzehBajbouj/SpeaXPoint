@@ -174,6 +174,7 @@ class _ManageChapterMeetingAnnouncementsScreenState
                                       onCardTap: () {
                                         context.pushRoute(
                                           ChapterMeetingAnnouncementViewRouter(
+                                              clubId: widget.clubId,
                                               chapterMeetingId:
                                                   widget.chapterMeetingId,
                                               viewedFromSearchPage: false),

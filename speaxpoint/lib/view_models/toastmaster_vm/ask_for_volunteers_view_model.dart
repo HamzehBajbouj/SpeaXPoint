@@ -103,7 +103,7 @@ class AskForVolunteersViewModel extends BaseViewModel {
 
     _agendaWithNoRolePlayersList.forEach(
       (element) {
-        volunteersSlots.add(
+        _volunteersSlots.add(
           VolunteerSlot(
               roleName: element.roleName!,
               roleOrderPlace: element.roleOrderPlace!,
@@ -115,7 +115,7 @@ class AskForVolunteersViewModel extends BaseViewModel {
     );
     _listOfAnnouncedVolunteers.forEach(
       (element) {
-        volunteersSlots.add(
+        _volunteersSlots.add(
           VolunteerSlot(
             roleName: element.roleName!,
             roleOrderPlace: element.roleOrderPlace!,

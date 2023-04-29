@@ -239,7 +239,7 @@ class _AskForVolunteersScreenState extends State<AskForVolunteersScreen> {
                                     height: 10,
                                   ),
                                   itemBuilder: (context, index) {
-                                    return availableVolunteersSlots(
+                                    return announcedVolunteersSlots(
                                         viewMode: !widget.viewMode,
                                         deleteAction: () {
                                           viewModel.deleteSlot(index);

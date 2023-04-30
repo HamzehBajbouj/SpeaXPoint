@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:speaxpoint/models/annoucement/announcement.dart';
-import 'package:speaxpoint/services/Failure.dart';
+import 'package:speaxpoint/models/slot_applicant.dart';
+import 'package:speaxpoint/services/failure.dart';
 import 'package:speaxpoint/models/volunteer_slot.dart';
 import 'package:multiple_result/src/unit.dart';
 import 'package:multiple_result/src/result.dart';
@@ -214,6 +216,145 @@ class AskForVolunteersFirebaseService
           1;
     } else {
       return biggestAgendaCardNumber += biggestAgendaCardNumber + 1;
+    }
+  }
+
+  @override
+  Future<Result<bool, Failure>> checkExistingSlotApplicant(
+      {required int slotUnqiueId,
+      required String chapterMeetingId,
+      required String toastmasterId}) async {
+    //true if the applicant is existed
+    bool volunteerIsExisted = false;
+
+    try {
+      QuerySnapshot chapterMeetingQS = await _chapterMeetingsCollection
+          .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+          .get();
+
+      if (chapterMeetingQS.docs.isNotEmpty) {
+        CollectionReference volunteersSlotsCollection =
+            chapterMeetingQS.docs.first.reference.collection("VolunteersSlots");
+        QuerySnapshot slotQS = await volunteersSlotsCollection
+            .where("slotUnqiueId", isEqualTo: slotUnqiueId)
+            .get();
+
+        if (slotQS.docs.isEmpty) {
+          return Error(
+            Failure(
+                code: 'no-volunteer-slot-is-found',
+                location:
+                    "AskForVolunteersFirebaseService.checkExistingSlotApplicant()",
+                message:
+                    "It seems the app can't find the volunteer slot record with Id $slotUnqiueId in the databases."),
+          );
+        } else {
+          CollectionReference slotApplicantCollection =
+              slotQS.docs.first.reference.collection("SlotApplicants");
+          QuerySnapshot slotApplicantQS = await slotApplicantCollection
+              .where("toastmasterId", isEqualTo: toastmasterId)
+              .get();
+          if (slotApplicantQS.docs.isEmpty) {
+            volunteerIsExisted = false;
+          } else {
+            volunteerIsExisted = true;
+          }
+        }
+      } else {
+        return const Error(
+          Failure(
+              code: 'no-chapter-meeting-is-found',
+              location:
+                  "AskForVolunteersFirebaseService.checkExistingSlotApplicant()",
+              message:
+                  "It seems the app can't find the chapter meeting record in the databases."),
+        );
+      }
+      return Success(volunteerIsExisted);
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location:
+                "AskForVolunteersFirebaseService.checkExistingSlotApplicant()",
+            message: e.message ??
+                "Database Error While checking volunteers slots applicants from the database"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location:
+                "AskForVolunteersFirebaseService.checkExistingSlotApplicant()",
+            message: e.toString()),
+      );
+    }
+  }
+
+  @override
+  Future<Result<Unit, Failure>> addNewVolunteerSlotApplicant(
+      {required int slotUnqiueId,
+      required String chapterMeetingId,
+      required SlotApplicant slotApplicant}) async {
+    try {
+      QuerySnapshot chapterMeetingQS = await _chapterMeetingsCollection
+          .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+          .get();
+
+      if (chapterMeetingQS.docs.isNotEmpty) {
+        CollectionReference volunteersSlotsCollection =
+            chapterMeetingQS.docs.first.reference.collection("VolunteersSlots");
+        QuerySnapshot slotQS = await volunteersSlotsCollection
+            .where("slotUnqiueId", isEqualTo: slotUnqiueId)
+            .get();
+
+        if (slotQS.docs.isEmpty) {
+          return Error(
+            Failure(
+                code: 'no-volunteer-slot-is-found',
+                location:
+                    "AskForVolunteersFirebaseService.addNewVolunteerSlotApplicant()",
+                message:
+                    "It seems the app can't find the volunteer slot record with Id $slotUnqiueId in the databases."),
+          );
+        } else {
+          await slotQS.docs.first.reference.update(
+              {'slotStatus': VolunteerSlotStatus.PendingApplication.name}).then(
+            (value) async {
+              await slotQS.docs.first.reference
+                  .collection("SlotApplicants")
+                  .add(slotApplicant.toJson());
+            },
+          );
+        }
+      } else {
+        return const Error(
+          Failure(
+              code: 'no-chapter-meeting-is-found',
+              location:
+                  "AskForVolunteersFirebaseService.addNewVolunteerSlotApplicant()",
+              message:
+                  "It seems the app can't find the chapter meeting record in the databases."),
+        );
+      }
+      return Success.unit();
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location:
+                "AskForVolunteersFirebaseService.addNewVolunteerSlotApplicant()",
+            message: e.message ??
+                "Database Error While adding a new volunteers slots applicant to the database"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location:
+                "AskForVolunteersFirebaseService.addNewVolunteerSlotApplicant()",
+            message: e.toString()),
+      );
     }
   }
 }

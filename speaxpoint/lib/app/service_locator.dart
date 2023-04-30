@@ -154,6 +154,7 @@ Future<void> initServiceLocator() async {
     () => VolunteerAnnouncementViewDetailsViewModel(
       serviceLocator<IAskForVolunteersService>(),
       serviceLocator<IManageChapterMeeingAnnouncementsService>(),
+      serviceLocator<ILocalDataBaseService>(),
     ),
   );
 }

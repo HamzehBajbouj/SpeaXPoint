@@ -5,6 +5,8 @@ import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart';
 import 'package:speaxpoint/util/ui_widgets/common_widgets.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/volunteer_announcement_view_details_view_model.dart';
+import 'package:speaxpoint/views/toastmaster_user/chapter_meeting_announcements/dialogs/volunteer_to_role_slot_completion_message.dialog.dart';
+import 'package:speaxpoint/views/toastmaster_user/chapter_meeting_announcements/dialogs/volunter_to_role_slot_confirmation_dialog.dart';
 
 class VolunteerAnnouncementViewDetailsScreen extends StatefulWidget {
   const VolunteerAnnouncementViewDetailsScreen(
@@ -172,6 +174,60 @@ class _VolunteerAnnouncementViewScreenState
                                               rolePlace: viewModel
                                                   .volunteersSlots[index]
                                                   .roleOrderPlace!,
+                                              onTapCallBack: () async {
+                                                _volunteerAnnouncementViewDetailsViewModel
+                                                    .validateApplicantExisting(
+                                                  slotUnqiueId: viewModel
+                                                      .volunteersSlots[index]
+                                                      .slotUnqiueId!,
+                                                  chapterMeetingId:
+                                                      widget.chapterMeetingId,
+                                                )
+                                                    .then(
+                                                  (value) {
+                                                    value.whenSuccess(
+                                                      (bool result) {
+                                                        //if result is true , then it mean the user had applied to
+                                                        //this slot before.
+                                                        if (result) {
+                                                          showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return const VolunteerToRoleSlotCompletionMessageDialog(
+                                                                isWarningMessage:
+                                                                    true,
+                                                                message:
+                                                                    "It Seems that you have applied to this role before."
+                                                                    " The moment your application is accepted, it will be added to your meetings schedule",
+                                                              );
+                                                            },
+                                                          );
+                                                        } else {
+                                                          //then since it's false , the user has not applied to here before
+                                                          showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return VolunteerToRoleSlotConfirmationDialog(
+                                                                chapterMeetingId:
+                                                                    widget
+                                                                        .chapterMeetingId,
+                                                                slotUnqiueId: viewModel
+                                                                    .volunteersSlots[
+                                                                        index]
+                                                                    .slotUnqiueId!,
+                                                              );
+                                                            },
+                                                          );
+                                                        }
+                                                      },
+                                                    );
+                                                  },
+                                                );
+                                              },
                                             );
                                           },
                                         ),

@@ -3,7 +3,7 @@ import 'package:multiple_result/multiple_result.dart';
 import 'package:speaxpoint/models/annoucement/announcement.dart';
 import 'package:speaxpoint/models/meeting_agenda.dart';
 import 'package:speaxpoint/models/volunteer_slot.dart';
-import 'package:speaxpoint/services/Failure.dart';
+import 'package:speaxpoint/services/failure.dart';
 import 'package:speaxpoint/services/meeting_arrangement/ask_for_volunteers/i_ask_for_volunteers_service.dart';
 import 'package:speaxpoint/services/meeting_arrangement/manage_agenda/i_manage_meeting_agenda_service.dart';
 import 'package:speaxpoint/services/meeting_arrangement/manage_announcements/i_manage_chapter_meeting_announcements_service.dart';

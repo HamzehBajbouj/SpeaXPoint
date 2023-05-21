@@ -33,6 +33,7 @@ enum LisrOfRolesPlayers {
   Speach_Evaluator,
   General_Evaluator,
   Toastmaster,
+  MeetingVisitor,
 }
 
 enum AllocatedRolePlayerType {

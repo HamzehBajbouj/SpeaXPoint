@@ -45,6 +45,7 @@ class _AddClubMemberRolePlayerBottomSheetState
     super.initState();
     _allocateRolePlayersVM =
         Provider.of<AllocateRolePlayersViewModel>(context, listen: false);
+    listOfRole.remove(LisrOfRolesPlayers.MeetingVisitor.name);
   }
 
   @override

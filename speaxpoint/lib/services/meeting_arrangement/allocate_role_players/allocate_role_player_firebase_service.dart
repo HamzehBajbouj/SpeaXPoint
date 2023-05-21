@@ -18,6 +18,10 @@ class AllocateRolePlayerFirebaseService
 
   final CollectionReference _toastmasterCollection =
       FirebaseFirestore.instance.collection('Toastmasters');
+//this collection serve as a quick serach and it also helps us when want to get
+//the out-side users scheduled meeting with other clubs, please check the collection notes
+  final CollectionReference _allocatedPlayersQuickSearchCollection =
+      FirebaseFirestore.instance.collection('AllocatedPlayersQuickSearch');
   @override
   Future<Result<Unit, Failure>> allocateNewRolePlayer(String chapterMeetingId,
       AllocatedRolePlayer allocatedRolePlayer, bool deteleVolunteerSlot) async {
@@ -39,13 +43,30 @@ class AllocateRolePlayerFirebaseService
               .doc(uniqueId.toString())
               .set(allocatedRolePlayer.toJson())
               .then(
-            (_) {
+            (_) async {
+              //don't add it to allocatedPlayersQuickSearchCollection if it's a guest
+              if (allocatedRolePlayer.allocatedRolePlayerType !=
+                  AllocatedRolePlayerType.Guest.name) {
+                //this will add a quick search data, read the file about AllocatedPlayersQuickSearch collection
+                //to understand more about it.
+                await _allocatedPlayersQuickSearchCollection.add(
+                  {
+                    'chapterMeetingId': chapterMeetingId,
+                    'toastmasterId': allocatedRolePlayer.toastmasterId,
+                    'allocatedRolePlayerType':
+                        allocatedRolePlayer.allocatedRolePlayerType,
+                    'roleName': allocatedRolePlayer.roleName,
+                    'roleOrderPlace': allocatedRolePlayer.roleOrderPlace,
+                  },
+                );
+              }
+
               /*
               this part to delete the role from the volunteers slots collection
               //in case it was announced the need for it but later the VPE, 
               added the role player from other options like (club members).
 
-              the deteleVolunteerSlot is ued to diffeneitate whether this serivce api
+              the deteleVolunteerSlot is used to diffeneitate whether this serivce api
               was used from the volunteersTabview or not,
               becuase when we are accepting a volunteer applicant , we want to add
               him into the allocatedRolePlayer, but we also don't want to delete 
@@ -111,7 +132,22 @@ class AllocateRolePlayerFirebaseService
               .where("allocatedRolePlayerUniqueId",
                   isEqualTo: allocatedRolePlayerUniqueId)
               .get();
-          await allocatedRolePlayerQS.docs.first.reference.delete();
+
+          if (allocatedRolePlayerQS.docs.isNotEmpty) {
+            //delete the record in the AllocatedPlayersQuickSearchCollection
+            Map<String, dynamic> temp =
+                allocatedRolePlayerQS.docs.first.data() as Map<String, dynamic>;
+            QuerySnapshot apqscQS = await _allocatedPlayersQuickSearchCollection
+                .where('chapterMeetingId', isEqualTo: chapterMeetingId)
+                .where('toastmasterId',
+                    isEqualTo: temp['toastmasterId'].toString())
+                .get();
+            if (apqscQS.docs.isNotEmpty) {
+              await apqscQS.docs.first.reference.delete();
+            }
+            //then delete the record in the allocatedRolePlayer collection
+            await allocatedRolePlayerQS.docs.first.reference.delete();
+          }
         },
       );
 
@@ -198,6 +234,24 @@ class AllocateRolePlayerFirebaseService
                     allocatedRolePlayer.allocatedRolePlayerType,
               },
             );
+
+            //also update in the _allocatedPlayersQuickSearchCollection
+            QuerySnapshot quickSearchCollectionSQ =
+                await _allocatedPlayersQuickSearchCollection
+                    .where('chapterMeetingId', isEqualTo: chapterMeetingId)
+                    .where("roleName", isEqualTo: allocatedRolePlayer.roleName)
+                    .where("roleOrderPlace",
+                        isEqualTo: allocatedRolePlayer.roleOrderPlace)
+                    .get();
+            if (quickSearchCollectionSQ.docs.isNotEmpty) {
+              await quickSearchCollectionSQ.docs.first.reference.update(
+                {
+                  'toastmasterId': allocatedRolePlayer.toastmasterId,
+                  'allocatedRolePlayerType':
+                      allocatedRolePlayer.allocatedRolePlayerType,
+                },
+              );
+            }
           }
         },
       );
@@ -325,6 +379,7 @@ class AllocateRolePlayerFirebaseService
       );
       //in case that there was an accepted applicant, then this applicant details
       //are now in the allocaedRolePlayers collection we need to delete it there as well.
+      //we also need to delete it from the _allocatedPlayersQuickSearchCollection
       await super.getAllocatedRolePlayerCollectionRef(chapterMeetingId).then(
         (collectionRef) async {
           QuerySnapshot allocatedRoleQS = await collectionRef
@@ -336,6 +391,17 @@ class AllocateRolePlayerFirebaseService
           }
         },
       );
+      //delete it from the AllocatedPlayersQuickSearchCollection
+      QuerySnapshot quickSearchCollectionSQ =
+          await _allocatedPlayersQuickSearchCollection
+              .where('chapterMeetingId', isEqualTo: chapterMeetingId)
+              .where("roleName", isEqualTo: roleName)
+              .where("roleOrderPlace", isEqualTo: roleOderPlace)
+              .get();
+      if (quickSearchCollectionSQ.docs.isNotEmpty) {
+        await quickSearchCollectionSQ.docs.first.reference.delete();
+      }
+
       return Success.unit();
     } on FirebaseException catch (e) {
       return Error(

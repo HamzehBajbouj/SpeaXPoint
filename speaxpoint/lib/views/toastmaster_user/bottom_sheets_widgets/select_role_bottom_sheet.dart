@@ -25,6 +25,11 @@ class _SelectRolePlayerBottomSheetState
   int _rolePlace = 1;
 
   @override
+  void initState() {
+    super.initState();
+    listOfRole.remove(LisrOfRolesPlayers.MeetingVisitor.name);
+  }
+  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       controller: ModalScrollController.of(context),

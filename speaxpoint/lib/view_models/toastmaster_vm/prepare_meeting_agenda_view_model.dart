@@ -61,18 +61,18 @@ class PrepareMeetingAgendaViewModel extends BaseViewModel {
   }
 
   Future<void> addNewAgendaEmptyCard(String chapterMeetingId) async {
-    setLoading(loading:true);
+    setLoading(loading: true);
     _addingNewCardStatus = await _manageMeetingAgendaService
         .createEmptyAgendaCard(chapterMeetingId, _getNewCardOrder());
-    setLoading(loading:false);
+    setLoading(loading: false);
   }
 
   Future<void> deleteAgendaCard(
       String chapterMeetingId, int agendaCardNumber) async {
-    setLoading(loading:true);
+    setLoading(loading: true);
     _deteteAgendaCardCardStatus = await _manageMeetingAgendaService
         .deleteAgendaCard(chapterMeetingId, agendaCardNumber);
-    setLoading(loading:false);
+    setLoading(loading: false);
   }
 
   Future<void> updateTimeSequence({
@@ -80,10 +80,10 @@ class PrepareMeetingAgendaViewModel extends BaseViewModel {
     required String timeSequence,
     required int agendaCardNumber,
   }) async {
-    setLoading(loading:true);
+    setLoading(loading: true);
     _updateTimeSequenceStatus = await _manageMeetingAgendaService
         .updateAgendaTime(chapterMeetingId, timeSequence, agendaCardNumber);
-    setLoading(loading:false);
+    setLoading(loading: false);
   }
 
   Future<void> updateAgendaCardDetails({
@@ -93,7 +93,7 @@ class PrepareMeetingAgendaViewModel extends BaseViewModel {
     required int agendaCardNumber,
     required int roleOrderPlace,
   }) async {
-    setLoading(loading:true);
+    setLoading(loading: true);
     _updateAgendaCardStatus =
         await _manageMeetingAgendaService.updateAgendaCardDetails(
       chapterMeetingId,
@@ -101,9 +101,10 @@ class PrepareMeetingAgendaViewModel extends BaseViewModel {
         agendaCardOrder: agendaCardNumber,
         agendaTitle: agendaCardTitle,
         roleName: roleName,
-        roleOrderPlace: roleOrderPlace,
+        roleOrderPlace: getCorrectRoleOrderPlace(
+            roleName: roleName, roleOrder: roleOrderPlace),
       ),
     );
-    setLoading(loading:false);
+    setLoading(loading: false);
   }
 }

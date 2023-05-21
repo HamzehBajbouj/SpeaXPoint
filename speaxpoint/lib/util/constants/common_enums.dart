@@ -21,6 +21,7 @@ enum ComingSessionsStatus {
   Completed,
   Pending,
   Coming,
+  Ongoing
 }
 
 enum LisrOfRolesPlayers {

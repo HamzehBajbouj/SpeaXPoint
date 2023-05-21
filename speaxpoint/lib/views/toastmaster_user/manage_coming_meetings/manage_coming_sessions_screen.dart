@@ -310,6 +310,8 @@ class _ManageComingSessionsScreenState
         return const Color(AppMainColors.pendingSessionCard);
       case "Coming":
         return const Color(AppMainColors.comingSessionCard);
+      case "Ongoing":
+        return const Color(AppMainColors.ongoingSessionCard);
       default:
         return Colors.grey;
     }
@@ -323,6 +325,8 @@ class _ManageComingSessionsScreenState
         return const Color(AppMainColors.pendingSessionCardIcon);
       case "Coming":
         return const Color(AppMainColors.comingSessionCardIcon);
+      case "Ongoing":
+        return const Color(AppMainColors.ongoingSessionCardIcon);
       default:
         return Colors.redAccent;
     }
@@ -336,6 +340,8 @@ class _ManageComingSessionsScreenState
         return Icons.pending_outlined;
       case "Coming":
         return Icons.schedule_outlined;
+      case "Ongoing":
+        return Icons.contactless_outlined;
       default:
         return Icons.error_outline;
     }

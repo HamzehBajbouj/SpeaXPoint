@@ -34,6 +34,8 @@ class AppMainColors {
   static const pendingSessionCardIcon = 0xFFF28D8D;
   static const comingSessionCard = 0xFFF3F5F8;
   static const comingSessionCardIcon = 0xFF577398;
+  static const ongoingSessionCard = 0xFFFFF2DE;
+  static const ongoingSessionCardIcon = 0xFFFFBC39;
 
   static const announcedVolunteerSlot = 0xFF87CEB9;
   static const volunteerNoApplicantStatus = 0xFFB7C3D3;

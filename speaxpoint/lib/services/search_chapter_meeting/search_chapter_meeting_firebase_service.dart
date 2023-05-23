@@ -13,9 +13,13 @@ class SearchChapterMeetingFirebaseService
       FirebaseFirestore.instance.collection("Announcements");
   @override
   Future<Result<List<DocumentSnapshot>, Failure>> getPublishedAllAnnouncements(
-      {int limit = 10, DocumentSnapshot? startAfter}) async {
+      {required String clubId,
+      int limit = 10,
+      DocumentSnapshot? startAfter}) async {
     try {
       Query query = _announcementCollection
+          .where('clubId', isNotEqualTo: clubId)
+          .orderBy('clubId', descending: true)
           .where('annoucementLevel', isEqualTo: AnnouncementLevel.Public.name)
           .orderBy('annoucementDate', descending: true)
           .limit(limit);
@@ -46,21 +50,29 @@ class SearchChapterMeetingFirebaseService
   }
 
   @override
-  Future<Result<List<DocumentSnapshot>, Failure>> searchForClubAnnouncement(
-      {required String clubUsername}) async {
+  Future<Result<List<DocumentSnapshot>, Failure>> searchForClubAnnouncement({
+    required String searchClubUsername,
+    required String userClubId,
+  }) async {
     try {
       List<DocumentSnapshot> documents = [];
-      QuerySnapshot clubQS =
-          await _clubAccounts.where('username', isEqualTo: clubUsername).get();
+      QuerySnapshot clubQS = await _clubAccounts
+          .where('username', isEqualTo: searchClubUsername)
+          .get();
 
       if (clubQS.docs.isNotEmpty) {
         ClubAccount clubAccount = ClubAccount.fromJson(
             clubQS.docs.first.data() as Map<String, dynamic>);
-        QuerySnapshot announcementQS = await _announcementCollection
-            .where('clubId', isEqualTo: clubAccount.clubId)
-            .where('annoucementLevel', isEqualTo: AnnouncementLevel.Public.name)
-            .get();
-        documents = announcementQS.docs;
+        //this check is necessary to prevent the user to search for his own
+        //club announcements
+        if (clubAccount.clubId != userClubId) {
+          QuerySnapshot announcementQS = await _announcementCollection
+              .where('clubId', isEqualTo: clubAccount.clubId)
+              .where('annoucementLevel',
+                  isEqualTo: AnnouncementLevel.Public.name)
+              .get();
+          documents = announcementQS.docs;
+        }
       }
 
       return Success(documents);

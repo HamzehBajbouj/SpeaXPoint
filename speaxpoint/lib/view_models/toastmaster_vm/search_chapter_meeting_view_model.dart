@@ -1,11 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:speaxpoint/models/annoucement/chapter_meeting_announcement.dart';
+import 'package:speaxpoint/services/local_database/i_local_database_service.dart';
 import 'package:speaxpoint/services/search_chapter_meeting/i_search_chapter_meeting_service.dart';
+import 'package:speaxpoint/util/constants/shared_preferences_keys.dart';
 import 'package:speaxpoint/view_models/base_view_mode.dart';
 
 class SearchChapterMeetingViewModel extends BaseViewModel {
   final ISearchChapterMeetingService _searchChapterMeetingService;
-  SearchChapterMeetingViewModel(this._searchChapterMeetingService);
+  final ILocalDataBaseService _localDataBaseService;
+  SearchChapterMeetingViewModel(
+      this._searchChapterMeetingService, this._localDataBaseService);
 
   bool _hasMore = true;
   DocumentSnapshot? _lastDocument;
@@ -28,9 +32,12 @@ class SearchChapterMeetingViewModel extends BaseViewModel {
   Future<void> fetchItems() async {
     if (super.loading || !_hasMore) return;
     setLoading(loading: true);
+    Map<String, dynamic> loggedUser =
+        await _localDataBaseService.loadData(SharedPrefereneceKeys.loggedUser);
     List<DocumentSnapshot> documents = [];
     await _searchChapterMeetingService
         .getPublishedAllAnnouncements(
+      clubId: loggedUser["clubId"],
       startAfter: _lastDocument,
     )
         .then(
@@ -57,8 +64,13 @@ class SearchChapterMeetingViewModel extends BaseViewModel {
   Future<void> searchByClubUsername({required String clubUsername}) async {
     setLoading(loading: true);
     List<DocumentSnapshot> documents = [];
+    Map<String, dynamic> loggedUser =
+        await _localDataBaseService.loadData(SharedPrefereneceKeys.loggedUser);
     await _searchChapterMeetingService
-        .searchForClubAnnouncement(clubUsername: clubUsername)
+        .searchForClubAnnouncement(
+      searchClubUsername: clubUsername,
+      userClubId: loggedUser["clubId"],
+    )
         .then(
       (value) {
         value.whenSuccess(

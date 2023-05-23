@@ -153,6 +153,7 @@ Future<void> initServiceLocator() async {
   serviceLocator.registerLazySingleton<SearchChapterMeetingViewModel>(
     () => SearchChapterMeetingViewModel(
       serviceLocator<ISearchChapterMeetingService>(),
+      serviceLocator<ILocalDataBaseService>(),
     ),
   );
 

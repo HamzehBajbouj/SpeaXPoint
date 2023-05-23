@@ -8,6 +8,7 @@ import 'package:speaxpoint/models/chapter_meeting.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart';
+import 'package:speaxpoint/util/ui_widgets/common_widgets.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_coming_sessions_view_model.dart';
 import 'package:speaxpoint/views/toastmaster_user/manage_coming_meetings/coming_sessions_option_bottom_sheet.dart';
 import 'package:speaxpoint/views/toastmaster_user/manage_coming_meetings/create_new_session_dialog.dart';
@@ -180,7 +181,7 @@ class _ManageComingSessionsScreenState
                             return Card(
                               margin: const EdgeInsets.all(0),
                               elevation: 0,
-                              color: _getCardColor(
+                              color: getCardColor(
                                   items[index].chapterMeetingStatus!),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(
@@ -268,9 +269,9 @@ class _ManageComingSessionsScreenState
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Icon(
-                                        _getCardTrailingIcon(
+                                        getCardTrailingIcon(
                                             items[index].chapterMeetingStatus!),
-                                        color: _getCardIconColor(
+                                        color: getCardIconColor(
                                             items[index].chapterMeetingStatus!),
                                         size: 29,
                                       ),
@@ -281,7 +282,7 @@ class _ManageComingSessionsScreenState
                                               CommonUIProperties.fontType,
                                           fontSize: 11,
                                           fontWeight: FontWeight.normal,
-                                          color: _getCardIconColor(items[index]
+                                          color: getCardIconColor(items[index]
                                               .chapterMeetingStatus!),
                                         ),
                                       )
@@ -300,50 +301,5 @@ class _ManageComingSessionsScreenState
         ),
       ),
     );
-  }
-
-  Color _getCardColor(String sessionStatus) {
-    switch (sessionStatus) {
-      case "Completed":
-        return const Color(AppMainColors.completedSessionCard);
-      case "Pending":
-        return const Color(AppMainColors.pendingSessionCard);
-      case "Coming":
-        return const Color(AppMainColors.comingSessionCard);
-      case "Ongoing":
-        return const Color(AppMainColors.ongoingSessionCard);
-      default:
-        return Colors.grey;
-    }
-  }
-
-  Color _getCardIconColor(String sessionStatus) {
-    switch (sessionStatus) {
-      case "Completed":
-        return const Color(AppMainColors.completedSessionCardIcon);
-      case "Pending":
-        return const Color(AppMainColors.pendingSessionCardIcon);
-      case "Coming":
-        return const Color(AppMainColors.comingSessionCardIcon);
-      case "Ongoing":
-        return const Color(AppMainColors.ongoingSessionCardIcon);
-      default:
-        return Colors.redAccent;
-    }
-  }
-
-  IconData _getCardTrailingIcon(String sessionStatus) {
-    switch (sessionStatus) {
-      case "Completed":
-        return Icons.check_circle_outline;
-      case "Pending":
-        return Icons.pending_outlined;
-      case "Coming":
-        return Icons.schedule_outlined;
-      case "Ongoing":
-        return Icons.contactless_outlined;
-      default:
-        return Icons.error_outline;
-    }
   }
 }

@@ -479,3 +479,49 @@ Widget announcementCard({
     ),
   );
 }
+
+//these are used in the cards for the manage coming sessions and , scheduled meetings
+ Color getCardColor(String sessionStatus) {
+    switch (sessionStatus) {
+      case "Completed":
+        return const Color(AppMainColors.completedSessionCard);
+      case "Pending":
+        return const Color(AppMainColors.pendingSessionCard);
+      case "Coming":
+        return const Color(AppMainColors.comingSessionCard);
+      case "Ongoing":
+        return const Color(AppMainColors.ongoingSessionCard);
+      default:
+        return Colors.grey;
+    }
+  }
+
+  Color getCardIconColor(String sessionStatus) {
+    switch (sessionStatus) {
+      case "Completed":
+        return const Color(AppMainColors.completedSessionCardIcon);
+      case "Pending":
+        return const Color(AppMainColors.pendingSessionCardIcon);
+      case "Coming":
+        return const Color(AppMainColors.comingSessionCardIcon);
+      case "Ongoing":
+        return const Color(AppMainColors.ongoingSessionCardIcon);
+      default:
+        return Colors.redAccent;
+    }
+  }
+
+  IconData getCardTrailingIcon(String sessionStatus) {
+    switch (sessionStatus) {
+      case "Completed":
+        return Icons.check_circle_outline;
+      case "Pending":
+        return Icons.pending_outlined;
+      case "Coming":
+        return Icons.schedule_outlined;
+      case "Ongoing":
+        return Icons.contactless_outlined;
+      default:
+        return Icons.error_outline;
+    }
+  }

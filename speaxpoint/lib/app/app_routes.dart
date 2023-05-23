@@ -14,6 +14,7 @@ import 'package:speaxpoint/views/toastmaster_user/manage_coming_meetings/manage_
 import 'package:speaxpoint/views/toastmaster_user/prepare_meeting_agenda/prepare_meeting_agenda_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/profile_management/toastmaster_profile_management_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/scheduled_meetings/toastmaster_scheduled_meetings_screen.dart';
+import 'package:speaxpoint/views/toastmaster_user/scheduled_meetings/view_scheduled_meeting_details_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/search_chapter_meetings/search_chapter_meeting_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/toastmaster_home_screen.dart';
 import 'package:speaxpoint/views/user_authentication/club_registration_screens/club_setup_registrationScreen.dart';
@@ -214,7 +215,18 @@ const toastMasterNav = AutoRoute(
     AutoRoute(
       path: "scheduledMeetings",
       name: "ToastmasterScheduledMeetingsRouter",
-      page: ToastmasterScheduledMeetingsScreen,
+      page: EmptyRouterPage,
+      children: [
+        AutoRoute(
+          path: '',
+          page: ToastmasterScheduledMeetingsScreen,
+        ),
+        AutoRoute(
+          path: "viewScheduledMeetingDetails",
+          name: "ViewScheduledMeetingDetailsRouter",
+          page: ViewScheduledMeetingDetailsScreen,
+        ),
+      ],
     ),
     AutoRoute(
       path: "toastmasterProfileManagement",

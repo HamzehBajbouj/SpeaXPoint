@@ -1,7 +1,7 @@
 /*
   This class refers for the coming sessions , it's the main modal for coming sessions
   but the naming is different.
-  the toastmaster id refers to the vice president id, who created this session
+  the toastmaster id refers to the vice president of education id, who created this session
 */
 class ChapterMeeting {
   String? toastmasterId;

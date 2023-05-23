@@ -17,6 +17,8 @@ import 'package:speaxpoint/services/meeting_arrangement/manage_announcements/i_m
 import 'package:speaxpoint/services/meeting_arrangement/manage_announcements/manage_chpater_meeting_announcements_firebase_service.dart';
 import 'package:speaxpoint/services/meeting_arrangement/manage_coming_sessions/i_manage_coming_sessions_service.dart';
 import 'package:speaxpoint/services/meeting_arrangement/manage_coming_sessions/manage_coming_sessions_firebase_serivce.dart';
+import 'package:speaxpoint/services/scheduled_meeting_management/i_scheduled_meeting_management_service.dart';
+import 'package:speaxpoint/services/scheduled_meeting_management/scheduled_meeting_management_firebase_service.dart';
 import 'package:speaxpoint/services/search_chapter_meeting/i_search_chapter_meeting_service.dart';
 import 'package:speaxpoint/services/search_chapter_meeting/search_chapter_meeting_firebase_service.dart';
 import 'package:speaxpoint/view_models/authentication_vm/club_registration_view_model.dart';
@@ -29,6 +31,7 @@ import 'package:speaxpoint/view_models/toastmaster_vm/manage_chapter_meeting_ann
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_coming_sessions_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/prepare_meeting_agenda_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/profile_management_view_model.dart';
+import 'package:speaxpoint/view_models/toastmaster_vm/scheduled_meetings_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/search_chapter_meeting_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/volunteer_announcement_view_details_view_model.dart';
 
@@ -74,6 +77,10 @@ Future<void> initServiceLocator() async {
   );
   serviceLocator.registerLazySingleton<ISearchChapterMeetingService>(
     () => SearchChapterMeetingFirebaseService(),
+  );
+
+  serviceLocator.registerLazySingleton<IScheduledMeetingManagementService>(
+    () => ScheduledMeetingManagementFirebaseService(),
   );
 
 //this part is for the viewmodels objects
@@ -154,6 +161,13 @@ Future<void> initServiceLocator() async {
     () => VolunteerAnnouncementViewDetailsViewModel(
       serviceLocator<IAskForVolunteersService>(),
       serviceLocator<IManageChapterMeeingAnnouncementsService>(),
+      serviceLocator<ILocalDataBaseService>(),
+    ),
+  );
+
+  serviceLocator.registerLazySingleton<ScheduledMeetingsViewModel>(
+    () => ScheduledMeetingsViewModel(
+      serviceLocator<IScheduledMeetingManagementService>(),
       serviceLocator<ILocalDataBaseService>(),
     ),
   );

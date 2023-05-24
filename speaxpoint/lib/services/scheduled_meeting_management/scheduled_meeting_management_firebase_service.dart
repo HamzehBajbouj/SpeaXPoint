@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:multiple_result/src/unit.dart';
 import 'package:speaxpoint/services/failure.dart';
 import 'package:speaxpoint/models/chapter_meeting.dart';
 import 'package:multiple_result/src/result.dart';
 import 'package:speaxpoint/services/scheduled_meeting_management/i_scheduled_meeting_management_service.dart';
+import 'package:speaxpoint/util/constants/common_enums.dart';
 
 class ScheduledMeetingManagementFirebaseService
     extends IScheduledMeetingManagementService {
@@ -120,6 +122,50 @@ class ScheduledMeetingManagementFirebaseService
             code: e.toString(),
             location:
                 "ScheduledMeetingManagementFirebaseService.getAllScheduledMeeting()",
+            message: e.toString()),
+      );
+    }
+  }
+
+  @override
+  Future<Result<Unit, Failure>> lanuchChapterMeetingSessions(
+      {required String chapterMeetingId}) async {
+    try {
+      QuerySnapshot chapterMeetingQS = await _chapterMeetingsC
+          .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+          .get();
+      if (chapterMeetingQS.docs.isNotEmpty) {
+        await chapterMeetingQS.docs.first.reference.update(
+          {
+            "chapterMeetingStatus": ComingSessionsStatus.Ongoing.name,
+          },
+        );
+      } else {
+        return Error(
+          Failure(
+              code: "No-Chapter-Meeting-Found",
+              location:
+                  "ScheduledMeetingManagementFirebaseService.lanuchChapterMeetingSessions()",
+              message:
+                  "Could not found a chapter meeting with id : $chapterMeetingId"),
+        );
+      }
+      return Success.unit();
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location:
+                "ScheduledMeetingManagementFirebaseService.lanuchChapterMeetingSessions()",
+            message: e.message ??
+                "Database Error While lanuching the scheduled meeting"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location:
+                "ScheduledMeetingManagementFirebaseService.lanuchChapterMeetingSessions()",
             message: e.toString()),
       );
     }

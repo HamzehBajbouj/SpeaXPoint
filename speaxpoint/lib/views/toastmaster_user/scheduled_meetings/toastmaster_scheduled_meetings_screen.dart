@@ -71,11 +71,11 @@ class _ToastmasterScheduledMeetingsScreenState
                   _scheduledMeetingsViewModel!.getScheduledChapterMeetings(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 } else if (snapshot.hasError) {
-                  return Center(
+                  return const Center(
                     child: Text('Error occurred'),
                   );
                 } else {
@@ -171,6 +171,13 @@ class _ToastmasterScheduledMeetingsScreenState
                                                     chapterMeetings[index]
                                                         .chapterMeetingId!,
                                               );
+                                            },
+                                          ).then(
+                                            (value) async {
+                                              if (value != null &&
+                                                  (value as bool == true)) {
+                                                refreshData();
+                                              }
                                             },
                                           );
                                         },

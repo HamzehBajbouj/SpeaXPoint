@@ -1,4 +1,6 @@
+import 'package:multiple_result/multiple_result.dart';
 import 'package:speaxpoint/models/chapter_meeting.dart';
+import 'package:speaxpoint/services/failure.dart';
 import 'package:speaxpoint/services/local_database/i_local_database_service.dart';
 import 'package:speaxpoint/services/scheduled_meeting_management/i_scheduled_meeting_management_service.dart';
 import 'package:speaxpoint/util/constants/shared_preferences_keys.dart';
@@ -37,5 +39,11 @@ class ScheduledMeetingsViewModel extends BaseViewModel {
     Map<String, dynamic> loggedUser =
         await _localDataBaseService.loadData(SharedPrefereneceKeys.loggedUser);
     return loggedUser["memberOfficalRole"];
+  }
+
+  Future<Result<Unit, Failure>> launchSession(
+      {required String chapterMeetingId}) async {
+    return await _scheduledMeetingManagementService
+        .lanuchChapterMeetingSessions(chapterMeetingId: chapterMeetingId);
   }
 }

@@ -7,4 +7,8 @@ abstract class IScheduledMeetingManagementService {
     required String clubId,
     required String toastmasterId,
   });
+
+     Future<Result<Unit, Failure>> lanuchChapterMeetingSessions({
+    required String chapterMeetingId
+  });
 }

@@ -29,9 +29,10 @@ enum LisrOfRolesPlayers {
   Ah_Counter,
   Timer,
   Grammarian,
-  Topicmaster,
+  // Topicmaster,
   Speach_Evaluator,
   General_Evaluator,
+  //is the Toastmaster of the evening and he will be responsilbe for managing the role players and the speakers
   Toastmaster,
   MeetingVisitor,
 }

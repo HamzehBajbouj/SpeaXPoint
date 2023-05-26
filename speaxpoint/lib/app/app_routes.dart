@@ -11,11 +11,19 @@ import 'package:speaxpoint/views/toastmaster_user/ask_for_volunteers/ask_for_vol
 import 'package:speaxpoint/views/toastmaster_user/chapter_meeting_announcements/volunteer_announcement_view_details_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/dashboard/toastmaster_dashboard_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/manage_coming_meetings/manage_coming_sessions_screen.dart';
+import 'package:speaxpoint/views/toastmaster_user/manage_live_meetings/count_time_fillers/count_time_fillers_screen.dart';
+import 'package:speaxpoint/views/toastmaster_user/manage_live_meetings/manage_evaluation/manage_evaluation_screen.dart';
+import 'package:speaxpoint/views/toastmaster_user/manage_live_meetings/manage_role_players/manage_role_players_screen.dart';
+import 'package:speaxpoint/views/toastmaster_user/manage_live_meetings/observe_grammarian_mistakes/observe_grammarian_mistakes_screen.dart';
+import 'package:speaxpoint/views/toastmaster_user/manage_live_meetings/speaker_observed_data/speaker_observed_data_screen.dart';
+import 'package:speaxpoint/views/toastmaster_user/manage_live_meetings/time_speaker/time_speaker_screem.dart';
+import 'package:speaxpoint/views/toastmaster_user/manage_live_meetings/waiting_page/session_waiting_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/prepare_meeting_agenda/prepare_meeting_agenda_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/profile_management/toastmaster_profile_management_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/scheduled_meetings/toastmaster_scheduled_meetings_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/scheduled_meetings/view_scheduled_meeting_details_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/search_chapter_meetings/search_chapter_meeting_screen.dart';
+import 'package:speaxpoint/views/toastmaster_user/session_redirection/session_redirection_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/toastmaster_home_screen.dart';
 import 'package:speaxpoint/views/user_authentication/club_registration_screens/club_setup_registrationScreen.dart';
 import 'package:speaxpoint/views/user_authentication/club_registration_screens/club_registration_screen.dart';
@@ -107,6 +115,54 @@ import '../views/club_president_user/profile_management/club_profile_managment_s
     ),
     clubPresidentNav,
     toastMasterNav,
+    AutoRoute(
+      path: "/sessionRedirection",
+      name: "SessionRedirectionRouter",
+      page: SessionRedirectionScreen,
+      children: [RedirectRoute(path: '*', redirectTo: '')],
+    ),
+    AutoRoute(
+      path: "/countTimeFillers",
+      name: "CountTimeFillersRouter",
+      page: CountTimeFillersScreen,
+      children: [RedirectRoute(path: '*', redirectTo: '')],
+    ),
+    AutoRoute(
+      path: "/manageEvaluation",
+      name: "ManageEvaluationRouter",
+      page: ManageEvaluationScreen,
+      children: [RedirectRoute(path: '*', redirectTo: '')],
+    ),
+    AutoRoute(
+      path: "/manageRolePlayers",
+      name: "ManageRolePlayersRouter",
+      page: ManageRolePlayersScreen,
+      children: [RedirectRoute(path: '*', redirectTo: '')],
+    ),
+    AutoRoute(
+      path: "/observeGrammarianMistakes",
+      name: "ObserveGrammarianMistakesRouter",
+      page: ObserveGrammarianMistakesScreen,
+      children: [RedirectRoute(path: '*', redirectTo: '')],
+    ),
+    AutoRoute(
+      path: "/speakerObservedData",
+      name: "SpeakerObservedDataRouter",
+      page: SpeakerObservedDataScreen,
+      children: [RedirectRoute(path: '*', redirectTo: '')],
+    ),
+    AutoRoute(
+      path: "/timeSpeaker",
+      name: "TimeSpeakerRouter",
+      page: TimeSpeakerScreen,
+      children: [RedirectRoute(path: '*', redirectTo: '')],
+    ),
+    AutoRoute(
+      path: "/sessionWaiting",
+      name: "SessionWaitingRouter",
+      page: SessionWaitingScreen,
+      children: [RedirectRoute(path: '*', redirectTo: '')],
+    ),
   ],
 )
 class $AppRouter {}

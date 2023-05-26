@@ -9,7 +9,7 @@ import 'package:speaxpoint/util/constants/common_enums.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/common_widgets.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/scheduled_meetings_view_model.dart';
-
+import 'package:speaxpoint/views/toastmaster_user/scheduled_meetings/dialogs/join_session_confirmation_dialog.dart';
 import 'dialogs/launch_session_confirmation_dialog.dart';
 
 class ToastmasterScheduledMeetingsScreen extends StatefulWidget {
@@ -36,7 +36,9 @@ class _ToastmasterScheduledMeetingsScreenState
   void didChangeDependencies() async {
     super.didChangeDependencies();
     currentMemberClubRole =
-        await _scheduledMeetingsViewModel!.getMemberClubRole();
+        await _scheduledMeetingsViewModel!.getDataFromLocalDataBase(
+      keySearch: "memberOfficalRole",
+    );
   }
 
   Future<void> refreshData() async {
@@ -176,7 +178,19 @@ class _ToastmasterScheduledMeetingsScreenState
                                             (value) async {
                                               if (value != null &&
                                                   (value as bool == true)) {
-                                                refreshData();
+                                                refreshData().then(
+                                                  (_) {
+                                                    context.router.push(
+                                                      SessionRedirectionRouter(
+                                                        chapterMeetingId:
+                                                            chapterMeetings[
+                                                                    index]
+                                                                .chapterMeetingId!,
+                                                        isAGuest: false,
+                                                      ),
+                                                    );
+                                                  },
+                                                );
                                               }
                                             },
                                           );
@@ -210,7 +224,18 @@ class _ToastmasterScheduledMeetingsScreenState
                                       ),
                                     )
                                   : InkWell(
-                                      onTap: () {},
+                                      onTap: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return JoinSessionConfirmationDialog(
+                                              chapterMeetingId:
+                                                  chapterMeetings[index]
+                                                      .chapterMeetingId!,
+                                            );
+                                          },
+                                        );
+                                      },
                                       child: Container(
                                         constraints: const BoxConstraints(
                                           maxWidth: 70,

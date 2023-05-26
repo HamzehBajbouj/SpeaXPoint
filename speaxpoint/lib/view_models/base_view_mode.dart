@@ -1,7 +1,13 @@
 import 'package:flutter/cupertino.dart';
+import 'package:speaxpoint/app/service_locator.dart';
+import 'package:speaxpoint/services/local_database/i_local_database_service.dart';
 import 'package:speaxpoint/util/constants/common_enums.dart';
+import 'package:speaxpoint/util/constants/shared_preferences_keys.dart';
 
 class BaseViewModel extends ChangeNotifier {
+  final ILocalDataBaseService _localDataBaseService =
+      serviceLocator<ILocalDataBaseService>();
+      
   bool _loading = false;
   bool get loading => _loading;
 
@@ -27,5 +33,11 @@ class BaseViewModel extends ChangeNotifier {
     } else {
       return 0;
     }
+  }
+
+  Future<String> getDataFromLocalDataBase({required String keySearch}) async {
+    Map<String, dynamic> loggedUser =
+        await _localDataBaseService.loadData(SharedPrefereneceKeys.loggedUser);
+    return loggedUser[keySearch];
   }
 }

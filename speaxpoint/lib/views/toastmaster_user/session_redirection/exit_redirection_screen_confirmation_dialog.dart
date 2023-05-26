@@ -1,25 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:speaxpoint/app/app_routes.gr.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart';
-import 'package:auto_route/auto_route.dart';
 
-class JoinSessionConfirmationDialog extends StatefulWidget {
-  const JoinSessionConfirmationDialog({
+class ExitRedirectionScreenConfirmationDialog extends StatelessWidget {
+  const ExitRedirectionScreenConfirmationDialog({
     super.key,
-    required this.chapterMeetingId,
   });
 
-  final String chapterMeetingId;
-
-  @override
-  State<JoinSessionConfirmationDialog> createState() =>
-      _JoinSessionConfirmationDialogState();
-}
-
-class _JoinSessionConfirmationDialogState
-    extends State<JoinSessionConfirmationDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -36,7 +24,7 @@ class _JoinSessionConfirmationDialogState
         mainAxisSize: MainAxisSize.min,
         children: const [
           Text(
-            "Are you sure you want to join the chapter meeting session?",
+            "Are you sure you want to exit the meeting session?",
             style: TextStyle(
               height: 1.4,
               fontFamily: CommonUIProperties.fontType,
@@ -51,7 +39,7 @@ class _JoinSessionConfirmationDialogState
       actions: [
         textButton(
           callBack: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(false);
           },
           content: const Text(
             "Cancel",
@@ -65,8 +53,6 @@ class _JoinSessionConfirmationDialogState
         ),
         filledTextButton(
             callBack: () {
-              //do some lgoic and checks here, make sure the sessions is in the correct status
-              //for instance it's should be in ongoing  and should check that and if true , then direct him
               Navigator.of(context).pop(true);
             },
             content: 'Confirm',

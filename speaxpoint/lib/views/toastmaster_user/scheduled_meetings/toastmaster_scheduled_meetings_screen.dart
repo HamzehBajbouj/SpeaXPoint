@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:speaxpoint/app/app_routes.gr.dart';
 import 'package:speaxpoint/models/chapter_meeting.dart';
+import 'package:speaxpoint/util/constants/api_common_value.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_enums.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
@@ -69,16 +72,28 @@ class _ToastmasterScheduledMeetingsScreenState
           child: RefreshIndicator(
             onRefresh: refreshData,
             child: FutureBuilder<List<ChapterMeeting>>(
-              future:
-                  _scheduledMeetingsViewModel!.getScheduledChapterMeetings(),
+              future: _scheduledMeetingsViewModel!
+                  .getScheduledChapterMeetings()
+                  .timeout(
+                    const Duration(
+                      seconds: APICommonValues.requestTimeoutInSeconds,
+                    ),
+                  ),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(
+                      color: Color(AppMainColors.p40),
+                    ),
                   );
                 } else if (snapshot.hasError) {
-                  return const Center(
-                    child: Text('Error occurred'),
+                  return timeoutErrorMessage(
+                    errorType: snapshot.error,
+                    firstMessage:
+                        "Request Timeout Erorr While Fetching Scheduled Meetings."
+                        "\nPlease Check Your Internet Connection",
+                    secondMessage:
+                        "An Error Happened While Fetching Scheduled Meetings.",
                   );
                 } else {
                   final List<ChapterMeeting> chapterMeetings =
@@ -178,19 +193,18 @@ class _ToastmasterScheduledMeetingsScreenState
                                             (value) async {
                                               if (value != null &&
                                                   (value as bool == true)) {
-                                                refreshData().then(
-                                                  (_) {
-                                                    context.router.push(
-                                                      SessionRedirectionRouter(
-                                                        chapterMeetingId:
-                                                            chapterMeetings[
-                                                                    index]
-                                                                .chapterMeetingId!,
-                                                        isAGuest: false,
-                                                      ),
-                                                    );
-                                                  },
-                                                );
+                                                context.router
+                                                    .push(
+                                                  SessionRedirectionRouter(
+                                                    chapterMeetingId:
+                                                        chapterMeetings[index]
+                                                            .chapterMeetingId!,
+                                                    isAGuest: false,
+                                                  ),
+                                                )
+                                                    .then((_) async {
+                                                  refreshData();
+                                                });
                                               }
                                             },
                                           );
@@ -234,7 +248,26 @@ class _ToastmasterScheduledMeetingsScreenState
                                                       .chapterMeetingId!,
                                             );
                                           },
+                                        ).then(
+                                          (value) async {
+                                            if (value != null &&
+                                                (value as bool == true)) {
+                                              context.router
+                                                  .push(
+                                                SessionRedirectionRouter(
+                                                  chapterMeetingId:
+                                                      chapterMeetings[index]
+                                                          .chapterMeetingId!,
+                                                  isAGuest: false,
+                                                ),
+                                              )
+                                                  .then((_) async {
+                                                refreshData();
+                                              });
+                                            }
+                                          },
                                         );
+                                        ;
                                       },
                                       child: Container(
                                         constraints: const BoxConstraints(

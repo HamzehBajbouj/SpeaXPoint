@@ -32,7 +32,8 @@ enum LisrOfRolesPlayers {
   // Topicmaster,
   Speach_Evaluator,
   General_Evaluator,
-  //is the Toastmaster of the evening and he will be responsilbe for managing the role players and the speakers
+  //is the Toastmaster of the evening he will be directed to the waiting screen, since managing the role players is the
+  //VPE responsibility
   Toastmaster,
   MeetingVisitor,
 }

@@ -49,7 +49,7 @@ class _LaunchSessionConfirmationDialogState
         mainAxisSize: MainAxisSize.min,
         children: [
           const Text(
-            "Are you sure you want to launch the chapter meeting session?.",
+            "Are you sure you want to launch the chapter meeting session?",
             style: TextStyle(
               height: 1.4,
               fontFamily: CommonUIProperties.fontType,

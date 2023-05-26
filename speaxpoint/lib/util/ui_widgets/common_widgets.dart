@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_enums.dart';
@@ -481,47 +482,80 @@ Widget announcementCard({
 }
 
 //these are used in the cards for the manage coming sessions and , scheduled meetings
- Color getCardColor(String sessionStatus) {
-    switch (sessionStatus) {
-      case "Completed":
-        return const Color(AppMainColors.completedSessionCard);
-      case "Pending":
-        return const Color(AppMainColors.pendingSessionCard);
-      case "Coming":
-        return const Color(AppMainColors.comingSessionCard);
-      case "Ongoing":
-        return const Color(AppMainColors.ongoingSessionCard);
-      default:
-        return Colors.grey;
-    }
+Color getCardColor(String sessionStatus) {
+  switch (sessionStatus) {
+    case "Completed":
+      return const Color(AppMainColors.completedSessionCard);
+    case "Pending":
+      return const Color(AppMainColors.pendingSessionCard);
+    case "Coming":
+      return const Color(AppMainColors.comingSessionCard);
+    case "Ongoing":
+      return const Color(AppMainColors.ongoingSessionCard);
+    default:
+      return Colors.grey;
   }
+}
 
-  Color getCardIconColor(String sessionStatus) {
-    switch (sessionStatus) {
-      case "Completed":
-        return const Color(AppMainColors.completedSessionCardIcon);
-      case "Pending":
-        return const Color(AppMainColors.pendingSessionCardIcon);
-      case "Coming":
-        return const Color(AppMainColors.comingSessionCardIcon);
-      case "Ongoing":
-        return const Color(AppMainColors.ongoingSessionCardIcon);
-      default:
-        return Colors.redAccent;
-    }
+Color getCardIconColor(String sessionStatus) {
+  switch (sessionStatus) {
+    case "Completed":
+      return const Color(AppMainColors.completedSessionCardIcon);
+    case "Pending":
+      return const Color(AppMainColors.pendingSessionCardIcon);
+    case "Coming":
+      return const Color(AppMainColors.comingSessionCardIcon);
+    case "Ongoing":
+      return const Color(AppMainColors.ongoingSessionCardIcon);
+    default:
+      return Colors.redAccent;
   }
+}
 
-  IconData getCardTrailingIcon(String sessionStatus) {
-    switch (sessionStatus) {
-      case "Completed":
-        return Icons.check_circle_outline;
-      case "Pending":
-        return Icons.pending_outlined;
-      case "Coming":
-        return Icons.schedule_outlined;
-      case "Ongoing":
-        return Icons.contactless_outlined;
-      default:
-        return Icons.error_outline;
-    }
+IconData getCardTrailingIcon(String sessionStatus) {
+  switch (sessionStatus) {
+    case "Completed":
+      return Icons.check_circle_outline;
+    case "Pending":
+      return Icons.pending_outlined;
+    case "Coming":
+      return Icons.schedule_outlined;
+    case "Ongoing":
+      return Icons.contactless_outlined;
+    default:
+      return Icons.error_outline;
   }
+}
+
+Widget timeoutErrorMessage(
+    {required Object? errorType,
+    required String firstMessage,
+    required String secondMessage}) {
+  if (errorType is TimeoutException) {
+    return  Center(
+      child: Text(
+        firstMessage,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontFamily: CommonUIProperties.fontType,
+          fontSize: 13,
+          fontWeight: FontWeight.w500,
+          color: Color(AppMainColors.warningError50),
+        ),
+      ),
+    );
+  } else {
+    return  Center(
+      child: Text(
+        secondMessage,
+        textAlign: TextAlign.center,
+        style:const TextStyle(
+          fontFamily: CommonUIProperties.fontType,
+          fontSize: 13,
+          fontWeight: FontWeight.w500,
+          color: Color(AppMainColors.warningError50),
+        ),
+      ),
+    );
+  }
+}

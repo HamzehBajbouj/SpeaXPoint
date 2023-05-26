@@ -53,6 +53,7 @@ class ExitRedirectionScreenConfirmationDialog extends StatelessWidget {
         ),
         filledTextButton(
             callBack: () {
+              //here should be the backend for reducing the number of online people in the session
               Navigator.of(context).pop(true);
             },
             content: 'Confirm',

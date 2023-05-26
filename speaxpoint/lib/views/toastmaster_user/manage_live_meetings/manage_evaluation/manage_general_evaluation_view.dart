@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ManageEvaluationView extends StatefulWidget {
-  const ManageEvaluationView({
+class ManageGeneralEvaluationView extends StatefulWidget {
+  const ManageGeneralEvaluationView({
     super.key,
     this.chapterMeetingId,
     required this.isAGuest,
@@ -15,14 +15,14 @@ class ManageEvaluationView extends StatefulWidget {
   final bool? guestHasRole;
   final String? guestInvitationCode;
   @override
-  State<ManageEvaluationView> createState() => _ManageEvaluationViewState();
+  State<ManageGeneralEvaluationView> createState() => _ManageSpeechEvaluationViewState();
 }
 
-class _ManageEvaluationViewState extends State<ManageEvaluationView> {
+class _ManageSpeechEvaluationViewState extends State<ManageGeneralEvaluationView> {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text("Manage Evaluation Screen"),
+      child: Text("Manage General Evaluation Screen"),
     );
   }
 }

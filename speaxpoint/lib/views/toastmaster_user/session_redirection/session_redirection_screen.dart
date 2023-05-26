@@ -1,9 +1,6 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:provider/provider.dart';
-import 'package:speaxpoint/app/app_routes.gr.dart';
 import 'package:speaxpoint/util/constants/api_common_value.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_enums.dart';
@@ -11,7 +8,8 @@ import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/common_widgets.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/session_redirection_view_model.dart';
 import 'package:speaxpoint/views/toastmaster_user/manage_live_meetings/count_time_fillers/count_time_fillers_view.dart';
-import 'package:speaxpoint/views/toastmaster_user/manage_live_meetings/manage_evaluation/manage_evaluation_view.dart';
+import 'package:speaxpoint/views/toastmaster_user/manage_live_meetings/manage_evaluation/manage_general_evaluation_view.dart';
+import 'package:speaxpoint/views/toastmaster_user/manage_live_meetings/manage_evaluation/manage_speech_evaluation_view.dart';
 import 'package:speaxpoint/views/toastmaster_user/manage_live_meetings/manage_role_players/vpe_manage_role_players_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/manage_live_meetings/observe_grammarian_mistakes/observe_grammarian_mistakes_view.dart';
 import 'package:speaxpoint/views/toastmaster_user/manage_live_meetings/speaker_observed_data/speaker_observed_data_view.dart';
@@ -217,7 +215,7 @@ class _SessionRedirectionScreenState extends State<SessionRedirectionScreen> {
           guestInvitationCode: guestInvitationCode,
         );
       case "Speach Evaluator":
-        return ManageEvaluationView(
+        return ManageSpeechEvaluationView(
           isAGuest: isAGuest,
           chapterMeetingId: chapterMeetingId,
           chapterMeetingInvitationCode: chapterMeetingInvitationCode,
@@ -225,7 +223,7 @@ class _SessionRedirectionScreenState extends State<SessionRedirectionScreen> {
           guestInvitationCode: guestInvitationCode,
         );
       case "General Evaluator":
-        return ManageEvaluationView(
+        return ManageGeneralEvaluationView(
           isAGuest: isAGuest,
           chapterMeetingId: chapterMeetingId,
           chapterMeetingInvitationCode: chapterMeetingInvitationCode,

@@ -17,12 +17,7 @@ enum AppRoles {
   Guest,
 }
 
-enum ComingSessionsStatus {
-  Completed,
-  Pending,
-  Coming,
-  Ongoing
-}
+enum ComingSessionsStatus { Completed, Pending, Coming, Ongoing }
 
 enum LisrOfRolesPlayers {
   Speaker,
@@ -34,7 +29,7 @@ enum LisrOfRolesPlayers {
   General_Evaluator,
   //is the Toastmaster of the evening he will be directed to the waiting screen, since managing the role players is the
   //VPE responsibility
-  Toastmaster,
+  Toastmaster_OTE,
   MeetingVisitor,
 }
 
@@ -67,7 +62,4 @@ enum AppVolunteerSlotStatus {
   UnAnnounced,
 }
 
-enum ApplicantStatus{
-  Accepted,
-  Pending
-}
+enum ApplicantStatus { Accepted, Pending }

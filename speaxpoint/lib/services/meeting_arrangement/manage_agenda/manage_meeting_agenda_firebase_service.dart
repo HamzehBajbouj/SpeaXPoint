@@ -163,6 +163,8 @@ class ManageMeetingAgendaFirebaseSerivce
             agenda.allocatedRolePlayerDetails =
                 rolePlayers.isNotEmpty ? rolePlayers[0] : null;
           }
+          agendas
+              .sort((a, b) => a.agendaCardOrder!.compareTo(b.agendaCardOrder!));
           return agendas;
         },
       );

@@ -75,7 +75,11 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
     int memberRolePlace,
   ) async {
     return await _allocateRolePlayersService.validateIfRoleIsTaken(
-        chapterMeetingId, roleName, memberRolePlace);
+      chapterMeetingId,
+      roleName,
+      super.getCorrectRoleOrderPlace(
+          roleOrder: memberRolePlace, roleName: roleName),
+    );
   }
 
 // this method is similar to allocateGuestRolePlayer , we can refactor them into one method
@@ -316,8 +320,8 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
 
     AllocatedRolePlayer newAllocatedRolePlayer = AllocatedRolePlayer(
       roleName: slot.roleName,
-      roleOrderPlace:super.getCorrectRoleOrderPlace(
-            roleName: slot.roleName!, roleOrder: slot.roleOrderPlace!), 
+      roleOrderPlace: super.getCorrectRoleOrderPlace(
+          roleName: slot.roleName!, roleOrder: slot.roleOrderPlace!),
       rolePlayerName: selectedApplicant.toastmasterName,
       toastmasterId: selectedApplicant.toastmasterId,
       allocatedRolePlayerType: AllocatedRolePlayerType.Volunteer.name,
@@ -354,8 +358,7 @@ class AllocateRolePlayersViewModel extends BaseViewModel {
             applicantDetails = success;
           },
         );
-        value.whenError((error) {
-        });
+        value.whenError((error) {});
       },
     );
     return applicantDetails;

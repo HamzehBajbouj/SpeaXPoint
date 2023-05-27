@@ -122,10 +122,18 @@ class _SessionRedirectionScreenState extends State<SessionRedirectionScreen> {
                   );
                 } else {
                   String roleName = snapshot.data ?? "ErrorNoData";
+
                   if (roleName != "ErrorNoData") {
                     if (currentMemberClubRole ==
                         ToastmasterRoles.Vice_President_Education.name
                             .replaceAll("_", " ")) {
+                      //check if we are speaker/Toastmaster OTE
+                      //if so since the roleName will be displayed on the tabView
+                      //in the VPEManageRolePlayersScreen , change its name
+                      if (roleName == "Speaker" ||
+                          roleName == "Toastmaster OTE") {
+                        roleName = "Speech Observations";
+                      }
                       return VPEManageRolePlayersScreen(
                         chapterMeetingId: widget.chapterMeetingId!,
                         roleName: roleName,
@@ -230,10 +238,14 @@ class _SessionRedirectionScreenState extends State<SessionRedirectionScreen> {
           guestHasRole: guestHasRole,
           guestInvitationCode: guestInvitationCode,
         );
-      //this one is no need for it, because if the user was VPE it will be two tabs,
-      // // case "Toastmaster":
-      // //   context.router.replace(ManageRolePlayersRouter());
-      // // break;
+      case "Toastmaster OTE":
+        return SpeakerObservedDataViwe(
+          isAGuest: isAGuest,
+          chapterMeetingId: chapterMeetingId,
+          chapterMeetingInvitationCode: chapterMeetingInvitationCode,
+          guestHasRole: guestHasRole,
+          guestInvitationCode: guestInvitationCode,
+        );
       case "MeetingVisitor":
         return SessionWaitingView(
           isAGuest: isAGuest,

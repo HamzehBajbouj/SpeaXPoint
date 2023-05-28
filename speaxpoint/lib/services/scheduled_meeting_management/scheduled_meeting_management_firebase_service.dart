@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:multiple_result/src/unit.dart';
+import 'package:speaxpoint/models/allocated_role_player.dart';
 import 'package:speaxpoint/services/failure.dart';
 import 'package:speaxpoint/models/chapter_meeting.dart';
 import 'package:multiple_result/src/result.dart';
 import 'package:speaxpoint/services/scheduled_meeting_management/i_scheduled_meeting_management_service.dart';
 import 'package:speaxpoint/util/constants/common_enums.dart';
+import 'package:speaxpoint/util/time_manager.dart' as util;
 
 class ScheduledMeetingManagementFirebaseService
     extends IScheduledMeetingManagementService {
@@ -12,7 +14,11 @@ class ScheduledMeetingManagementFirebaseService
       FirebaseFirestore.instance.collection('AllocatedPlayersQuickSearch');
   final CollectionReference _chapterMeetingsC =
       FirebaseFirestore.instance.collection('ChapterMeetings');
-
+  final CollectionReference _onlineSessionCapturedData =
+      FirebaseFirestore.instance.collection('OnlineSessionCapturedData');
+  final CollectionReference _chapterMeetingGeneralEvaluationNotes =
+      FirebaseFirestore.instance
+          .collection('ChapterMeetingGeneralEvaluationNotes');
   @override
   Future<Result<List<ChapterMeeting>, Failure>> getAllScheduledMeeting(
       {required String clubId, required String toastmasterId}) async {
@@ -131,13 +137,111 @@ class ScheduledMeetingManagementFirebaseService
   Future<Result<Unit, Failure>> lanuchChapterMeetingSessions(
       {required String chapterMeetingId}) async {
     try {
+      Map<String, dynamic>? chapterMeetingDetails;
       QuerySnapshot chapterMeetingQS = await _chapterMeetingsC
           .where("chapterMeetingId", isEqualTo: chapterMeetingId)
           .get();
       if (chapterMeetingQS.docs.isNotEmpty) {
+        chapterMeetingDetails =
+            chapterMeetingQS.docs.first.data() as Map<String, dynamic>;
         await chapterMeetingQS.docs.first.reference.update(
           {
             "chapterMeetingStatus": ComingSessionsStatus.Ongoing.name,
+          },
+        ).then(
+          (_) async {
+            CollectionReference onlineSessionCollectopn = chapterMeetingQS
+                .docs.first.reference
+                .collection("OnlineSession");
+
+            QuerySnapshot onlineSessionQS = await onlineSessionCollectopn.get();
+            if (onlineSessionQS.docs.isEmpty) {
+              await onlineSessionCollectopn.add(
+                {
+                  "numberOfJoinedPeople": 1,
+                  "thereIsSelectedSpeaker": false,
+                  "lanuchingTime": util.getCurrentUTCTime(),
+                  "currentSpeakerToastmasterId": null,
+                  "currentGuestSpeakerInvitationCode": null,
+                  "isGuest": null,
+                },
+              );
+            }
+          },
+        ).then(
+          (_) async {
+            CollectionReference allocatedRolePlayersCollection =
+                chapterMeetingQS.docs.first.reference
+                    .collection("AllocatedRolePlayers");
+
+            QuerySnapshot allocatedRolePlayersQS =
+                await allocatedRolePlayersCollection
+                    .where("roleName", whereIn: [
+              "General Evaluator",
+              "Speaker",
+              "Speach Evaluator",
+              "Toastmaster OTE",
+            ]).get();
+
+            List<AllocatedRolePlayer> allocatedRolePlayersList =
+                allocatedRolePlayersQS.docs
+                    .map((doc) => AllocatedRolePlayer.fromJson(
+                        doc.data() as Map<String, dynamic>))
+                    .toList();
+            WriteBatch batch = FirebaseFirestore.instance.batch();
+
+            for (var element in allocatedRolePlayersList) {
+              batch.set(
+                _onlineSessionCapturedData.doc(),
+                {
+                  'chapterMeetingId': chapterMeetingId,
+                  'isAnAppGuest': element.allocatedRolePlayerType ==
+                      AllocatedRolePlayerType.Guest.name,
+                  'SpeakerName': element.rolePlayerName,
+                  'roleName': element.roleName,
+                  'roleOrderPlace': element.roleOrderPlace,
+                  'guestInvitationCode': element.guestInvitationCode,
+                  'toastmasterId': element.toastmasterId,
+                  'chapterMeetingInvitationCode':
+                      chapterMeetingDetails!["invitationCode"],
+                  'OnlineSessionSpeakerTurn':
+                      OnlineSessionSpeakerTurn.NotSelected.name,
+                },
+              );
+            }
+            await batch.commit();
+          },
+        ).then(
+          (_) async {
+            CollectionReference allocatedRolePlayersCollection =
+                chapterMeetingQS.docs.first.reference
+                    .collection("AllocatedRolePlayers");
+            QuerySnapshot allocatedRolePlayersQS =
+                await allocatedRolePlayersCollection
+                    .where(
+                      "roleName",
+                      isEqualTo: "General Evaluator",
+                    )
+                    .get();
+            if (allocatedRolePlayersQS.docs.isNotEmpty) {
+              AllocatedRolePlayer allocatedRolePlayer =
+                  AllocatedRolePlayer.fromJson(
+                allocatedRolePlayersQS.docs.first.data()
+                    as Map<String, dynamic>,
+              );
+              await _chapterMeetingGeneralEvaluationNotes.add(
+                {
+                  'chapterMeetingId': chapterMeetingId,
+                  'isAnAppGuest': allocatedRolePlayer.allocatedRolePlayerType ==
+                      AllocatedRolePlayerType.Guest.name,
+                  'guestInvitationCode':
+                      allocatedRolePlayer.guestInvitationCode,
+                  'toastmasterId': allocatedRolePlayer.toastmasterId,
+                  'chapterMeetingInvitationCode':
+                      chapterMeetingDetails!["invitationCode"],
+                },
+              );
+            }
           },
         );
       } else {

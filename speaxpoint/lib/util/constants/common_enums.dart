@@ -63,3 +63,9 @@ enum AppVolunteerSlotStatus {
 }
 
 enum ApplicantStatus { Accepted, Pending }
+
+enum OnlineSessionSpeakerTurn{
+  CurrentlySelected,
+  WasSelected,
+  NotSelected,
+}

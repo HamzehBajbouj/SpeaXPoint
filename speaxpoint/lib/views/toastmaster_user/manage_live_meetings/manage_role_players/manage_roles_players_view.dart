@@ -202,27 +202,22 @@ class _ManageRolePlayersViewState extends State<ManageRolesPlayersView> {
                                 _selectionSpeechButtonIsEnable = false;
                               });
 
-                              Timer(
-                                const Duration(seconds: 3),
-                                () async {
-                                  await _manageRolesPlayersViewModel!
-                                      .selectSpeakerSpeechFromTheList(
-                                    chapterMeetingId:
-                                        items[index].chapterMeetingId!,
-                                    isAnAppGuest: items[index].isAnAppGuest!,
-                                    chapterMeetingInvitationCode: items[index]
-                                        .chapterMeetingInvitationCode,
-                                    guestInvitationCode:
-                                        items[index].guestInvitationCode,
-                                    toastmasterId: items[index].toastmasterId,
-                                  )
-                                      .then(
-                                    (_) {
-                                      setState(() {
-                                        _selectionSpeechButtonIsEnable = true;
-                                      });
-                                    },
-                                  );
+                              await _manageRolesPlayersViewModel!
+                                  .selectSpeakerSpeechFromTheList(
+                                chapterMeetingId:
+                                    items[index].chapterMeetingId!,
+                                isAnAppGuest: items[index].isAnAppGuest!,
+                                chapterMeetingInvitationCode:
+                                    items[index].chapterMeetingInvitationCode,
+                                guestInvitationCode:
+                                    items[index].guestInvitationCode,
+                                toastmasterId: items[index].toastmasterId,
+                              )
+                                  .then(
+                                (_) {
+                                  setState(() {
+                                    _selectionSpeechButtonIsEnable = true;
+                                  });
                                 },
                               );
                             }

@@ -26,6 +26,7 @@ class _ManageRolePlayersViewState extends State<ManageRolesPlayersView> {
   ManageRolesPlayersViewModel? _manageRolesPlayersViewModel;
   late Timer _timer;
   String _formattedTime = '00:00:00';
+  bool _selectionSpeechButtonIsEnable = true;
 
   @override
   void initState() {
@@ -189,19 +190,42 @@ class _ManageRolePlayersViewState extends State<ManageRolesPlayersView> {
                       ),
                       itemBuilder: (context, index) {
                         return speechCardDetails(
+                          iconButtonActionIsEnabled:
+                              _selectionSpeechButtonIsEnable,
                           role: items[index].roleName!,
                           rolePlace: items[index].roleOrderPlace,
                           selectSpeechTurn: () async {
-                            await _manageRolesPlayersViewModel!
-                                .selectSpeakerSpeechFromTheList(
-                              chapterMeetingId: items[index].chapterMeetingId!,
-                              isAnAppGuest: items[index].isAnAppGuest!,
-                              chapterMeetingInvitationCode:
-                                  items[index].chapterMeetingInvitationCode,
-                              guestInvitationCode:
-                                  items[index].guestInvitationCode,
-                              toastmasterId: items[index].toastmasterId,
-                            );
+                            // to have a delay time between consecutive button clicks
+                            //to prevent any issue in the database or race-conditions
+                            if (_selectionSpeechButtonIsEnable) {
+                              setState(() {
+                                _selectionSpeechButtonIsEnable = false;
+                              });
+
+                              Timer(
+                                const Duration(seconds: 3),
+                                () async {
+                                  await _manageRolesPlayersViewModel!
+                                      .selectSpeakerSpeechFromTheList(
+                                    chapterMeetingId:
+                                        items[index].chapterMeetingId!,
+                                    isAnAppGuest: items[index].isAnAppGuest!,
+                                    chapterMeetingInvitationCode: items[index]
+                                        .chapterMeetingInvitationCode,
+                                    guestInvitationCode:
+                                        items[index].guestInvitationCode,
+                                    toastmasterId: items[index].toastmasterId,
+                                  )
+                                      .then(
+                                    (_) {
+                                      setState(() {
+                                        _selectionSpeechButtonIsEnable = true;
+                                      });
+                                    },
+                                  );
+                                },
+                              );
+                            }
                           },
                           speakerName: items[index].speakerName!,
                           cardColor: getSpeechCardColor(

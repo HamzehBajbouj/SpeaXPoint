@@ -518,6 +518,7 @@ Widget speechCardDetails({
   required int? rolePlace,
   required String speakerName,
   required Future<void> Function() selectSpeechTurn,
+  required bool iconButtonActionIsEnabled,
   Color cardColor = const Color(AppMainColors.volunteerNoApplicantStatus),
 }) {
   return Container(
@@ -574,10 +575,12 @@ Widget speechCardDetails({
           fit: BoxFit.scaleDown,
           child: IconButton(
             iconSize: 35,
-            onPressed: selectSpeechTurn,
+            onPressed: iconButtonActionIsEnabled ? selectSpeechTurn : null,
             icon: Icon(
               Icons.play_circle_outline_rounded,
-              color: cardColor,
+              color: iconButtonActionIsEnabled
+                  ? cardColor
+                  : const Color(AppMainColors.p40),
             ),
           ),
         ),

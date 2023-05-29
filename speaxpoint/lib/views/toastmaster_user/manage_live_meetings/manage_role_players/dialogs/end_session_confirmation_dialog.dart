@@ -6,10 +6,11 @@ import 'package:provider/provider.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart';
+import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/manage_roles_players_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/scheduled_meetings_view_model.dart';
 
-class LaunchSessionConfirmationDialog extends StatefulWidget {
-  const LaunchSessionConfirmationDialog({
+class EndSessionConfirmationDialog extends StatefulWidget {
+  const EndSessionConfirmationDialog({
     super.key,
     required this.chapterMeetingId,
   });
@@ -17,20 +18,21 @@ class LaunchSessionConfirmationDialog extends StatefulWidget {
   final String chapterMeetingId;
 
   @override
-  State<LaunchSessionConfirmationDialog> createState() =>
-      _LaunchSessionConfirmationDialogState();
+  State<EndSessionConfirmationDialog> createState() =>
+      _EndSessionConfirmationDialogState();
 }
 
-class _LaunchSessionConfirmationDialogState
-    extends State<LaunchSessionConfirmationDialog> {
-  ScheduledMeetingsViewModel? _scheduledMeetingsViewModel;
+class _EndSessionConfirmationDialogState
+    extends State<EndSessionConfirmationDialog> {
+  ManageRolesPlayersViewModel? _manageRolesPlayersViewModel;
+
   bool _showErrorMessage = false;
   bool _isLoading = false;
   @override
   void initState() {
     super.initState();
-    _scheduledMeetingsViewModel =
-        Provider.of<ScheduledMeetingsViewModel>(context, listen: false);
+    _manageRolesPlayersViewModel =
+        Provider.of<ManageRolesPlayersViewModel>(context, listen: false);
   }
 
   @override
@@ -56,7 +58,7 @@ class _LaunchSessionConfirmationDialogState
                 ),
                 SizedBox(height: 16.0),
                 Text(
-                  'Launching...',
+                  'Ending The Session...',
                   style: TextStyle(
                     height: 1.4,
                     fontFamily: CommonUIProperties.fontType,
@@ -71,7 +73,7 @@ class _LaunchSessionConfirmationDialogState
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Text(
-                  "Are you sure you want to launch the chapter meeting session?",
+                  "Are you sure you want to end the chapter meeting session?",
                   style: TextStyle(
                     height: 1.4,
                     fontFamily: CommonUIProperties.fontType,
@@ -86,7 +88,7 @@ class _LaunchSessionConfirmationDialogState
                 Visibility(
                   visible: _showErrorMessage,
                   child: const Text(
-                    "An error occured while launching the session, please try again..",
+                    "An error occured while ending the chapter meeting session, please try again..",
                     style: TextStyle(
                       height: 1.4,
                       fontFamily: CommonUIProperties.fontType,
@@ -124,8 +126,9 @@ class _LaunchSessionConfirmationDialogState
                 setState(() {
                   _isLoading = true;
                 });
-                await _scheduledMeetingsViewModel
-                    ?.launchSession(chapterMeetingId: widget.chapterMeetingId)
+                await _manageRolesPlayersViewModel
+                    ?.endChapterMeetingSession(
+                        chapterMeetingId: widget.chapterMeetingId)
                     .then(
                   (value) {
                     value.when(

@@ -512,6 +512,80 @@ Color getCardIconColor(String sessionStatus) {
   }
 }
 
+//it's used in the manage role players tab view
+Widget speechCardDetails({
+  required String role,
+  required int? rolePlace,
+  required String speakerName,
+  required Future<void> Function() selectSpeechTurn,
+  Color cardColor = const Color(AppMainColors.volunteerNoApplicantStatus),
+}) {
+  return Container(
+    padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+    constraints: const BoxConstraints(
+      minHeight: 30,
+      maxHeight: 50,
+    ),
+    decoration: BoxDecoration(
+      border: Border.all(
+        color: cardColor,
+        width: 1.3,
+      ),
+      borderRadius: BorderRadius.circular(CommonUIProperties.cardRoundedEdges),
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                textAlign: TextAlign.center,
+                "${role} ${rolePlace ?? ""}",
+                style: TextStyle(
+                  fontFamily: CommonUIProperties.fontType,
+                  fontSize: 14,
+                  fontWeight: FontWeight.normal,
+                  color: cardColor,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                speakerName,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontFamily: CommonUIProperties.fontType,
+                  fontSize: 14,
+                  fontWeight: FontWeight.normal,
+                  color: cardColor,
+                ),
+              ),
+            ),
+          ],
+        ),
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          child: IconButton(
+            iconSize: 35,
+            onPressed: selectSpeechTurn,
+            icon: Icon(
+              Icons.play_circle_outline_rounded,
+              color: cardColor,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 IconData getCardTrailingIcon(String sessionStatus) {
   switch (sessionStatus) {
     case "Completed":
@@ -532,7 +606,7 @@ Widget timeoutErrorMessage(
     required String firstMessage,
     required String secondMessage}) {
   if (errorType is TimeoutException) {
-    return  Center(
+    return Center(
       child: Text(
         firstMessage,
         textAlign: TextAlign.center,
@@ -545,11 +619,11 @@ Widget timeoutErrorMessage(
       ),
     );
   } else {
-    return  Center(
+    return Center(
       child: Text(
         secondMessage,
         textAlign: TextAlign.center,
-        style:const TextStyle(
+        style: const TextStyle(
           fontFamily: CommonUIProperties.fontType,
           fontSize: 13,
           fontWeight: FontWeight.w500,

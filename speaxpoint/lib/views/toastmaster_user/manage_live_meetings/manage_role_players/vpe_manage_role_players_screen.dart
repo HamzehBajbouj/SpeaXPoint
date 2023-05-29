@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
-import 'package:speaxpoint/views/toastmaster_user/manage_live_meetings/manage_role_players/manage_role_players_view.dart';
+import 'package:speaxpoint/views/toastmaster_user/manage_live_meetings/manage_role_players/manage_roles_players_view.dart';
 
 class VPEManageRolePlayersScreen extends StatefulWidget {
   final String chapterMeetingId;
@@ -44,15 +44,12 @@ class _VPEManageRolePlayersScreenState extends State<VPEManageRolePlayersScreen>
           ),
           child: TabBar(
             controller: _tabController,
-            // padding:
-            //     const EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 5),
             indicator: BoxDecoration(
               borderRadius: BorderRadius.circular(
                 5,
               ),
               border: Border.all(color: Color(AppMainColors.p5), width: 1.3),
             ),
-            // indicatorSize: TabBarIndicatorSize.label,
             labelColor: const Color(AppMainColors.p5),
             indicatorColor: Colors.white,
             unselectedLabelColor: const Color(AppMainColors.p80),
@@ -90,7 +87,7 @@ class _VPEManageRolePlayersScreenState extends State<VPEManageRolePlayersScreen>
           child: TabBarView(
             controller: _tabController,
             children: [
-              ManageRolePlayersView(
+              ManageRolesPlayersView(
                 chapterMeetingId: widget.chapterMeetingId,
               ),
               widget.roleView,

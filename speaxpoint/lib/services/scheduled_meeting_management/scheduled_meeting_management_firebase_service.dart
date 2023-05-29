@@ -164,6 +164,7 @@ class ScheduledMeetingManagementFirebaseService
                   "currentSpeakerToastmasterId": null,
                   "currentGuestSpeakerInvitationCode": null,
                   "isGuest": null,
+                  'terminatingTime': null,
                 },
               );
             }
@@ -197,14 +198,14 @@ class ScheduledMeetingManagementFirebaseService
                   'chapterMeetingId': chapterMeetingId,
                   'isAnAppGuest': element.allocatedRolePlayerType ==
                       AllocatedRolePlayerType.Guest.name,
-                  'SpeakerName': element.rolePlayerName,
+                  'speakerName': element.rolePlayerName,
                   'roleName': element.roleName,
                   'roleOrderPlace': element.roleOrderPlace,
                   'guestInvitationCode': element.guestInvitationCode,
                   'toastmasterId': element.toastmasterId,
                   'chapterMeetingInvitationCode':
                       chapterMeetingDetails!["invitationCode"],
-                  'OnlineSessionSpeakerTurn':
+                  'onlineSessionSpeakerTurn':
                       OnlineSessionSpeakerTurn.NotSelected.name,
                 },
               );

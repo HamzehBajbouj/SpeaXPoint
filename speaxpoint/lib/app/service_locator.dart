@@ -3,6 +3,8 @@ import 'package:speaxpoint/services/authentication/authentication_firebase_servi
 import 'package:speaxpoint/services/authentication/i_authentication_service.dart';
 import 'package:speaxpoint/services/firebaseInitializer/firebase_initializer.dart';
 import 'package:speaxpoint/services/firebaseInitializer/i_firebase_initializer_service.dart';
+import 'package:speaxpoint/services/live_session/i_live_session_service.dart';
+import 'package:speaxpoint/services/live_session/live_session_firebase_service.dart';
 import 'package:speaxpoint/services/local_database/i_local_database_service.dart';
 import 'package:speaxpoint/services/local_database/local_database_shared_preferences_service.dart';
 import 'package:speaxpoint/services/meeting_arrangement/allocate_role_players/allocate_role_player_firebase_service.dart';
@@ -31,6 +33,7 @@ import 'package:speaxpoint/view_models/toastmaster_vm/allocate_role_players_view
 import 'package:speaxpoint/view_models/toastmaster_vm/ask_for_volunteers_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_chapter_meeting_announcement_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_coming_sessions_view_model.dart';
+import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/manage_roles_players_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/prepare_meeting_agenda_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/profile_management_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/scheduled_meetings_view_model.dart';
@@ -88,6 +91,10 @@ Future<void> initServiceLocator() async {
 
   serviceLocator.registerLazySingleton<ISessionRedirectionService>(
     () => SessionRedirectionFirebaseService(),
+  );
+
+  serviceLocator.registerLazySingleton<ILiveSessionService>(
+    () => LiveSessionFirebaseService(),
   );
 
 //this part is for the viewmodels objects
@@ -181,6 +188,12 @@ Future<void> initServiceLocator() async {
   serviceLocator.registerLazySingleton<SessionRedirectionViewModel>(
     () => SessionRedirectionViewModel(
       serviceLocator<ISessionRedirectionService>(),
+    ),
+  );
+
+  serviceLocator.registerLazySingleton<ManageRolesPlayersViewModel>(
+    () => ManageRolesPlayersViewModel(
+      serviceLocator<ILiveSessionService>(),
     ),
   );
 }

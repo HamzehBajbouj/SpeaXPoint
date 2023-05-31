@@ -6,14 +6,14 @@ class ObserveGrammarianMistakesView extends StatefulWidget {
     this.chapterMeetingId,
     required this.isAGuest,
     this.chapterMeetingInvitationCode,
-    this.guestHasRole,
     this.guestInvitationCode,
+    this.toastmasterId,
   });
   final String? chapterMeetingId;
   final bool isAGuest;
   final String? chapterMeetingInvitationCode;
-  final bool? guestHasRole;
   final String? guestInvitationCode;
+  final String? toastmasterId;
 
   @override
   State<ObserveGrammarianMistakesView> createState() =>

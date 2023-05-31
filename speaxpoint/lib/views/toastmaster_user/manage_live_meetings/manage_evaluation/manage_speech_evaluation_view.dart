@@ -9,14 +9,15 @@ class ManageSpeechEvaluationView extends StatefulWidget {
     this.chapterMeetingId,
     required this.isAGuest,
     this.chapterMeetingInvitationCode,
-    this.guestHasRole,
     this.guestInvitationCode,
+    this.toastmasterId,
   });
   final String? chapterMeetingId;
   final bool isAGuest;
   final String? chapterMeetingInvitationCode;
-  final bool? guestHasRole;
   final String? guestInvitationCode;
+  final String? toastmasterId;
+
   @override
   State<ManageSpeechEvaluationView> createState() =>
       _ManageSpeechEvaluationViewState();
@@ -100,7 +101,6 @@ class _ManageSpeechEvaluationViewState extends State<ManageSpeechEvaluationView>
                   chapterMeetingId: widget.chapterMeetingId,
                   chapterMeetingInvitationCode:
                       widget.chapterMeetingInvitationCode,
-                  guestHasRole: widget.guestHasRole,
                   guestInvitationCode: widget.guestInvitationCode,
                 )
               ],

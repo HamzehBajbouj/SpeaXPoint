@@ -25,12 +25,14 @@ class SessionRedirectionScreen extends StatefulWidget {
     this.chapterMeetingInvitationCode,
     this.guestHasRole,
     this.guestInvitationCode,
+    this.toastmasterId,
   });
   final String? chapterMeetingId;
   final bool isAGuest;
   final String? chapterMeetingInvitationCode;
   final bool? guestHasRole;
   final String? guestInvitationCode;
+  final String? toastmasterId;
 
   @override
   State<SessionRedirectionScreen> createState() =>
@@ -140,12 +142,22 @@ class _SessionRedirectionScreenState extends State<SessionRedirectionScreen> {
                         roleView: redirectToastmasterToTargetScreen(
                           isAGuest: widget.isAGuest,
                           roleName: roleName,
+                          chapterMeetingId: widget.chapterMeetingId,
+                          chapterMeetingInvitationCode:
+                              widget.chapterMeetingInvitationCode,
+                          guestInvitationCode: widget.guestInvitationCode,
+                          toastmasterId: widget.toastmasterId,
                         ),
                       );
                     } else {
                       return redirectToastmasterToTargetScreen(
                         isAGuest: widget.isAGuest,
                         roleName: roleName,
+                        chapterMeetingId: widget.chapterMeetingId,
+                        chapterMeetingInvitationCode:
+                            widget.chapterMeetingInvitationCode,
+                        guestInvitationCode: widget.guestInvitationCode,
+                        toastmasterId: widget.toastmasterId,
                       );
                     }
                   } else {
@@ -191,7 +203,7 @@ class _SessionRedirectionScreenState extends State<SessionRedirectionScreen> {
     String? chapterMeetingId,
     String? guestInvitationCode,
     String? chapterMeetingInvitationCode,
-    bool? guestHasRole,
+    String? toastmasterId,
   }) {
     switch (roleName) {
       case "Timer":
@@ -199,56 +211,56 @@ class _SessionRedirectionScreenState extends State<SessionRedirectionScreen> {
           isAGuest: isAGuest,
           chapterMeetingId: chapterMeetingId,
           chapterMeetingInvitationCode: chapterMeetingInvitationCode,
-          guestHasRole: guestHasRole,
           guestInvitationCode: guestInvitationCode,
+          toastmasterId: toastmasterId,
         );
       case "Speaker":
         return SpeakerObservedDataViwe(
           isAGuest: isAGuest,
           chapterMeetingId: chapterMeetingId,
           chapterMeetingInvitationCode: chapterMeetingInvitationCode,
-          guestHasRole: guestHasRole,
           guestInvitationCode: guestInvitationCode,
+          toastmasterId: toastmasterId,
         );
       case "Ah Counter":
         return CountTimeFillersView(
           isAGuest: isAGuest,
           chapterMeetingId: chapterMeetingId,
           chapterMeetingInvitationCode: chapterMeetingInvitationCode,
-          guestHasRole: guestHasRole,
           guestInvitationCode: guestInvitationCode,
+          toastmasterId: toastmasterId,
         );
       case "Grammarian":
         return ObserveGrammarianMistakesView(
           isAGuest: isAGuest,
           chapterMeetingId: chapterMeetingId,
           chapterMeetingInvitationCode: chapterMeetingInvitationCode,
-          guestHasRole: guestHasRole,
           guestInvitationCode: guestInvitationCode,
+          toastmasterId: toastmasterId,
         );
       case "Speach Evaluator":
         return ManageSpeechEvaluationView(
           isAGuest: isAGuest,
           chapterMeetingId: chapterMeetingId,
           chapterMeetingInvitationCode: chapterMeetingInvitationCode,
-          guestHasRole: guestHasRole,
           guestInvitationCode: guestInvitationCode,
+          toastmasterId: toastmasterId,
         );
       case "General Evaluator":
         return ManageGeneralEvaluationView(
           isAGuest: isAGuest,
           chapterMeetingId: chapterMeetingId,
           chapterMeetingInvitationCode: chapterMeetingInvitationCode,
-          guestHasRole: guestHasRole,
           guestInvitationCode: guestInvitationCode,
+          toastmasterId: toastmasterId,
         );
       case "Toastmaster OTE":
         return SpeakerObservedDataViwe(
           isAGuest: isAGuest,
           chapterMeetingId: chapterMeetingId,
           chapterMeetingInvitationCode: chapterMeetingInvitationCode,
-          guestHasRole: guestHasRole,
           guestInvitationCode: guestInvitationCode,
+          toastmasterId: toastmasterId,
         );
       case "MeetingVisitor":
         return SessionWaitingView(

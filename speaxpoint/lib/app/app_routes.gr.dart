@@ -173,6 +173,7 @@ class AppRouter extends _i31.RootStackRouter {
           chapterMeetingInvitationCode: args.chapterMeetingInvitationCode,
           guestHasRole: args.guestHasRole,
           guestInvitationCode: args.guestInvitationCode,
+          toastmasterId: args.toastmasterId,
         ),
       );
     },
@@ -886,6 +887,7 @@ class SessionRedirectionRouter
     String? chapterMeetingInvitationCode,
     bool? guestHasRole,
     String? guestInvitationCode,
+    String? toastmasterId,
     List<_i31.PageRouteInfo>? children,
   }) : super(
           SessionRedirectionRouter.name,
@@ -897,6 +899,7 @@ class SessionRedirectionRouter
             chapterMeetingInvitationCode: chapterMeetingInvitationCode,
             guestHasRole: guestHasRole,
             guestInvitationCode: guestInvitationCode,
+            toastmasterId: toastmasterId,
           ),
           initialChildren: children,
         );
@@ -912,6 +915,7 @@ class SessionRedirectionRouterArgs {
     this.chapterMeetingInvitationCode,
     this.guestHasRole,
     this.guestInvitationCode,
+    this.toastmasterId,
   });
 
   final _i32.Key? key;
@@ -926,9 +930,11 @@ class SessionRedirectionRouterArgs {
 
   final String? guestInvitationCode;
 
+  final String? toastmasterId;
+
   @override
   String toString() {
-    return 'SessionRedirectionRouterArgs{key: $key, isAGuest: $isAGuest, chapterMeetingId: $chapterMeetingId, chapterMeetingInvitationCode: $chapterMeetingInvitationCode, guestHasRole: $guestHasRole, guestInvitationCode: $guestInvitationCode}';
+    return 'SessionRedirectionRouterArgs{key: $key, isAGuest: $isAGuest, chapterMeetingId: $chapterMeetingId, chapterMeetingInvitationCode: $chapterMeetingInvitationCode, guestHasRole: $guestHasRole, guestInvitationCode: $guestInvitationCode, toastmasterId: $toastmasterId}';
   }
 }
 

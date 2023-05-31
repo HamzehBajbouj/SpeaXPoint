@@ -173,7 +173,7 @@ class _ManageRolePlayersViewState extends State<ManageRolesPlayersView> {
                   if (items.isEmpty) {
                     return const Center(
                       child: Text(
-                        "You have not announced any volunteers requests.",
+                        "There Is No Any Speaches For This Session!.",
                         style: TextStyle(
                           fontFamily: CommonUIProperties.fontType,
                           fontSize: 13,

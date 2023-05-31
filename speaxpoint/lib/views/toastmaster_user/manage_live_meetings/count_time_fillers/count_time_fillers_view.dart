@@ -8,12 +8,14 @@ class CountTimeFillersView extends StatefulWidget {
     this.chapterMeetingInvitationCode,
     this.guestHasRole,
     this.guestInvitationCode,
+    this.toastmasterId,
   });
   final String? chapterMeetingId;
   final bool isAGuest;
   final String? chapterMeetingInvitationCode;
   final bool? guestHasRole;
   final String? guestInvitationCode;
+  final String? toastmasterId;
 
   @override
   State<CountTimeFillersView> createState() => _CountTimeFillersViewState();

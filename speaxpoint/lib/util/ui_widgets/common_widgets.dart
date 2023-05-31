@@ -522,7 +522,7 @@ Widget speechCardDetails({
   Color cardColor = const Color(AppMainColors.volunteerNoApplicantStatus),
 }) {
   return Container(
-    padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
     constraints: const BoxConstraints(
       minHeight: 30,
       maxHeight: 50,
@@ -581,6 +581,79 @@ Widget speechCardDetails({
               color: iconButtonActionIsEnabled
                   ? cardColor
                   : const Color(AppMainColors.p40),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget evaluationNoteCard({
+  String? noteTitle,
+  required String noteContent,
+  required String noteId,
+  required Future<void> Function() iconButtonAction,
+}) {
+  return Container(
+    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+    constraints: const BoxConstraints(
+      minHeight: 30,
+      maxHeight: 50,
+    ),
+    decoration: BoxDecoration(
+      border: Border.all(
+        color: const Color(AppMainColors.p50),
+        width: 1.3,
+      ),
+      borderRadius: BorderRadius.circular(CommonUIProperties.cardRoundedEdges),
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Visibility(
+                visible:
+                    ((noteTitle == null) || (noteTitle.isEmpty)) ? false : true,
+                child: Text(
+                  textAlign: TextAlign.center,
+                  noteTitle ?? " ",
+                  style: const TextStyle(
+                    fontFamily: CommonUIProperties.fontType,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(AppMainColors.p50),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Text(
+                noteContent,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: const TextStyle(
+                  fontFamily: CommonUIProperties.fontType,
+                  fontSize: 14,
+                  fontWeight: FontWeight.normal,
+                  color: Color(AppMainColors.p50),
+                ),
+              ),
+            ],
+          ),
+        ),
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          child: IconButton(
+            iconSize: 35,
+            onPressed: iconButtonAction,
+            icon: const Icon(
+              Icons.arrow_forward_ios_rounded,
+              color: Color(AppMainColors.p50),
             ),
           ),
         ),

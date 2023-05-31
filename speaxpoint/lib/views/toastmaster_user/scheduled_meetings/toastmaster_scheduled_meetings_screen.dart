@@ -26,7 +26,8 @@ class ToastmasterScheduledMeetingsScreen extends StatefulWidget {
 class _ToastmasterScheduledMeetingsScreenState
     extends State<ToastmasterScheduledMeetingsScreen> {
   ScheduledMeetingsViewModel? _scheduledMeetingsViewModel;
-  String currentMemberClubRole = "";
+  String _currentMemberClubRole = "";
+  String? _toastmasterId;
 
   @override
   void initState() {
@@ -38,9 +39,24 @@ class _ToastmasterScheduledMeetingsScreenState
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    currentMemberClubRole =
+    _currentMemberClubRole =
         await _scheduledMeetingsViewModel!.getDataFromLocalDataBase(
       keySearch: "memberOfficalRole",
+    );
+
+    /*
+    here in addition to the memberRole we will get the current logged user 
+    toastmaster Id , because if he is joing the session as the APP user,
+    each roleplayer screen will get the current logged in user toastmasterId.
+    it's used to help us in registering from who the data was collected,
+    it's not always used, but it's used in the general evaluator note collection
+    or it's used to display the observed collected data in the speakerObseredDataScreen.
+    since it can display the data for toastmaster using the app or toastmaster 
+    logging as a guest (in this case we use the invitation codes)
+   */
+    _toastmasterId =
+        await _scheduledMeetingsViewModel!.getDataFromLocalDataBase(
+      keySearch: "toastmasterId",
     );
   }
 
@@ -174,7 +190,7 @@ class _ToastmasterScheduledMeetingsScreenState
                                           .chapterMeetingStatus! ==
                                       ComingSessionsStatus.Coming.name
                                   ? Visibility(
-                                      visible: currentMemberClubRole ==
+                                      visible: _currentMemberClubRole ==
                                           ToastmasterRoles
                                               .Vice_President_Education.name
                                               .replaceAll("_", " "),
@@ -200,6 +216,8 @@ class _ToastmasterScheduledMeetingsScreenState
                                                         chapterMeetings[index]
                                                             .chapterMeetingId!,
                                                     isAGuest: false,
+                                                    toastmasterId:
+                                                        _toastmasterId,
                                                   ),
                                                 )
                                                     .then((_) async {
@@ -255,11 +273,12 @@ class _ToastmasterScheduledMeetingsScreenState
                                               context.router
                                                   .push(
                                                 SessionRedirectionRouter(
-                                                  chapterMeetingId:
-                                                      chapterMeetings[index]
-                                                          .chapterMeetingId!,
-                                                  isAGuest: false,
-                                                ),
+                                                    chapterMeetingId:
+                                                        chapterMeetings[index]
+                                                            .chapterMeetingId!,
+                                                    isAGuest: false,
+                                                    toastmasterId:
+                                                        _toastmasterId),
                                               )
                                                   .then((_) async {
                                                 refreshData();

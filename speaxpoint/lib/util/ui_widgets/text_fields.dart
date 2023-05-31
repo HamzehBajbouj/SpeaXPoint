@@ -27,7 +27,7 @@ TextFormField outlineTextField(
     validator: (value) {
       //check for empty input
       if (isRequired && (value == null || value == '')) {
-        return 'Field should not be empty.';
+        return 'This field should not be empty.';
       }
       if (isRequired && validators != null) {
         for (int i = 0; i < validators.length; i++) {

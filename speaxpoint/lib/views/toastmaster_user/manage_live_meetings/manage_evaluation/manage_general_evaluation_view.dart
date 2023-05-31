@@ -3,20 +3,23 @@ import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/views/toastmaster_user/manage_live_meetings/speaker_observed_data/speaker_observed_data_view.dart';
 
+import 'evaluation_tab_views/general_evaluation_tab_view.dart';
+
 class ManageGeneralEvaluationView extends StatefulWidget {
   const ManageGeneralEvaluationView({
     super.key,
     this.chapterMeetingId,
     required this.isAGuest,
     this.chapterMeetingInvitationCode,
-    this.guestHasRole,
     this.guestInvitationCode,
+    this.toastmasterId,
   });
   final String? chapterMeetingId;
   final bool isAGuest;
   final String? chapterMeetingInvitationCode;
-  final bool? guestHasRole;
   final String? guestInvitationCode;
+  final String? toastmasterId;
+
   @override
   State<ManageGeneralEvaluationView> createState() =>
       _ManageSpeechEvaluationViewState();
@@ -95,14 +98,21 @@ class _ManageSpeechEvaluationViewState
             child: TabBarView(
               controller: _tabController,
               children: [
-                const Center(child: Text("General Evaluator tools")),
+                GeneralEvaluationTabView(
+                  isAGuest: widget.isAGuest,
+                  chapterMeetingId: widget.chapterMeetingId,
+                  chapterMeetingInvitationCode:
+                      widget.chapterMeetingInvitationCode,
+                  guestInvitationCode: widget.guestInvitationCode,
+                  toastmasterId: widget.toastmasterId,
+                ),
                 SpeakerObservedDataViwe(
                   isAGuest: widget.isAGuest,
                   chapterMeetingId: widget.chapterMeetingId,
                   chapterMeetingInvitationCode:
                       widget.chapterMeetingInvitationCode,
-                  guestHasRole: widget.guestHasRole,
                   guestInvitationCode: widget.guestInvitationCode,
+                  toastmasterId: widget.toastmasterId,
                 )
               ],
             ),

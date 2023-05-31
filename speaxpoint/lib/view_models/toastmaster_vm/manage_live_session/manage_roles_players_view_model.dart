@@ -47,7 +47,7 @@ class ManageRolesPlayersViewModel extends BaseViewModel {
 
   Stream<List<OnlineSessionCapturedData>> getListOfSpeaches(
       {required String chapterMeetingId}) {
-    return _liveSessionService.getOnlineCapturedDataForAppUser(
+    return _liveSessionService.getListOfSpeachesForAppUser(
         chapterMeetingId: chapterMeetingId);
   }
 

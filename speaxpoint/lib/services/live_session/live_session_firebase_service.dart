@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:speaxpoint/models/evaluation_note.dart';
 import 'package:speaxpoint/services/failure.dart';
 import 'package:speaxpoint/models/online_session_captured_data.dart';
 import 'package:multiple_result/src/unit.dart';
@@ -15,6 +16,9 @@ class LiveSessionFirebaseService implements ILiveSessionService {
 
   final CollectionReference _onlineSessionCapturedDataC =
       FirebaseFirestore.instance.collection('OnlineSessionCapturedData');
+  final CollectionReference _chapterMeetingGeneralEvaluationNotesC =
+      FirebaseFirestore.instance
+          .collection('ChapterMeetingGeneralEvaluationNotes');
 
   @override
   Future<Result<String, Failure>> getSessionLaunchingTime(
@@ -149,7 +153,7 @@ class LiveSessionFirebaseService implements ILiveSessionService {
   }
 
   @override
-  Stream<List<OnlineSessionCapturedData>> getOnlineCapturedDataForAppGuest(
+  Stream<List<OnlineSessionCapturedData>> getListOfSpeachesForAppGuest(
       {required String chapterMeetingInvitationCode,
       required String guestInvitationCode}) async* {
     // TODO: implement getOnlineCapturedDataForAppGuest
@@ -157,7 +161,7 @@ class LiveSessionFirebaseService implements ILiveSessionService {
   }
 
   @override
-  Stream<List<OnlineSessionCapturedData>> getOnlineCapturedDataForAppUser(
+  Stream<List<OnlineSessionCapturedData>> getListOfSpeachesForAppUser(
       {required String chapterMeetingId}) async* {
     Stream<List<OnlineSessionCapturedData>> onlineSessionData = Stream.empty();
     try {
@@ -334,6 +338,301 @@ class LiveSessionFirebaseService implements ILiveSessionService {
             location: "LiveSessionFirebaseService.endChapterMeetingSession()",
             message: e.toString()),
       );
+    }
+  }
+
+  @override
+  Future<Result<Unit, Failure>> addGeneralEvaluationNoteAppUser({
+    required String chapterMeetingId,
+    required String toastmasterId,
+    required EvaluationNote evaluationNote,
+  }) async {
+    try {
+      QuerySnapshot generalEvaluationNotesQS =
+          await _chapterMeetingGeneralEvaluationNotesC
+              .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+              .where("toastmasterId", isEqualTo: toastmasterId)
+              .get();
+      if (generalEvaluationNotesQS.docs.isNotEmpty) {
+        CollectionReference evaluationNotes = generalEvaluationNotesQS
+            .docs.first.reference
+            .collection("EvaluationNotes");
+        await evaluationNotes.add(evaluationNote.toJson());
+      } else {
+        return Error(
+          Failure(
+            code: "No-Evaluation-Note-Found",
+            location:
+                "LiveSessionFirebaseService.addGeneralEvaluationNoteAppUser()",
+            message:
+                "Could not found a evaluation notes for chapter meeting with id "
+                ": $chapterMeetingId , for toastmaster id : $toastmasterId",
+          ),
+        );
+      }
+      return Success.unit();
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location:
+                "LiveSessionFirebaseService.addGeneralEvaluationNoteAppUser()",
+            message: e.message ??
+                "Database Error While adding a general evaluation note"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location:
+                "LiveSessionFirebaseService.addGeneralEvaluationNoteAppUser()",
+            message: e.toString()),
+      );
+    }
+  }
+
+  @override
+  Future<Result<Unit, Failure>> addGeneralEvaluationNoteGuestUser({
+    required String guestInvitationCode,
+    required String chapterMeetingInvitationCode,
+    required EvaluationNote evaluationNote,
+  }) async {
+    try {
+      QuerySnapshot generalEvaluationNotesQS =
+          await _chapterMeetingGeneralEvaluationNotesC
+              .where("guestInvitationCode", isEqualTo: guestInvitationCode)
+              .where("chapterMeetingInvitationCode",
+                  isEqualTo: chapterMeetingInvitationCode)
+              .get();
+      if (generalEvaluationNotesQS.docs.isNotEmpty) {
+        CollectionReference evaluationNotes = generalEvaluationNotesQS
+            .docs.first.reference
+            .collection("EvaluationNotes");
+        await evaluationNotes.add(evaluationNote.toJson());
+      } else {
+        return Error(
+          Failure(
+            code: "No-Evaluation-Note-Found",
+            location:
+                "LiveSessionFirebaseService.addGeneralEvaluationNoteGuestUser()",
+            message:
+                "Could not found a evaluation notes for chapter meeting with"
+                "invitation code : $chapterMeetingInvitationCode , for guest invitation code : $guestInvitationCode",
+          ),
+        );
+      }
+      return Success.unit();
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location:
+                "LiveSessionFirebaseService.addGeneralEvaluationNoteGuestUser()",
+            message: e.message ??
+                "Database Error While adding a general evaluation note"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location:
+                "LiveSessionFirebaseService.addGeneralEvaluationNoteGuestUser()",
+            message: e.toString()),
+      );
+    }
+  }
+
+  @override
+  Future<Result<Unit, Failure>> deleteGeneralEvaluationNoteAppUser(
+      {required String chapterMeetingId,
+      required String toastmasterId,
+      required String noteId}) async {
+    try {
+      QuerySnapshot generalEvaluationNotesQS =
+          await _chapterMeetingGeneralEvaluationNotesC
+              .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+              .where("toastmasterId", isEqualTo: toastmasterId)
+              .get();
+      if (generalEvaluationNotesQS.docs.isNotEmpty) {
+        CollectionReference evaluationNotes = generalEvaluationNotesQS
+            .docs.first.reference
+            .collection("EvaluationNotes");
+        QuerySnapshot evaluationNotesQS =
+            await evaluationNotes.where("noteId", isEqualTo: noteId).get();
+        if (evaluationNotesQS.docs.isNotEmpty) {
+          await evaluationNotesQS.docs.first.reference.delete();
+        } else {
+          return Error(
+            Failure(
+                code: "No-Note-Found",
+                location:
+                    "LiveSessionFirebaseService.deleteGeneralEvaluationNoteAppUser()",
+                message: "Could not found a evaluation note with id : $noteId"),
+          );
+        }
+      } else {
+        return Error(
+          Failure(
+            code: "No-Evaluation-Note-Found",
+            location:
+                "LiveSessionFirebaseService.deleteGeneralEvaluationNoteAppUser()",
+            message:
+                "Could not found a evaluation note for chapter meeting with"
+                "id : $chapterMeetingId , for toastmaster id : $toastmasterId",
+          ),
+        );
+      }
+      return Success.unit();
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location:
+                "LiveSessionFirebaseService.deleteGeneralEvaluationNoteAppUser()",
+            message: e.message ??
+                "Database Error While delete a general evaluation note"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location:
+                "LiveSessionFirebaseService.deleteGeneralEvaluationNoteAppUser()",
+            message: e.toString()),
+      );
+    }
+  }
+
+  @override
+  Future<Result<Unit, Failure>> deleteGeneralEvaluationNoteGuestUser(
+      {required String guestInvitationCode,
+      required String chapterMeetingInvitationCode,
+      required String noteId}) async {
+    try {
+      QuerySnapshot generalEvaluationNotesQS =
+          await _chapterMeetingGeneralEvaluationNotesC
+              .where("guestInvitationCode", isEqualTo: guestInvitationCode)
+              .where("chapterMeetingInvitationCode",
+                  isEqualTo: chapterMeetingInvitationCode)
+              .get();
+      if (generalEvaluationNotesQS.docs.isNotEmpty) {
+        CollectionReference evaluationNotes = generalEvaluationNotesQS
+            .docs.first.reference
+            .collection("EvaluationNotes");
+        QuerySnapshot evaluationNotesQS =
+            await evaluationNotes.where("noteId", isEqualTo: noteId).get();
+        if (evaluationNotesQS.docs.isNotEmpty) {
+          await evaluationNotesQS.docs.first.reference.delete();
+        } else {
+          return Error(
+            Failure(
+                code: "No-Note-Found",
+                location:
+                    "LiveSessionFirebaseService.deleteGeneralEvaluationNoteGuestUser()",
+                message: "Could not found a evaluation note with id : $noteId"),
+          );
+        }
+      } else {
+        return Error(
+          Failure(
+            code: "No-Evaluation-Note-Found",
+            location:
+                "LiveSessionFirebaseService.deleteGeneralEvaluationNoteGuestUser()",
+            message:
+                "Could not found a evaluation note for chapter meeting with"
+                "invitation code : $chapterMeetingInvitationCode , for guest invitation code : $guestInvitationCode",
+          ),
+        );
+      }
+      return Success.unit();
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location:
+                "LiveSessionFirebaseService.deleteGeneralEvaluationNoteGuestUser()",
+            message: e.message ??
+                "Database Error While delete a general evaluation note"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location:
+                "LiveSessionFirebaseService.deleteGeneralEvaluationNoteGuestUser()",
+            message: e.toString()),
+      );
+    }
+  }
+
+  @override
+  Stream<List<EvaluationNote>> getGeneralEvaluationNoteAppUser(
+      {required String chapterMeetingId,
+      required String toastmasterId}) async* {
+    Stream<List<EvaluationNote>> evaluationNotesData = Stream.empty();
+    try {
+      QuerySnapshot evaluationNotesQS =
+          await _chapterMeetingGeneralEvaluationNotesC
+              .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+              .where("toastmasterId", isEqualTo: toastmasterId)
+              .get();
+
+      evaluationNotesData = evaluationNotesQS.docs.first.reference
+          .collection("EvaluationNotes")
+          .snapshots()
+          .map(
+            (QuerySnapshot querySnapshot) => querySnapshot.docs.map(
+              (e) {
+                return EvaluationNote.fromJson(
+                  e.data() as Map<String, dynamic>,
+                );
+              },
+            ).toList(),
+          );
+
+      yield* evaluationNotesData;
+    } on FirebaseException catch (e) {
+      log("${e.code} ${e.message}");
+      yield* evaluationNotesData;
+    } catch (e) {
+      log(e.toString());
+      yield* evaluationNotesData;
+    }
+  }
+
+  @override
+  Stream<List<EvaluationNote>> getGeneralEvaluationNoteGuestUser(
+      {required String guestInvitationCode,
+      required String chapterMeetingInvitationCode}) async* {
+    Stream<List<EvaluationNote>> evaluationNotesData = Stream.empty();
+    try {
+      QuerySnapshot evaluationNotesQS =
+          await _chapterMeetingGeneralEvaluationNotesC
+              .where("guestInvitationCode", isEqualTo: guestInvitationCode)
+              .where("chapterMeetingInvitationCode",
+                  isEqualTo: chapterMeetingInvitationCode)
+              .get();
+
+      evaluationNotesData = evaluationNotesQS.docs.first.reference
+          .collection("EvaluationNotes")
+          .snapshots()
+          .map(
+            (QuerySnapshot querySnapshot) => querySnapshot.docs.map(
+              (e) {
+                return EvaluationNote.fromJson(
+                  e.data() as Map<String, dynamic>,
+                );
+              },
+            ).toList(),
+          );
+
+      yield* evaluationNotesData;
+    } on FirebaseException catch (e) {
+      log("${e.code} ${e.message}");
+      yield* evaluationNotesData;
+    } catch (e) {
+      log(e.toString());
+      yield* evaluationNotesData;
     }
   }
 }

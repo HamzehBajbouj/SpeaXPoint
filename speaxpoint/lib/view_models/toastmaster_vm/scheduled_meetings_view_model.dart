@@ -9,12 +9,13 @@ class ScheduledMeetingsViewModel extends BaseViewModel {
   final IScheduledMeetingManagementService _scheduledMeetingManagementService;
 
   ScheduledMeetingsViewModel(
-      this._scheduledMeetingManagementService,);
+    this._scheduledMeetingManagementService,
+  );
 
   Future<List<ChapterMeeting>> getScheduledChapterMeetings() async {
     List<ChapterMeeting> chatperMeetings = [];
     setLoading(loading: true);
- 
+
     await _scheduledMeetingManagementService
         .getAllScheduledMeeting(
             clubId: await super.getDataFromLocalDataBase(keySearch: "clubId"),
@@ -37,5 +38,11 @@ class ScheduledMeetingsViewModel extends BaseViewModel {
       {required String chapterMeetingId}) async {
     return await _scheduledMeetingManagementService
         .lanuchChapterMeetingSessions(chapterMeetingId: chapterMeetingId);
+  }
+
+  Future<Result<Unit, Failure>> joinSession(
+      {required String chapterMeetingId}) async {
+    return await _scheduledMeetingManagementService
+        .joinChapterMeetingSessionAppUser(chapterMeetingId: chapterMeetingId);
   }
 }

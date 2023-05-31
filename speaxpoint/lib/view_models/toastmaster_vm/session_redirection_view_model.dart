@@ -1,3 +1,5 @@
+import 'package:multiple_result/multiple_result.dart';
+import 'package:speaxpoint/services/failure.dart';
 import 'package:speaxpoint/services/session_redirection/i_session_redirection_service.dart';
 import 'package:speaxpoint/util/constants/common_enums.dart';
 import 'package:speaxpoint/view_models/base_view_mode.dart';
@@ -57,6 +59,25 @@ class SessionRedirectionViewModel extends BaseViewModel {
 
       setLoading(loading: false);
       return tempRoleName;
+    }
+  }
+
+  Future<Result<Unit, Failure>> leaveTheSession({
+    required bool isAGuest,
+    String? chapterMeetingId,
+    String? chapterMeetingInvitationCode,
+  }) async {
+    setLoading(loading: true);
+    if (isAGuest) {
+      setLoading(loading: false);
+      return await _sessionRedirectionService
+          .leaveTheChapterMeetingSessionGuestUser(
+              chapterMeetingInvitationCode: chapterMeetingInvitationCode!);
+    } else {
+      setLoading(loading: false);
+      return await _sessionRedirectionService
+          .leaveTheChapterMeetingSessionAppUser(
+              chapterMeetingId: chapterMeetingId!);
     }
   }
 }

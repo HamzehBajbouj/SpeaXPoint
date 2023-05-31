@@ -275,4 +275,56 @@ class ScheduledMeetingManagementFirebaseService
       );
     }
   }
+
+  @override
+  Future<Result<Unit, Failure>> joinChapterMeetingSessionAppUser(
+      {required String chapterMeetingId}) async {
+    try {
+      QuerySnapshot chapterMeetingQS = await _chapterMeetingsC
+          .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+          .get();
+      if (chapterMeetingQS.docs.isNotEmpty) {
+        CollectionReference onlineSessionCollectoin =
+            chapterMeetingQS.docs.first.reference.collection("OnlineSession");
+
+        QuerySnapshot onlineSessionQS = await onlineSessionCollectoin.get();
+        if (onlineSessionQS.docs.isNotEmpty) {
+          Map<String, dynamic> onlineSessionData =
+              onlineSessionQS.docs.first.data() as Map<String, dynamic>;
+
+          int numberOfJoinedPeople = onlineSessionData["numberOfJoinedPeople"];
+          await onlineSessionQS.docs.first.reference.update(
+            {"numberOfJoinedPeople": numberOfJoinedPeople += 1},
+          );
+        }
+      } else {
+        return Error(
+          Failure(
+              code: "No-Chapter-Meeting-Found",
+              location:
+                  "ScheduledMeetingManagementFirebaseService.joinChapterMeetingSessionAppUser()",
+              message:
+                  "Could not found a chapter meeting with id : $chapterMeetingId"),
+        );
+      }
+      return Success.unit();
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location:
+                "ScheduledMeetingManagementFirebaseService.joinChapterMeetingSessionAppUser()",
+            message: e.message ??
+                "Database Error While joing the scheduled meeting"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location:
+                "ScheduledMeetingManagementFirebaseService.joinChapterMeetingSessionAppUser()",
+            message: e.toString()),
+      );
+    }
+  }
 }

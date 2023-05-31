@@ -175,7 +175,11 @@ class _SessionRedirectionScreenState extends State<SessionRedirectionScreen> {
     return await showDialog(
           context: context,
           builder: (BuildContext context) {
-            return const ExitRedirectionScreenConfirmationDialog();
+            return ExitRedirectionScreenConfirmationDialog(
+              isAGuest: widget.isAGuest,
+              chapterMeetingId: widget.chapterMeetingId,
+              chapterMeetingInvitationCode: widget.chapterMeetingInvitationCode,
+            );
           },
         ) ??
         false;

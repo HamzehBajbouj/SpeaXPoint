@@ -127,4 +127,108 @@ class SessionRedirectionFirebaseService extends ISessionRedirectionService {
       );
     }
   }
+
+  @override
+  Future<Result<Unit, Failure>> leaveTheChapterMeetingSessionAppUser(
+      {required String chapterMeetingId}) async {
+    try {
+      QuerySnapshot chapterMeetingQS = await _chapterMeetingsCollection
+          .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+          .get();
+      if (chapterMeetingQS.docs.isNotEmpty) {
+        CollectionReference onlineSessionCollectoin =
+            chapterMeetingQS.docs.first.reference.collection("OnlineSession");
+
+        QuerySnapshot onlineSessionQS = await onlineSessionCollectoin.get();
+        if (onlineSessionQS.docs.isNotEmpty) {
+          Map<String, dynamic> onlineSessionData =
+              onlineSessionQS.docs.first.data() as Map<String, dynamic>;
+
+          int numberOfJoinedPeople = onlineSessionData["numberOfJoinedPeople"];
+          await onlineSessionQS.docs.first.reference.update(
+            {"numberOfJoinedPeople": numberOfJoinedPeople -= 1},
+          );
+        }
+      } else {
+        return Error(
+          Failure(
+              code: "No-Chapter-Meeting-Found",
+              location:
+                  "SessionRedirectionFirebaseService.leaveTheChapterMeetingSessionAppUser()",
+              message:
+                  "Could not found a chapter meeting with id : $chapterMeetingId"),
+        );
+      }
+      return Success.unit();
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location:
+                "SessionRedirectionFirebaseService.leaveTheChapterMeetingSessionAppUser()",
+            message: e.message ??
+                "Database Error While leaving the scheduled meeting"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location:
+                "SessionRedirectionFirebaseService.leaveTheChapterMeetingSessionAppUser()",
+            message: e.toString()),
+      );
+    }
+  }
+
+  @override
+  Future<Result<Unit, Failure>> leaveTheChapterMeetingSessionGuestUser(
+      {required String chapterMeetingInvitationCode}) async {
+    try {
+      QuerySnapshot chapterMeetingQS = await _chapterMeetingsCollection
+          .where("invitationCode", isEqualTo: chapterMeetingInvitationCode)
+          .get();
+      if (chapterMeetingQS.docs.isNotEmpty) {
+        CollectionReference onlineSessionCollectoin =
+            chapterMeetingQS.docs.first.reference.collection("OnlineSession");
+
+        QuerySnapshot onlineSessionQS = await onlineSessionCollectoin.get();
+        if (onlineSessionQS.docs.isNotEmpty) {
+          Map<String, dynamic> onlineSessionData =
+              onlineSessionQS.docs.first.data() as Map<String, dynamic>;
+
+          int numberOfJoinedPeople = onlineSessionData["numberOfJoinedPeople"];
+          await onlineSessionQS.docs.first.reference.update(
+            {"numberOfJoinedPeople": numberOfJoinedPeople -= 1},
+          );
+        }
+      } else {
+        return Error(
+          Failure(
+              code: "No-Chapter-Meeting-Found",
+              location:
+                  "SessionRedirectionFirebaseService.leaveTheChapterMeetingSessionGuestUser()",
+              message:
+                  "Could not found a chapter meeting with invitation code : $chapterMeetingInvitationCode"),
+        );
+      }
+      return Success.unit();
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location:
+                "SessionRedirectionFirebaseService.leaveTheChapterMeetingSessionGuestUser()",
+            message: e.message ??
+                "Database Error While leaving the scheduled meeting"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location:
+                "SessionRedirectionFirebaseService.leaveTheChapterMeetingSessionGuestUser()",
+            message: e.toString()),
+      );
+    }
+  }
 }

@@ -3,12 +3,13 @@ import 'package:speaxpoint/models/chapter_meeting.dart';
 import 'package:speaxpoint/services/failure.dart';
 
 abstract class IScheduledMeetingManagementService {
-   Future<Result<List<ChapterMeeting>, Failure>> getAllScheduledMeeting({
+  Future<Result<List<ChapterMeeting>, Failure>> getAllScheduledMeeting({
     required String clubId,
     required String toastmasterId,
   });
 
-     Future<Result<Unit, Failure>> lanuchChapterMeetingSessions({
-    required String chapterMeetingId
-  });
+  Future<Result<Unit, Failure>> lanuchChapterMeetingSessions(
+      {required String chapterMeetingId});
+
+  Future<Result<Unit, Failure>> joinChapterMeetingSessionAppUser( {required String chapterMeetingId});
 }

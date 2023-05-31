@@ -13,4 +13,11 @@ abstract class ISessionRedirectionService {
     required String chapterMeetingId,
     required String toastmasterId,
   });
+  Future<Result<Unit, Failure>> leaveTheChapterMeetingSessionAppUser({
+    required String chapterMeetingId,
+  });
+
+  Future<Result<Unit, Failure>> leaveTheChapterMeetingSessionGuestUser({
+    required String chapterMeetingInvitationCode,
+  });
 }

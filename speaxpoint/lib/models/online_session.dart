@@ -4,6 +4,7 @@ class OnlineSession {
   String? currentGuestSpeakerInvitationCode;
   String? lanuchingTime;
   String? terminatingTime;
+  String? currentSpeakerName;
   bool? thereIsSelectedSpeaker;
   bool? isGuest;
   int? numberOfJoinedPeople;
@@ -15,20 +16,21 @@ class OnlineSession {
       this.thereIsSelectedSpeaker,
       this.isGuest,
       this.numberOfJoinedPeople,
-      this.terminatingTime});
+      this.terminatingTime,
+      this.currentSpeakerName});
 
   OnlineSession.fromJson(Map<String, dynamic> onlineSessionJson)
       : this(
-          currentSpeakerToastmasterId:
-              onlineSessionJson['currentSpeakerToastmasterId'],
-          currentGuestSpeakerInvitationCode:
-              onlineSessionJson['currentGuestSpeakerInvitationCode'],
-          lanuchingTime: onlineSessionJson['lanuchingTime'],
-          thereIsSelectedSpeaker: onlineSessionJson['thereIsSelectedSpeaker'],
-          isGuest: onlineSessionJson['isGuest'],
-          numberOfJoinedPeople: onlineSessionJson['numberOfJoinedPeople'],
-          terminatingTime: onlineSessionJson['terminatingTime'],
-        );
+            currentSpeakerToastmasterId:
+                onlineSessionJson['currentSpeakerToastmasterId'],
+            currentGuestSpeakerInvitationCode:
+                onlineSessionJson['currentGuestSpeakerInvitationCode'],
+            lanuchingTime: onlineSessionJson['lanuchingTime'],
+            thereIsSelectedSpeaker: onlineSessionJson['thereIsSelectedSpeaker'],
+            isGuest: onlineSessionJson['isGuest'],
+            numberOfJoinedPeople: onlineSessionJson['numberOfJoinedPeople'],
+            terminatingTime: onlineSessionJson['terminatingTime'],
+            currentSpeakerName: onlineSessionJson['currentSpeakerName']);
 
   Map<String, dynamic> toJson() => {
         'currentSpeakerToastmasterId': currentSpeakerToastmasterId,
@@ -37,6 +39,7 @@ class OnlineSession {
         'thereIsSelectedSpeaker': thereIsSelectedSpeaker,
         'isGuest': isGuest,
         'numberOfJoinedPeople': numberOfJoinedPeople,
-        'terminatingTime': terminatingTime
+        'terminatingTime': terminatingTime,
+        'currentSpeakerName': currentSpeakerName,
       };
 }

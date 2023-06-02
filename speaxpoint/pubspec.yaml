@@ -58,6 +58,7 @@ dependencies:
   firebase_storage: ^11.1.1
   image_picker: ^0.8.7+4
   url_launcher: ^6.1.10
+  drop_down_list: ^0.0.5
 
 dev_dependencies:
   flutter_test:

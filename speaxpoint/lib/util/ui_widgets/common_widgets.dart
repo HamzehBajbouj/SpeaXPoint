@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:drop_down_list/drop_down_list.dart';
+import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_enums.dart';
@@ -708,4 +710,91 @@ Widget timeoutErrorMessage(
       ),
     );
   }
+}
+
+/*
+  These widgets are for getting the current speech speacker details, 
+  it's used almost in all the role players tools screens
+*/
+
+Widget currentSpeechSpeakerCard(
+    {required String title, required String content}) {
+  return Container(
+    constraints: const BoxConstraints(
+      minHeight: 30,
+      maxHeight: 40,
+    ),
+    decoration: BoxDecoration(
+      border: Border.all(
+        color: const Color(AppMainColors.p40),
+        width: 1.3,
+      ),
+      borderRadius: BorderRadius.circular(CommonUIProperties.cardRoundedEdges),
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(10),
+          child: Center(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                textAlign: TextAlign.center,
+                title,
+                style: const TextStyle(
+                  fontFamily: CommonUIProperties.fontType,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Color(AppMainColors.p50),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(10),
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              content,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontFamily: CommonUIProperties.fontType,
+                fontSize: 16,
+                fontWeight: FontWeight.normal,
+                color: Color(AppMainColors.p50),
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+void displaySpeechesSpeakersDropMenu({
+  required List<SelectedListItem> dataList,
+  required void Function(List<dynamic>)? selectedItemsCallBack,
+  required BuildContext context,
+}) {
+  DropDownState(
+    DropDown(
+      isDismissible: true,
+      submitButtonChild: const Text(
+        'Done',
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      data: dataList,
+      selectedItems: (selectedList) {
+        if (selectedItemsCallBack != null) {
+          selectedItemsCallBack(selectedList);
+        }
+      },
+      enableMultipleSelection: false,
+    ),
+  ).showModal(context);
 }

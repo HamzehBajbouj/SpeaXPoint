@@ -1,7 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
-import 'package:speaxpoint/util/constants/common_enums.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 
 Flexible genderRadioOption(
@@ -17,8 +16,8 @@ Flexible genderRadioOption(
         decoration: BoxDecoration(
           border: Border.all(
               color: selected
-                  ? Color(AppMainColors.p80)
-                  : Color(AppMainColors.p30)),
+                  ? const Color(AppMainColors.p80)
+                  : const Color(AppMainColors.p30)),
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: Padding(
@@ -31,17 +30,17 @@ Flexible genderRadioOption(
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: selected
-                        ? Color(AppMainColors.p80)
-                        : Color(AppMainColors.p30),
+                        ? const Color(AppMainColors.p80)
+                        : const Color(AppMainColors.p30),
                     width: CommonUIProperties.textfiledRoundedEdgesWidth,
                   ),
                   shape: BoxShape.circle,
                   color: selected
-                      ? Color(AppMainColors.p50)
-                      : Color(AppMainColors.backgroundAndContent),
+                      ? const Color(AppMainColors.p50)
+                      : const Color(AppMainColors.backgroundAndContent),
                 ),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               text,
             ],
           ),

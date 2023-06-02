@@ -87,7 +87,7 @@ SizedBox textButton(
     double buttonWidth = CommonUIProperties.buttonWidth,
     double buttonHeight = CommonUIProperties.buttonHeight}) {
   return SizedBox(
-    height: CommonUIProperties.buttonHeight,
+    height: buttonHeight,
     child: TextButton(
         onPressed: callBack,
         style: TextButton.styleFrom(
@@ -95,6 +95,33 @@ SizedBox textButton(
           splashFactory: NoSplash.splashFactory,
         ),
         child: content),
+  );
+}
+
+Widget textButtonWithTrailingIcon({
+  required VoidCallback callBack,
+  required Text content,
+  Icon? trailingIcon,
+  double paddingBetweenIconAndContent = 40,
+}) {
+  return TextButton(
+    onPressed: callBack,
+    style: TextButton.styleFrom(
+      padding: const EdgeInsets.only(left: 0),
+      splashFactory: NoSplash.splashFactory,
+    ),
+    child: Expanded(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          content,
+          SizedBox(
+            width: paddingBetweenIconAndContent,
+          ),
+          if (trailingIcon != null) trailingIcon,
+        ],
+      ),
+    ),
   );
 }
 

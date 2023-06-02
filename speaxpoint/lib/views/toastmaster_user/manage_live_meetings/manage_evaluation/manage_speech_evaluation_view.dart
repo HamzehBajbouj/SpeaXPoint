@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
+import 'package:speaxpoint/views/toastmaster_user/manage_live_meetings/manage_evaluation/evaluation_tab_views/speech_evaluation_tab_view.dart';
 import 'package:speaxpoint/views/toastmaster_user/manage_live_meetings/speaker_observed_data/speaker_observed_data_view.dart';
 
 class ManageSpeechEvaluationView extends StatefulWidget {
   const ManageSpeechEvaluationView({
     super.key,
     this.chapterMeetingId,
+    //is the current logged used is useing the app or has logged as guest app user
     required this.isAGuest,
     this.chapterMeetingInvitationCode,
     this.guestInvitationCode,
@@ -95,7 +97,14 @@ class _ManageSpeechEvaluationViewState extends State<ManageSpeechEvaluationView>
             child: TabBarView(
               controller: _tabController,
               children: [
-                const Center(child: Text("Speech Evaluator tools")),
+                SpeechEvaluationTabView(
+                  isAGuest: widget.isAGuest,
+                  chapterMeetingId: widget.chapterMeetingId,
+                  chapterMeetingInvitationCode:
+                      widget.chapterMeetingInvitationCode,
+                  guestInvitationCode: widget.guestInvitationCode,
+                  toastmasterId: widget.toastmasterId,
+                ),
                 SpeakerObservedDataViwe(
                   isAGuest: widget.isAGuest,
                   chapterMeetingId: widget.chapterMeetingId,

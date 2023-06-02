@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:multiple_result/multiple_result.dart';
-import 'package:speaxpoint/models/evaluation_note.dart';
+import 'package:speaxpoint/models/evaluation_notes/evaluation_note.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart';

@@ -5,6 +5,8 @@ import 'package:speaxpoint/services/firebaseInitializer/firebase_initializer.dar
 import 'package:speaxpoint/services/firebaseInitializer/i_firebase_initializer_service.dart';
 import 'package:speaxpoint/services/live_session/i_live_session_service.dart';
 import 'package:speaxpoint/services/live_session/live_session_firebase_service.dart';
+import 'package:speaxpoint/services/live_session/timer/i_timing_role_service.dart';
+import 'package:speaxpoint/services/live_session/timer/timing_role_firebase_service.dart';
 import 'package:speaxpoint/services/local_database/i_local_database_service.dart';
 import 'package:speaxpoint/services/local_database/local_database_shared_preferences_service.dart';
 import 'package:speaxpoint/services/meeting_arrangement/allocate_role_players/allocate_role_player_firebase_service.dart';
@@ -35,6 +37,7 @@ import 'package:speaxpoint/view_models/toastmaster_vm/manage_chapter_meeting_ann
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_coming_sessions_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/manage_evaluation_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/manage_roles_players_view_model.dart';
+import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/speech_timing_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/prepare_meeting_agenda_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/profile_management_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/scheduled_meetings_view_model.dart';
@@ -96,6 +99,9 @@ Future<void> initServiceLocator() async {
 
   serviceLocator.registerLazySingleton<ILiveSessionService>(
     () => LiveSessionFirebaseService(),
+  );
+  serviceLocator.registerLazySingleton<ITimingRoleService>(
+    () => TimingRoleFirebaseSerivce(),
   );
 
 //this part is for the viewmodels objects
@@ -200,6 +206,13 @@ Future<void> initServiceLocator() async {
 
   serviceLocator.registerLazySingleton<ManageEvaluationViewModel>(
     () => ManageEvaluationViewModel(
+      serviceLocator<ILiveSessionService>(),
+    ),
+  );
+
+  serviceLocator.registerLazySingleton<SpeechTimingViewModel>(
+    () => SpeechTimingViewModel(
+      serviceLocator<ITimingRoleService>(),
       serviceLocator<ILiveSessionService>(),
     ),
   );

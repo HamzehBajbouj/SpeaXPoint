@@ -286,6 +286,20 @@ class LiveSessionFirebaseService implements ILiveSessionService {
                           OnlineSessionSpeakerTurn.WasSelected.name,
                     },
                   );
+
+                  //here i also want to end the timing if there is timing counter
+                  //if there is any kind of swticting but the time is still running
+                  QuerySnapshot capturedTimingDataQS = await temQs
+                      .docs.first.reference
+                      .collection("CapturedTimingData")
+                      .get();
+                  if (capturedTimingDataQS.docs.isNotEmpty) {
+                    await capturedTimingDataQS.docs.first.reference.update({
+                      "timeCounterStarted": false,
+                      "timeCounterEndingTime":
+                          DateTime.now().toUtc().toString(),
+                    });
+                  }
                 }
               }
             }

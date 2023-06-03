@@ -6,12 +6,14 @@ import 'package:speaxpoint/models/online_session_captured_data.dart';
 import 'package:speaxpoint/services/failure.dart';
 import 'package:speaxpoint/services/live_session/i_live_session_service.dart';
 import 'package:speaxpoint/view_models/base_view_mode.dart';
+import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/common_live_session_method_view_model.dart';
 import 'package:uuid/uuid.dart';
 
-class ManageEvaluationViewModel extends BaseViewModel {
+class ManageEvaluationViewModel extends CommonLiveSessionMethodsViewModel {
   final ILiveSessionService _liveSessionService;
 
-  ManageEvaluationViewModel(this._liveSessionService);
+  ManageEvaluationViewModel(this._liveSessionService)
+      : super(_liveSessionService);
 
   Stream<List<EvaluationNote>> getGeneralEvaluationNotes({
     required bool isAnAppGuest,
@@ -149,47 +151,6 @@ class ManageEvaluationViewModel extends BaseViewModel {
     setLoading(loading: false);
   }
 
-  Future<List<OnlineSessionCapturedData>> getListOfSpeechesSpeakers({
-    required bool isAGuest,
-    String? chapterMeetingId,
-    String? toastmasterId,
-    String? guestInvitationCode,
-    String? chapterMeetingInvitationCode,
-  }) async {
-    List<OnlineSessionCapturedData> tempList = [];
-    setLoading(loading: true);
-    if (isAGuest) {
-      await _liveSessionService
-          .getListOfSpeachesSpeakersForAppGuest(
-              chapterMeetingInvitationCode: chapterMeetingInvitationCode!,
-              guestInvitationCode: guestInvitationCode!)
-          .then(
-        (value) {
-          value.whenSuccess(
-            (success) {
-              tempList = success;
-            },
-          );
-        },
-      );
-    } else {
-      await _liveSessionService
-          .getListOfSpeachesSpeakersForAppUser(
-              chapterMeetingId: chapterMeetingId!)
-          .then(
-        (value) {
-          value.whenSuccess(
-            (success) {
-              tempList = success;
-            },
-          );
-        },
-      );
-    }
-    setLoading(loading: false);
-    return tempList;
-  }
-
   Stream<List<TempSpeechEvaluationNote>> getTakenNotes({
     //isAGuest is for the speech evalautor , the current screen user
     //who is using the evalation speech screen
@@ -221,7 +182,7 @@ class ManageEvaluationViewModel extends BaseViewModel {
     }
   }
 
-    Future<Result<Unit, Failure>> deleteSpeechEvaluationNote({
+  Future<Result<Unit, Failure>> deleteSpeechEvaluationNote({
     required bool isAGuest,
     required String noteId,
     String? chapterMeetingId,

@@ -7,6 +7,7 @@ import 'package:speaxpoint/models/online_session_captured_data.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart';
+import 'package:speaxpoint/util/ui_widgets/common_manipluating_methods.dart';
 import 'package:speaxpoint/util/ui_widgets/common_widgets.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/manage_roles_players_view_model.dart';
 import 'package:speaxpoint/views/toastmaster_user/manage_live_meetings/manage_role_players/dialogs/end_session_confirmation_dialog.dart';
@@ -42,17 +43,10 @@ class _ManageRolePlayersViewState extends State<ManageRolesPlayersView> {
     super.dispose();
   }
 
-  String _formatTime(Duration duration) {
-    String hours = (duration.inHours % 24).toString().padLeft(2, '0');
-    String minutes = (duration.inMinutes % 60).toString().padLeft(2, '0');
-    String seconds = (duration.inSeconds % 60).toString().padLeft(2, '0');
-    return '$hours:$minutes:$seconds';
-  }
-
   void _startTimer(DateTime startTime) {
-    _timer = Timer.periodic(Duration(seconds: 1), (_) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       setState(() {
-        _formattedTime = _formatTime(DateTime.now().difference(startTime));
+        _formattedTime = formatTime(DateTime.now().difference(startTime));
       });
     });
   }
@@ -73,7 +67,7 @@ class _ManageRolePlayersViewState extends State<ManageRolesPlayersView> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     int onlinePeople = snapshot.data!;
-                    return generalMeetingGeneralInfo(
+                    return generalMeetingGeneralInfoCard(
                         title: "Online People",
                         content: onlinePeople.toString());
                   } else if (snapshot.hasError) {
@@ -104,7 +98,7 @@ class _ManageRolePlayersViewState extends State<ManageRolesPlayersView> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     _startTimer(snapshot.data!);
-                    return generalMeetingGeneralInfo(
+                    return generalMeetingGeneralInfoCard(
                         title: "Session Time", content: _formattedTime);
                   } else if (snapshot.hasError) {
                     return Center(
@@ -269,62 +263,5 @@ class _ManageRolePlayersViewState extends State<ManageRolesPlayersView> {
       default:
         return const Color(AppMainColors.warningError75);
     }
-  }
-
-  Widget generalMeetingGeneralInfo(
-      {required String title, required String content}) {
-    return Container(
-      constraints: const BoxConstraints(
-        minHeight: 30,
-        maxHeight: 40,
-      ),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: const Color(AppMainColors.p40),
-          width: 1.3,
-        ),
-        borderRadius:
-            BorderRadius.circular(CommonUIProperties.cardRoundedEdges),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            child: Center(
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  textAlign: TextAlign.center,
-                  title,
-                  style: const TextStyle(
-                    fontFamily: CommonUIProperties.fontType,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Color(AppMainColors.p50),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(10),
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                content,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontFamily: CommonUIProperties.fontType,
-                  fontSize: 16,
-                  fontWeight: FontWeight.normal,
-                  color: Color(AppMainColors.p50),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

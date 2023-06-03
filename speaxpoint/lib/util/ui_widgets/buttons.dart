@@ -9,13 +9,14 @@ SizedBox outlinedButton({
   double buttonWidth = CommonUIProperties.buttonWidth,
   double buttonHeight = CommonUIProperties.buttonHeight,
   Color buttonColor = const Color(AppMainColors.p50),
+  bool enableButtonAction = true,
 }) {
   return SizedBox(
     width: buttonWidth,
     height: buttonHeight,
     child: Expanded(
       child: OutlinedButton(
-        onPressed: callBack,
+        onPressed: enableButtonAction ? callBack : null,
         style: OutlinedButton.styleFrom(
             splashFactory: NoSplash.splashFactory,
             foregroundColor: Colors.transparent,

@@ -13,6 +13,7 @@ import 'package:speaxpoint/view_models/toastmaster_vm/manage_chapter_meeting_ann
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_coming_sessions_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/manage_evaluation_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/manage_roles_players_view_model.dart';
+import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/speech_timing_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/prepare_meeting_agenda_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/profile_management_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/scheduled_meetings_view_model.dart';
@@ -61,6 +62,8 @@ class SpeaxPointApp extends StatelessWidget {
             create: (_) => serviceLocator<ManageRolesPlayersViewModel>()),
         ChangeNotifierProvider(
             create: (_) => serviceLocator<ManageEvaluationViewModel>()),
+        ChangeNotifierProvider(
+            create: (_) => serviceLocator<SpeechTimingViewModel>()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

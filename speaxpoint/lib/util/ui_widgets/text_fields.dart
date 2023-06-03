@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 
-TextFormField outlineTextField(
-    {required TextEditingController controller,
-    required String hintText,
-    Function(String)? onChangeCallBack,
-    required bool isRequired,
-    required TextInputType keyboardType,
-    bool readOnly = false,
-    int maxLines = 1,
-    List<String?>? validators,
-    bool? autoFoucs,
-    bool? obscured}) {
+TextFormField outlineTextField({
+  required TextEditingController controller,
+  required String hintText,
+  Function(String)? onChangeCallBack,
+  required bool isRequired,
+  required TextInputType keyboardType,
+  bool readOnly = false,
+  int maxLines = 1,
+  List<String?>? validators,
+  bool? autoFoucs,
+  bool? obscured,
+  int? maxLength,
+}) {
   return TextFormField(
     maxLines: maxLines,
+    inputFormatters: [
+      LengthLimitingTextInputFormatter(maxLength),
+    ],
     keyboardType: keyboardType,
     readOnly: readOnly,
     controller: controller,

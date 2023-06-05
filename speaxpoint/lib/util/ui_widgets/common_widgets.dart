@@ -799,61 +799,104 @@ void displaySpeechesSpeakersDropMenu({
   ).showModal(context);
 }
 
-
-
-  Widget generalMeetingGeneralInfoCard(
-      {required String title, required String content}) {
-    return Container(
-      constraints: const BoxConstraints(
-        minHeight: 30,
-        maxHeight: 40,
+Widget generalMeetingGeneralInfoCard(
+    {required String title, required String content}) {
+  return Container(
+    constraints: const BoxConstraints(
+      minHeight: 30,
+      maxHeight: 40,
+    ),
+    decoration: BoxDecoration(
+      border: Border.all(
+        color: const Color(AppMainColors.p40),
+        width: 1.3,
       ),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: const Color(AppMainColors.p40),
-          width: 1.3,
-        ),
-        borderRadius:
-            BorderRadius.circular(CommonUIProperties.cardRoundedEdges),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            child: Center(
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  textAlign: TextAlign.center,
-                  title,
-                  style: const TextStyle(
-                    fontFamily: CommonUIProperties.fontType,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Color(AppMainColors.p50),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(10),
+      borderRadius: BorderRadius.circular(CommonUIProperties.cardRoundedEdges),
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(10),
+          child: Center(
             child: FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
-                content,
-                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                title,
                 style: const TextStyle(
                   fontFamily: CommonUIProperties.fontType,
                   fontSize: 16,
-                  fontWeight: FontWeight.normal,
+                  fontWeight: FontWeight.w500,
                   color: Color(AppMainColors.p50),
                 ),
               ),
             ),
           ),
-        ],
+        ),
+        Container(
+          padding: const EdgeInsets.all(10),
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              content,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontFamily: CommonUIProperties.fontType,
+                fontSize: 16,
+                fontWeight: FontWeight.normal,
+                color: Color(AppMainColors.p50),
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget timerFillerDataSummaryCard({
+  required String typeOfTimeFiller,
+  required String totalOfTimeFillers,
+}) {
+  return Container(
+    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+    constraints: const BoxConstraints(
+      minHeight: 30,
+      maxHeight: 50,
+    ),
+    decoration: BoxDecoration(
+      border: Border.all(
+        color: const Color(AppMainColors.p50),
+        width: 1.3,
       ),
-    );
-  }
+      borderRadius: BorderRadius.circular(CommonUIProperties.cardRoundedEdges),
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          textAlign: TextAlign.center,
+          typeOfTimeFiller.replaceAllMapped(RegExp(r'([A-Z])'), (Match match) {
+            return ' ${match.group(1)}';
+          }).trim(),
+          style: const TextStyle(
+            fontFamily: CommonUIProperties.fontType,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: Color(AppMainColors.p50),
+          ),
+        ),
+        Text(
+          totalOfTimeFillers,
+          style: const TextStyle(
+            fontFamily: CommonUIProperties.fontType,
+            fontSize: 14,
+            fontWeight: FontWeight.normal,
+            color: Color(AppMainColors.p50),
+          ),
+        ),
+      ],
+    ),
+  );
+}

@@ -102,8 +102,8 @@ class TimeFillerFirebaseService extends ITimeFillerService {
             .orderBy('timeOfCapturing', descending: true)
             .limit(1)
             .get();
-
         if (timeFillerDataQS.docs.isNotEmpty) {
+
           await timeFillerDataQS.docs.first.reference.delete();
         } else {
           return Error(
@@ -143,7 +143,7 @@ class TimeFillerFirebaseService extends ITimeFillerService {
   }
 
   @override
-  Future<Result<Map<String, List<TimeFillerCapturedData>>, Failure>>
+  Future<Result<Map<String, int>, Failure>>
       getSpeakerTimeFillerData(
           {required bool currentSpeakerisAppGuest,
           String? currentSpeakerToastmasterId,
@@ -151,7 +151,7 @@ class TimeFillerFirebaseService extends ITimeFillerService {
           String? chapterMeetingInvitationCode,
           String? chapterMeetingId}) async {
     try {
-      Map<String, List<TimeFillerCapturedData>> timeFillerSpeakerData = {};
+      Map<String, int> timeFillerSpeakerData = {};
       QuerySnapshot onlineSessionCapturedDataQS;
       if (currentSpeakerisAppGuest) {
         onlineSessionCapturedDataQS = await _onlineSessionCapturedDataC
@@ -174,18 +174,9 @@ class TimeFillerFirebaseService extends ITimeFillerService {
         QuerySnapshot timeFillerDataQS = await timeFillerDataC.get();
 
         for (var doc in timeFillerDataQS.docs) {
-          // Get the value of the 'typeOfTimeFiller' field
           String typeOfTimeFiller = doc.get('typeOfTimeFiller') as String;
-
-          // Create an empty list for the typeOfTimeFiller if it doesn't exist in the map
-          if (!timeFillerSpeakerData.containsKey(typeOfTimeFiller)) {
-            timeFillerSpeakerData[typeOfTimeFiller] = [];
-          }
-
-          // Create a TimeFillerCapturedData object and add it to the corresponding list
-          TimeFillerCapturedData capturedData = TimeFillerCapturedData.fromJson(
-              doc.data() as Map<String, dynamic>);
-          timeFillerSpeakerData[typeOfTimeFiller]!.add(capturedData);
+            timeFillerSpeakerData.update(typeOfTimeFiller, (value) => value + 1,
+                ifAbsent: () => 1);
         }
       } else {
         return const Error(
@@ -240,7 +231,7 @@ class TimeFillerFirebaseService extends ITimeFillerService {
       if (onlineSessionCapturedDataQS.docs.isNotEmpty) {
         CollectionReference timeFillerC = onlineSessionCapturedDataQS
             .docs.first.reference
-            .collection("CapturedTimingData");
+            .collection("TimeFillersCapturedData");
         // Create a stream transformer to convert the QuerySnapshot to Map<String, int>
         StreamTransformer<QuerySnapshot<Map<String, dynamic>>, Map<String, int>>
             transformer = StreamTransformer.fromHandlers(handleData:
@@ -248,7 +239,6 @@ class TimeFillerFirebaseService extends ITimeFillerService {
                     EventSink<Map<String, int>> sink) {
           // Create an empty map
           Map<String, int> countMap = {};
-
           // Iterate over the documents
           for (var doc in snapshot.docs) {
             // Get the value of the 'typeOfTimeFiller' field

@@ -21,7 +21,7 @@ abstract class ITimeFillerService {
     String? chapterMeetingId,
   });
 
-  Future<Result<Map<String, List<TimeFillerCapturedData>>, Failure>>
+  Future<Result<Map<String, int>, Failure>>
       getSpeakerTimeFillerData({
     required bool currentSpeakerisAppGuest,
     String? currentSpeakerToastmasterId,

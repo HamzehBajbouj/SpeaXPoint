@@ -6,7 +6,7 @@ import 'package:speaxpoint/services/firebaseInitializer/i_firebase_initializer_s
 import 'package:speaxpoint/services/live_session/i_live_session_service.dart';
 import 'package:speaxpoint/services/live_session/live_session_firebase_service.dart';
 import 'package:speaxpoint/services/live_session/time_filler/i_time_filler_service.dart';
-import 'package:speaxpoint/services/live_session/time_filler/timer_filler_firebase_service.dart';
+import 'package:speaxpoint/services/live_session/time_filler/time_filler_firebase_service.dart';
 import 'package:speaxpoint/services/live_session/timer/i_timing_role_service.dart';
 import 'package:speaxpoint/services/live_session/timer/timing_role_firebase_service.dart';
 import 'package:speaxpoint/services/local_database/i_local_database_service.dart';

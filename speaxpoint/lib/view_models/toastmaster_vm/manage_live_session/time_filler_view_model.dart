@@ -12,31 +12,52 @@ class TimeFillerViewModel extends CommonLiveSessionMethodsViewModel {
       : super(_liveSessionService);
 
   Future<void> incrementTimeFiller({
-    required TimeFillerCapturedData timeFillerCapturedData,
-    required bool currentSpeakerisAppGuest,
-    String? currentSpeakerToastmasterId,
-    String? currentSpeakerGuestInvitationCode,
-    String? chapterMeetingInvitationCode,
-    String? chapterMeetingId,
-  }) async {}
-
-  Future<void> decrementTimeFiller({
-    required TimeFillerCapturedData timeFillerCapturedData,
-    required bool currentSpeakerisAppGuest,
-    String? currentSpeakerToastmasterId,
-    String? currentSpeakerGuestInvitationCode,
-    String? chapterMeetingInvitationCode,
-    String? chapterMeetingId,
-  }) async {}
-
-  Future<Map<String, List<TimeFillerCapturedData>>> getTimeFillerDetails({
+    required String typeOfTimeFiller,
     required bool currentSpeakerisAppGuest,
     String? currentSpeakerToastmasterId,
     String? currentSpeakerGuestInvitationCode,
     String? chapterMeetingInvitationCode,
     String? chapterMeetingId,
   }) async {
-    Map<String, List<TimeFillerCapturedData>> timeFillerDetails = {};
+    await _timeFillerService.increaseTimeFillerCounter(
+      timeFillerCapturedData: TimeFillerCapturedData(
+          timeOfCapturing: DateTime.now().toUtc().toString(),
+          typeOfTimeFiller: typeOfTimeFiller),
+      currentSpeakerisAppGuest: currentSpeakerisAppGuest,
+      chapterMeetingId: chapterMeetingId,
+      chapterMeetingInvitationCode: chapterMeetingInvitationCode,
+      currentSpeakerGuestInvitationCode: currentSpeakerGuestInvitationCode,
+      currentSpeakerToastmasterId: currentSpeakerToastmasterId,
+    );
+  }
+
+  Future<void> decrementTimeFiller({
+    required String typeOfTimeFiller,
+    required bool currentSpeakerisAppGuest,
+    String? currentSpeakerToastmasterId,
+    String? currentSpeakerGuestInvitationCode,
+    String? chapterMeetingInvitationCode,
+    String? chapterMeetingId,
+  }) async {
+    await _timeFillerService.decreaseTimeFillerCounter(
+      timeFillerCapturedData:
+          TimeFillerCapturedData(typeOfTimeFiller: typeOfTimeFiller),
+      currentSpeakerisAppGuest: currentSpeakerisAppGuest,
+      chapterMeetingId: chapterMeetingId,
+      chapterMeetingInvitationCode: chapterMeetingInvitationCode,
+      currentSpeakerGuestInvitationCode: currentSpeakerGuestInvitationCode,
+      currentSpeakerToastmasterId: currentSpeakerToastmasterId,
+    );
+  }
+
+  Future<Map<String, int>> getTimeFillerDetails({
+    required bool currentSpeakerisAppGuest,
+    String? currentSpeakerToastmasterId,
+    String? currentSpeakerGuestInvitationCode,
+    String? chapterMeetingInvitationCode,
+    String? chapterMeetingId,
+  }) async {
+    Map<String, int> timeFillerDetails = {};
     setLoading(loading: true);
     await _timeFillerService
         .getSpeakerTimeFillerData(

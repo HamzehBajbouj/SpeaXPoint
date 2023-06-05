@@ -45,138 +45,164 @@ class _TimeFillerNotesState extends State<TimeFillerNotes> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              "Time Fillers Notes",
-              style: TextStyle(
-                fontFamily: CommonUIProperties.fontType,
-                fontSize: 17,
-                fontWeight: FontWeight.w500,
-                color: Color(AppMainColors.p90),
-              ),
-            ),
-            const SizedBox(
-              width: 3,
-            ),
-            _isLoadingRequest2
-                ? const Text(
-                    "Loading...",
-                    style: TextStyle(
-                      height: 1.4,
-                      fontFamily: CommonUIProperties.fontType,
-                      fontSize: 16,
-                      fontWeight: FontWeight.normal,
-                      color: Color(AppMainColors.p70),
-                    ),
-                  )
-                : textButtonWithTrailingIcon(
-                    callBack: () {
-                      displaySpeechesSpeakersDropMenu(
-                        context: context,
-                        dataList: generateSelectedListItems(
-                          choices: _speechesSpeakersList
-                              .map((data) => data.speakerName!)
-                              .toList(),
-                          indexes: List.generate(
-                              _speechesSpeakersList.length, (index) => index),
-                        ),
-                        selectedItemsCallBack: (selectedItemsList) {
-                          SelectedListItem? tempItem;
-                          for (var item in selectedItemsList) {
-                            if (item is SelectedListItem) {
-                              tempItem = item;
-                            }
-                          }
-                          setState(
-                            () {
-                              _selectedSpeechSpeaker = _speechesSpeakersList[
-                                  int.parse(tempItem!.value!)];
-                            },
-                          );
-                        },
-                      );
-                    },
-                    content: Text(
-                      _selectedSpeechSpeaker == null
-                          ? "Select Speaker"
-                          : _selectedSpeechSpeaker!.speakerName!,
-                      style: const TextStyle(
-                          fontSize: 17,
-                          color: Color(AppMainColors.p80),
-                          fontFamily: CommonUIProperties.fontType,
-                          fontWeight: FontWeight.normal),
-                    ),
-                    trailingIcon: const Icon(
-                      Icons.arrow_drop_down,
-                      size: 30,
-                      color: Color(AppMainColors.p20),
-                    ),
-                  ),
-          ],
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        _selectedSpeechSpeaker == null
-            ? Container()
-            : FutureBuilder(
-                future: _timeFillerViewModel!.getTimeFillerDetails(
-                  chapterMeetingId: widget.chapterMeetingId,
-                  chapterMeetingInvitationCode:
-                      widget.chapterMeetingInvitationCode,
-                  currentSpeakerisAppGuest:
-                      _selectedSpeechSpeaker!.isAnAppGuest!,
-                  currentSpeakerGuestInvitationCode:
-                      _selectedSpeechSpeaker!.guestInvitationCode,
-                  currentSpeakerToastmasterId:
-                      _selectedSpeechSpeaker!.toastmasterId,
+    return SizedBox(
+      height: 200,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "Time Fillers Notes",
+                style: TextStyle(
+                  fontFamily: CommonUIProperties.fontType,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w500,
+                  color: Color(AppMainColors.p90),
                 ),
-                builder: (
-                  context,
-                  AsyncSnapshot<Map<String, List<TimeFillerCapturedData>>>
-                      snapshot,
-                ) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(
-                        color: Color(AppMainColors.p40),
-                      ),
-                    );
-                  } else if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasData) {
-                      var dd = snapshot.data!;
-
-                      return const SizedBox(
-                        height: 200,
-                        child: Center(
-                          child: Text(
-                            "Tesr",
-                          ),
-                        ),
-                      );
-                    } else {
-                      return const Text(
-                          "Error: unable to fetch applicant details");
-                    }
-                  } else {
-                    return Text(
-                      'State: ${snapshot.connectionState}',
-                      style: const TextStyle(
-                        fontFamily: CommonUIProperties.fontType,
-                        fontSize: 15,
-                        fontWeight: FontWeight.normal,
-                        color: Color(AppMainColors.warningError75),
-                      ),
-                    );
-                  }
-                },
               ),
-      ],
+              const SizedBox(
+                width: 3,
+              ),
+              _isLoadingRequest2
+                  ? const Text(
+                      "Loading...",
+                      style: TextStyle(
+                        height: 1.4,
+                        fontFamily: CommonUIProperties.fontType,
+                        fontSize: 16,
+                        fontWeight: FontWeight.normal,
+                        color: Color(AppMainColors.p70),
+                      ),
+                    )
+                  : textButtonWithTrailingIcon(
+                      callBack: () {
+                        displaySpeechesSpeakersDropMenu(
+                          context: context,
+                          dataList: generateSelectedListItems(
+                            choices: _speechesSpeakersList
+                                .map((data) => data.speakerName!)
+                                .toList(),
+                            indexes: List.generate(
+                                _speechesSpeakersList.length, (index) => index),
+                          ),
+                          selectedItemsCallBack: (selectedItemsList) {
+                            SelectedListItem? tempItem;
+                            for (var item in selectedItemsList) {
+                              if (item is SelectedListItem) {
+                                tempItem = item;
+                              }
+                            }
+                            setState(
+                              () {
+                                _selectedSpeechSpeaker = _speechesSpeakersList[
+                                    int.parse(tempItem!.value!)];
+                              },
+                            );
+                          },
+                        );
+                      },
+                      content: Text(
+                        _selectedSpeechSpeaker == null
+                            ? "Select Speaker"
+                            : _selectedSpeechSpeaker!.speakerName!,
+                        style: const TextStyle(
+                            fontSize: 17,
+                            color: Color(AppMainColors.p80),
+                            fontFamily: CommonUIProperties.fontType,
+                            fontWeight: FontWeight.normal),
+                      ),
+                      trailingIcon: const Icon(
+                        Icons.arrow_drop_down,
+                        size: 30,
+                        color: Color(AppMainColors.p20),
+                      ),
+                    ),
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          _selectedSpeechSpeaker == null
+              ? Container()
+              : Expanded(
+                  child: FutureBuilder(
+                    future: _timeFillerViewModel!.getTimeFillerDetails(
+                      chapterMeetingId: widget.chapterMeetingId,
+                      chapterMeetingInvitationCode:
+                          widget.chapterMeetingInvitationCode,
+                      currentSpeakerisAppGuest:
+                          _selectedSpeechSpeaker!.isAnAppGuest!,
+                      currentSpeakerGuestInvitationCode:
+                          _selectedSpeechSpeaker!.guestInvitationCode,
+                      currentSpeakerToastmasterId:
+                          _selectedSpeechSpeaker!.toastmasterId,
+                    ),
+                    builder: (
+                      context,
+                      AsyncSnapshot<Map<String, int>> snapshot,
+                    ) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(
+                            color: Color(AppMainColors.p40),
+                          ),
+                        );
+                      } else if (snapshot.connectionState ==
+                          ConnectionState.done) {
+                        if (snapshot.hasData) {
+                          Map<String, int> timerFillerData = snapshot.data!;
+
+                          if (timerFillerData.isEmpty) {
+                            return const Center(
+                              child: Text(
+                                "You Have Not Counted Any Time Fillers Yet.",
+                                style: TextStyle(
+                                  fontFamily: CommonUIProperties.fontType,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.normal,
+                                  color: Color(AppMainColors.p50),
+                                ),
+                              ),
+                            );
+                          } else {
+                            return ListView.separated(
+                              itemCount: timerFillerData.length,
+                              separatorBuilder: (_, index) => const SizedBox(
+                                height: 10,
+                              ),
+                              itemBuilder: (context, index) {
+                                String key =
+                                    timerFillerData.keys.elementAt(index);
+                                String value = timerFillerData[key].toString();
+                                return timerFillerDataSummaryCard(
+                                  totalOfTimeFillers: value,
+                                  typeOfTimeFiller: key,
+                                );
+                              },
+                            );
+                          }
+                        } else {
+                          return const Text(
+                              "Error: unable to fetch time filler details details");
+                        }
+                      } else {
+                        return Text(
+                          'State: ${snapshot.connectionState}',
+                          style: const TextStyle(
+                            fontFamily: CommonUIProperties.fontType,
+                            fontSize: 15,
+                            fontWeight: FontWeight.normal,
+                            color: Color(AppMainColors.warningError75),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
+        ],
+      ),
     );
   }
 

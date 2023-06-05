@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
+
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart';
 
-class TimeFillerCounter extends StatelessWidget {
-  const TimeFillerCounter({super.key});
+class TimeFillerCounter extends StatefulWidget {
+  const TimeFillerCounter(
+      {super.key,
+      required this.counterTitle,
+      required this.counterNumber,
+      required this.incrementcallBack,
+      required this.decrementcallBack});
+  final String counterTitle;
+  final String counterNumber;
+  final VoidCallback incrementcallBack;
+  final VoidCallback decrementcallBack;
 
+  @override
+  State<TimeFillerCounter> createState() => _TimeFillerCounterState();
+}
+
+class _TimeFillerCounterState extends State<TimeFillerCounter> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,12 +36,12 @@ class TimeFillerCounter extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 6.0),
+          Padding(
+            padding: const EdgeInsets.only(top: 6.0),
             child: FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
-                'Hamzeh',
+                widget.counterTitle,
                 style: const TextStyle(
                   fontFamily: CommonUIProperties.fontType,
                   fontSize: 18,
@@ -40,13 +55,13 @@ class TimeFillerCounter extends StatelessWidget {
             thickness: 1.3,
             color: Color(AppMainColors.p50),
           ),
-          const Expanded(
+          Expanded(
             child: Padding(
-              padding: EdgeInsets.all(5.0),
+              padding: const EdgeInsets.all(5.0),
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
-                  '13',
+                  widget.counterNumber,
                   style: const TextStyle(
                     fontFamily: CommonUIProperties.fontType,
                     fontSize: 75,
@@ -67,10 +82,12 @@ class TimeFillerCounter extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Expanded(
-                  child: roundedIconButton(callBack: () {}, icon: Icons.remove),
+                  child: roundedIconButton(
+                      callBack: widget.decrementcallBack, icon: Icons.remove),
                 ),
                 Expanded(
-                  child: roundedIconButton(callBack: () {}, icon: Icons.add),
+                  child: roundedIconButton(
+                      callBack: widget.incrementcallBack, icon: Icons.add),
                 ),
               ],
             ),

@@ -5,6 +5,8 @@ import 'package:speaxpoint/services/firebaseInitializer/firebase_initializer.dar
 import 'package:speaxpoint/services/firebaseInitializer/i_firebase_initializer_service.dart';
 import 'package:speaxpoint/services/live_session/i_live_session_service.dart';
 import 'package:speaxpoint/services/live_session/live_session_firebase_service.dart';
+import 'package:speaxpoint/services/live_session/time_filler/i_time_filler_service.dart';
+import 'package:speaxpoint/services/live_session/time_filler/timer_filler_firebase_service.dart';
 import 'package:speaxpoint/services/live_session/timer/i_timing_role_service.dart';
 import 'package:speaxpoint/services/live_session/timer/timing_role_firebase_service.dart';
 import 'package:speaxpoint/services/local_database/i_local_database_service.dart';
@@ -38,6 +40,7 @@ import 'package:speaxpoint/view_models/toastmaster_vm/manage_coming_sessions_vie
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/manage_evaluation_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/manage_roles_players_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/speech_timing_view_model.dart';
+import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/time_filler_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/prepare_meeting_agenda_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/profile_management_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/scheduled_meetings_view_model.dart';
@@ -102,6 +105,10 @@ Future<void> initServiceLocator() async {
   );
   serviceLocator.registerLazySingleton<ITimingRoleService>(
     () => TimingRoleFirebaseSerivce(),
+  );
+
+  serviceLocator.registerLazySingleton<ITimeFillerService>(
+    () => TimeFillerFirebaseService(),
   );
 
 //this part is for the viewmodels objects
@@ -214,6 +221,12 @@ Future<void> initServiceLocator() async {
     () => SpeechTimingViewModel(
       serviceLocator<ITimingRoleService>(),
       serviceLocator<ILiveSessionService>(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<TimeFillerViewModel>(
+    () => TimeFillerViewModel(
+      serviceLocator<ILiveSessionService>(),
+      serviceLocator<ITimeFillerService>(),
     ),
   );
 }

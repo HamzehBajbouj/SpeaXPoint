@@ -8,8 +8,6 @@ class SpeechTimingViewModel extends CommonLiveSessionMethodsViewModel {
   final ITimingRoleService _timingRoleService;
   final ILiveSessionService _liveSessionService;
 
-  bool changeStatStopButtonColor = false;
-
   SpeechTimingViewModel(this._timingRoleService, this._liveSessionService)
       : super(_liveSessionService);
 
@@ -39,8 +37,6 @@ class SpeechTimingViewModel extends CommonLiveSessionMethodsViewModel {
       currentSpeakerGuestInvitationCode: currentSpeakerGuestInvitationCode,
       currentSpeakerToastmasterId: currentSpeakerToastmasterId,
     );
-    changeStatStopButtonColor = true;
-
     setLoading(loading: false);
   }
 
@@ -64,7 +60,6 @@ class SpeechTimingViewModel extends CommonLiveSessionMethodsViewModel {
       currentSpeakerGuestInvitationCode: currentSpeakerGuestInvitationCode,
       currentSpeakerToastmasterId: currentSpeakerToastmasterId,
     );
-    changeStatStopButtonColor = false;
     setLoading(loading: false);
   }
 
@@ -112,10 +107,5 @@ class SpeechTimingViewModel extends CommonLiveSessionMethodsViewModel {
       currentSpeakerGuestInvitationCode: currentSpeakerGuestInvitationCode,
       currentSpeakerToastmasterId: currentSpeakerToastmasterId,
     );
-  }
-
-  void updateButtonStatus(bool status) {
-    changeStatStopButtonColor = status;
-    setLoading();
   }
 }

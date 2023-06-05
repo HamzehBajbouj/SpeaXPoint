@@ -165,6 +165,7 @@ class ScheduledMeetingManagementFirebaseService
                   "currentGuestSpeakerInvitationCode": null,
                   "isGuest": null,
                   'terminatingTime': null,
+                  "currentSpeakerName": null,
                 },
               );
             }

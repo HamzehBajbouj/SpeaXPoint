@@ -106,7 +106,9 @@ class _SpeechEvaluationTabViewState extends State<SpeechEvaluationTabView> {
                   children: [
                     currentSpeechSpeakerCard(
                         title: "Current Speaker",
-                        content: _onlineSessionDetails.thereIsSelectedSpeaker!
+                        content: _onlineSessionDetails
+                                    .thereIsSelectedSpeaker! &&
+                                _onlineSessionDetails.currentSpeakerName != null
                             ? _onlineSessionDetails.currentSpeakerName!
                             : "No Speaker Yet!"),
                     checkIfCurrentSpeakerIsTheSameAsSpeechEvaluator(
@@ -138,9 +140,15 @@ class _SpeechEvaluationTabViewState extends State<SpeechEvaluationTabView> {
                                 const SizedBox(
                                   height: 30,
                                 ),
-                                const Text(
-                                  "You Can't Evaluate Yourself",
-                                  style: TextStyle(
+                                Text(
+                                  _onlineSessionDetails
+                                              .thereIsSelectedSpeaker! &&
+                                          _onlineSessionDetails
+                                                  .currentSpeakerName !=
+                                              null
+                                      ? "You Can't Evaluate Yourself"
+                                      : "No Current Speaker Is Selected Yet",
+                                  style: const TextStyle(
                                     fontFamily: CommonUIProperties.fontType,
                                     fontSize: 20,
                                     fontWeight: FontWeight.w500,
@@ -150,13 +158,19 @@ class _SpeechEvaluationTabViewState extends State<SpeechEvaluationTabView> {
                                 const SizedBox(
                                   height: 5,
                                 ),
-                                const SizedBox(
+                                SizedBox(
                                   width: 300,
                                   child: Text(
-                                    "Since you are currently performing your speech, you can not evaluate yourself. ",
+                                    _onlineSessionDetails
+                                                .thereIsSelectedSpeaker! &&
+                                            _onlineSessionDetails
+                                                    .currentSpeakerName !=
+                                                null
+                                        ? "Since you are currently performing your speech, you can not evaluate yourself."
+                                        : "There is no onging/prevoius speach yet, please wait until the VPE select the next speaker.",
                                     maxLines: 4,
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontFamily: CommonUIProperties.fontType,
                                       fontSize: 16,
                                       fontWeight: FontWeight.normal,

@@ -113,11 +113,48 @@ class _TimeSpeakerScreenState extends State<TimeSpeakerView> {
   @override
   Widget build(BuildContext context) {
     return _isLoadingRequest1
-        ? const Center(
-            child: CircularProgressIndicator(
-              color: Color(AppMainColors.p40),
-            ),
-          )
+        ? _onlineSessionDetails.currentSpeakerName == null
+            ? Center(
+                child: Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text(
+                        "No Current Speaker Is Selected Yet",
+                        style: TextStyle(
+                          fontFamily: CommonUIProperties.fontType,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                          color: Color(AppMainColors.p90),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      SizedBox(
+                        width: 300,
+                        child: Text(
+                          "There is no onging/prevoius speach yet, please wait until the VPE select the next speaker.",
+                          maxLines: 4,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: CommonUIProperties.fontType,
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                            color: Color(AppMainColors.p50),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            : const Center(
+                child: CircularProgressIndicator(
+                  color: Color(AppMainColors.p40),
+                ),
+              )
         : Form(
             key: _formKey,
             child: SingleChildScrollView(

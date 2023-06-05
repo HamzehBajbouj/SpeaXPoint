@@ -77,6 +77,7 @@ abstract class ILiveSessionService {
 
   /*
     This part is for Speech Evaluation
+    it can be separated into a different interface
   */
   Future<Result<Unit, Failure>> addSpeechEvaluationNote({
     required TempSpeechEvaluationNote evaluationNote,

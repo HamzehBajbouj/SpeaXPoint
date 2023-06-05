@@ -3,6 +3,8 @@ import 'package:speaxpoint/services/authentication/authentication_firebase_servi
 import 'package:speaxpoint/services/authentication/i_authentication_service.dart';
 import 'package:speaxpoint/services/firebaseInitializer/firebase_initializer.dart';
 import 'package:speaxpoint/services/firebaseInitializer/i_firebase_initializer_service.dart';
+import 'package:speaxpoint/services/live_session/grammarian/grammarian_firebase_service.dart';
+import 'package:speaxpoint/services/live_session/grammarian/i_grammarian_service.dart';
 import 'package:speaxpoint/services/live_session/i_live_session_service.dart';
 import 'package:speaxpoint/services/live_session/live_session_firebase_service.dart';
 import 'package:speaxpoint/services/live_session/time_filler/i_time_filler_service.dart';
@@ -109,6 +111,10 @@ Future<void> initServiceLocator() async {
 
   serviceLocator.registerLazySingleton<ITimeFillerService>(
     () => TimeFillerFirebaseService(),
+  );
+
+  serviceLocator.registerLazySingleton<IGrammarianService>(
+    () => GrammarianFirebaseService(),
   );
 
 //this part is for the viewmodels objects

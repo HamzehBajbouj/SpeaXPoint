@@ -167,3 +167,31 @@ SizedBox outlinedIconTextButton({
     ),
   );
 }
+
+SizedBox roundedIconButton({
+  required VoidCallback callBack,
+  required IconData icon,
+  double fontSize = 17,
+  double buttonWidth = CommonUIProperties.buttonWidth,
+  double buttonHeight = CommonUIProperties.buttonHeight,
+  Color buttonColor = const Color(AppMainColors.p50),
+  bool enableButtonAction = true,
+
+}) {
+  return SizedBox(
+    width: buttonWidth,
+    height: buttonHeight,
+    child: OutlinedButton(
+      onPressed: enableButtonAction ? callBack : null,
+      style: OutlinedButton.styleFrom(
+        splashFactory: NoSplash.splashFactory,
+        foregroundColor: Colors.transparent,
+        side: BorderSide(
+            width: CommonUIProperties.buttonRoundedEdgesWidth,
+            color: buttonColor),
+        shape: const CircleBorder(),
+      ),
+      child: Icon(icon, color: buttonColor),
+    ),
+  );
+}

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:speaxpoint/views/toastmaster_user/manage_live_meetings/count_time_fillers/time_filler_counter_.dart';
+import 'package:speaxpoint/views/toastmaster_user/manage_live_meetings/count_time_fillers/time_filler_notes.dart';
 
 class CountTimeFillersView extends StatefulWidget {
   const CountTimeFillersView({
@@ -24,8 +26,45 @@ class CountTimeFillersView extends StatefulWidget {
 class _CountTimeFillersViewState extends State<CountTimeFillersView> {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Count Time Fillers Screen"),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 15, bottom: 20),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TimeFillerCounter(),
+                TimeFillerCounter(),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TimeFillerCounter(),
+                TimeFillerCounter(),
+              ],
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            TimeFillerNotes(
+              isAGuest: widget.isAGuest,
+              guestInvitationCode: widget.guestInvitationCode,
+              chapterMeetingId: widget.chapterMeetingId,
+              toastmasterId: widget.toastmasterId,
+              chapterMeetingInvitationCode: widget.chapterMeetingInvitationCode,
+            ),
+          ],
+        ),
+      ),
     );
   }
+
+  // Widget getTest() {
+  //   return
+  // }
 }

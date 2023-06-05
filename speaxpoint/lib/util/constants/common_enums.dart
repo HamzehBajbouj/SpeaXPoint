@@ -69,3 +69,10 @@ enum OnlineSessionSpeakerTurn{
   WasSelected,
   NotSelected,
 }
+
+enum  TypesOfTimeFillers{
+  LongPauses,
+  RepeatedWords,
+  OutOfContext,
+  FilledPauses,
+}

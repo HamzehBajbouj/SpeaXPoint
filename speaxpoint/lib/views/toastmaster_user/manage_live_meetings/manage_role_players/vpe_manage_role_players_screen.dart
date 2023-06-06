@@ -88,10 +88,10 @@ class _VPEManageRolePlayersScreenState extends State<VPEManageRolePlayersScreen>
           child: TabBarView(
             controller: _tabController,
             children: [
+              widget.roleView,
               ManageRolesPlayersView(
                 chapterMeetingId: widget.chapterMeetingId,
               ),
-              widget.roleView,
             ],
           ),
         ),

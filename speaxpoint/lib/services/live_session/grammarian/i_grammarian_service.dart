@@ -4,7 +4,7 @@ import 'package:speaxpoint/services/failure.dart';
 
 abstract class IGrammarianService {
   Future<Result<Unit, Failure>> increaseWOTDCounter({
-    required String capturingTime,
+    required GrammarianNote grammarianNote,
     required bool currentSpeakerisAppGuest,
     String? currentSpeakerToastmasterId,
     String? currentSpeakerGuestInvitationCode,
@@ -53,7 +53,7 @@ abstract class IGrammarianService {
     String? chapterMeetingId,
   });
 
-  Future<Result<List<GrammarianNote>, Failure>> getGrammaticalNotes({
+  Stream<List<GrammarianNote>> getGrammaticalNotes({
     required bool currentSpeakerisAppGuest,
     String? currentSpeakerToastmasterId,
     String? currentSpeakerGuestInvitationCode,

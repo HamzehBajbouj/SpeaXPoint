@@ -5,6 +5,7 @@ import 'package:speaxpoint/models/grammarian_note.dart';
 import 'package:multiple_result/src/unit.dart';
 import 'package:multiple_result/src/result.dart';
 import 'package:speaxpoint/services/live_session/grammarian/i_grammarian_service.dart';
+import 'package:speaxpoint/util/constants/common_enums.dart';
 
 class GrammarianFirebaseService extends IGrammarianService {
   final CollectionReference _onlineSessionCapturedDataC =
@@ -35,10 +36,10 @@ class GrammarianFirebaseService extends IGrammarianService {
       }
 
       if (onlineSessionCapturedDataQS.docs.isNotEmpty) {
-        CollectionReference wotdDataC = onlineSessionCapturedDataQS
-            .docs.first.reference
-            .collection("WOTDCapturedData");
-        await wotdDataC.add(
+        CollectionReference grammarianCapturedDataC =
+            onlineSessionCapturedDataQS.docs.first.reference
+                .collection("GrammarianCapturedData");
+        await grammarianCapturedDataC.add(
           grammarianNote.toJson(),
         );
       } else {
@@ -93,14 +94,15 @@ class GrammarianFirebaseService extends IGrammarianService {
       }
 
       if (onlineSessionCapturedDataQS.docs.isNotEmpty) {
-        CollectionReference wotdDataC = onlineSessionCapturedDataQS
-            .docs.first.reference
-            .collection("WOTDCapturedData");
-        QuerySnapshot wotdDataQS =
-            await wotdDataC.where("noteId", isEqualTo: noteId).get();
+        CollectionReference grammarianCapturedDatac =
+            onlineSessionCapturedDataQS.docs.first.reference
+                .collection("GrammarianCapturedData");
+        QuerySnapshot grammarianCapturedDataQS = await grammarianCapturedDatac
+            .where("noteId", isEqualTo: noteId)
+            .get();
 
-        if (wotdDataQS.docs.isNotEmpty) {
-          await wotdDataQS.docs.first.reference.delete();
+        if (grammarianCapturedDataQS.docs.isNotEmpty) {
+          await grammarianCapturedDataQS.docs.first.reference.delete();
         } else {
           return Error(
             Failure(
@@ -138,13 +140,14 @@ class GrammarianFirebaseService extends IGrammarianService {
   }
 
   @override
-  Future<Result<List<GrammarianNote>, Failure>> getGrammaticalNotes(
+  Stream<List<GrammarianNote>> getGrammaticalNotes(
       {required bool currentSpeakerisAppGuest,
       String? currentSpeakerToastmasterId,
       String? currentSpeakerGuestInvitationCode,
       String? chapterMeetingInvitationCode,
-      String? chapterMeetingId}) async {
-    List<GrammarianNote> grammarianNotes = [];
+      String? chapterMeetingId}) async* {
+    Stream<List<GrammarianNote>> grammarianNotes = Stream.empty();
+
     try {
       QuerySnapshot onlineSessionCapturedDataQS;
       if (currentSpeakerisAppGuest) {
@@ -160,43 +163,33 @@ class GrammarianFirebaseService extends IGrammarianService {
             .where("toastmasterId", isEqualTo: currentSpeakerToastmasterId)
             .get();
       }
-
       if (onlineSessionCapturedDataQS.docs.isNotEmpty) {
-        CollectionReference wotdDataC = onlineSessionCapturedDataQS
-            .docs.first.reference
-            .collection("WOTDCapturedData");
-        QuerySnapshot wotdDataQS = await wotdDataC.get();
-
-        if (wotdDataQS.docs.isNotEmpty) {
-          grammarianNotes = wotdDataQS.docs
-              .map((doc) =>
-                  GrammarianNote.fromJson(doc.data() as Map<String, dynamic>))
-              .toList();
-        }
-      } else {
-        return const Error(
-          Failure(
-              code: "No-Speaker-Found",
-              location: "GrammarianFirebaseService.getGrammaticalNotes()",
-              message: "Could not found a speaker speech record"),
-        );
+        CollectionReference grammarianCapturedDataC =
+            onlineSessionCapturedDataQS.docs.first.reference
+                .collection("GrammarianCapturedData");
+        // Create a stream transformer to convert the QuerySnapshot to Map<String, int>
+        grammarianNotes = grammarianCapturedDataC
+            .where('typeOfGrammarianNote',
+                isEqualTo: GrammarianNoteType.GrammaticalNote.name)
+            .snapshots()
+            .map(
+              (QuerySnapshot querySnapshot) => querySnapshot.docs.map(
+                (e) {
+                  return GrammarianNote.fromJson(
+                    e.data() as Map<String, dynamic>,
+                  );
+                },
+              ).toList(),
+            );
       }
-      return Success(grammarianNotes);
+
+      yield* grammarianNotes;
     } on FirebaseException catch (e) {
-      return Error(
-        Failure(
-            code: e.code,
-            location: "GrammarianFirebaseService.getGrammaticalNotes()",
-            message: e.message ??
-                "Database Error While getting speaker grammatical notes data"),
-      );
+      log("${e.code} ${e.message}");
+      yield* grammarianNotes;
     } catch (e) {
-      return Error(
-        Failure(
-            code: e.toString(),
-            location: "GrammarianFirebaseService.getGrammaticalNotes()",
-            message: e.toString()),
-      );
+      log(e.toString());
+      yield* grammarianNotes;
     }
   }
 
@@ -225,10 +218,13 @@ class GrammarianFirebaseService extends IGrammarianService {
       }
 
       if (onlineSessionCapturedDataQS.docs.isNotEmpty) {
-        CollectionReference wotdDataC = onlineSessionCapturedDataQS
-            .docs.first.reference
-            .collection("WOTDCapturedData");
-        QuerySnapshot wotdDataQS = await wotdDataC.get();
+        CollectionReference grammarianCapturedDatac =
+            onlineSessionCapturedDataQS.docs.first.reference
+                .collection("GrammarianCapturedData");
+        QuerySnapshot wotdDataQS = await grammarianCapturedDatac
+            .where('typeOfGrammarianNote',
+                isEqualTo: GrammarianNoteType.WOTD.name)
+            .get();
         WOTDcount = wotdDataQS.docs.length;
       } else {
         return const Error(
@@ -281,11 +277,15 @@ class GrammarianFirebaseService extends IGrammarianService {
             .get();
       }
       if (onlineSessionCapturedDataQS.docs.isNotEmpty) {
-        CollectionReference wotdDataQS = onlineSessionCapturedDataQS
-            .docs.first.reference
-            .collection("WOTDCapturedData");
+        CollectionReference grammarianCapturedDataC =
+            onlineSessionCapturedDataQS.docs.first.reference
+                .collection("GrammarianCapturedData");
         // Create a stream transformer to convert the QuerySnapshot to Map<String, int>
-        wotdUsagesCount = wotdDataQS.snapshots().map(
+        wotdUsagesCount = grammarianCapturedDataC
+            .where('typeOfGrammarianNote',
+                isEqualTo: GrammarianNoteType.WOTD.name)
+            .snapshots()
+            .map(
           (QuerySnapshot snapshot) {
             return snapshot.size;
           },
@@ -304,8 +304,7 @@ class GrammarianFirebaseService extends IGrammarianService {
 
   @override
   Future<Result<Unit, Failure>> decreaseWOTDCounter(
-      {
-      required bool currentSpeakerisAppGuest,
+      {required bool currentSpeakerisAppGuest,
       String? currentSpeakerToastmasterId,
       String? currentSpeakerGuestInvitationCode,
       String? chapterMeetingInvitationCode,
@@ -327,24 +326,28 @@ class GrammarianFirebaseService extends IGrammarianService {
       }
 
       if (onlineSessionCapturedDataQS.docs.isNotEmpty) {
-        CollectionReference wotdDataC = onlineSessionCapturedDataQS
-            .docs.first.reference
-            .collection("WOTDCapturedData");
-        QuerySnapshot wotdDataQS = await wotdDataC
+        CollectionReference grammarianCapturedDataC =
+            onlineSessionCapturedDataQS.docs.first.reference
+                .collection("GrammarianCapturedData");
+        QuerySnapshot grammarianCapturedDataQS = await grammarianCapturedDataC
+            .where('typeOfGrammarianNote',
+                isEqualTo: GrammarianNoteType.WOTD.name)
             .orderBy('capturingTime', descending: true)
             .limit(1)
             .get();
-        if (wotdDataQS.docs.isNotEmpty) {
-          await wotdDataQS.docs.first.reference.delete();
-        } else {
-          return const Error(
-            Failure(
-                code: "No-WOTD-Recotd-Found",
-                location: "GrammarianFirebaseService.decreaseWOTDCounter()",
-                message:
-                    "Could not find the latest WOTD usage captured data for type"),
-          );
+        if (grammarianCapturedDataQS.docs.isNotEmpty) {
+          await grammarianCapturedDataQS.docs.first.reference.delete();
         }
+        //we can return an error when there is no docuements to delete, or do nothing
+        // else {
+        //   return const Error(
+        //     Failure(
+        //         code: "No-WOTD-Recotd-Found",
+        //         location: "GrammarianFirebaseService.decreaseWOTDCounter()",
+        //         message:
+        //             "Could not find the latest WOTD usage captured data for type"),
+        //   );
+        // }
       } else {
         return const Error(
           Failure(
@@ -374,7 +377,7 @@ class GrammarianFirebaseService extends IGrammarianService {
 
   @override
   Future<Result<Unit, Failure>> increaseWOTDCounter(
-      {required String capturingTime,
+      {required GrammarianNote grammarianNote,
       required bool currentSpeakerisAppGuest,
       String? currentSpeakerToastmasterId,
       String? currentSpeakerGuestInvitationCode,
@@ -397,11 +400,12 @@ class GrammarianFirebaseService extends IGrammarianService {
       }
 
       if (onlineSessionCapturedDataQS.docs.isNotEmpty) {
-        CollectionReference wotdDataC = onlineSessionCapturedDataQS
-            .docs.first.reference
-            .collection("WOTDCapturedData");
-        await wotdDataC.add({
-          'capturingTime': capturingTime,
+        CollectionReference grammarianCapturedDataC =
+            onlineSessionCapturedDataQS.docs.first.reference
+                .collection("GrammarianCapturedData");
+        await grammarianCapturedDataC.add({
+          'capturingTime': grammarianNote.noteCapturedTime,
+          'typeOfGrammarianNote': grammarianNote.typeOfGrammarianNote,
         });
       } else {
         return const Error(

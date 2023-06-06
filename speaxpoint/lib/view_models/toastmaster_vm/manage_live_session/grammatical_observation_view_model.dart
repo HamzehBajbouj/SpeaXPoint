@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:multiple_result/multiple_result.dart';
 import 'package:speaxpoint/models/grammarian_note.dart';
+import 'package:speaxpoint/services/failure.dart';
 import 'package:speaxpoint/services/live_session/grammarian/i_grammarian_service.dart';
 import 'package:speaxpoint/services/live_session/i_live_session_service.dart';
+import 'package:speaxpoint/util/constants/common_enums.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/common_live_session_method_view_model.dart';
 import 'package:uuid/uuid.dart';
 
@@ -23,7 +26,9 @@ class GrammaticalObservationViewModel
   }) async {
     setLoading(loading: true);
     await _grammarianService.increaseWOTDCounter(
-      capturingTime: DateTime.now().toUtc().toString(),
+      grammarianNote: GrammarianNote(
+          noteCapturedTime: DateTime.now().toUtc().toString(),
+          typeOfGrammarianNote: GrammarianNoteType.WOTD.name),
       currentSpeakerisAppGuest: currentSpeakerisAppGuest,
       chapterMeetingId: chapterMeetingId,
       chapterMeetingInvitationCode: chapterMeetingInvitationCode,
@@ -76,6 +81,7 @@ class GrammaticalObservationViewModel
         noteContent: noteContent,
         noteTitle: noteTitle,
         noteId: randomId2,
+        typeOfGrammarianNote: GrammarianNoteType.GrammaticalNote.name,
       ),
       currentSpeakerisAppGuest: currentSpeakerisAppGuest,
       chapterMeetingId: chapterMeetingId,
@@ -86,7 +92,7 @@ class GrammaticalObservationViewModel
     setLoading(loading: false);
   }
 
-  Future<void> deleteGrammaticalNote({
+  Future<Result<Unit, Failure>> deleteGrammaticalNote({
     required String noteId,
     required bool currentSpeakerisAppGuest,
     String? currentSpeakerToastmasterId,
@@ -94,8 +100,8 @@ class GrammaticalObservationViewModel
     String? chapterMeetingInvitationCode,
     String? chapterMeetingId,
   }) async {
-    setLoading(loading: true);
-    await _grammarianService.deleteGrammaticalNote(
+    setLoading();
+    return await _grammarianService.deleteGrammaticalNote(
       noteId: noteId,
       currentSpeakerisAppGuest: currentSpeakerisAppGuest,
       chapterMeetingId: chapterMeetingId,
@@ -103,7 +109,6 @@ class GrammaticalObservationViewModel
       currentSpeakerGuestInvitationCode: currentSpeakerGuestInvitationCode,
       currentSpeakerToastmasterId: currentSpeakerToastmasterId,
     );
-    setLoading(loading: false);
   }
 
   Future<int> getWOTDUsagesCount({
@@ -152,31 +157,19 @@ class GrammaticalObservationViewModel
     );
   }
 
-  Future<List<GrammarianNote>> getGrammaticalNotes({
+  Stream<List<GrammarianNote>> getGrammaticalNotes({
     required bool currentSpeakerisAppGuest,
     String? currentSpeakerToastmasterId,
     String? currentSpeakerGuestInvitationCode,
     String? chapterMeetingInvitationCode,
     String? chapterMeetingId,
-  }) async {
-    List<GrammarianNote> noteList = [];
-    await _grammarianService
-        .getGrammaticalNotes(
+  }) {
+    return _grammarianService.getGrammaticalNotes(
       currentSpeakerisAppGuest: currentSpeakerisAppGuest,
       chapterMeetingId: chapterMeetingId,
       chapterMeetingInvitationCode: chapterMeetingInvitationCode,
       currentSpeakerGuestInvitationCode: currentSpeakerGuestInvitationCode,
       currentSpeakerToastmasterId: currentSpeakerToastmasterId,
-    )
-        .then(
-      (value) {
-        value.whenSuccess(
-          (success) {
-            noteList = success;
-          },
-        );
-      },
     );
-    return noteList;
   }
 }

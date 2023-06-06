@@ -64,15 +64,20 @@ enum AppVolunteerSlotStatus {
 
 enum ApplicantStatus { Accepted, Pending }
 
-enum OnlineSessionSpeakerTurn{
+enum OnlineSessionSpeakerTurn {
   CurrentlySelected,
   WasSelected,
   NotSelected,
 }
 
-enum  TypesOfTimeFillers{
+enum TypesOfTimeFillers {
   LongPauses,
   RepeatedWords,
   OutOfContext,
   FilledPauses,
+}
+
+enum GrammarianNoteType {
+  WOTD,
+  GrammaticalNote,
 }

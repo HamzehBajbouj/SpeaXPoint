@@ -304,7 +304,7 @@ class GrammarianFirebaseService extends IGrammarianService {
 
   @override
   Future<Result<Unit, Failure>> decreaseWOTDCounter(
-      {required String capturingTime,
+      {
       required bool currentSpeakerisAppGuest,
       String? currentSpeakerToastmasterId,
       String? currentSpeakerGuestInvitationCode,

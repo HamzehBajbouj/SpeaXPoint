@@ -13,7 +13,6 @@ abstract class IGrammarianService {
   });
 
   Future<Result<Unit, Failure>> decreaseWOTDCounter({
-    required String capturingTime,
     required bool currentSpeakerisAppGuest,
     String? currentSpeakerToastmasterId,
     String? currentSpeakerGuestInvitationCode,

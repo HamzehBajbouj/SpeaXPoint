@@ -2,17 +2,20 @@ import 'package:multiple_result/multiple_result.dart';
 import 'package:speaxpoint/models/evaluation_notes/evaluation_note.dart';
 import 'package:speaxpoint/models/evaluation_notes/temp_evaluation_note.dart';
 import 'package:speaxpoint/models/online_session.dart';
-import 'package:speaxpoint/models/online_session_captured_data.dart';
 import 'package:speaxpoint/services/failure.dart';
+import 'package:speaxpoint/services/live_session/general_evaluation/i_general_evaluation_service.dart';
 import 'package:speaxpoint/services/live_session/i_live_session_service.dart';
-import 'package:speaxpoint/view_models/base_view_mode.dart';
+import 'package:speaxpoint/services/live_session/speech_evaluation/i_speech_evaluation_service.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/common_live_session_method_view_model.dart';
 import 'package:uuid/uuid.dart';
 
 class ManageEvaluationViewModel extends CommonLiveSessionMethodsViewModel {
   final ILiveSessionService _liveSessionService;
+  final ISpeechEvaluationService _speechEvaluationService;
+  final IGeneralEvaluationService _generalEvaluationService;
 
-  ManageEvaluationViewModel(this._liveSessionService)
+  ManageEvaluationViewModel(this._liveSessionService,
+      this._speechEvaluationService, this._generalEvaluationService)
       : super(_liveSessionService);
 
   Stream<List<EvaluationNote>> getGeneralEvaluationNotes({
@@ -23,11 +26,11 @@ class ManageEvaluationViewModel extends CommonLiveSessionMethodsViewModel {
     String? chapterMeetingInvitationCode,
   }) {
     if (isAnAppGuest) {
-      return _liveSessionService.getGeneralEvaluationNoteGuestUser(
+      return _generalEvaluationService.getGeneralEvaluationNoteGuestUser(
           chapterMeetingInvitationCode: chapterMeetingInvitationCode!,
           guestInvitationCode: guestInvitationCode!);
     } else {
-      return _liveSessionService.getGeneralEvaluationNoteAppUser(
+      return _generalEvaluationService.getGeneralEvaluationNoteAppUser(
           chapterMeetingId: chapterMeetingId!, toastmasterId: toastmasterId!);
     }
   }
@@ -50,7 +53,7 @@ class ManageEvaluationViewModel extends CommonLiveSessionMethodsViewModel {
     randomId2 = randomId2.substring(0, randomId2.indexOf("-")) + randomId1;
 
     if (isAGuest) {
-      await _liveSessionService.addGeneralEvaluationNoteGuestUser(
+      await _generalEvaluationService.addGeneralEvaluationNoteGuestUser(
         guestInvitationCode: guestInvitationCode!,
         chapterMeetingInvitationCode: chapterMeetingInvitationCode!,
         evaluationNote: EvaluationNote(
@@ -61,7 +64,7 @@ class ManageEvaluationViewModel extends CommonLiveSessionMethodsViewModel {
         ),
       );
     } else {
-      await _liveSessionService.addGeneralEvaluationNoteAppUser(
+      await _generalEvaluationService.addGeneralEvaluationNoteAppUser(
         chapterMeetingId: chapterMeetingId!,
         toastmasterId: toastmasterId!,
         evaluationNote: EvaluationNote(
@@ -88,7 +91,7 @@ class ManageEvaluationViewModel extends CommonLiveSessionMethodsViewModel {
     if (isAGuest) {
       setLoading(loading: false);
 
-      return await _liveSessionService.deleteGeneralEvaluationNoteGuestUser(
+      return await _generalEvaluationService.deleteGeneralEvaluationNoteGuestUser(
         guestInvitationCode: guestInvitationCode!,
         chapterMeetingInvitationCode: chapterMeetingInvitationCode!,
         noteId: noteId,
@@ -96,7 +99,7 @@ class ManageEvaluationViewModel extends CommonLiveSessionMethodsViewModel {
     } else {
       setLoading(loading: false);
 
-      return await _liveSessionService.deleteGeneralEvaluationNoteAppUser(
+      return await _generalEvaluationService.deleteGeneralEvaluationNoteAppUser(
         chapterMeetingId: chapterMeetingId!,
         toastmasterId: toastmasterId!,
         noteId: noteId,
@@ -104,17 +107,7 @@ class ManageEvaluationViewModel extends CommonLiveSessionMethodsViewModel {
     }
   }
 
-  Stream<OnlineSession> getOnlineSessionDetails({
-    required bool isAnAppGuest,
-    String? chapterMeetingId,
-    String? chapterMeetingInvitationCode,
-  }) {
-    return _liveSessionService.getOnlineSessionDetails(
-        isAnAppGuest: isAnAppGuest,
-        chapterMeetingId: chapterMeetingId,
-        chapterMeetingInvitationCode: chapterMeetingInvitationCode);
-  }
-
+  //this part is for the speech evalautions calls
   Future<void> addSpeechEvaluationNote({
     required OnlineSession onlineSessionDetails,
     required String noteContent,
@@ -132,7 +125,7 @@ class ManageEvaluationViewModel extends CommonLiveSessionMethodsViewModel {
     String randomId2 = uuid.v4();
     randomId2 = randomId1 + randomId2.substring(0, randomId2.indexOf("-"));
 
-    await _liveSessionService.addSpeechEvaluationNote(
+    await _speechEvaluationService.addSpeechEvaluationNote(
       evaluationNote: TempSpeechEvaluationNote(
         chapterMeetingId: chapterMeetingId,
         chapterMeetingInvitationCode: chapterMeetingInvitationCode,
@@ -164,7 +157,7 @@ class ManageEvaluationViewModel extends CommonLiveSessionMethodsViewModel {
     required String? evaluatedSpeakerGuestInvitationCode,
   }) {
     if (isAGuest) {
-      return _liveSessionService.getTakenSpeechNotesByAppGuest(
+      return _speechEvaluationService.getTakenSpeechNotesByAppGuest(
           chapterMeetingInvitationCode: chapterMeetingInvitationCode!,
           takenByGuestInvitationCode: guestInvitationCode!,
           evaluatedSpeakerIsAppGuest: evaluatedSpeakerIsAppGuest,
@@ -172,7 +165,7 @@ class ManageEvaluationViewModel extends CommonLiveSessionMethodsViewModel {
           evaluatedSpeakerGuestInvitationCode:
               evaluatedSpeakerGuestInvitationCode);
     } else {
-      return _liveSessionService.getTakenSpeechNotesByAppUser(
+      return _speechEvaluationService.getTakenSpeechNotesByAppUser(
           chapterMeetingId: chapterMeetingId!,
           takenByToastmasterId: toastmasterId!,
           evaluatedSpeakerIsAppGuest: evaluatedSpeakerIsAppGuest,
@@ -195,7 +188,7 @@ class ManageEvaluationViewModel extends CommonLiveSessionMethodsViewModel {
     if (isAGuest) {
       setLoading(loading: false);
 
-      return await _liveSessionService.deleteSpeechEvaluationNoteGuestUser(
+      return await _speechEvaluationService.deleteSpeechEvaluationNoteGuestUser(
         takenByGuestInvitationCode: guestInvitationCode!,
         chapterMeetingInvitationCode: chapterMeetingInvitationCode!,
         noteId: noteId,
@@ -203,7 +196,7 @@ class ManageEvaluationViewModel extends CommonLiveSessionMethodsViewModel {
     } else {
       setLoading(loading: false);
 
-      return await _liveSessionService.deleteSpeechEvaluationNoteAppUser(
+      return await _speechEvaluationService.deleteSpeechEvaluationNoteAppUser(
         chapterMeetingId: chapterMeetingId!,
         takenByToastmasterId: toastmasterId!,
         noteId: noteId,

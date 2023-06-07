@@ -3,10 +3,14 @@ import 'package:speaxpoint/services/authentication/authentication_firebase_servi
 import 'package:speaxpoint/services/authentication/i_authentication_service.dart';
 import 'package:speaxpoint/services/firebaseInitializer/firebase_initializer.dart';
 import 'package:speaxpoint/services/firebaseInitializer/i_firebase_initializer_service.dart';
+import 'package:speaxpoint/services/live_session/general_evaluation/general_evaluation_firebase_service.dart';
+import 'package:speaxpoint/services/live_session/general_evaluation/i_general_evaluation_service.dart';
 import 'package:speaxpoint/services/live_session/grammarian/grammarian_firebase_service.dart';
 import 'package:speaxpoint/services/live_session/grammarian/i_grammarian_service.dart';
 import 'package:speaxpoint/services/live_session/i_live_session_service.dart';
 import 'package:speaxpoint/services/live_session/live_session_firebase_service.dart';
+import 'package:speaxpoint/services/live_session/speech_evaluation/i_speech_evaluation_service.dart';
+import 'package:speaxpoint/services/live_session/speech_evaluation/speech_evaluation_firebase_service.dart';
 import 'package:speaxpoint/services/live_session/time_filler/i_time_filler_service.dart';
 import 'package:speaxpoint/services/live_session/time_filler/time_filler_firebase_service.dart';
 import 'package:speaxpoint/services/live_session/timer/i_timing_role_service.dart';
@@ -117,7 +121,13 @@ Future<void> initServiceLocator() async {
   serviceLocator.registerLazySingleton<IGrammarianService>(
     () => GrammarianFirebaseService(),
   );
+  serviceLocator.registerLazySingleton<ISpeechEvaluationService>(
+    () => SpeechEvaluationFirebaseService(),
+  );
 
+  serviceLocator.registerLazySingleton<IGeneralEvaluationService>(
+    () => GeneralEvaluationFirebaseService(),
+  );
 //this part is for the viewmodels objects
   serviceLocator.registerLazySingleton<ClubRegistrationViewModel>(
     () => ClubRegistrationViewModel(
@@ -221,6 +231,8 @@ Future<void> initServiceLocator() async {
   serviceLocator.registerLazySingleton<ManageEvaluationViewModel>(
     () => ManageEvaluationViewModel(
       serviceLocator<ILiveSessionService>(),
+      serviceLocator<ISpeechEvaluationService>(),
+      serviceLocator<IGeneralEvaluationService>(),
     ),
   );
 

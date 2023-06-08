@@ -1,6 +1,4 @@
 import 'package:multiple_result/multiple_result.dart';
-import 'package:speaxpoint/models/evaluation_notes/evaluation_note.dart';
-import 'package:speaxpoint/models/evaluation_notes/temp_evaluation_note.dart';
 import 'package:speaxpoint/models/online_session.dart';
 import 'package:speaxpoint/models/online_session_captured_data.dart';
 

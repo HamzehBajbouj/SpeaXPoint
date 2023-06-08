@@ -167,9 +167,7 @@ class _GeneralEvaluationTabViewState extends State<GeneralEvaluationTabView> {
                                   context: context,
                                   builder: (context) =>
                                       EvaluationNoteBottomSheet(
-                                    deleteNoteAction:
-                                        _manageEvaluationViewModel!
-                                            .deleteGeneralEvaluationNote,
+                                    isGeneralEvaluation: true,
                                     chapterMeetingId: widget.chapterMeetingId,
                                     isAGuest: widget.isAGuest,
                                     evaluationNote: notes[index],

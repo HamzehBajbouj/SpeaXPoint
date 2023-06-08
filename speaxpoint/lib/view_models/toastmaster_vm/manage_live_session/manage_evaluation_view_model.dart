@@ -1,7 +1,6 @@
 import 'package:multiple_result/multiple_result.dart';
 import 'package:speaxpoint/models/evaluation_notes/evaluation_note.dart';
-import 'package:speaxpoint/models/evaluation_notes/temp_evaluation_note.dart';
-import 'package:speaxpoint/models/online_session.dart';
+import 'package:speaxpoint/models/evaluation_notes/speech_evaluation_note.dart';
 import 'package:speaxpoint/services/failure.dart';
 import 'package:speaxpoint/services/live_session/general_evaluation/i_general_evaluation_service.dart';
 import 'package:speaxpoint/services/live_session/i_live_session_service.dart';
@@ -91,7 +90,8 @@ class ManageEvaluationViewModel extends CommonLiveSessionMethodsViewModel {
     if (isAGuest) {
       setLoading(loading: false);
 
-      return await _generalEvaluationService.deleteGeneralEvaluationNoteGuestUser(
+      return await _generalEvaluationService
+          .deleteGeneralEvaluationNoteGuestUser(
         guestInvitationCode: guestInvitationCode!,
         chapterMeetingInvitationCode: chapterMeetingInvitationCode!,
         noteId: noteId,
@@ -109,8 +109,10 @@ class ManageEvaluationViewModel extends CommonLiveSessionMethodsViewModel {
 
   //this part is for the speech evalautions calls
   Future<void> addSpeechEvaluationNote({
-    required OnlineSession onlineSessionDetails,
+    required bool evaluatedSpeakerIsGuest,
     required String noteContent,
+    String? evaluatedSpeakerToastmasterId,
+    String? evaluatedSpeakerGuestInvitationCode,
     String? noteTitle,
     String? chapterMeetingId,
     String? takenByToastmasterId,
@@ -126,15 +128,14 @@ class ManageEvaluationViewModel extends CommonLiveSessionMethodsViewModel {
     randomId2 = randomId1 + randomId2.substring(0, randomId2.indexOf("-"));
 
     await _speechEvaluationService.addSpeechEvaluationNote(
-      evaluationNote: TempSpeechEvaluationNote(
-        chapterMeetingId: chapterMeetingId,
-        chapterMeetingInvitationCode: chapterMeetingInvitationCode,
+      evaluatedSpeakerIsGuest: evaluatedSpeakerIsGuest,
+      chapterMeetingId: chapterMeetingId,
+      chapterMeetingInvitationCode: chapterMeetingInvitationCode,
+      evaluatedSpeakerGuestInvitationCode: evaluatedSpeakerGuestInvitationCode,
+      evaluatedSpeakerToastmasterId: evaluatedSpeakerToastmasterId,
+      evaluationNote: SpeechEvaluationNote(
         takenByGuestInvitationCode: takenByGuestInvitationCode,
         takenByToastmasterId: takenByToastmasterId,
-        evaluatedSpeakerGuestInvitationCode:
-            onlineSessionDetails.currentGuestSpeakerInvitationCode,
-        evaluatedSpeakerToastmasteId:
-            onlineSessionDetails.currentSpeakerToastmasterId,
         noteContent: noteContent,
         noteId: randomId2,
         noteTakenTime: DateTime.now().toUtc().toString(),
@@ -144,7 +145,7 @@ class ManageEvaluationViewModel extends CommonLiveSessionMethodsViewModel {
     setLoading(loading: false);
   }
 
-  Stream<List<TempSpeechEvaluationNote>> getTakenNotes({
+  Stream<List<SpeechEvaluationNote>> getTakenNotes({
     //isAGuest is for the speech evalautor , the current screen user
     //who is using the evalation speech screen
     required bool isAGuest,
@@ -176,12 +177,15 @@ class ManageEvaluationViewModel extends CommonLiveSessionMethodsViewModel {
   }
 
   Future<Result<Unit, Failure>> deleteSpeechEvaluationNote({
+    required bool evaluatedSpeakerIsGuest,
     required bool isAGuest,
     required String noteId,
     String? chapterMeetingId,
     String? toastmasterId,
     String? guestInvitationCode,
     String? chapterMeetingInvitationCode,
+    String? evaluatedSpeakerToastmasterId,
+    String? evaluatedSpeakerGuestInvitationCode,
   }) async {
     setLoading(loading: true);
 
@@ -192,6 +196,10 @@ class ManageEvaluationViewModel extends CommonLiveSessionMethodsViewModel {
         takenByGuestInvitationCode: guestInvitationCode!,
         chapterMeetingInvitationCode: chapterMeetingInvitationCode!,
         noteId: noteId,
+        evaluatedSpeakerIsGuest: evaluatedSpeakerIsGuest,
+        evaluatedSpeakerGuestInvitationCode:
+            evaluatedSpeakerGuestInvitationCode,
+        evaluatedSpeakerToastmasterId: evaluatedSpeakerToastmasterId,
       );
     } else {
       setLoading(loading: false);
@@ -200,6 +208,10 @@ class ManageEvaluationViewModel extends CommonLiveSessionMethodsViewModel {
         chapterMeetingId: chapterMeetingId!,
         takenByToastmasterId: toastmasterId!,
         noteId: noteId,
+        evaluatedSpeakerIsGuest: evaluatedSpeakerIsGuest,
+        evaluatedSpeakerGuestInvitationCode:
+            evaluatedSpeakerGuestInvitationCode,
+        evaluatedSpeakerToastmasterId: evaluatedSpeakerToastmasterId,
       );
     }
   }

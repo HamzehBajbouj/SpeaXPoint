@@ -1,26 +1,59 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:speaxpoint/models/evaluation_notes/speech_evaluation_note.dart';
 import 'package:speaxpoint/services/failure.dart';
 import 'package:speaxpoint/models/online_session_captured_data.dart';
-import 'package:speaxpoint/models/evaluation_notes/temp_evaluation_note.dart';
 import 'package:multiple_result/src/unit.dart';
 import 'package:multiple_result/src/result.dart';
 import 'package:speaxpoint/services/live_session/speech_evaluation/i_speech_evaluation_service.dart';
 
 class SpeechEvaluationFirebaseService extends ISpeechEvaluationService {
-
-  // final CollectionReference _onlineSessionCapturedDataC =
-  //     FirebaseFirestore.instance.collection('OnlineSessionCapturedData');
+  final CollectionReference _onlineSessionCapturedDataC =
+      FirebaseFirestore.instance.collection('OnlineSessionCapturedData');
 
   final CollectionReference _tempSpeechEvaluationDataStorageC =
       FirebaseFirestore.instance.collection('TempSpeechEvaluationDataStorage');
 
   @override
-  Future<Result<Unit, Failure>> addSpeechEvaluationNote(
-      {required TempSpeechEvaluationNote evaluationNote}) async {
+  Future<Result<Unit, Failure>> addSpeechEvaluationNote({
+    required bool evaluatedSpeakerIsGuest,
+    String? evaluatedSpeakerToastmasterId,
+    String? evaluatedSpeakerGuestInvitationCode,
+    String? chapterMeetingInvitationCode,
+    String? chapterMeetingId,
+    required SpeechEvaluationNote evaluationNote,
+  }) async {
     try {
-      await _tempSpeechEvaluationDataStorageC.add(evaluationNote.toJson());
+      QuerySnapshot onlineSessionCapturedDataQS;
+      if (evaluatedSpeakerIsGuest) {
+        onlineSessionCapturedDataQS = await _onlineSessionCapturedDataC
+            .where("chapterMeetingInvitationCode",
+                isEqualTo: chapterMeetingInvitationCode)
+            .where("guestInvitationCode",
+                isEqualTo: evaluatedSpeakerGuestInvitationCode)
+            .get();
+      } else {
+        onlineSessionCapturedDataQS = await _onlineSessionCapturedDataC
+            .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+            .where("toastmasterId", isEqualTo: evaluatedSpeakerToastmasterId)
+            .get();
+      }
+
+      if (onlineSessionCapturedDataQS.docs.isNotEmpty) {
+        CollectionReference speechEvaluationNotesC = onlineSessionCapturedDataQS
+            .docs.first.reference
+            .collection("SpeechEvaluationNotes");
+        await speechEvaluationNotesC.add(evaluationNote.toJson());
+      } else {
+        return const Error(
+          Failure(
+              code: "No-Speaker-Found",
+              location:
+                  "SpeechEvaluationFirebaseService.addSpeechEvaluationNoteAppUser()",
+              message: "Could not found a speaker speech record"),
+        );
+      }
 
       return Success.unit();
     } on FirebaseException catch (e) {
@@ -44,19 +77,40 @@ class SpeechEvaluationFirebaseService extends ISpeechEvaluationService {
   }
 
   @override
-  Future<Result<Unit, Failure>> deleteSpeechEvaluationNoteAppUser(
-      {required String chapterMeetingId,
-      required String takenByToastmasterId,
-      required String noteId}) async {
+  Future<Result<Unit, Failure>> deleteSpeechEvaluationNoteAppUser({
+    required String chapterMeetingId,
+    required String takenByToastmasterId,
+    required String noteId,
+    required bool evaluatedSpeakerIsGuest,
+    String? evaluatedSpeakerToastmasterId,
+    String? evaluatedSpeakerGuestInvitationCode,
+  }) async {
     try {
-      QuerySnapshot onlineSessionCapturedDataQS =
-          await _tempSpeechEvaluationDataStorageC
-              .where("chapterMeetingId", isEqualTo: chapterMeetingId)
-              .where("takenByToastmasterId", isEqualTo: takenByToastmasterId)
-              .where("noteId", isEqualTo: noteId)
-              .get();
+      QuerySnapshot onlineSessionCapturedDataQS;
+      onlineSessionCapturedDataQS = await _onlineSessionCapturedDataC
+          .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+          .where("guestInvitationCode",
+              isEqualTo: evaluatedSpeakerGuestInvitationCode)
+          .get();
+      if (evaluatedSpeakerIsGuest) {
+      } else {
+        onlineSessionCapturedDataQS = await _onlineSessionCapturedDataC
+            .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+            .where("toastmasterId", isEqualTo: evaluatedSpeakerToastmasterId)
+            .get();
+      }
+
       if (onlineSessionCapturedDataQS.docs.isNotEmpty) {
-        await onlineSessionCapturedDataQS.docs.first.reference.delete();
+        CollectionReference speechEvaluationNotesC = onlineSessionCapturedDataQS
+            .docs.first.reference
+            .collection("SpeechEvaluationNotes");
+        QuerySnapshot speechEvaluationNotesQS = await speechEvaluationNotesC
+            .where("takenByToastmasterId", isEqualTo: takenByToastmasterId)
+            .where("noteId", isEqualTo: noteId)
+            .get();
+        if (speechEvaluationNotesQS.docs.isNotEmpty) {
+          await speechEvaluationNotesQS.docs.first.reference.delete();
+        }
       } else {
         return Error(
           Failure(
@@ -91,21 +145,44 @@ class SpeechEvaluationFirebaseService extends ISpeechEvaluationService {
   }
 
   @override
-  Future<Result<Unit, Failure>> deleteSpeechEvaluationNoteGuestUser(
-      {required String takenByGuestInvitationCode,
-      required String chapterMeetingInvitationCode,
-      required String noteId}) async {
+  Future<Result<Unit, Failure>> deleteSpeechEvaluationNoteGuestUser({
+    required String takenByGuestInvitationCode,
+    required String chapterMeetingInvitationCode,
+    required String noteId,
+    required bool evaluatedSpeakerIsGuest,
+    String? evaluatedSpeakerToastmasterId,
+    String? evaluatedSpeakerGuestInvitationCode,
+  }) async {
     try {
-      QuerySnapshot onlineSessionCapturedDataQS =
-          await _tempSpeechEvaluationDataStorageC
-              .where("chapterMeetingInvitationCode",
-                  isEqualTo: chapterMeetingInvitationCode)
-              .where("takenByGuestInvitationCode",
-                  isEqualTo: takenByGuestInvitationCode)
-              .where("noteId", isEqualTo: noteId)
-              .get();
+      QuerySnapshot onlineSessionCapturedDataQS;
+
+      if (evaluatedSpeakerIsGuest) {
+        onlineSessionCapturedDataQS = await _onlineSessionCapturedDataC
+            .where("chapterMeetingInvitationCode",
+                isEqualTo: chapterMeetingInvitationCode)
+            .where("guestInvitationCode",
+                isEqualTo: evaluatedSpeakerGuestInvitationCode)
+            .get();
+      } else {
+        onlineSessionCapturedDataQS = await _onlineSessionCapturedDataC
+            .where("chapterMeetingInvitationCode",
+                isEqualTo: chapterMeetingInvitationCode)
+            .where("toastmasterId", isEqualTo: evaluatedSpeakerToastmasterId)
+            .get();
+      }
+
       if (onlineSessionCapturedDataQS.docs.isNotEmpty) {
-        await onlineSessionCapturedDataQS.docs.first.reference.delete();
+        CollectionReference speechEvaluationNotesC = onlineSessionCapturedDataQS
+            .docs.first.reference
+            .collection("SpeechEvaluationNotes");
+        QuerySnapshot speechEvaluationNotesQS = await speechEvaluationNotesC
+            .where("takenByGuestInvitationCode",
+                isEqualTo: takenByGuestInvitationCode)
+            .where("noteId", isEqualTo: noteId)
+            .get();
+        if (speechEvaluationNotesQS.docs.isNotEmpty) {
+          await speechEvaluationNotesQS.docs.first.reference.delete();
+        }
       } else {
         return Error(
           Failure(
@@ -140,148 +217,153 @@ class SpeechEvaluationFirebaseService extends ISpeechEvaluationService {
     }
   }
 
-//there is no any user for this method
+//there is no any usages for this method
+  // @override
+  // Stream<List<TempSpeechEvaluationNote>>
+  //     getSpeechEvaluationNotesForSpecificSpeakerAppUser({
+  //   required String chapterMeetingId,
+  //   required String takenByToastmasterId,
+  //   required OnlineSessionCapturedData selectedSpeaker,
+  //   required bool evaluatedSpeakerIsGuest,
+  //   String? evaluatedSpeakerToastmasterId,
+  //   String? evaluatedSpeakerGuestInvitationCode,
+  // }) async* {
+  //   Stream<List<TempSpeechEvaluationNote>> speecheEvaluationNotesData =
+  //       Stream.empty();
+  //   QuerySnapshot evaluationNotesQS;
+  //   try {
+  //     if (selectedSpeaker.isAnAppGuest!) {
+  //       evaluationNotesQS = await _tempSpeechEvaluationDataStorageC
+  //           .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+  //           .where("takenByToastmasterId", isEqualTo: takenByToastmasterId)
+  //           .where("evaluatedSpeakerGuestInvitationCode",
+  //               isEqualTo: selectedSpeaker.guestInvitationCode)
+  //           .get();
+  //     } else {
+  //       evaluationNotesQS = await _tempSpeechEvaluationDataStorageC
+  //           .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+  //           .where("takenByToastmasterId", isEqualTo: takenByToastmasterId)
+  //           .where("evaluatedSpeakerToastmasteId",
+  //               isEqualTo: selectedSpeaker.toastmasterId)
+  //           .get();
+  //     }
+
+  //     speecheEvaluationNotesData = evaluationNotesQS.docs.first.reference
+  //         .collection("EvaluationNotes")
+  //         .snapshots()
+  //         .map(
+  //           (QuerySnapshot querySnapshot) => querySnapshot.docs.map(
+  //             (e) {
+  //               return TempSpeechEvaluationNote.fromJson(
+  //                 e.data() as Map<String, dynamic>,
+  //               );
+  //             },
+  //           ).toList(),
+  //         );
+
+  //     yield* speecheEvaluationNotesData;
+  //   } on FirebaseException catch (e) {
+  //     log("${e.code} ${e.message}");
+  //     yield* speecheEvaluationNotesData;
+  //   } catch (e) {
+  //     log(e.toString());
+  //     yield* speecheEvaluationNotesData;
+  //   }
+  // }
+
+  // @override
+  // Stream<List<TempSpeechEvaluationNote>> getSpeechEvaluationNotesGuestUser({
+  //   required String chapterMeetingInvitationCode,
+  //   required String takenByGuestInvitationCode,
+  //   required OnlineSessionCapturedData selectedSpeaker,
+  //   required bool evaluatedSpeakerIsGuest,
+  //   String? evaluatedSpeakerToastmasterId,
+  //   String? evaluatedSpeakerGuestInvitationCode,
+  // }) async* {
+  //   Stream<List<TempSpeechEvaluationNote>> speecheEvaluationNotesData =
+  //       Stream.empty();
+  //   QuerySnapshot evaluationNotesQS;
+  //   try {
+  //     if (selectedSpeaker.isAnAppGuest!) {
+  //       evaluationNotesQS = await _tempSpeechEvaluationDataStorageC
+  //           .where("chapterMeetingInvitationCode",
+  //               isEqualTo: chapterMeetingInvitationCode)
+  //           .where("takenByGuestInvitationCode",
+  //               isEqualTo: takenByGuestInvitationCode)
+  //           .where("evaluatedSpeakerGuestInvitationCode",
+  //               isEqualTo: selectedSpeaker.guestInvitationCode)
+  //           .get();
+  //     } else {
+  //       evaluationNotesQS = await _tempSpeechEvaluationDataStorageC
+  //           .where("chapterMeetingInvitationCode",
+  //               isEqualTo: chapterMeetingInvitationCode)
+  //           .where("takenByGuestInvitationCode",
+  //               isEqualTo: takenByGuestInvitationCode)
+  //           .where("evaluatedSpeakerToastmasteId",
+  //               isEqualTo: selectedSpeaker.toastmasterId)
+  //           .get();
+  //     }
+
+  //     speecheEvaluationNotesData = evaluationNotesQS.docs.first.reference
+  //         .collection("EvaluationNotes")
+  //         .snapshots()
+  //         .map(
+  //           (QuerySnapshot querySnapshot) => querySnapshot.docs.map(
+  //             (e) {
+  //               return TempSpeechEvaluationNote.fromJson(
+  //                 e.data() as Map<String, dynamic>,
+  //               );
+  //             },
+  //           ).toList(),
+  //         );
+
+  //     yield* speecheEvaluationNotesData;
+  //   } on FirebaseException catch (e) {
+  //     log("${e.code} ${e.message}");
+  //     yield* speecheEvaluationNotesData;
+  //   } catch (e) {
+  //     log(e.toString());
+  //     yield* speecheEvaluationNotesData;
+  //   }
+  // }
+
   @override
-  Stream<List<TempSpeechEvaluationNote>>
-      getSpeechEvaluationNotesForSpecificSpeakerAppUser(
-          {required String chapterMeetingId,
-          required String takenByToastmasterId,
-          required OnlineSessionCapturedData selectedSpeaker}) async* {
-    Stream<List<TempSpeechEvaluationNote>> speecheEvaluationNotesData =
-        Stream.empty();
-    QuerySnapshot evaluationNotesQS;
-    try {
-      if (selectedSpeaker.isAnAppGuest!) {
-        evaluationNotesQS = await _tempSpeechEvaluationDataStorageC
-            .where("chapterMeetingId", isEqualTo: chapterMeetingId)
-            .where("takenByToastmasterId", isEqualTo: takenByToastmasterId)
-            .where("evaluatedSpeakerGuestInvitationCode",
-                isEqualTo: selectedSpeaker.guestInvitationCode)
-            .get();
-      } else {
-        evaluationNotesQS = await _tempSpeechEvaluationDataStorageC
-            .where("chapterMeetingId", isEqualTo: chapterMeetingId)
-            .where("takenByToastmasterId", isEqualTo: takenByToastmasterId)
-            .where("evaluatedSpeakerToastmasteId",
-                isEqualTo: selectedSpeaker.toastmasterId)
-            .get();
-      }
-
-      speecheEvaluationNotesData = evaluationNotesQS.docs.first.reference
-          .collection("EvaluationNotes")
-          .snapshots()
-          .map(
-            (QuerySnapshot querySnapshot) => querySnapshot.docs.map(
-              (e) {
-                return TempSpeechEvaluationNote.fromJson(
-                  e.data() as Map<String, dynamic>,
-                );
-              },
-            ).toList(),
-          );
-
-      yield* speecheEvaluationNotesData;
-    } on FirebaseException catch (e) {
-      log("${e.code} ${e.message}");
-      yield* speecheEvaluationNotesData;
-    } catch (e) {
-      log(e.toString());
-      yield* speecheEvaluationNotesData;
-    }
-  }
-
-  @override
-  Stream<List<TempSpeechEvaluationNote>> getSpeechEvaluationNotesGuestUser(
-      {required String chapterMeetingInvitationCode,
-      required String takenByGuestInvitationCode,
-      required OnlineSessionCapturedData selectedSpeaker}) async* {
-    Stream<List<TempSpeechEvaluationNote>> speecheEvaluationNotesData =
-        Stream.empty();
-    QuerySnapshot evaluationNotesQS;
-    try {
-      if (selectedSpeaker.isAnAppGuest!) {
-        evaluationNotesQS = await _tempSpeechEvaluationDataStorageC
-            .where("chapterMeetingInvitationCode",
-                isEqualTo: chapterMeetingInvitationCode)
-            .where("takenByGuestInvitationCode",
-                isEqualTo: takenByGuestInvitationCode)
-            .where("evaluatedSpeakerGuestInvitationCode",
-                isEqualTo: selectedSpeaker.guestInvitationCode)
-            .get();
-      } else {
-        evaluationNotesQS = await _tempSpeechEvaluationDataStorageC
-            .where("chapterMeetingInvitationCode",
-                isEqualTo: chapterMeetingInvitationCode)
-            .where("takenByGuestInvitationCode",
-                isEqualTo: takenByGuestInvitationCode)
-            .where("evaluatedSpeakerToastmasteId",
-                isEqualTo: selectedSpeaker.toastmasterId)
-            .get();
-      }
-
-      speecheEvaluationNotesData = evaluationNotesQS.docs.first.reference
-          .collection("EvaluationNotes")
-          .snapshots()
-          .map(
-            (QuerySnapshot querySnapshot) => querySnapshot.docs.map(
-              (e) {
-                return TempSpeechEvaluationNote.fromJson(
-                  e.data() as Map<String, dynamic>,
-                );
-              },
-            ).toList(),
-          );
-
-      yield* speecheEvaluationNotesData;
-    } on FirebaseException catch (e) {
-      log("${e.code} ${e.message}");
-      yield* speecheEvaluationNotesData;
-    } catch (e) {
-      log(e.toString());
-      yield* speecheEvaluationNotesData;
-    }
-  }
-
-  @override
-  Stream<List<TempSpeechEvaluationNote>> getTakenSpeechNotesByAppGuest(
+  Stream<List<SpeechEvaluationNote>> getTakenSpeechNotesByAppGuest(
       {required String chapterMeetingInvitationCode,
       required String takenByGuestInvitationCode,
       required bool evaluatedSpeakerIsAppGuest,
       required String? evaluatedSpeakerToastmasteId,
       required String? evaluatedSpeakerGuestInvitationCode}) async* {
-    Stream<List<TempSpeechEvaluationNote>> evaluationNotes = Stream.empty();
+    Stream<List<SpeechEvaluationNote>> evaluationNotes = Stream.empty();
     try {
+      QuerySnapshot onlineSessionCapturedDataQS;
       if (evaluatedSpeakerIsAppGuest) {
-        evaluationNotes = _tempSpeechEvaluationDataStorageC
+        onlineSessionCapturedDataQS = await _onlineSessionCapturedDataC
             .where("chapterMeetingInvitationCode",
                 isEqualTo: chapterMeetingInvitationCode)
-            .where("takenByGuestInvitationCode",
-                isEqualTo: takenByGuestInvitationCode)
-            .where("evaluatedSpeakerGuestInvitationCode",
+            .where("guestInvitationCode",
                 isEqualTo: evaluatedSpeakerGuestInvitationCode)
-            .snapshots()
-            .map(
-              (QuerySnapshot querySnapshot) => querySnapshot.docs.map(
-                (e) {
-                  return TempSpeechEvaluationNote.fromJson(
-                    e.data() as Map<String, dynamic>,
-                  );
-                },
-              ).toList(),
-            );
+            .get();
       } else {
-        evaluationNotes = _tempSpeechEvaluationDataStorageC
+        onlineSessionCapturedDataQS = await _onlineSessionCapturedDataC
             .where("chapterMeetingInvitationCode",
                 isEqualTo: chapterMeetingInvitationCode)
+            .where("toastmasterId", isEqualTo: evaluatedSpeakerToastmasteId)
+            .get();
+      }
+
+      if (onlineSessionCapturedDataQS.docs.isNotEmpty) {
+        CollectionReference speechEvaluationNotesC = onlineSessionCapturedDataQS
+            .docs.first.reference
+            .collection("SpeechEvaluationNotes");
+        evaluationNotes = speechEvaluationNotesC
             .where("takenByGuestInvitationCode",
                 isEqualTo: takenByGuestInvitationCode)
-            .where("evaluatedSpeakerToastmasteId",
-                isEqualTo: evaluatedSpeakerToastmasteId)
             .snapshots()
             .map(
               (QuerySnapshot querySnapshot) => querySnapshot.docs.map(
                 (e) {
-                  return TempSpeechEvaluationNote.fromJson(
+                  return SpeechEvaluationNote.fromJson(
                     e.data() as Map<String, dynamic>,
                   );
                 },
@@ -300,41 +382,39 @@ class SpeechEvaluationFirebaseService extends ISpeechEvaluationService {
   }
 
   @override
-  Stream<List<TempSpeechEvaluationNote>> getTakenSpeechNotesByAppUser(
+  Stream<List<SpeechEvaluationNote>> getTakenSpeechNotesByAppUser(
       {required String chapterMeetingId,
       required String takenByToastmasterId,
       required bool evaluatedSpeakerIsAppGuest,
       required String? evaluatedSpeakerToastmasteId,
       required String? evaluatedSpeakerGuestInvitationCode}) async* {
-    Stream<List<TempSpeechEvaluationNote>> evaluationNotes = Stream.empty();
+    Stream<List<SpeechEvaluationNote>> evaluationNotes = Stream.empty();
     try {
+      QuerySnapshot onlineSessionCapturedDataQS;
       if (evaluatedSpeakerIsAppGuest) {
-        evaluationNotes = _tempSpeechEvaluationDataStorageC
+        onlineSessionCapturedDataQS = await _onlineSessionCapturedDataC
             .where("chapterMeetingId", isEqualTo: chapterMeetingId)
-            .where("takenByToastmasterId", isEqualTo: takenByToastmasterId)
-            .where("evaluatedSpeakerGuestInvitationCode",
+            .where("guestInvitationCode",
                 isEqualTo: evaluatedSpeakerGuestInvitationCode)
-            .snapshots()
-            .map(
-              (QuerySnapshot querySnapshot) => querySnapshot.docs.map(
-                (e) {
-                  return TempSpeechEvaluationNote.fromJson(
-                    e.data() as Map<String, dynamic>,
-                  );
-                },
-              ).toList(),
-            );
+            .get();
       } else {
-        evaluationNotes = _tempSpeechEvaluationDataStorageC
+        onlineSessionCapturedDataQS = await _onlineSessionCapturedDataC
             .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+            .where("toastmasterId", isEqualTo: evaluatedSpeakerToastmasteId)
+            .get();
+      }
+
+      if (onlineSessionCapturedDataQS.docs.isNotEmpty) {
+        CollectionReference speechEvaluationNotesC = onlineSessionCapturedDataQS
+            .docs.first.reference
+            .collection("SpeechEvaluationNotes");
+        evaluationNotes = speechEvaluationNotesC
             .where("takenByToastmasterId", isEqualTo: takenByToastmasterId)
-            .where("evaluatedSpeakerToastmasteId",
-                isEqualTo: evaluatedSpeakerToastmasteId)
             .snapshots()
             .map(
               (QuerySnapshot querySnapshot) => querySnapshot.docs.map(
                 (e) {
-                  return TempSpeechEvaluationNote.fromJson(
+                  return SpeechEvaluationNote.fromJson(
                     e.data() as Map<String, dynamic>,
                   );
                 },

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:multiple_result/multiple_result.dart';
+import 'package:provider/provider.dart';
 import 'package:speaxpoint/models/evaluation_notes/evaluation_note.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart';
+import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/manage_evaluation_view_model.dart';
 
 import '../../../services/failure.dart';
 
@@ -13,11 +15,14 @@ class EvaluationNoteBottomSheet extends StatefulWidget {
     super.key,
     required this.evaluationNote,
     required this.isAGuest,
-    required this.deleteNoteAction,
+    required this.isGeneralEvaluation,
     this.chapterMeetingId,
     this.chapterMeetingInvitationCode,
     this.guestInvitationCode,
     this.toastmasterId,
+    this.evaluatedSpeakerToastmasterId,
+    this.evaluatedSpeakerGuestInvitationCode,
+    this.evaluatedSpeakerIsGuest,
   });
   final EvaluationNote evaluationNote;
   final bool isAGuest;
@@ -25,14 +30,10 @@ class EvaluationNoteBottomSheet extends StatefulWidget {
   final String? chapterMeetingInvitationCode;
   final String? guestInvitationCode;
   final String? toastmasterId;
-  final Future<Result<Unit, Failure>> Function({
-    required bool isAGuest,
-    required String noteId,
-    String? chapterMeetingId,
-    String? toastmasterId,
-    String? guestInvitationCode,
-    String? chapterMeetingInvitationCode,
-  }) deleteNoteAction;
+  final String? evaluatedSpeakerToastmasterId;
+  final String? evaluatedSpeakerGuestInvitationCode;
+  final bool? evaluatedSpeakerIsGuest;
+  final bool isGeneralEvaluation;
 
   @override
   State<EvaluationNoteBottomSheet> createState() =>
@@ -40,6 +41,15 @@ class EvaluationNoteBottomSheet extends StatefulWidget {
 }
 
 class _EvaluationNoteBottomSheetState extends State<EvaluationNoteBottomSheet> {
+  ManageEvaluationViewModel? _manageEvaluationViewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _manageEvaluationViewModel =
+        Provider.of<ManageEvaluationViewModel>(context, listen: false);
+  }
+
   bool _showErrorMessage = false;
   bool _isLoading = false;
   @override
@@ -129,38 +139,79 @@ class _EvaluationNoteBottomSheetState extends State<EvaluationNoteBottomSheet> {
                       setState(() {
                         _isLoading = true;
                       });
-                      await widget
-                          .deleteNoteAction(
-                        isAGuest: widget.isAGuest,
-                        noteId: widget.evaluationNote.noteId!,
-                        chapterMeetingId: widget.chapterMeetingId,
-                        chapterMeetingInvitationCode:
-                            widget.chapterMeetingInvitationCode,
-                        guestInvitationCode: widget.guestInvitationCode,
-                        toastmasterId: widget.toastmasterId,
-                      )
-                          .then(
-                        (value) {
-                          value.when(
-                            (success) {
-                              setState(
-                                () {
-                                  _showErrorMessage = false;
-                                },
-                              );
-                              Navigator.of(context).pop(true);
-                            },
-                            (error) {
-                              setState(
-                                () {
-                                  _showErrorMessage = true;
-                                  _isLoading = false;
-                                },
-                              );
-                            },
-                          );
-                        },
-                      );
+
+                      if (widget.isGeneralEvaluation) {
+                        _manageEvaluationViewModel!
+                            .deleteGeneralEvaluationNote(
+                          isAGuest: widget.isAGuest,
+                          noteId: widget.evaluationNote.noteId!,
+                          chapterMeetingId: widget.chapterMeetingId,
+                          chapterMeetingInvitationCode:
+                              widget.chapterMeetingInvitationCode,
+                          guestInvitationCode: widget.guestInvitationCode,
+                          toastmasterId: widget.toastmasterId,
+                        )
+                            .then(
+                          (value) {
+                            value.when(
+                              (success) {
+                                setState(
+                                  () {
+                                    _showErrorMessage = false;
+                                  },
+                                );
+                                Navigator.of(context).pop(true);
+                              },
+                              (error) {
+                                setState(
+                                  () {
+                                    _showErrorMessage = true;
+                                    _isLoading = false;
+                                  },
+                                );
+                              },
+                            );
+                          },
+                        );
+                      } else {
+                        _manageEvaluationViewModel!
+                            .deleteSpeechEvaluationNote(
+                                isAGuest: widget.isAGuest,
+                                noteId: widget.evaluationNote.noteId!,
+                                chapterMeetingId: widget.chapterMeetingId,
+                                chapterMeetingInvitationCode:
+                                    widget.chapterMeetingInvitationCode,
+                                guestInvitationCode: widget.guestInvitationCode,
+                                toastmasterId: widget.toastmasterId,
+                                evaluatedSpeakerIsGuest:
+                                    widget.evaluatedSpeakerIsGuest!,
+                                evaluatedSpeakerGuestInvitationCode:
+                                    widget.evaluatedSpeakerGuestInvitationCode,
+                                evaluatedSpeakerToastmasterId:
+                                    widget.evaluatedSpeakerToastmasterId)
+                            .then(
+                          (value) {
+                            value.when(
+                              (success) {
+                                setState(
+                                  () {
+                                    _showErrorMessage = false;
+                                  },
+                                );
+                                Navigator.of(context).pop(true);
+                              },
+                              (error) {
+                                setState(
+                                  () {
+                                    _showErrorMessage = true;
+                                    _isLoading = false;
+                                  },
+                                );
+                              },
+                            );
+                          },
+                        );
+                      }
                     },
                     content: "Delete Evaluation Note",
                     buttonColor: const Color(AppMainColors.warningError50),

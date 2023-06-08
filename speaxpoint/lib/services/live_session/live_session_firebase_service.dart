@@ -1,8 +1,5 @@
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:speaxpoint/models/evaluation_notes/evaluation_note.dart';
-import 'package:speaxpoint/models/evaluation_notes/temp_evaluation_note.dart';
 import 'package:speaxpoint/models/online_session.dart';
 import 'package:speaxpoint/services/failure.dart';
 import 'package:speaxpoint/models/online_session_captured_data.dart';

@@ -1,11 +1,9 @@
-import 'package:drop_down_list/drop_down_list.dart';
 import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
-import 'package:speaxpoint/models/evaluation_notes/evaluation_note.dart';
-import 'package:speaxpoint/models/evaluation_notes/temp_evaluation_note.dart';
+import 'package:speaxpoint/models/evaluation_notes/speech_evaluation_note.dart';
 import 'package:speaxpoint/models/online_session.dart';
 import 'package:speaxpoint/models/online_session_captured_data.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
@@ -14,7 +12,6 @@ import 'package:speaxpoint/util/ui_widgets/buttons.dart';
 import 'package:speaxpoint/util/ui_widgets/common_checkers.dart';
 import 'package:speaxpoint/util/ui_widgets/common_manipluating_methods.dart';
 import 'package:speaxpoint/util/ui_widgets/common_widgets.dart';
-import 'package:speaxpoint/util/ui_widgets/options_selections.dart';
 import 'package:speaxpoint/util/ui_widgets/text_fields.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/manage_evaluation_view_model.dart';
 import 'package:speaxpoint/views/toastmaster_user/bottom_sheets_widgets/evaluation_note_bottom_sheet.dart';
@@ -261,11 +258,17 @@ class _SpeechEvaluationTabViewState extends State<SpeechEvaluationTabView> {
                                       });
                                       await _manageEvaluationViewModel!
                                           .addSpeechEvaluationNote(
+                                        evaluatedSpeakerIsGuest:
+                                            _onlineSessionDetails.isGuest!,
+                                        evaluatedSpeakerGuestInvitationCode:
+                                            _onlineSessionDetails
+                                                .currentGuestSpeakerInvitationCode,
+                                        evaluatedSpeakerToastmasterId:
+                                            _onlineSessionDetails
+                                                .currentSpeakerToastmasterId,
                                         noteContent:
                                             _noteContentController.text,
                                         noteTitle: _noteTitleController.text,
-                                        onlineSessionDetails:
-                                            _onlineSessionDetails,
                                         chapterMeetingId:
                                             widget.chapterMeetingId,
                                         chapterMeetingInvitationCode:
@@ -381,7 +384,7 @@ class _SpeechEvaluationTabViewState extends State<SpeechEvaluationTabView> {
                                       height: 200,
                                       child: Expanded(
                                         child: StreamBuilder<
-                                            List<TempSpeechEvaluationNote>>(
+                                            List<SpeechEvaluationNote>>(
                                           stream: _manageEvaluationViewModel!
                                               .getTakenNotes(
                                                   chapterMeetingId: widget
@@ -413,8 +416,8 @@ class _SpeechEvaluationTabViewState extends State<SpeechEvaluationTabView> {
                                                 ),
                                               );
                                             } else {
-                                              final List<EvaluationNote> notes =
-                                                  snapshot.data!;
+                                              final List<SpeechEvaluationNote>
+                                                  notes = snapshot.data!;
                                               notes.sort((a, b) => b
                                                   .noteTakenTime!
                                                   .compareTo(a.noteTakenTime!));
@@ -472,9 +475,8 @@ class _SpeechEvaluationTabViewState extends State<SpeechEvaluationTabView> {
                                                             context: context,
                                                             builder: (context) =>
                                                                 EvaluationNoteBottomSheet(
-                                                              deleteNoteAction:
-                                                                  _manageEvaluationViewModel!
-                                                                      .deleteSpeechEvaluationNote,
+                                                              isGeneralEvaluation:
+                                                                  false,
                                                               chapterMeetingId:
                                                                   widget
                                                                       .chapterMeetingId,
@@ -490,6 +492,15 @@ class _SpeechEvaluationTabViewState extends State<SpeechEvaluationTabView> {
                                                                       .guestInvitationCode,
                                                               toastmasterId: widget
                                                                   .toastmasterId,
+                                                              evaluatedSpeakerIsGuest:
+                                                                  _selectedSpeechSpeaker!
+                                                                      .isAnAppGuest,
+                                                              evaluatedSpeakerGuestInvitationCode:
+                                                                  _selectedSpeechSpeaker!
+                                                                      .guestInvitationCode,
+                                                              evaluatedSpeakerToastmasterId:
+                                                                  _selectedSpeechSpeaker!
+                                                                      .toastmasterId,
                                                             ),
                                                           );
                                                         },

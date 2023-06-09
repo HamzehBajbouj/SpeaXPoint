@@ -51,7 +51,6 @@ class _SessionRedirectionScreenState extends State<SessionRedirectionScreen> {
     super.initState();
     _sessionRedirectionViewModel =
         Provider.of<SessionRedirectionViewModel>(context, listen: false);
-
   }
 
   @override
@@ -93,17 +92,21 @@ class _SessionRedirectionScreenState extends State<SessionRedirectionScreen> {
                       if (chapterMeeting.chapterMeetingStatus != null &&
                           chapterMeeting.chapterMeetingStatus! ==
                               ComingSessionsStatus.Completed.name) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (BuildContext context) {
-                              return const SessionCompletionCounterDialog();
-                            },
-                          ).then((value) {
-                            context.router.popForced();
+                        if (currentMemberClubRole !=
+                            ToastmasterRoles.Vice_President_Education.name
+                                .replaceAll("_", " ")) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) {
+                                return const SessionCompletionCounterDialog();
+                              },
+                            ).then((value) {
+                              context.router.popForced();
+                            });
                           });
-                        });
+                        }
                       }
 
                       return Container();

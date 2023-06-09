@@ -29,17 +29,7 @@ abstract class ISpeechEvaluationService {
     String? evaluatedSpeakerToastmasterId,
     String? evaluatedSpeakerGuestInvitationCode,
   });
-  // Stream<List<TempSpeechEvaluationNote>>
-  //     getSpeechEvaluationNotesForSpecificSpeakerAppUser({
-  //   required String chapterMeetingId,
-  //   //this takenByToastmasterId refers to the current logged app user speech evaluator
-  //   //where the notes are taken by him.
-  //   required String takenByToastmasterId,
-  //   required OnlineSessionCapturedData selectedSpeaker,
-  //       required bool evaluatedSpeakerIsGuest,
-  //   String? evaluatedSpeakerToastmasterId,
-  //   String? evaluatedSpeakerGuestInvitationCode,
-  // });
+
   /*
   This method is used to delete the evaluation notes that has been evaluated
   for a specfic speakers (regardless whether he is a guest or an app user), 
@@ -54,17 +44,7 @@ abstract class ISpeechEvaluationService {
     String? evaluatedSpeakerGuestInvitationCode,
   });
 
-//there is no any usages for this method so far
-  // Stream<List<TempSpeechEvaluationNote>> getSpeechEvaluationNotesGuestUser({
-  //   //this takenByGuestInvitationCode refers to the current logged guest user speech evaluator
-  //   //where the notes are taken by him.
-  //   required String chapterMeetingInvitationCode,
-  //   required String takenByGuestInvitationCode,
-  //   required OnlineSessionCapturedData selectedSpeaker,
-  //          required bool evaluatedSpeakerIsGuest,
-  //   String? evaluatedSpeakerToastmasterId,
-  //   String? evaluatedSpeakerGuestInvitationCode,
-  // });
+
 
   //this will return a stream of the notes which were taken by an app user speech
   //evaluator, to a speaker whether he is an app user or app guest
@@ -85,4 +65,21 @@ abstract class ISpeechEvaluationService {
     required String? evaluatedSpeakerToastmasteId,
     required String? evaluatedSpeakerGuestInvitationCode,
   });
+
+      Stream<int> getTotalNumberOfEvaluationNotes({
+    required bool currentSpeakerisAppGuest,
+    String? currentSpeakerToastmasterId,
+    String? currentSpeakerGuestInvitationCode,
+    String? chapterMeetingInvitationCode,
+    String? chapterMeetingId,
+  });
+
+    Stream<List<SpeechEvaluationNote>> getAllEvaluationNotes({
+    required bool currentSpeakerisAppGuest,
+    String? currentSpeakerToastmasterId,
+    String? currentSpeakerGuestInvitationCode,
+    String? chapterMeetingInvitationCode,
+    String? chapterMeetingId,
+  });
+
 }

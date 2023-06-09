@@ -594,7 +594,6 @@ Widget speechCardDetails({
 Widget evaluationNoteCard({
   String? noteTitle,
   required String noteContent,
-  required String noteId,
   required Future<void> Function() iconButtonAction,
 }) {
   return Container(

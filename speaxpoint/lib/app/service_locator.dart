@@ -46,6 +46,7 @@ import 'package:speaxpoint/view_models/toastmaster_vm/manage_coming_sessions_vie
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/grammatical_observation_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/manage_evaluation_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/manage_roles_players_view_model.dart';
+import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/speech_observations_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/speech_timing_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/time_filler_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/prepare_meeting_agenda_view_model.dart';
@@ -253,6 +254,15 @@ Future<void> initServiceLocator() async {
     () => GrammaticalObservationViewModel(
       serviceLocator<ILiveSessionService>(),
       serviceLocator<IGrammarianService>(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<SpeechObservationsViewModel>(
+    () => SpeechObservationsViewModel(
+      serviceLocator<ILiveSessionService>(),
+      serviceLocator<IGrammarianService>(),
+      serviceLocator<ISpeechEvaluationService>(),
+      serviceLocator<ITimeFillerService>(),
+      serviceLocator<ITimingRoleService>(),
     ),
   );
 }

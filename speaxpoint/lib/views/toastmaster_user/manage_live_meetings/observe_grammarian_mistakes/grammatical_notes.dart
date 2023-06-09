@@ -281,7 +281,6 @@ class _GrammaticalNotesState extends State<GrammaticalNotes> {
                                         );
                                       },
                                       noteContent: notes[index].noteContent!,
-                                      noteId: notes[index].noteId!,
                                       noteTitle: notes[index].noteTitle);
                                 },
                               );

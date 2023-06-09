@@ -432,4 +432,53 @@ class GrammarianFirebaseService extends IGrammarianService {
       );
     }
   }
+
+  @override
+  Stream<int> getTotalNumberOfGrammaticalNotes(
+      {required bool currentSpeakerisAppGuest,
+      String? currentSpeakerToastmasterId,
+      String? currentSpeakerGuestInvitationCode,
+      String? chapterMeetingInvitationCode,
+      String? chapterMeetingId}) async* {
+    Stream<int> grammaticalNoteCounter = Stream.empty();
+    try {
+      QuerySnapshot onlineSessionCapturedDataQS;
+      if (currentSpeakerisAppGuest) {
+        onlineSessionCapturedDataQS = await _onlineSessionCapturedDataC
+            .where("chapterMeetingInvitationCode",
+                isEqualTo: chapterMeetingInvitationCode)
+            .where("guestInvitationCode",
+                isEqualTo: currentSpeakerGuestInvitationCode)
+            .get();
+      } else {
+        onlineSessionCapturedDataQS = await _onlineSessionCapturedDataC
+            .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+            .where("toastmasterId", isEqualTo: currentSpeakerToastmasterId)
+            .get();
+      }
+      if (onlineSessionCapturedDataQS.docs.isNotEmpty) {
+        CollectionReference grammarianCapturedDataC =
+            onlineSessionCapturedDataQS.docs.first.reference
+                .collection("GrammarianCapturedData");
+        // Create a stream transformer to convert the QuerySnapshot to Map<String, int>
+        grammaticalNoteCounter = grammarianCapturedDataC
+            .where('typeOfGrammarianNote',
+                isEqualTo: GrammarianNoteType.GrammaticalNote.name)
+            .snapshots()
+            .map(
+          (QuerySnapshot snapshot) {
+            return snapshot.size;
+          },
+        );
+      }
+
+      yield* grammaticalNoteCounter;
+    } on FirebaseException catch (e) {
+      log("${e.code} ${e.message}");
+      yield* grammaticalNoteCounter;
+    } catch (e) {
+      log(e.toString());
+      yield* grammaticalNoteCounter;
+    }
+  }
 }

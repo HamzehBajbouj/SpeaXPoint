@@ -37,4 +37,12 @@ abstract class ITimeFillerService {
     String? chapterMeetingInvitationCode,
     String? chapterMeetingId,
   });
+  
+  Stream<int> getTotalNumberOfTimeFillers({
+    required bool currentSpeakerisAppGuest,
+    String? currentSpeakerToastmasterId,
+    String? currentSpeakerGuestInvitationCode,
+    String? chapterMeetingInvitationCode,
+    String? chapterMeetingId,
+  });
 }

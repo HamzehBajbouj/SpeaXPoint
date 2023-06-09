@@ -111,7 +111,8 @@ class _ManageSpeechEvaluationViewState extends State<ManageSpeechEvaluationView>
                   chapterMeetingInvitationCode:
                       widget.chapterMeetingInvitationCode,
                   guestInvitationCode: widget.guestInvitationCode,
-                )
+                  toastmasterId: widget.toastmasterId,
+                ),
               ],
             ),
           ),

@@ -60,4 +60,13 @@ abstract class IGrammarianService {
     String? chapterMeetingInvitationCode,
     String? chapterMeetingId,
   });
+
+    Stream<int> getTotalNumberOfGrammaticalNotes({
+    required bool currentSpeakerisAppGuest,
+    String? currentSpeakerToastmasterId,
+    String? currentSpeakerGuestInvitationCode,
+    String? chapterMeetingInvitationCode,
+    String? chapterMeetingId,
+  });
+
 }

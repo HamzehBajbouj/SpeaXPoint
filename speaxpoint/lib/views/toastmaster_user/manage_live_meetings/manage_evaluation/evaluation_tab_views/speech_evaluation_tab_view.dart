@@ -507,8 +507,6 @@ class _SpeechEvaluationTabViewState extends State<SpeechEvaluationTabView> {
                                                         noteContent:
                                                             notes[index]
                                                                 .noteContent!,
-                                                        noteId: notes[index]
-                                                            .noteId!,
                                                         noteTitle: notes[index]
                                                             .noteTitle);
                                                   },

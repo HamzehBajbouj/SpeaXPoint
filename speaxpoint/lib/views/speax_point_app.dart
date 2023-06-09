@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:speaxpoint/app/app_routes.gr.dart';
 import 'package:speaxpoint/app/service_locator.dart';
 import 'package:provider/provider.dart';
-import 'package:speaxpoint/models/chapter_meeting.dart';
 import 'package:speaxpoint/view_models/authentication_vm/club_registration_view_model.dart';
 import 'package:speaxpoint/view_models/authentication_vm/log_in_view_model.dart';
 import 'package:speaxpoint/view_models/club_president_vm/club_members_management_view_model.dart';
@@ -14,6 +13,7 @@ import 'package:speaxpoint/view_models/toastmaster_vm/manage_coming_sessions_vie
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/grammatical_observation_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/manage_evaluation_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/manage_roles_players_view_model.dart';
+import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/speech_observations_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/speech_timing_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/time_filler_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/prepare_meeting_agenda_view_model.dart';
@@ -70,6 +70,8 @@ class SpeaxPointApp extends StatelessWidget {
             create: (_) => serviceLocator<TimeFillerViewModel>()),
         ChangeNotifierProvider(
             create: (_) => serviceLocator<GrammaticalObservationViewModel>()),
+        ChangeNotifierProvider(
+            create: (_) => serviceLocator<SpeechObservationsViewModel>()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

@@ -180,7 +180,6 @@ class _GeneralEvaluationTabViewState extends State<GeneralEvaluationTabView> {
                                 );
                               },
                               noteContent: notes[index].noteContent!,
-                              noteId: notes[index].noteId!,
                               noteTitle: notes[index].noteTitle);
                         },
                       );

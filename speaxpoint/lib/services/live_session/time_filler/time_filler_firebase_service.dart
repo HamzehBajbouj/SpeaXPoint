@@ -103,7 +103,6 @@ class TimeFillerFirebaseService extends ITimeFillerService {
             .limit(1)
             .get();
         if (timeFillerDataQS.docs.isNotEmpty) {
-
           await timeFillerDataQS.docs.first.reference.delete();
         } else {
           return Error(
@@ -143,13 +142,12 @@ class TimeFillerFirebaseService extends ITimeFillerService {
   }
 
   @override
-  Future<Result<Map<String, int>, Failure>>
-      getSpeakerTimeFillerData(
-          {required bool currentSpeakerisAppGuest,
-          String? currentSpeakerToastmasterId,
-          String? currentSpeakerGuestInvitationCode,
-          String? chapterMeetingInvitationCode,
-          String? chapterMeetingId}) async {
+  Future<Result<Map<String, int>, Failure>> getSpeakerTimeFillerData(
+      {required bool currentSpeakerisAppGuest,
+      String? currentSpeakerToastmasterId,
+      String? currentSpeakerGuestInvitationCode,
+      String? chapterMeetingInvitationCode,
+      String? chapterMeetingId}) async {
     try {
       Map<String, int> timeFillerSpeakerData = {};
       QuerySnapshot onlineSessionCapturedDataQS;
@@ -175,8 +173,8 @@ class TimeFillerFirebaseService extends ITimeFillerService {
 
         for (var doc in timeFillerDataQS.docs) {
           String typeOfTimeFiller = doc.get('typeOfTimeFiller') as String;
-            timeFillerSpeakerData.update(typeOfTimeFiller, (value) => value + 1,
-                ifAbsent: () => 1);
+          timeFillerSpeakerData.update(typeOfTimeFiller, (value) => value + 1,
+              ifAbsent: () => 1);
         }
       } else {
         return const Error(
@@ -262,6 +260,51 @@ class TimeFillerFirebaseService extends ITimeFillerService {
     } catch (e) {
       log(e.toString());
       yield* timeFillerLiveData;
+    }
+  }
+
+  @override
+  Stream<int> getTotalNumberOfTimeFillers(
+      {required bool currentSpeakerisAppGuest,
+      String? currentSpeakerToastmasterId,
+      String? currentSpeakerGuestInvitationCode,
+      String? chapterMeetingInvitationCode,
+      String? chapterMeetingId}) async* {
+    Stream<int> timeFillersCounter = Stream.empty();
+    try {
+      QuerySnapshot onlineSessionCapturedDataQS;
+      if (currentSpeakerisAppGuest) {
+        onlineSessionCapturedDataQS = await _onlineSessionCapturedDataC
+            .where("chapterMeetingInvitationCode",
+                isEqualTo: chapterMeetingInvitationCode)
+            .where("guestInvitationCode",
+                isEqualTo: currentSpeakerGuestInvitationCode)
+            .get();
+      } else {
+        onlineSessionCapturedDataQS = await _onlineSessionCapturedDataC
+            .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+            .where("toastmasterId", isEqualTo: currentSpeakerToastmasterId)
+            .get();
+      }
+      if (onlineSessionCapturedDataQS.docs.isNotEmpty) {
+        CollectionReference timeFillerC = onlineSessionCapturedDataQS
+            .docs.first.reference
+            .collection("TimeFillersCapturedData");
+
+        timeFillersCounter = timeFillerC.snapshots().map(
+          (QuerySnapshot snapshot) {
+            return snapshot.size;
+          },
+        );
+      }
+
+      yield* timeFillersCounter;
+    } on FirebaseException catch (e) {
+      log("${e.code} ${e.message}");
+      yield* timeFillersCounter;
+    } catch (e) {
+      log(e.toString());
+      yield* timeFillersCounter;
     }
   }
 }

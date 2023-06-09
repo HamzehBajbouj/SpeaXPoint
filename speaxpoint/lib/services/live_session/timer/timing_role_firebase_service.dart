@@ -226,7 +226,6 @@ class TimingRoleFirebaseSerivce extends ITimingRoleService {
             .where("toastmasterId", isEqualTo: currentSpeakerToastmasterId)
             .get();
       }
-
       if (onlineSessionCapturedDataQS.docs.isNotEmpty) {
         speechTiming = onlineSessionCapturedDataQS.docs.first.reference
             .collection("CapturedTimingData")

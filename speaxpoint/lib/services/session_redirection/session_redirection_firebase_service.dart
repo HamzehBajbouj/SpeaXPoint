@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:multiple_result/multiple_result.dart';
 import 'package:speaxpoint/models/allocated_role_player.dart';
+import 'package:speaxpoint/models/chapter_meeting.dart';
 import 'package:speaxpoint/services/meeting_arrangement/common_services/meeting_arrangement_common_firebase_services.dart';
 import 'package:speaxpoint/services/session_redirection/i_session_redirection_service.dart';
 
@@ -229,6 +232,39 @@ class SessionRedirectionFirebaseService extends ISessionRedirectionService {
                 "SessionRedirectionFirebaseService.leaveTheChapterMeetingSessionGuestUser()",
             message: e.toString()),
       );
+    }
+  }
+
+  @override
+  Stream<ChapterMeeting> getChapterMeetingLiveDataDetails(
+      {required bool isAppGuest,
+      String? chapterMeetingId,
+      String? chapterMeetingInvitationCode}) async* {
+    Stream<ChapterMeeting> chapterMeeting = Stream.empty();
+    try {
+      if (isAppGuest) {
+        chapterMeeting = _chapterMeetingsCollection
+            .where("invitationCode", isEqualTo: chapterMeetingInvitationCode)
+            .limit(1) // Retrieve only the first document
+            .snapshots()
+            .map((QuerySnapshot querySnapshot) => ChapterMeeting.fromJson(
+                querySnapshot.docs[0].data() as Map<String, dynamic>));
+      } else {
+        chapterMeeting = _chapterMeetingsCollection
+            .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+            .limit(1) // Retrieve only the first document
+            .snapshots()
+            .map((QuerySnapshot querySnapshot) => ChapterMeeting.fromJson(
+                querySnapshot.docs[0].data() as Map<String, dynamic>));
+      }
+
+      yield* chapterMeeting;
+    } on FirebaseException catch (e) {
+      log("${e.code} ${e.message}");
+      yield* chapterMeeting;
+    } catch (e) {
+      log(e.toString());
+      yield* chapterMeeting;
     }
   }
 }

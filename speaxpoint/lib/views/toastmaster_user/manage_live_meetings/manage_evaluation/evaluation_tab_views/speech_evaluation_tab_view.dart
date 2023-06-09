@@ -108,295 +108,307 @@ class _SpeechEvaluationTabViewState extends State<SpeechEvaluationTabView> {
                                 _onlineSessionDetails.currentSpeakerName != null
                             ? _onlineSessionDetails.currentSpeakerName!
                             : "No Speaker Yet!"),
-                    checkIfCurrentSpeakerIsTheSameAsSpeechEvaluator(
-                            isAnAppGuest: widget.isAGuest,
-                            currentSelectSpeakerIsGuest:
-                                _onlineSessionDetails.isGuest!,
-                            loggedUserGuestInvitationCode:
-                                widget.guestInvitationCode,
-                            loggedUserToastmasterId: widget.toastmasterId,
-                            selectedSpeakerGuestInvitationCode:
-                                _onlineSessionDetails
-                                    .currentGuestSpeakerInvitationCode,
-                            selectedSpeakerToastmasterId: _onlineSessionDetails
-                                .currentSpeakerToastmasterId)
-                        ? Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const SizedBox(
-                                  height: 50,
-                                ),
-                                SvgPicture.asset(
-                                  fit: BoxFit.fill,
-                                  "assets/images/speech_to_text.svg",
-                                  allowDrawingOutsideViewBox: false,
-                                  width: 150,
-                                  height: 200,
-                                ),
-                                const SizedBox(
-                                  height: 30,
-                                ),
-                                Text(
-                                  _onlineSessionDetails
-                                              .thereIsSelectedSpeaker! &&
-                                          _onlineSessionDetails
-                                                  .currentSpeakerName !=
-                                              null
-                                      ? "You Can't Evaluate Yourself"
-                                      : "No Current Speaker Is Selected Yet",
-                                  style: const TextStyle(
-                                    fontFamily: CommonUIProperties.fontType,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(AppMainColors.p90),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                SizedBox(
-                                  width: 300,
-                                  child: Text(
+                    _onlineSessionDetails.thereIsSelectedSpeaker! &&
+                            _onlineSessionDetails.currentSpeakerName != null
+                        ? checkIfCurrentSpeakerIsTheSameAsSpeechEvaluator(
+                                isAnAppGuest: widget.isAGuest,
+                                currentSelectSpeakerIsGuest:
+                                    _onlineSessionDetails.isGuest!,
+                                loggedUserGuestInvitationCode:
+                                    widget.guestInvitationCode,
+                                loggedUserToastmasterId: widget.toastmasterId,
+                                selectedSpeakerGuestInvitationCode:
                                     _onlineSessionDetails
-                                                .thereIsSelectedSpeaker! &&
-                                            _onlineSessionDetails
-                                                    .currentSpeakerName !=
-                                                null
-                                        ? "Since you are currently performing your speech, you can not evaluate yourself."
-                                        : "There is no onging/prevoius speach yet, please wait until the VPE select the next speaker.",
-                                    maxLines: 4,
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                      fontFamily: CommonUIProperties.fontType,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.normal,
-                                      color: Color(AppMainColors.p50),
+                                        .currentGuestSpeakerInvitationCode,
+                                selectedSpeakerToastmasterId:
+                                    _onlineSessionDetails
+                                        .currentSpeakerToastmasterId)
+                            ? Center(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const SizedBox(
+                                      height: 50,
+                                    ),
+                                    SvgPicture.asset(
+                                      fit: BoxFit.fill,
+                                      "assets/images/speech_to_text.svg",
+                                      allowDrawingOutsideViewBox: false,
+                                      width: 150,
+                                      height: 200,
+                                    ),
+                                    const SizedBox(
+                                      height: 30,
+                                    ),
+                                    Text(
+                                      _onlineSessionDetails
+                                                  .thereIsSelectedSpeaker! &&
+                                              _onlineSessionDetails
+                                                      .currentSpeakerName !=
+                                                  null
+                                          ? "You Can't Evaluate Yourself"
+                                          : "No Current Speaker Is Selected Yet",
+                                      style: const TextStyle(
+                                        fontFamily: CommonUIProperties.fontType,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color(AppMainColors.p90),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    SizedBox(
+                                      width: 300,
+                                      child: Text(
+                                        _onlineSessionDetails
+                                                    .thereIsSelectedSpeaker! &&
+                                                _onlineSessionDetails
+                                                        .currentSpeakerName !=
+                                                    null
+                                            ? "Since you are currently performing your speech, you can not evaluate yourself."
+                                            : "There is no onging/prevoius speach yet, please wait until the VPE select the next speaker.",
+                                        maxLines: 4,
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                          fontFamily:
+                                              CommonUIProperties.fontType,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.normal,
+                                          color: Color(AppMainColors.p50),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Visibility(
+                                    visible: _hideWarningMessage,
+                                    child: const SizedBox(
+                                      height: 10,
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          )
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Visibility(
-                                visible: _hideWarningMessage,
-                                child: const SizedBox(
-                                  height: 10,
-                                ),
-                              ),
-                              Visibility(
-                                visible: _hideWarningMessage,
-                                child: RichText(
-                                  text: const TextSpan(
-                                    text: 'Warning : ',
-                                    style: TextStyle(
-                                        fontFamily: CommonUIProperties.fontType,
-                                        fontSize: 15,
-                                        color:
-                                            Color(AppMainColors.warningError75),
-                                        fontWeight: FontWeight.bold),
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                        text:
-                                            "only add the notes for you assigned speaker.",
+                                  Visibility(
+                                    visible: _hideWarningMessage,
+                                    child: RichText(
+                                      text: const TextSpan(
+                                        text: 'Warning : ',
                                         style: TextStyle(
-                                            fontWeight: FontWeight.normal),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              outlineTextField(
-                                keyboardType: TextInputType.text,
-                                controller: _noteTitleController,
-                                hintText: "Enter Note Title...",
-                                isRequired: false,
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              outlineTextField(
-                                keyboardType: TextInputType.text,
-                                controller: _noteContentController,
-                                hintText: "Enter Note Content...",
-                                isRequired: true,
-                                maxLines: 4,
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              outlinedButton(
-                                callBack: () async {
-                                  if (!_onlineSessionDetails
-                                      .thereIsSelectedSpeaker!) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      getSnackBar(
-                                        text: const Text(
-                                          "You Can't Add Note While No Speaker There Yet!",
-                                          style: TextStyle(
                                             fontFamily:
                                                 CommonUIProperties.fontType,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
-                                            color: Color(AppMainColors.p5),
+                                            fontSize: 15,
+                                            color: Color(
+                                                AppMainColors.warningError75),
+                                            fontWeight: FontWeight.bold),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text:
+                                                "only add the notes for you assigned speaker.",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.normal),
                                           ),
-                                        ),
-                                        color: const Color(
-                                            AppMainColors.warningError75),
+                                        ],
                                       ),
-                                    );
-                                  } else {
-                                    if (_formKey.currentState!.validate()) {
-                                      setState(() {
-                                        _hideWarningMessage = false;
-                                      });
-                                      await _manageEvaluationViewModel!
-                                          .addSpeechEvaluationNote(
-                                        evaluatedSpeakerIsGuest:
-                                            _onlineSessionDetails.isGuest!,
-                                        evaluatedSpeakerGuestInvitationCode:
-                                            _onlineSessionDetails
-                                                .currentGuestSpeakerInvitationCode,
-                                        evaluatedSpeakerToastmasterId:
-                                            _onlineSessionDetails
-                                                .currentSpeakerToastmasterId,
-                                        noteContent:
-                                            _noteContentController.text,
-                                        noteTitle: _noteTitleController.text,
-                                        chapterMeetingId:
-                                            widget.chapterMeetingId,
-                                        chapterMeetingInvitationCode:
-                                            widget.chapterMeetingInvitationCode,
-                                        takenByGuestInvitationCode:
-                                            widget.guestInvitationCode,
-                                        takenByToastmasterId:
-                                            widget.toastmasterId,
-                                      )
-                                          .then((_) {
-                                        _noteContentController.text = "";
-                                        _noteTitleController.text = "";
-                                      });
-                                    }
-                                  }
-                                },
-                                content: "Add Note",
-                                buttonColor: const Color(AppMainColors.p80),
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    "Evaluation Notes",
-                                    style: TextStyle(
-                                      fontFamily: CommonUIProperties.fontType,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color(AppMainColors.p90),
                                     ),
                                   ),
                                   const SizedBox(
-                                    width: 3,
+                                    height: 15,
                                   ),
-                                  _isLoadingRequest2
-                                      ? const Text(
-                                          "Loading...",
-                                          style: TextStyle(
-                                            height: 1.4,
-                                            fontFamily:
-                                                CommonUIProperties.fontType,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.normal,
-                                            color: Color(AppMainColors.p70),
-                                          ),
-                                        )
-                                      : textButtonWithTrailingIcon(
-                                          callBack: () {
-                                            displaySpeechesSpeakersDropMenu(
-                                              context: context,
-                                              dataList:
-                                                  generateSelectedListItems(
-                                                choices: _speechesSpeakersList
-                                                    .map((data) =>
-                                                        data.speakerName!)
-                                                    .toList(),
-                                                indexes: List.generate(
-                                                    _speechesSpeakersList
-                                                        .length,
-                                                    (index) => index),
+                                  outlineTextField(
+                                    keyboardType: TextInputType.text,
+                                    controller: _noteTitleController,
+                                    hintText: "Enter Note Title...",
+                                    isRequired: false,
+                                  ),
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  outlineTextField(
+                                    keyboardType: TextInputType.text,
+                                    controller: _noteContentController,
+                                    hintText: "Enter Note Content...",
+                                    isRequired: true,
+                                    maxLines: 4,
+                                  ),
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  outlinedButton(
+                                    callBack: () async {
+                                      if (!_onlineSessionDetails
+                                          .thereIsSelectedSpeaker!) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          getSnackBar(
+                                            text: const Text(
+                                              "You Can't Add Note While No Speaker There Yet!",
+                                              style: TextStyle(
+                                                fontFamily:
+                                                    CommonUIProperties.fontType,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                                color: Color(AppMainColors.p5),
                                               ),
-                                              selectedItemsCallBack:
-                                                  (selectedItemsList) {
-                                                SelectedListItem? tempItem;
-                                                for (var item
-                                                    in selectedItemsList) {
-                                                  if (item
-                                                      is SelectedListItem) {
-                                                    tempItem = item;
-                                                  }
-                                                }
-                                                setState(
-                                                  () {
-                                                    _selectedSpeechSpeaker =
-                                                        _speechesSpeakersList[
-                                                            int.parse(tempItem!
-                                                                .value!)];
+                                            ),
+                                            color: const Color(
+                                                AppMainColors.warningError75),
+                                          ),
+                                        );
+                                      } else {
+                                        if (_formKey.currentState!.validate()) {
+                                          setState(() {
+                                            _hideWarningMessage = false;
+                                          });
+                                          await _manageEvaluationViewModel!
+                                              .addSpeechEvaluationNote(
+                                            evaluatedSpeakerIsGuest:
+                                                _onlineSessionDetails.isGuest!,
+                                            evaluatedSpeakerGuestInvitationCode:
+                                                _onlineSessionDetails
+                                                    .currentGuestSpeakerInvitationCode,
+                                            evaluatedSpeakerToastmasterId:
+                                                _onlineSessionDetails
+                                                    .currentSpeakerToastmasterId,
+                                            noteContent:
+                                                _noteContentController.text,
+                                            noteTitle:
+                                                _noteTitleController.text,
+                                            chapterMeetingId:
+                                                widget.chapterMeetingId,
+                                            chapterMeetingInvitationCode: widget
+                                                .chapterMeetingInvitationCode,
+                                            takenByGuestInvitationCode:
+                                                widget.guestInvitationCode,
+                                            takenByToastmasterId:
+                                                widget.toastmasterId,
+                                          )
+                                              .then((_) {
+                                            _noteContentController.text = "";
+                                            _noteTitleController.text = "";
+                                          });
+                                        }
+                                      }
+                                    },
+                                    content: "Add Note",
+                                    buttonColor: const Color(AppMainColors.p80),
+                                  ),
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        "Evaluation Notes",
+                                        style: TextStyle(
+                                          fontFamily:
+                                              CommonUIProperties.fontType,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color(AppMainColors.p90),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 3,
+                                      ),
+                                      _isLoadingRequest2
+                                          ? const Text(
+                                              "Loading...",
+                                              style: TextStyle(
+                                                height: 1.4,
+                                                fontFamily:
+                                                    CommonUIProperties.fontType,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.normal,
+                                                color: Color(AppMainColors.p70),
+                                              ),
+                                            )
+                                          : textButtonWithTrailingIcon(
+                                              callBack: () {
+                                                displaySpeechesSpeakersDropMenu(
+                                                  context: context,
+                                                  dataList:
+                                                      generateSelectedListItems(
+                                                    choices:
+                                                        _speechesSpeakersList
+                                                            .map((data) => data
+                                                                .speakerName!)
+                                                            .toList(),
+                                                    indexes: List.generate(
+                                                        _speechesSpeakersList
+                                                            .length,
+                                                        (index) => index),
+                                                  ),
+                                                  selectedItemsCallBack:
+                                                      (selectedItemsList) {
+                                                    SelectedListItem? tempItem;
+                                                    for (var item
+                                                        in selectedItemsList) {
+                                                      if (item
+                                                          is SelectedListItem) {
+                                                        tempItem = item;
+                                                      }
+                                                    }
+                                                    setState(
+                                                      () {
+                                                        _selectedSpeechSpeaker =
+                                                            _speechesSpeakersList[
+                                                                int.parse(
+                                                                    tempItem!
+                                                                        .value!)];
+                                                      },
+                                                    );
                                                   },
                                                 );
                                               },
-                                            );
-                                          },
-                                          content: Text(
-                                            _selectedSpeechSpeaker == null
-                                                ? "Select Speaker"
-                                                : _selectedSpeechSpeaker!
-                                                    .speakerName!,
-                                            style: const TextStyle(
-                                                fontSize: 17,
-                                                color: Color(AppMainColors.p80),
-                                                fontFamily:
-                                                    CommonUIProperties.fontType,
-                                                fontWeight: FontWeight.normal),
-                                          ),
-                                          trailingIcon: const Icon(
-                                            Icons.arrow_drop_down,
-                                            size: 30,
-                                            color: Color(AppMainColors.p20),
-                                          ),
-                                        ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              _selectedSpeechSpeaker == null
-                                  ? Container()
-                                  : SizedBox(
-                                      height: 200,
-                                      child: Expanded(
-                                        child: StreamBuilder<
-                                            List<SpeechEvaluationNote>>(
-                                          stream: _manageEvaluationViewModel!
-                                              .getTakenNotes(
-                                                  chapterMeetingId: widget
-                                                      .chapterMeetingId,
+                                              content: Text(
+                                                _selectedSpeechSpeaker == null
+                                                    ? "Select Speaker"
+                                                    : _selectedSpeechSpeaker!
+                                                        .speakerName!,
+                                                style: const TextStyle(
+                                                    fontSize: 17,
+                                                    color: Color(
+                                                        AppMainColors.p80),
+                                                    fontFamily:
+                                                        CommonUIProperties
+                                                            .fontType,
+                                                    fontWeight:
+                                                        FontWeight.normal),
+                                              ),
+                                              trailingIcon: const Icon(
+                                                Icons.arrow_drop_down,
+                                                size: 30,
+                                                color: Color(AppMainColors.p20),
+                                              ),
+                                            ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  _selectedSpeechSpeaker == null
+                                      ? Container()
+                                      : SizedBox(
+                                          height: 200,
+                                          child: Expanded(
+                                            child: StreamBuilder<
+                                                List<SpeechEvaluationNote>>(
+                                              stream: _manageEvaluationViewModel!.getTakenNotes(
+                                                  chapterMeetingId:
+                                                      widget.chapterMeetingId,
                                                   isAGuest: widget.isAGuest,
                                                   chapterMeetingInvitationCode:
                                                       widget
                                                           .chapterMeetingInvitationCode,
                                                   guestInvitationCode: widget
                                                       .guestInvitationCode,
-                                                  toastmasterId: widget
-                                                      .toastmasterId,
+                                                  toastmasterId:
+                                                      widget.toastmasterId,
                                                   evaluatedSpeakerGuestInvitationCode:
                                                       _selectedSpeechSpeaker!
                                                           .guestInvitationCode,
@@ -406,118 +418,162 @@ class _SpeechEvaluationTabViewState extends State<SpeechEvaluationTabView> {
                                                   evaluatedSpeakerToastmasteId:
                                                       _selectedSpeechSpeaker!
                                                           .toastmasterId),
-                                          builder: (context, snapshot) {
-                                            if (!snapshot.hasData) {
-                                              return const Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color:
-                                                      Color(AppMainColors.p40),
-                                                ),
-                                              );
-                                            } else {
-                                              final List<SpeechEvaluationNote>
-                                                  notes = snapshot.data!;
-                                              notes.sort((a, b) => b
-                                                  .noteTakenTime!
-                                                  .compareTo(a.noteTakenTime!));
-
-                                              if (notes.isEmpty) {
-                                                return const Center(
-                                                  child: Text(
-                                                    "You Have Not Taken Any Evaluation Notes Yet.",
-                                                    style: TextStyle(
-                                                      fontFamily:
-                                                          CommonUIProperties
-                                                              .fontType,
-                                                      fontSize: 13,
-                                                      fontWeight:
-                                                          FontWeight.normal,
+                                              builder: (context, snapshot) {
+                                                if (!snapshot.hasData) {
+                                                  return const Center(
+                                                    child:
+                                                        CircularProgressIndicator(
                                                       color: Color(
-                                                          AppMainColors.p50),
+                                                          AppMainColors.p40),
                                                     ),
-                                                  ),
-                                                );
-                                              } else {
-                                                return ListView.separated(
-                                                  itemCount: notes.length,
-                                                  separatorBuilder:
-                                                      (_, index) =>
-                                                          const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    return evaluationNoteCard(
-                                                        iconButtonAction:
-                                                            () async {
-                                                          showMaterialModalBottomSheet(
-                                                            enableDrag: false,
-                                                            backgroundColor:
-                                                                const Color(
-                                                                    AppMainColors
-                                                                        .backgroundAndContent),
-                                                            shape:
-                                                                const RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .only(
-                                                                topLeft: Radius
-                                                                    .circular(
+                                                  );
+                                                } else {
+                                                  final List<
+                                                          SpeechEvaluationNote>
+                                                      notes = snapshot.data!;
+                                                  notes.sort((a, b) => b
+                                                      .noteTakenTime!
+                                                      .compareTo(
+                                                          a.noteTakenTime!));
+
+                                                  if (notes.isEmpty) {
+                                                    return const Center(
+                                                      child: Text(
+                                                        "You Have Not Taken Any Evaluation Notes Yet.",
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              CommonUIProperties
+                                                                  .fontType,
+                                                          fontSize: 13,
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                          color: Color(
+                                                              AppMainColors
+                                                                  .p50),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  } else {
+                                                    return ListView.separated(
+                                                      itemCount: notes.length,
+                                                      separatorBuilder:
+                                                          (_, index) =>
+                                                              const SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        return evaluationNoteCard(
+                                                            iconButtonAction:
+                                                                () async {
+                                                              showMaterialModalBottomSheet(
+                                                                enableDrag:
+                                                                    false,
+                                                                backgroundColor:
+                                                                    const Color(
+                                                                        AppMainColors
+                                                                            .backgroundAndContent),
+                                                                shape:
+                                                                    const RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .only(
+                                                                    topLeft: Radius.circular(
                                                                         CommonUIProperties
                                                                             .modalBottomSheetsEdges),
-                                                                topRight: Radius
-                                                                    .circular(
+                                                                    topRight: Radius.circular(
                                                                         CommonUIProperties
                                                                             .modalBottomSheetsEdges),
-                                                              ),
-                                                            ),
-                                                            context: context,
-                                                            builder: (context) =>
-                                                                EvaluationNoteBottomSheet(
-                                                              isGeneralEvaluation:
-                                                                  false,
-                                                              chapterMeetingId:
-                                                                  widget
-                                                                      .chapterMeetingId,
-                                                              isAGuest: widget
-                                                                  .isAGuest,
-                                                              evaluationNote:
-                                                                  notes[index],
-                                                              chapterMeetingInvitationCode:
-                                                                  widget
-                                                                      .chapterMeetingInvitationCode,
-                                                              guestInvitationCode:
-                                                                  widget
-                                                                      .guestInvitationCode,
-                                                              toastmasterId: widget
-                                                                  .toastmasterId,
-                                                              evaluatedSpeakerIsGuest:
-                                                                  _selectedSpeechSpeaker!
-                                                                      .isAnAppGuest,
-                                                              evaluatedSpeakerGuestInvitationCode:
-                                                                  _selectedSpeechSpeaker!
-                                                                      .guestInvitationCode,
-                                                              evaluatedSpeakerToastmasterId:
-                                                                  _selectedSpeechSpeaker!
-                                                                      .toastmasterId,
-                                                            ),
-                                                          );
-                                                        },
-                                                        noteContent:
-                                                            notes[index]
+                                                                  ),
+                                                                ),
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) =>
+                                                                        EvaluationNoteBottomSheet(
+                                                                  isGeneralEvaluation:
+                                                                      false,
+                                                                  chapterMeetingId:
+                                                                      widget
+                                                                          .chapterMeetingId,
+                                                                  isAGuest: widget
+                                                                      .isAGuest,
+                                                                  evaluationNote:
+                                                                      notes[
+                                                                          index],
+                                                                  chapterMeetingInvitationCode:
+                                                                      widget
+                                                                          .chapterMeetingInvitationCode,
+                                                                  guestInvitationCode:
+                                                                      widget
+                                                                          .guestInvitationCode,
+                                                                  toastmasterId:
+                                                                      widget
+                                                                          .toastmasterId,
+                                                                  evaluatedSpeakerIsGuest:
+                                                                      _selectedSpeechSpeaker!
+                                                                          .isAnAppGuest,
+                                                                  evaluatedSpeakerGuestInvitationCode:
+                                                                      _selectedSpeechSpeaker!
+                                                                          .guestInvitationCode,
+                                                                  evaluatedSpeakerToastmasterId:
+                                                                      _selectedSpeechSpeaker!
+                                                                          .toastmasterId,
+                                                                ),
+                                                              );
+                                                            },
+                                                            noteContent: notes[
+                                                                    index]
                                                                 .noteContent!,
-                                                        noteTitle: notes[index]
-                                                            .noteTitle);
-                                                  },
-                                                );
-                                              }
-                                            }
-                                          },
-                                        ),
-                                      ),
-                                    )
-                            ],
+                                                            noteTitle:
+                                                                notes[index]
+                                                                    .noteTitle);
+                                                      },
+                                                    );
+                                                  }
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                        )
+                                ],
+                              )
+                        : SizedBox(
+                            height: 370,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                SizedBox(
+                                  height: 80,
+                                ),
+                                Text(
+                                  "No Current Speaker Is Selected Yet",
+                                  style: TextStyle(
+                                    fontFamily: CommonUIProperties.fontType,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(AppMainColors.p90),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                SizedBox(
+                                  width: 300,
+                                  child: Text(
+                                    "There is no onging/prevoius speach yet, please wait until the VPE select the next speaker.",
+                                    maxLines: 4,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: CommonUIProperties.fontType,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.normal,
+                                      color: Color(AppMainColors.p50),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                   ],
                 ),

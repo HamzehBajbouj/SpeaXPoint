@@ -1,4 +1,5 @@
 import 'package:multiple_result/multiple_result.dart';
+import 'package:speaxpoint/models/chapter_meeting.dart';
 import 'package:speaxpoint/services/failure.dart';
 import 'package:speaxpoint/services/session_redirection/i_session_redirection_service.dart';
 import 'package:speaxpoint/util/constants/common_enums.dart';
@@ -79,5 +80,16 @@ class SessionRedirectionViewModel extends BaseViewModel {
           .leaveTheChapterMeetingSessionAppUser(
               chapterMeetingId: chapterMeetingId!);
     }
+  }
+
+  Stream<ChapterMeeting> getChapterMeetingLiveDetails(
+      {required bool isAppGuest,
+      String? chapterMeetingId,
+      String? chapterMeetingInvitationCode}) {
+    return _sessionRedirectionService.getChapterMeetingLiveDataDetails(
+      isAppGuest: isAppGuest,
+      chapterMeetingId: chapterMeetingId,
+      chapterMeetingInvitationCode: chapterMeetingInvitationCode,
+    );
   }
 }

@@ -101,7 +101,7 @@ class _SpeechEvaluationTabViewState extends State<SpeechEvaluationTabView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    currentSpeechSpeakerCard(
+                    generalMeetingGeneralInfoCard(
                         title: "Current Speaker",
                         content: _onlineSessionDetails
                                     .thereIsSelectedSpeaker! &&

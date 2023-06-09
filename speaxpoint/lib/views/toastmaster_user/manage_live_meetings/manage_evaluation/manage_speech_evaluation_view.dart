@@ -57,7 +57,8 @@ class _ManageSpeechEvaluationViewState extends State<ManageSpeechEvaluationView>
                 borderRadius: BorderRadius.circular(
                   5,
                 ),
-                border: Border.all(color: Color(AppMainColors.p5), width: 1.3),
+                border: Border.all(
+                    color: const Color(AppMainColors.p5), width: 1.3),
               ),
               // indicatorSize: TabBarIndicatorSize.label,
               labelColor: const Color(AppMainColors.p5),

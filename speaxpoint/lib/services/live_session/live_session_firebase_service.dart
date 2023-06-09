@@ -17,13 +17,24 @@ class LiveSessionFirebaseService implements ILiveSessionService {
       FirebaseFirestore.instance.collection('OnlineSessionCapturedData');
 
   @override
-  Future<Result<String, Failure>> getSessionLaunchingTime(
-      {required String chapterMeetingId}) async {
+  Future<Result<String, Failure>> getSessionLaunchingTime({
+    required bool isAnAppGuest,
+    String? chapterMeetingId,
+    String? chapterMeetingInvitationCode,
+  }) async {
     String launchTime = "00:00:00";
     try {
-      QuerySnapshot chapterMeetingQS = await _chapterMeetingsC
-          .where("chapterMeetingId", isEqualTo: chapterMeetingId)
-          .get();
+      QuerySnapshot chapterMeetingQS;
+      if (isAnAppGuest) {
+        chapterMeetingQS = await _chapterMeetingsC
+            .where("invitationCode", isEqualTo: chapterMeetingInvitationCode)
+            .get();
+      } else {
+        chapterMeetingQS = await _chapterMeetingsC
+            .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+            .get();
+      }
+
       if (chapterMeetingQS.docs.isNotEmpty) {
         QuerySnapshot onlineSessionSQ = await chapterMeetingQS
             .docs.first.reference
@@ -363,7 +374,6 @@ class LiveSessionFirebaseService implements ILiveSessionService {
     }
   }
 
-
   @override
   Stream<OnlineSession> getOnlineSessionDetails(
       {required bool isAnAppGuest,
@@ -496,5 +506,4 @@ class LiveSessionFirebaseService implements ILiveSessionService {
       );
     }
   }
-
 }

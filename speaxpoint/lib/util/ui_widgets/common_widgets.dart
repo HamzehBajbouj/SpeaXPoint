@@ -716,61 +716,61 @@ Widget timeoutErrorMessage(
   it's used almost in all the role players tools screens
 */
 
-Widget currentSpeechSpeakerCard(
-    {required String title, required String content}) {
-  return Container(
-    constraints: const BoxConstraints(
-      minHeight: 30,
-      maxHeight: 40,
-    ),
-    decoration: BoxDecoration(
-      border: Border.all(
-        color: const Color(AppMainColors.p40),
-        width: 1.3,
-      ),
-      borderRadius: BorderRadius.circular(CommonUIProperties.cardRoundedEdges),
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(10),
-          child: Center(
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                textAlign: TextAlign.center,
-                title,
-                style: const TextStyle(
-                  fontFamily: CommonUIProperties.fontType,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Color(AppMainColors.p50),
-                ),
-              ),
-            ),
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.all(10),
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(
-              content,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontFamily: CommonUIProperties.fontType,
-                fontSize: 16,
-                fontWeight: FontWeight.normal,
-                color: Color(AppMainColors.p50),
-              ),
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-}
+// Widget currentSpeechSpeakerCard(
+//     {required String title, required String content}) {
+//   return Container(
+//     constraints: const BoxConstraints(
+//       minHeight: 30,
+//       maxHeight: 40,
+//     ),
+//     decoration: BoxDecoration(
+//       border: Border.all(
+//         color: const Color(AppMainColors.p40),
+//         width: 1.3,
+//       ),
+//       borderRadius: BorderRadius.circular(CommonUIProperties.cardRoundedEdges),
+//     ),
+//     child: Row(
+//       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//       children: [
+//         Container(
+//           padding: const EdgeInsets.all(10),
+//           child: Center(
+//             child: FittedBox(
+//               fit: BoxFit.scaleDown,
+//               child: Text(
+//                 textAlign: TextAlign.center,
+//                 title,
+//                 style: const TextStyle(
+//                   fontFamily: CommonUIProperties.fontType,
+//                   fontSize: 16,
+//                   fontWeight: FontWeight.w500,
+//                   color: Color(AppMainColors.p50),
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ),
+//         Container(
+//           padding: const EdgeInsets.all(10),
+//           child: FittedBox(
+//             fit: BoxFit.scaleDown,
+//             child: Text(
+//               content,
+//               overflow: TextOverflow.ellipsis,
+//               style: const TextStyle(
+//                 fontFamily: CommonUIProperties.fontType,
+//                 fontSize: 16,
+//                 fontWeight: FontWeight.normal,
+//                 color: Color(AppMainColors.p50),
+//               ),
+//             ),
+//           ),
+//         ),
+//       ],
+//     ),
+//   );
+// }
 
 void displaySpeechesSpeakersDropMenu({
   required List<SelectedListItem> dataList,

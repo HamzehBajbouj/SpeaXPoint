@@ -48,8 +48,6 @@ class _SpeechObservationsTabViewBarState
           ),
           child: TabBar(
             controller: _tabController,
-            // padding:
-            //     const EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 5),
             indicator: BoxDecoration(
               borderRadius: BorderRadius.circular(
                 5,
@@ -57,7 +55,6 @@ class _SpeechObservationsTabViewBarState
               border:
                   Border.all(color: const Color(AppMainColors.p5), width: 1.3),
             ),
-            // indicatorSize: TabBarIndicatorSize.label,
             labelColor: const Color(AppMainColors.p5),
             indicatorColor: Colors.white,
             unselectedLabelColor: const Color(AppMainColors.p80),

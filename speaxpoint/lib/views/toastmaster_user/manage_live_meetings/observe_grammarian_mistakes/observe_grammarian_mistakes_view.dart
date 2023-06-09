@@ -73,7 +73,7 @@ class _ObserveGrammarianMistakesScreenState
                 padding: const EdgeInsets.only(top: 15, bottom: 20),
                 child: Column(
                   children: [
-                    currentSpeechSpeakerCard(
+                    generalMeetingGeneralInfoCard(
                         title: "Current Speaker",
                         content: _onlineSessionDetails
                                     .thereIsSelectedSpeaker! &&

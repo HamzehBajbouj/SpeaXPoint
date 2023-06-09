@@ -65,7 +65,7 @@ class _CountTimeFillersViewState extends State<CountTimeFillersView> {
             padding: const EdgeInsets.only(top: 15, bottom: 20),
             child: Column(
               children: [
-                currentSpeechSpeakerCard(
+                generalMeetingGeneralInfoCard(
                     title: "Current Speaker",
                     content: _onlineSessionDetails.thereIsSelectedSpeaker! &&
                             _onlineSessionDetails.currentSpeakerName != null

@@ -10,7 +10,7 @@ import 'package:speaxpoint/util/ui_widgets/buttons.dart';
 import 'package:speaxpoint/util/ui_widgets/common_manipluating_methods.dart';
 import 'package:speaxpoint/util/ui_widgets/common_widgets.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/grammatical_observation_view_model.dart';
-import 'package:speaxpoint/views/toastmaster_user/manage_live_meetings/observe_grammarian_mistakes/grammatical_note_bottom_sheet.dart';
+import 'package:speaxpoint/views/toastmaster_user/bottom_sheets_widgets/grammatical_note_bottom_sheet.dart';
 
 class GrammaticalNotes extends StatefulWidget {
   const GrammaticalNotes({

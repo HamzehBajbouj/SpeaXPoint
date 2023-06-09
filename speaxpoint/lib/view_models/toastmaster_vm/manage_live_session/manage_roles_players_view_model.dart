@@ -2,18 +2,27 @@ import 'package:multiple_result/multiple_result.dart';
 import 'package:speaxpoint/models/online_session_captured_data.dart';
 import 'package:speaxpoint/services/failure.dart';
 import 'package:speaxpoint/services/live_session/i_live_session_service.dart';
-import 'package:speaxpoint/view_models/base_view_mode.dart';
+import 'package:speaxpoint/view_models/toastmaster_vm/manage_live_session/common_live_session_method_view_model.dart';
 
-class ManageRolesPlayersViewModel extends BaseViewModel {
+class ManageRolesPlayersViewModel extends CommonLiveSessionMethodsViewModel {
   final ILiveSessionService _liveSessionService;
 
-  ManageRolesPlayersViewModel(this._liveSessionService);
+  ManageRolesPlayersViewModel(this._liveSessionService)
+      : super(_liveSessionService);
 
-  Future<DateTime> getLaunchTime({required String chapterMeetingId}) async {
+  Future<DateTime> getLaunchTime({
+    required bool isAnAppGuest,
+    String? chapterMeetingId,
+    String? chapterMeetingInvitationCode,
+  }) async {
     setLoading(loading: true);
     String launchTime = "00:00:00";
     await _liveSessionService
-        .getSessionLaunchingTime(chapterMeetingId: chapterMeetingId)
+        .getSessionLaunchingTime(
+      isAnAppGuest: isAnAppGuest,
+      chapterMeetingId: chapterMeetingId,
+      chapterMeetingInvitationCode: chapterMeetingInvitationCode,
+    )
         .then(
       (value) {
         value.whenSuccess(

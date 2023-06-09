@@ -43,13 +43,7 @@ class _ManageRolePlayersViewState extends State<ManageRolesPlayersView> {
     super.dispose();
   }
 
-  void _startTimer(DateTime startTime) {
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      setState(() {
-        _formattedTime = formatTime(DateTime.now().difference(startTime));
-      });
-    });
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -93,8 +87,12 @@ class _ManageRolePlayersViewState extends State<ManageRolesPlayersView> {
                 height: 10,
               ),
               FutureBuilder<DateTime>(
-                future: _manageRolesPlayersViewModel!
-                    .getLaunchTime(chapterMeetingId: widget.chapterMeetingId),
+                future: _manageRolesPlayersViewModel!.getLaunchTime(
+                  chapterMeetingId: widget.chapterMeetingId,
+                  //false since he is the VPE of education so he is always an app guest
+                  //and no need to pass anything from the other screen via the constructors
+                  isAnAppGuest: false,
+                ),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     _startTimer(snapshot.data!);
@@ -263,5 +261,12 @@ class _ManageRolePlayersViewState extends State<ManageRolesPlayersView> {
       default:
         return const Color(AppMainColors.warningError75);
     }
+  }
+    void _startTimer(DateTime startTime) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      setState(() {
+        _formattedTime = formatTime(DateTime.now().difference(startTime));
+      });
+    });
   }
 }

@@ -10,7 +10,9 @@ abstract class ILiveSessionService {
   */
 
   Future<Result<String, Failure>> getSessionLaunchingTime({
-    required String chapterMeetingId,
+        required bool isAnAppGuest,
+     String? chapterMeetingId,
+       String? chapterMeetingInvitationCode,
   });
 
   Stream<int> getNumberOfOnlinePeople({

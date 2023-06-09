@@ -163,7 +163,7 @@ class _TimeSpeakerScreenState extends State<TimeSpeakerView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    currentSpeechSpeakerCard(
+                    generalMeetingGeneralInfoCard(
                         title: "Current Speaker",
                         content: _onlineSessionDetails.thereIsSelectedSpeaker!
                             ? _onlineSessionDetails.currentSpeakerName!

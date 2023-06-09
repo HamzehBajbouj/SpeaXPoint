@@ -194,6 +194,7 @@ Future<void> initServiceLocator() async {
     () => ManageChapterMeetingAnnouncementViewModel(
       serviceLocator<IManageChapterMeeingAnnouncementsService>(),
       serviceLocator<IManageMeetingAgendaService>(),
+      serviceLocator<IAllocateRolePlayersService>(),
     ),
   );
   serviceLocator.registerLazySingleton<SearchChapterMeetingViewModel>(

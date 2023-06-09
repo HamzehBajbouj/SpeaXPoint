@@ -10,6 +10,7 @@ abstract class IAllocateRolePlayersService
     extends IMeetingArrangementCommonServices {
   Future<Result<Unit, Failure>> deleteAllocatedRolePlayer(
       String chapterMeetingId, int allocatedRolePlayerUniqueId);
+
   Future<Result<Unit, Failure>> allocateNewRolePlayer(String chapterMeetingId,
       AllocatedRolePlayer allocatedRolePlayer, bool deteleVolunteerSlot);
 
@@ -47,5 +48,13 @@ abstract class IAllocateRolePlayersService
     required String chapterMeetingId,
     required int volunteerSlotId,
     required SlotApplicant slotApplicant,
+  });
+
+//this API service is used to allow an app user to join the session from the annoucemenet of the chapter meeting
+//from the Add To Schedule Button
+  Future<Result<Unit, Failure>> allocateChapterMeetingVisitor({
+    required String chapterMeetingId,
+    required String clubId,
+    required AllocatedRolePlayer allocatedRolePlayer,
   });
 }

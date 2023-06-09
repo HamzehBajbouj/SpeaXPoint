@@ -620,4 +620,102 @@ class AllocateRolePlayerFirebaseService
       );
     }
   }
+
+  @override
+  Future<Result<Unit, Failure>> allocateChapterMeetingVisitor(
+      {required String chapterMeetingId,
+      required String clubId,
+      required AllocatedRolePlayer allocatedRolePlayer}) async {
+    try {
+      QuerySnapshot chapterMeetingsQS = await _chapterMeetingsCollection
+          .where("clubId", isEqualTo: clubId)
+          .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+          .get();
+      if (chapterMeetingsQS.docs.isNotEmpty) {
+        CollectionReference allocatedRolePlayersC = chapterMeetingsQS
+            .docs.first.reference
+            .collection("AllocatedRolePlayers");
+
+        QuerySnapshot allocatedRolePlayerQS;
+        //check first if the meeting visitor is already there or not
+        allocatedRolePlayerQS = await allocatedRolePlayersC
+            .where("toastmasterId",
+                isEqualTo: allocatedRolePlayer.toastmasterId)
+            .get();
+
+        if (allocatedRolePlayerQS.docs.isNotEmpty) {
+          return const Error(
+            Failure(
+                code: "Meeting-Visitor-Id-Is-Existed",
+                location:
+                    "AllocateRolePlayerFirebaseService.allocateChapterMeetingVisitor()",
+                message:
+                    "You have previously joined/added to this chapter meeting session."),
+          );
+        } else {
+          allocatedRolePlayerQS = await allocatedRolePlayersC.get();
+
+          //this list is need to obtains the latest unique id number
+          List<AllocatedRolePlayer> allocatedRolePlayerList =
+              allocatedRolePlayerQS.docs
+                  .map((e) => AllocatedRolePlayer.fromJson(
+                      e.data() as Map<String, dynamic>))
+                  .toList();
+
+          int uniqueId = _getlNewtUniqueIdNumber(allocatedRolePlayerList);
+          allocatedRolePlayer.allocatedRolePlayerUniqueId = uniqueId;
+
+          allocatedRolePlayersC
+              .doc(uniqueId.toString())
+              .set(allocatedRolePlayer.toJson())
+              .then(
+            (_) async {
+              //don't add it to allocatedPlayersQuickSearchCollection if it's a guest
+              if (allocatedRolePlayer.allocatedRolePlayerType !=
+                  AllocatedRolePlayerType.Guest.name) {
+                //this will add a quick search data, read the file about AllocatedPlayersQuickSearch collection
+                //to understand more about it.
+                await _allocatedPlayersQuickSearchCollection.add(
+                  {
+                    'chapterMeetingId': chapterMeetingId,
+                    'toastmasterId': allocatedRolePlayer.toastmasterId,
+                    'allocatedRolePlayerType':
+                        allocatedRolePlayer.allocatedRolePlayerType,
+                    'roleName': allocatedRolePlayer.roleName,
+                    'roleOrderPlace': allocatedRolePlayer.roleOrderPlace,
+                  },
+                );
+              }
+            },
+          );
+        }
+      } else {
+        return Error(
+          Failure(
+              code: "No-Chapter-Meeting-Found",
+              location:
+                  "AllocateRolePlayerFirebaseService.allocateChapterMeetingVisitor()",
+              message:
+                  "Could not find any chapter meeting with Id : $chapterMeetingId"),
+        );
+      }
+      return Success.unit();
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location:
+                "AllocateRolePlayerFirebaseService.allocateChapterMeetingVisitor()",
+            message: e.message ?? "Database Error While adding MeetingVisitor"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location:
+                "AllocateRolePlayerFirebaseService.allocateChapterMeetingVisitor()",
+            message: e.toString()),
+      );
+    }
+  }
 }

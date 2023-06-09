@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:multiple_result/multiple_result.dart';
+import 'package:speaxpoint/models/allocated_role_player.dart';
 import 'package:speaxpoint/models/annoucement/announcement.dart';
 import 'package:speaxpoint/models/annoucement/chapter_meeting_announcement.dart';
 import 'package:speaxpoint/models/meeting_agenda.dart';
 import 'package:speaxpoint/services/failure.dart';
+import 'package:speaxpoint/services/meeting_arrangement/allocate_role_players/i_allocate_role_players_service.dart';
 import 'package:speaxpoint/services/meeting_arrangement/manage_agenda/i_manage_meeting_agenda_service.dart';
 import 'package:speaxpoint/services/meeting_arrangement/manage_announcements/i_manage_chapter_meeting_announcements_service.dart';
 import 'package:speaxpoint/util/constants/common_enums.dart';
@@ -13,6 +15,7 @@ class ManageChapterMeetingAnnouncementViewModel extends BaseViewModel {
   final IManageChapterMeeingAnnouncementsService
       _manageChapterMeeingAnnouncementsService;
   final IManageMeetingAgendaService _manageMeetingAgendaService;
+  final IAllocateRolePlayersService _allocateRolePlayersService;
 
   ChapterMeetingAnnouncement? _chapterMeetingAnnouncement;
   ChapterMeetingAnnouncement? get chapterMeetingAnnouncement =>
@@ -42,8 +45,10 @@ class ManageChapterMeetingAnnouncementViewModel extends BaseViewModel {
   bool allowToAnnounceChpater = false;
 
   ManageChapterMeetingAnnouncementViewModel(
-      this._manageChapterMeeingAnnouncementsService,
-      this._manageMeetingAgendaService);
+    this._manageChapterMeeingAnnouncementsService,
+    this._manageMeetingAgendaService,
+    this._allocateRolePlayersService,
+  );
 
   //This method will load all the available announcements
   Stream<List<Map<String, dynamic>>> loadAllAnnouncements(
@@ -222,6 +227,7 @@ class ManageChapterMeetingAnnouncementViewModel extends BaseViewModel {
 
   Future<ChapterMeetingAnnouncement?> getChapterMeetingAnnouncementDetails(
       {required String chapterMeetingId}) async {
+    setLoading(loading: true);
     ChapterMeetingAnnouncement? chapterMeetingAnnouncement;
     await _manageChapterMeeingAnnouncementsService
         .getChapterMeetingAnnouncement(chapterMeetingId: chapterMeetingId)
@@ -234,7 +240,32 @@ class ManageChapterMeetingAnnouncementViewModel extends BaseViewModel {
         );
       },
     );
-
+    setLoading(loading: false);
     return chapterMeetingAnnouncement;
+  }
+
+  Future<Result<Unit, Failure>> addMeetingToSchedule({
+    required String chapterMeetingId,
+    required String clubId,
+  }) async {
+    setLoading(loading: true);
+    Result<Unit, Failure> temp =
+        await _allocateRolePlayersService.allocateChapterMeetingVisitor(
+      chapterMeetingId: chapterMeetingId,
+      clubId: clubId,
+      allocatedRolePlayer: AllocatedRolePlayer(
+        allocatedRolePlayerType: AllocatedRolePlayerType.OtherClubMember.name,
+        roleOrderPlace: 0,
+        roleName: LisrOfRolesPlayers.MeetingVisitor.name,
+        rolePlayerName:
+            await getDataFromLocalDataBase(keySearch: "toastmasterName"),
+        toastmasterId:
+            await getDataFromLocalDataBase(keySearch: "toastmasterId"),
+        toastmasterUsername:
+            await getDataFromLocalDataBase(keySearch: "toastmasterUsername"),
+      ),
+    );
+    setLoading(loading: false);
+    return temp;
   }
 }

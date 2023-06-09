@@ -8,8 +8,11 @@ import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/manage_chapter_meeting_announcement_view_model.dart';
+import 'package:speaxpoint/views/toastmaster_user/chapter_meeting_announcements/dialogs/add_meeting_to_scheduled_meetings_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+//this screen is uesd in the explore chapter meeting annoucements , to allow
+//the app users to view the meeting announcemenet details
 class ChapterMeetingAnnouncementViewScreen extends StatelessWidget {
   const ChapterMeetingAnnouncementViewScreen(
       {super.key,
@@ -358,7 +361,19 @@ class ChapterMeetingAnnouncementViewScreen extends StatelessWidget {
                                               const SizedBox(height: 15),
                                               outlinedButton(
                                                 buttonHeight: 40,
-                                                callBack: () {},
+                                                callBack: () async {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AddMeetingToScheduledMeetingsDialog(
+                                                        chapterMeetingId:
+                                                            chapterMeetingId,
+                                                        clubId: clubId,
+                                                      );
+                                                    },
+                                                  );
+                                                },
                                                 content: "Add To Schedule",
                                               ),
                                             ],

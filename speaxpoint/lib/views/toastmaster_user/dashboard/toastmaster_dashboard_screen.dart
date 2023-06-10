@@ -1,12 +1,48 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:speaxpoint/app/app_routes.gr.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
+import 'package:speaxpoint/util/constants/common_enums.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
+import 'package:speaxpoint/view_models/authentication_vm/log_in_view_model.dart';
 
-class ToastmasterDashboardScreen extends StatelessWidget {
+class ToastmasterDashboardScreen extends StatefulWidget {
   const ToastmasterDashboardScreen({super.key});
+
+  @override
+  State<ToastmasterDashboardScreen> createState() =>
+      _ToastmasterDashboardScreenState();
+}
+
+class _ToastmasterDashboardScreenState
+    extends State<ToastmasterDashboardScreen> {
+  bool loggedUserIsVPE = false;
+  late LogInViewModel _logInViewModel;
+  String currentMemberClubRole = "";
+  @override
+  void initState() {
+    super.initState();
+    _logInViewModel = Provider.of<LogInViewModel>(context, listen: false);
+  }
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    currentMemberClubRole = await _logInViewModel.getDataFromLocalDataBase(
+      keySearch: "memberOfficalRole",
+    );
+
+    if (currentMemberClubRole ==
+        ToastmasterRoles.Vice_President_Education.name.replaceAll("_", " ")) {
+      setState(
+        () {
+          loggedUserIsVPE = true;
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +68,7 @@ class ToastmasterDashboardScreen extends StatelessWidget {
                 height: 20,
               ),
               Visibility(
-                visible: true,
+                visible: loggedUserIsVPE,
                 child: InkWell(
                   onTap: () {
                     context.pushRoute(const ManageComingSessionsRouter());

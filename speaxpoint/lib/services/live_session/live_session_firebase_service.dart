@@ -96,7 +96,7 @@ class LiveSessionFirebaseService implements ILiveSessionService {
                   'currentGuestSpeakerInvitationCode': null,
                   'currentSpeakerToastmasterId': null,
                   'isGuest': null,
-                  'thereIsSelectedSpeaker': null,
+                  'thereIsSelectedSpeaker': false,
                   'numberOfJoinedPeople': 0,
                   'currentSpeakerName': null,
                 },

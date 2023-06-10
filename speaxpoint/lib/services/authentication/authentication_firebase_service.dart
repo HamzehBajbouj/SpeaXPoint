@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:multiple_result/multiple_result.dart';
-import 'package:speaxpoint/models/toastmaster.dart';
+import 'package:speaxpoint/models/chapter_meeting.dart';
 import 'package:speaxpoint/services/Failure.dart';
 import 'package:speaxpoint/services/authentication/i_authentication_service.dart';
 import 'package:speaxpoint/services/local_database/i_local_database_service.dart';
@@ -19,6 +19,9 @@ class AuthenticationFirebaseService extends IAuthenticationService {
 
   final CollectionReference _clubAccountCollection =
       FirebaseFirestore.instance.collection('ClubAccounts');
+
+  final CollectionReference _chapterMeetingsC =
+      FirebaseFirestore.instance.collection('ChapterMeetings');
 
   UserCredential? _userCredential;
 
@@ -179,7 +182,7 @@ class AuthenticationFirebaseService extends IAuthenticationService {
       return Error(
         Failure(
             code: e.toString(),
-            location: "AuthenticationFirebaseService.registerNewClub()",
+            location: "AuthenticationFirebaseService.signIn()",
             message: e.toString()),
       );
     }
@@ -202,6 +205,132 @@ class AuthenticationFirebaseService extends IAuthenticationService {
         Failure(
             code: e.toString(),
             location: "AuthenticationFirebaseService.registerNewClub()",
+            message: e.toString()),
+      );
+    }
+  }
+
+  @override
+  Future<Result<Unit, Failure>> signInAnonymously() async {
+    try {
+      _userCredential = await _auth.signInAnonymously();
+
+      return Success.unit();
+    } on FirebaseAuthException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location: "AuthenticationFirebaseService.signInAnonymously()",
+            message:
+                e.message ?? "Database Error While Logging in Anonymously"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location: "AuthenticationFirebaseService.signInAnonymously()",
+            message: e.toString()),
+      );
+    }
+  }
+
+  @override
+  Future<Result<Unit, Failure>> validateGuestChapterMeetingInvitationCode(
+      {required String chapterMeetingInvitationCode}) async {
+    try {
+      QuerySnapshot chapterMeetingsQS = await _chapterMeetingsC
+          .where("invitationCode", isEqualTo: chapterMeetingInvitationCode)
+          .get();
+      if (chapterMeetingsQS.docs.isNotEmpty) {
+        ChapterMeeting chapterMeeting = ChapterMeeting.fromJson(
+            chapterMeetingsQS.docs.first.data() as Map<String, dynamic>);
+        if (chapterMeeting.chapterMeetingStatus !=
+            ComingSessionsStatus.Ongoing.name) {
+          return Error(
+            Failure(
+                code: "Session-Has-Not-Started",
+                location:
+                    "AuthenticationFirebaseService.validateGuestChapterMeetingInvitationCode()",
+                message:
+                    "The session with id : $chapterMeetingInvitationCode. has not started yet, please try in again later, or contact the VPE of the organizer club."),
+          );
+        } else {}
+      } else {
+        return Error(
+          Failure(
+              code: "No-Chapter-Meeting-Found",
+              location:
+                  "AuthenticationFirebaseService.validateGuestChapterMeetingInvitationCode()",
+              message:
+                  "There is no any chapter meeting with invitation code : $chapterMeetingInvitationCode"),
+        );
+      }
+      return Success.unit();
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location:
+                "AuthenticationFirebaseService.validateGuestChapterMeetingInvitationCode()",
+            message: e.message ??
+                "Database Error While Validating Chapter Meeting Invitation Code"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location:
+                "AuthenticationFirebaseService.validateGuestChapterMeetingInvitationCode()",
+            message: e.toString()),
+      );
+    }
+  }
+
+  @override
+  Future<Result<Unit, Failure>> validateGuestRoleInvitationCode(
+      {required String chapterMeetingInvitationCode,
+      required String roleInvitationCode}) async {
+    try {
+      QuerySnapshot chapterMeetingsQS = await _chapterMeetingsC
+          .where("invitationCode", isEqualTo: chapterMeetingInvitationCode)
+          .get();
+      //search in the AllocatedRolePlayers collection for the guest id
+      CollectionReference allocatedRolePlayersC = chapterMeetingsQS
+          .docs.first.reference
+          .collection("AllocatedRolePlayers");
+      QuerySnapshot allocatedRolePlayersQS = await allocatedRolePlayersC
+          .where("allocatedRolePlayerType",
+              isEqualTo: AllocatedRolePlayerType.Guest.name)
+          .where("guestInvitationCode", isEqualTo: roleInvitationCode)
+          .get();
+
+      if (allocatedRolePlayersQS.docs.isEmpty) {
+        return Error(
+          Failure(
+              code: "No-Guest-Role-Found",
+              location:
+                  "AuthenticationFirebaseService.validateGuestRoleInvitationCode()",
+              message:
+                  "The role invitation code $roleInvitationCode can not be found."),
+        );
+      }
+
+      return Success.unit();
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location:
+                "AuthenticationFirebaseService.validateGuestRoleInvitationCode()",
+            message: e.message ??
+                "Database Error While Validating Chapter Meeting Invitation Code"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location:
+                "AuthenticationFirebaseService.validateGuestRoleInvitationCode()",
             message: e.toString()),
       );
     }

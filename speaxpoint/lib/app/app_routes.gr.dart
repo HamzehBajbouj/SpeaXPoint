@@ -66,7 +66,7 @@ import 'package:speaxpoint/views/user_authentication/log_in_screens/log_in_as_to
     as _i3;
 import 'package:speaxpoint/views/user_authentication/log_in_screens/log_in_club_president/log_in_club_president_screen.dart'
     as _i2;
-import 'package:speaxpoint/views/user_authentication/log_in_screens/log_in_guest/guest_favorite_name_screen.dart'
+import 'package:speaxpoint/views/user_authentication/log_in_screens/log_in_guest/guest_role_invitation_code_screen.dart'
     as _i15;
 import 'package:speaxpoint/views/user_authentication/log_in_screens/log_in_guest/log_in_as_guest_screen.dart'
     as _i14;
@@ -183,16 +183,13 @@ class AppRouter extends _i31.RootStackRouter {
         child: const _i14.LogInAsGuestScreen(),
       );
     },
-    GuestFavoriteNameRouter.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<GuestFavoriteNameRouterArgs>(
-          orElse: () => GuestFavoriteNameRouterArgs(
-              guestHasRole: pathParams.getBool('guestHasRole')));
+    GuestRoleInvitationCodeRouter.name: (routeData) {
+      final args = routeData.argsAs<GuestRoleInvitationCodeRouterArgs>();
       return _i31.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: _i15.GuestFavoriteNameScreen(
+        child: _i15.GuestRoleInvitationCodeScreen(
           key: args.key,
-          guestHasRole: args.guestHasRole,
+          chapterMeetingInvitationCode: args.chapterMeetingInvitationCode,
         ),
       );
     },
@@ -430,8 +427,8 @@ class AppRouter extends _i31.RootStackRouter {
               parent: EmptyRouterPageRoute.name,
             ),
             _i31.RouteConfig(
-              GuestFavoriteNameRouter.name,
-              path: 'favoriteName/:guestHasRole',
+              GuestRoleInvitationCodeRouter.name,
+              path: 'guestRoleInvitationCode',
               parent: EmptyRouterPageRoute.name,
             ),
             _i31.RouteConfig(
@@ -951,38 +948,37 @@ class GuestLoginRouter extends _i31.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i15.GuestFavoriteNameScreen]
-class GuestFavoriteNameRouter
-    extends _i31.PageRouteInfo<GuestFavoriteNameRouterArgs> {
-  GuestFavoriteNameRouter({
+/// [_i15.GuestRoleInvitationCodeScreen]
+class GuestRoleInvitationCodeRouter
+    extends _i31.PageRouteInfo<GuestRoleInvitationCodeRouterArgs> {
+  GuestRoleInvitationCodeRouter({
     _i32.Key? key,
-    required bool guestHasRole,
+    required String chapterMeetingInvitationCode,
   }) : super(
-          GuestFavoriteNameRouter.name,
-          path: 'favoriteName/:guestHasRole',
-          args: GuestFavoriteNameRouterArgs(
+          GuestRoleInvitationCodeRouter.name,
+          path: 'guestRoleInvitationCode',
+          args: GuestRoleInvitationCodeRouterArgs(
             key: key,
-            guestHasRole: guestHasRole,
+            chapterMeetingInvitationCode: chapterMeetingInvitationCode,
           ),
-          rawPathParams: {'guestHasRole': guestHasRole},
         );
 
-  static const String name = 'GuestFavoriteNameRouter';
+  static const String name = 'GuestRoleInvitationCodeRouter';
 }
 
-class GuestFavoriteNameRouterArgs {
-  const GuestFavoriteNameRouterArgs({
+class GuestRoleInvitationCodeRouterArgs {
+  const GuestRoleInvitationCodeRouterArgs({
     this.key,
-    required this.guestHasRole,
+    required this.chapterMeetingInvitationCode,
   });
 
   final _i32.Key? key;
 
-  final bool guestHasRole;
+  final String chapterMeetingInvitationCode;
 
   @override
   String toString() {
-    return 'GuestFavoriteNameRouterArgs{key: $key, guestHasRole: $guestHasRole}';
+    return 'GuestRoleInvitationCodeRouterArgs{key: $key, chapterMeetingInvitationCode: $chapterMeetingInvitationCode}';
   }
 }
 

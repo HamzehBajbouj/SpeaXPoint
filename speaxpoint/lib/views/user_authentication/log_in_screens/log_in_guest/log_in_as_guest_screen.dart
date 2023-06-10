@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:speaxpoint/app/app_routes.gr.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart' as ui_widgets;
 import 'package:speaxpoint/util/ui_widgets/text_fields.dart' as text_fields;
 import 'package:speaxpoint/util/ui_widgets/type_selection_options.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:speaxpoint/view_models/authentication_vm/log_in_view_model.dart';
 
 class LogInAsGuestScreen extends StatefulWidget {
   const LogInAsGuestScreen({super.key});
@@ -14,31 +17,34 @@ class LogInAsGuestScreen extends StatefulWidget {
 }
 
 class _LogInAsGuestState extends State<LogInAsGuestScreen> {
+  LogInViewModel? _logInViewModel;
   final TextEditingController _invitationCode = TextEditingController();
   final List<String> _sectionOptions = ["Yes", "No"];
   int _selectedItem = -1;
-
+  String buttonLabel = "Join Now";
   bool _enableContinueButton = false;
-  final _formKey = GlobalKey<FormState>();
-  selectItem(index) {
-    setState(() {
-      _selectedItem = index;
-    });
+  String errorMessage = "";
+  bool showErrorMessage = false;
+  @override
+  void initState() {
+    super.initState();
+    _logInViewModel = Provider.of<LogInViewModel>(context, listen: false);
+    _logInViewModel!.logInAnonymously();
   }
 
   @override
   void dispose() {
-    _invitationCode.dispose();
     super.dispose();
+    _invitationCode.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(AppMainColors.backgroundAndContent),
-      body: Form(
-        key: _formKey,
-        child: SafeArea(
+    return WillPopScope(
+      onWillPop: () => _onBackPressed(context),
+      child: Scaffold(
+        backgroundColor: const Color(AppMainColors.backgroundAndContent),
+        body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: SizedBox(
@@ -104,7 +110,7 @@ class _LogInAsGuestState extends State<LogInAsGuestScreen> {
                         height: 15,
                       ),
                       const Text(
-                        "Please Enter your invitation code",
+                        "Please Enter Chapter Invitation Code",
                         style: TextStyle(
                           fontFamily: CommonUIProperties.fontType,
                           fontSize: 20,
@@ -117,43 +123,152 @@ class _LogInAsGuestState extends State<LogInAsGuestScreen> {
                       ),
                       text_fields.outlineTextField(
                         keyboardType: TextInputType.text,
-                          controller: _invitationCode,
-                          hintText: "Enter Your Invitation Code",
-                          isRequired: true,
-                          onChangeCallBack: (data) {
-                            if (_invitationCode.text.isNotEmpty) {
-                              _enableContinueButton = true;
-                              setState(() {});
-                            }
-                          }),
+                        controller: _invitationCode,
+                        hintText: "Enter Your Invitation Code",
+                        isRequired: true,
+                        onChangeCallBack: (data) {
+                          setState(
+                            () {
+                              if (_invitationCode.text.isNotEmpty) {
+                                _enableContinueButton = true;
+                              } else {
+                                _enableContinueButton = false;
+                              }
+                            },
+                          );
+                        },
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Visibility(
+                        visible: showErrorMessage,
+                        child: Text(
+                          errorMessage,
+                          style: const TextStyle(
+                            fontFamily: CommonUIProperties.fontType,
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                            color: Color(AppMainColors.warningError75),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   _selectedItem > -1 && _enableContinueButton
                       ? ui_widgets.filledTextButton(
-                          callBack: () => {
-                                //0 => yes . 1 => no
-                                if (_selectedItem == 0)
-                                  {
-                                    //if volunteered direct pass the true to the next page
-                                    context.router
-                                        .pushNamed("favoriteName/true")
-                                  }
-                                else if (_selectedItem == 1)
-                                  {
-                                    //if volunteered direct pass the false to the next page
-                                    context.router
-                                        .pushNamed("favoriteName/false")
-                                  }
+                          callBack: () async {
+                            setState(
+                              () {
+                                showErrorMessage = false;
+                                errorMessage = "";
                               },
-                          content: "Continue")
+                            );
+                            //0 => yes . 1 => no
+                            if (_selectedItem == 0) {
+                              await _logInViewModel!
+                                  .validateChapterMeetingInvitationCode(
+                                chapterMeetingInvitationCode:
+                                    _invitationCode.text,
+                              )
+                                  .then(
+                                (value) {
+                                  value.when(
+                                    (success) {
+                                      context.pushRoute(
+                                        GuestRoleInvitationCodeRouter(
+                                            chapterMeetingInvitationCode:
+                                                _invitationCode.text),
+                                      );
+                                    },
+                                    (error) {
+                                      setState(
+                                        () {
+                                          showErrorMessage = true;
+                                          if (error.code ==
+                                              "Session-Has-Not-Started") {
+                                            errorMessage = error.message;
+                                          } else if (error.code ==
+                                              "No-Chapter-Meeting-Found") {
+                                            errorMessage = error.message;
+                                          } else {
+                                            errorMessage =
+                                                "An error occured while validating the chapter invitation code, please try again..";
+                                          }
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
+                              );
+                            } else if (_selectedItem == 1) {
+                              await _logInViewModel!
+                                  .validateChapterMeetingInvitationCode(
+                                chapterMeetingInvitationCode:
+                                    _invitationCode.text,
+                              )
+                                  .then(
+                                (value) {
+                                  value.when(
+                                    (success) {
+                                      context.replaceRoute(
+                                        SessionRedirectionRouter(
+                                          chapterMeetingInvitationCode:
+                                              _invitationCode.text,
+                                          isAGuest: true,
+                                          guestHasRole: false,
+                                        ),
+                                      );
+                                    },
+                                    (error) {
+                                      setState(
+                                        () {
+                                          showErrorMessage = true;
+                                          if (error.code ==
+                                              "Session-Has-Not-Started") {
+                                            errorMessage = error.message;
+                                          } else if (error.code ==
+                                              "No-Chapter-Meeting-Found") {
+                                            errorMessage = error.message;
+                                          } else {
+                                            errorMessage =
+                                                "An error occured while validating the chapter invitation code, please try again..";
+                                          }
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
+                              );
+                            }
+                          },
+                          content: buttonLabel)
                       : ui_widgets.outlinedButton(
-                          callBack: () => {}, content: "Continue"),
+                          callBack: () {}, content: buttonLabel),
                 ],
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Future<bool> _onBackPressed(BuildContext context) async {
+    await _logInViewModel!.logOut();
+    return true;
+  }
+
+  selectItem(index) {
+    setState(
+      () {
+        _selectedItem = index;
+        if (_selectedItem == 0) {
+          buttonLabel = "Continue";
+        } else if (_selectedItem == 1) {
+          buttonLabel = "Join Now";
+        }
+      },
     );
   }
 }

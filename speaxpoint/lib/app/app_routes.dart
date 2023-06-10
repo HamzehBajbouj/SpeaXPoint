@@ -23,7 +23,7 @@ import 'package:speaxpoint/views/user_authentication/club_registration_screens/c
 import 'package:speaxpoint/views/user_authentication/club_registration_screens/club_username_registration_screen.dart';
 import 'package:speaxpoint/views/user_authentication/log_in_screens/log_in_as_toastmaster_screen.dart';
 import 'package:speaxpoint/views/user_authentication/log_in_screens/log_in_club_president/log_in_club_president_screen.dart';
-import 'package:speaxpoint/views/user_authentication/log_in_screens/log_in_guest/guest_favorite_name_screen.dart';
+import 'package:speaxpoint/views/user_authentication/log_in_screens/log_in_guest/guest_role_invitation_code_screen.dart';
 import 'package:speaxpoint/views/user_authentication/log_in_screens/log_in_guest/log_in_as_guest_screen.dart';
 import 'package:speaxpoint/views/user_authentication/log_in_screens/user_type_selection_screen.dart';
 
@@ -65,9 +65,9 @@ import '../views/club_president_user/profile_management/club_profile_managment_s
       children: [
         AutoRoute(path: "", page: LogInAsGuestScreen, name: "GuestLoginRouter"),
         AutoRoute(
-            path: "favoriteName/:guestHasRole",
-            page: GuestFavoriteNameScreen,
-            name: "GuestFavoriteNameRouter"),
+            path: "guestRoleInvitationCode",
+            page: GuestRoleInvitationCodeScreen,
+            name: "GuestRoleInvitationCodeRouter"),
         RedirectRoute(path: '*', redirectTo: '')
       ],
     ),

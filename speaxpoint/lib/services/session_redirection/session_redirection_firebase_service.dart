@@ -148,9 +148,11 @@ class SessionRedirectionFirebaseService extends ISessionRedirectionService {
               onlineSessionQS.docs.first.data() as Map<String, dynamic>;
 
           int numberOfJoinedPeople = onlineSessionData["numberOfJoinedPeople"];
-          await onlineSessionQS.docs.first.reference.update(
-            {"numberOfJoinedPeople": numberOfJoinedPeople -= 1},
-          );
+          if (numberOfJoinedPeople > 0) {
+            await onlineSessionQS.docs.first.reference.update(
+              {"numberOfJoinedPeople": numberOfJoinedPeople -= 1},
+            );
+          }
         }
       } else {
         return Error(
@@ -200,9 +202,11 @@ class SessionRedirectionFirebaseService extends ISessionRedirectionService {
               onlineSessionQS.docs.first.data() as Map<String, dynamic>;
 
           int numberOfJoinedPeople = onlineSessionData["numberOfJoinedPeople"];
-          await onlineSessionQS.docs.first.reference.update(
-            {"numberOfJoinedPeople": numberOfJoinedPeople -= 1},
-          );
+          if (numberOfJoinedPeople > 0) {
+            await onlineSessionQS.docs.first.reference.update(
+              {"numberOfJoinedPeople": numberOfJoinedPeople -= 1},
+            );
+          }
         }
       } else {
         return Error(

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart';
+import 'package:speaxpoint/view_models/authentication_vm/log_in_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/session_redirection_view_model.dart';
 
 class ExitRedirectionScreenConfirmationDialog extends StatefulWidget {
@@ -25,13 +26,16 @@ class ExitRedirectionScreenConfirmationDialog extends StatefulWidget {
 class _ExitRedirectionScreenConfirmationDialogState
     extends State<ExitRedirectionScreenConfirmationDialog> {
   SessionRedirectionViewModel? _sessionRedirectionViewModel;
+  LogInViewModel? _logInViewModel;
   bool _showErrorMessage = false;
   bool _isLoading = false;
+
   @override
   void initState() {
     super.initState();
     _sessionRedirectionViewModel =
         Provider.of<SessionRedirectionViewModel>(context, listen: false);
+    _logInViewModel = Provider.of<LogInViewModel>(context, listen: false);
   }
 
   @override
@@ -122,25 +126,48 @@ class _ExitRedirectionScreenConfirmationDialogState
           visible: !_isLoading,
           child: filledTextButton(
               callBack: () async {
-                setState(() {
-                  _isLoading = true;
-                });
+                setState(
+                  () {
+                    _isLoading = true;
+                  },
+                );
                 await _sessionRedirectionViewModel
                     ?.leaveTheSession(
                   isAGuest: widget.isAGuest,
                   chapterMeetingId: widget.chapterMeetingId,
-                  chapterMeetingInvitationCode: widget.chapterMeetingId,
+                  chapterMeetingInvitationCode:
+                      widget.chapterMeetingInvitationCode,
                 )
                     .then(
                   (value) {
                     value.when(
-                      (success) {
+                      (success) async {
                         setState(
                           () {
                             _showErrorMessage = false;
                           },
                         );
-                        Navigator.of(context).pop(true);
+                        if (widget.isAGuest) {
+                          await _logInViewModel!.logOut().then(
+                            (value) {
+                              value.when(
+                                (_) {
+                                  Navigator.of(context).pop(true);
+                                },
+                                (_) {
+                                  setState(
+                                    () {
+                                      _showErrorMessage = true;
+                                      _isLoading = false;
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        } else {
+                          Navigator.of(context).pop(true);
+                        }
                       },
                       (error) {
                         setState(

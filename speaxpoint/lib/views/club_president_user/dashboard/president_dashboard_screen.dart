@@ -32,7 +32,10 @@ class PresidentDashboardScreen extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                context.router.navigate(const ClubProfileManagementRouter());
+                context.router.navigate(
+                  ClubProfileManagementRouter(
+                      forViewOnly: false, fromAnnouncementPage: false),
+                );
               },
               highlightColor: const Color(AppMainColors.selectedOption),
               child: Container(

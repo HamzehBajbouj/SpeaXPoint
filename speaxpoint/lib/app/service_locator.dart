@@ -1,6 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:speaxpoint/services/authentication/authentication_firebase_service.dart';
 import 'package:speaxpoint/services/authentication/i_authentication_service.dart';
+import 'package:speaxpoint/services/club_profile/club_profile_firebase_service.dart';
+import 'package:speaxpoint/services/club_profile/i_club_profile_service.dart';
 import 'package:speaxpoint/services/firebaseInitializer/firebase_initializer.dart';
 import 'package:speaxpoint/services/firebaseInitializer/i_firebase_initializer_service.dart';
 import 'package:speaxpoint/services/live_session/general_evaluation/general_evaluation_firebase_service.dart';
@@ -38,6 +40,7 @@ import 'package:speaxpoint/services/session_redirection/session_redirection_fire
 import 'package:speaxpoint/view_models/authentication_vm/club_registration_view_model.dart';
 import 'package:speaxpoint/view_models/authentication_vm/log_in_view_model.dart';
 import 'package:speaxpoint/view_models/club_president_vm/club_members_management_view_model.dart';
+import 'package:speaxpoint/view_models/club_president_vm/club_profile_view_model.dart';
 import 'package:speaxpoint/view_models/club_president_vm/manage_member_account_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/allocate_role_players_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/ask_for_volunteers_view_model.dart';
@@ -128,6 +131,10 @@ Future<void> initServiceLocator() async {
 
   serviceLocator.registerLazySingleton<IGeneralEvaluationService>(
     () => GeneralEvaluationFirebaseService(),
+  );
+
+  serviceLocator.registerLazySingleton<IClubProfileService>(
+    () => ClubProfileFirebaseService(),
   );
 //this part is for the viewmodels objects
   serviceLocator.registerLazySingleton<ClubRegistrationViewModel>(
@@ -264,6 +271,11 @@ Future<void> initServiceLocator() async {
       serviceLocator<ISpeechEvaluationService>(),
       serviceLocator<ITimeFillerService>(),
       serviceLocator<ITimingRoleService>(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<ClubProfileViewModel>(
+    () => ClubProfileViewModel(
+      serviceLocator<IClubProfileService>(),
     ),
   );
 }

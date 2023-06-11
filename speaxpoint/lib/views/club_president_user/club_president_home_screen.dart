@@ -11,9 +11,12 @@ class ClubPresidentHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
       backgroundColor: const Color(AppMainColors.backgroundAndContent),
-      routes: const [
-        ClubPresidentDashboardRouter(),
-        ClubProfileManagementRouter()
+      routes: [
+        const ClubPresidentDashboardRouter(),
+        ClubProfileManagementRouter(
+          forViewOnly: false,
+          fromAnnouncementPage: false
+        )
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
         return SalomonBottomBar(

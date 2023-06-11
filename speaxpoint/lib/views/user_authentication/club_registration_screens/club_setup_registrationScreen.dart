@@ -64,8 +64,7 @@ class _ClubSetUpRegistrationState extends State<ClubSetUpRegistrationScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        context.pushRoute(ClubProfileManagementSetUpRouter());
-                        // .push(const );
+                        context.pushRoute(const EditClubProfileRouter());
                       },
                       highlightColor: const Color(AppMainColors.selectedOption),
                       child: Container(

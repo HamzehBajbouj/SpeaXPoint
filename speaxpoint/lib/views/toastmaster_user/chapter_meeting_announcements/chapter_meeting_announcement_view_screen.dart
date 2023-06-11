@@ -1,8 +1,9 @@
 import 'dart:developer';
-
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:speaxpoint/app/app_routes.gr.dart';
 import 'package:speaxpoint/models/annoucement/chapter_meeting_announcement.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
@@ -355,7 +356,16 @@ class ChapterMeetingAnnouncementViewScreen extends StatelessWidget {
                                             children: [
                                               outlinedButton(
                                                 buttonHeight: 40,
-                                                callBack: () {},
+                                                callBack: () {
+                                                  context.pushRoute(
+                                                    ClubProfileAnnouncementViewRouter(
+                                                      forViewOnly: true,
+                                                      fromAnnouncementPage:
+                                                          true,
+                                                      clubId: clubId,
+                                                    ),
+                                                  );
+                                                },
                                                 content: "View Club Profile",
                                               ),
                                               const SizedBox(height: 15),

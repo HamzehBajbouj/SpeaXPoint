@@ -3,6 +3,7 @@ import 'package:auto_route/empty_router_widgets.dart';
 import 'package:speaxpoint/views/club_president_user/club_member_management/club_members_management_screen.dart';
 import 'package:speaxpoint/views/club_president_user/club_member_management/manage_member_account_screen.dart';
 import 'package:speaxpoint/views/club_president_user/club_member_management/manage_member_account_from_set_up.dart';
+import 'package:speaxpoint/views/club_president_user/profile_management/edit_club_profile_details_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/allocate_role_players/allocate_role_players_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/chapter_meeting_announcements/announce_chapter_meeting_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/chapter_meeting_announcements/chapter_meeting_announcement_view_screen.dart';
@@ -89,8 +90,8 @@ import '../views/club_president_user/profile_management/club_profile_managment_s
       name: "ClubSetUpRegistrationRouter",
     ),
     AutoRoute(
-      path: "/clubProfileManagggement",
-      name: "ClubProfileManagementSetUpRouter",
+      path: "/clubProfileAnnouncementView",
+      name: "ClubProfileAnnouncementViewRouter",
       page: ClubProfileManagementScreen,
       children: [RedirectRoute(path: '*', redirectTo: '')],
     ),
@@ -112,6 +113,12 @@ import '../views/club_president_user/profile_management/club_profile_managment_s
       path: "/sessionRedirection",
       name: "SessionRedirectionRouter",
       page: SessionRedirectionScreen,
+      children: [RedirectRoute(path: '*', redirectTo: '')],
+    ),
+    AutoRoute(
+      path: '/editClubProfile',
+      name: "EditClubProfileRouter",
+      page: EditClubProfileDetailsScreen,
       children: [RedirectRoute(path: '*', redirectTo: '')],
     ),
   ],

@@ -151,11 +151,13 @@ class AuthenticationFirebaseService extends IAuthenticationService {
               querySnapshot.docs.first.data() as Map<String, dynamic>;
           if (userRole == AppRoles.ClubPresident.name &&
               userAccount['appRole'] == AppRoles.ClubPresident.name) {
+            //this saving to local database can be done in the viewmodel for better separation
             await _localDataBaseSharedPreferences.saveData(
                 SharedPrefereneceKeys.loggedUser, json.encode(userAccount));
             return Success.unit();
           } else if (userRole == AppRoles.Toastmaster.name &&
               userAccount['appRole'] == AppRoles.Toastmaster.name) {
+            //this saving to local database can be done in the viewmodel for better separation
             await _localDataBaseSharedPreferences.saveData(
                 SharedPrefereneceKeys.loggedUser, json.encode(userAccount));
             return Success.unit();

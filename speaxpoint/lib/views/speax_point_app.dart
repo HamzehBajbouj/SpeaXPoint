@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:speaxpoint/view_models/authentication_vm/club_registration_view_model.dart';
 import 'package:speaxpoint/view_models/authentication_vm/log_in_view_model.dart';
 import 'package:speaxpoint/view_models/club_president_vm/club_members_management_view_model.dart';
+import 'package:speaxpoint/view_models/club_president_vm/club_profile_view_model.dart';
 import 'package:speaxpoint/view_models/club_president_vm/manage_member_account_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/allocate_role_players_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/ask_for_volunteers_view_model.dart';
@@ -72,6 +73,8 @@ class SpeaxPointApp extends StatelessWidget {
             create: (_) => serviceLocator<GrammaticalObservationViewModel>()),
         ChangeNotifierProvider(
             create: (_) => serviceLocator<SpeechObservationsViewModel>()),
+        ChangeNotifierProvider(
+            create: (_) => serviceLocator<ClubProfileViewModel>()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

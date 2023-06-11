@@ -1,21 +1,25 @@
 import 'package:speaxpoint/util/constants/common_enums.dart';
 
 class ClubAccount {
-  String clubId;
+  String? clubId;
   String? usermame;
   String? clubName;
   String? profileDescription;
   String? webSiteLink;
   String? officialEmail;
   String? clubPhoneNumber;
-  String? backGroundImageURL;
+  String? backgroundImageURL;
   String? profileImageURL;
+  String? clubLocationLink;
+  String? clubOverviewTitle;
+  String? clubOverviewDescription;
   String? appRole = AppRoles.ClubPresident.name;
+  bool? clubProfileWasSetUp;
 
   ClubAccount({
-    required this.clubId,
+    this.clubId,
     this.usermame,
-    this.backGroundImageURL,
+    this.backgroundImageURL,
     this.profileDescription,
     this.profileImageURL,
     this.clubName,
@@ -23,6 +27,10 @@ class ClubAccount {
     this.officialEmail,
     this.webSiteLink,
     this.appRole,
+    this.clubLocationLink,
+    this.clubOverviewDescription,
+    this.clubOverviewTitle,
+    this.clubProfileWasSetUp,
   });
 
   ClubAccount.fromJson(Map<String, dynamic> clubAccountJson)
@@ -34,9 +42,13 @@ class ClubAccount {
           webSiteLink: clubAccountJson['webSiteLink'],
           officialEmail: clubAccountJson['officialEmail'],
           clubPhoneNumber: clubAccountJson['clubPhoneNumber'],
-          backGroundImageURL: clubAccountJson['backGroundImageURL'],
+          backgroundImageURL: clubAccountJson['backgroundImageURL'],
           profileImageURL: clubAccountJson['profileImageURL'],
           appRole: clubAccountJson['appRole'],
+          clubLocationLink: clubAccountJson['clubLocationLink'],
+          clubOverviewTitle: clubAccountJson['clubOverviewTitle'],
+          clubOverviewDescription: clubAccountJson['clubOverviewDescription'],
+          clubProfileWasSetUp: clubAccountJson['clubProfileWasSetUp'],
         );
 
   Map<String, dynamic> toJson() => {
@@ -47,8 +59,12 @@ class ClubAccount {
         'webSiteLink': webSiteLink,
         'officialEmail': officialEmail,
         'clubPhoneNumber': clubPhoneNumber,
-        'backGroundImageURL': backGroundImageURL,
+        'backgroundImageURL': backgroundImageURL,
         'profileImageURL': profileImageURL,
         'appRole': appRole,
+        'clubLocationLink': clubLocationLink,
+        'clubOverviewTitle': clubOverviewTitle,
+        'clubOverviewDescription': clubOverviewDescription,
+        'clubProfileWasSetUp': clubProfileWasSetUp,
       };
 }

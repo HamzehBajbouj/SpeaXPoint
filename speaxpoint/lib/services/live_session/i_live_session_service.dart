@@ -58,6 +58,6 @@ abstract class ILiveSessionService {
   Future<Result<List<OnlineSessionCapturedData>, Failure>>
       getListOfSpeachesSpeakersForAppGuest({
     required String chapterMeetingInvitationCode,
-    required String guestInvitationCode,
+    
   });
 }

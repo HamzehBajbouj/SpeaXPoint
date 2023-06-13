@@ -21,8 +21,6 @@ class CommonLiveSessionMethodsViewModel extends BaseViewModel {
   Future<List<OnlineSessionCapturedData>> getListOfSpeechesSpeakers({
     required bool isAGuest,
     String? chapterMeetingId,
-    String? toastmasterId,
-    String? guestInvitationCode,
     String? chapterMeetingInvitationCode,
   }) async {
     List<OnlineSessionCapturedData> tempList = [];
@@ -31,7 +29,7 @@ class CommonLiveSessionMethodsViewModel extends BaseViewModel {
       await _liveSessionService
           .getListOfSpeachesSpeakersForAppGuest(
               chapterMeetingInvitationCode: chapterMeetingInvitationCode!,
-              guestInvitationCode: guestInvitationCode!)
+              )
           .then(
         (value) {
           value.whenSuccess(

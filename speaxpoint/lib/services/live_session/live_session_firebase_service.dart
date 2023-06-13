@@ -416,12 +416,12 @@ class LiveSessionFirebaseService implements ILiveSessionService {
   Future<Result<List<OnlineSessionCapturedData>, Failure>>
       getListOfSpeachesSpeakersForAppGuest(
           {required String chapterMeetingInvitationCode,
-          required String guestInvitationCode}) async {
+          }) async {
     try {
+
       List<OnlineSessionCapturedData> tempList = [];
       QuerySnapshot onlineSessionCapturedDataQS =
           await _onlineSessionCapturedDataC
-              .where("guestInvitationCode", isEqualTo: guestInvitationCode)
               .where("chapterMeetingInvitationCode",
                   isEqualTo: chapterMeetingInvitationCode)
               .get();

@@ -299,11 +299,10 @@ class _GrammaticalNotesState extends State<GrammaticalNotes> {
   Future<void> getListOfSpeechesSpeakers() async {
     _speechesSpeakersList = await _grammaticalObservationViewModel!
         .getListOfSpeechesSpeakers(
-            isAGuest: widget.isAGuest,
-            chapterMeetingId: widget.chapterMeetingId,
-            chapterMeetingInvitationCode: widget.chapterMeetingInvitationCode,
-            guestInvitationCode: widget.guestInvitationCode,
-            toastmasterId: widget.toastmasterId)
+      isAGuest: widget.isAGuest,
+      chapterMeetingId: widget.chapterMeetingId,
+      chapterMeetingInvitationCode: widget.chapterMeetingInvitationCode,
+    )
         .whenComplete(
       () {
         setState(

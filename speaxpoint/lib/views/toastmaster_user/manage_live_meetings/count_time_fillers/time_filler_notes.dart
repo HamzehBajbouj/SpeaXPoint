@@ -209,11 +209,10 @@ class _TimeFillerNotesState extends State<TimeFillerNotes> {
   Future<void> getListOfSpeechesSpeakers() async {
     _speechesSpeakersList = await _timeFillerViewModel!
         .getListOfSpeechesSpeakers(
-            isAGuest: widget.isAGuest,
-            chapterMeetingId: widget.chapterMeetingId,
-            chapterMeetingInvitationCode: widget.chapterMeetingInvitationCode,
-            guestInvitationCode: widget.guestInvitationCode,
-            toastmasterId: widget.toastmasterId)
+      isAGuest: widget.isAGuest,
+      chapterMeetingId: widget.chapterMeetingId,
+      chapterMeetingInvitationCode: widget.chapterMeetingInvitationCode,
+    )
         .whenComplete(
       () {
         setState(

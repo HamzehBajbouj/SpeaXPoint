@@ -391,7 +391,8 @@ class _ClubProfileManagementScreenState
                 );
               }
             } else {
-              return const Text("Error: unable to fetch club members");
+              return const Center(
+                  child: Text("You Have not set up the club profile yet"));
             }
           } else {
             return Text(

@@ -72,8 +72,7 @@ class _SpeechEvaluationTabViewState extends State<SpeechEvaluationTabView> {
             isAGuest: widget.isAGuest,
             chapterMeetingId: widget.chapterMeetingId,
             chapterMeetingInvitationCode: widget.chapterMeetingInvitationCode,
-            guestInvitationCode: widget.guestInvitationCode,
-            toastmasterId: widget.toastmasterId)
+    )
         .whenComplete(
       () {
         setState(

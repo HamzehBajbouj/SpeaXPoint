@@ -24,6 +24,8 @@ class LogInViewModel extends BaseViewModel {
 
   Future<void> logInAnonymously() async {
     setLoading(loading: true);
+    //to clear the localdata base from any existing stored data from previous users.
+    super.clearLocalDatabase();
     _logInStatus = await _authenticationService.signInAnonymously();
     setLoading(loading: false);
   }

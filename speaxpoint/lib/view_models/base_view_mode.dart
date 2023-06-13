@@ -7,7 +7,7 @@ import 'package:speaxpoint/util/constants/shared_preferences_keys.dart';
 class BaseViewModel extends ChangeNotifier {
   final ILocalDataBaseService _localDataBaseService =
       serviceLocator<ILocalDataBaseService>();
-      
+
   bool _loading = false;
   bool get loading => _loading;
 
@@ -39,5 +39,9 @@ class BaseViewModel extends ChangeNotifier {
     Map<String, dynamic> loggedUser =
         await _localDataBaseService.loadData(SharedPrefereneceKeys.loggedUser);
     return loggedUser[keySearch];
+  }
+
+  Future<void> clearLocalDatabase() async {
+    await _localDataBaseService.clearLocalDatabase();
   }
 }

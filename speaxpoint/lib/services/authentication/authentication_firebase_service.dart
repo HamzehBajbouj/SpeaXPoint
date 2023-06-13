@@ -139,39 +139,38 @@ class AuthenticationFirebaseService extends IAuthenticationService {
                 .get();
 
         if (querySnapshot.docs.isEmpty) {
+          await _auth.signOut();
           return const Error(
             Failure(
-                code: "User Has No record",
+                code: "Un-Authorized-Access",
                 location: "AuthenticationFirebaseService.signIn()",
-                message:
-                    "The user you are trying to log in with has no records registered"),
+                message: "You have an Un-Authorized-Access permssions"),
           );
         } else {
           Map<String, dynamic> userAccount =
               querySnapshot.docs.first.data() as Map<String, dynamic>;
           if (userRole == AppRoles.ClubPresident.name &&
               userAccount['appRole'] == AppRoles.ClubPresident.name) {
-            //this saving to local database can be done in the viewmodel for better separation
             await _localDataBaseSharedPreferences.saveData(
                 SharedPrefereneceKeys.loggedUser, json.encode(userAccount));
             return Success.unit();
           } else if (userRole == AppRoles.Toastmaster.name &&
               userAccount['appRole'] == AppRoles.Toastmaster.name) {
-            //this saving to local database can be done in the viewmodel for better separation
             await _localDataBaseSharedPreferences.saveData(
                 SharedPrefereneceKeys.loggedUser, json.encode(userAccount));
             return Success.unit();
           } else {
+            await _auth.signOut();
             return const Error(
               Failure(
-                  code: "Un-Authorized-Access",
+                  code: "User Has No record",
                   location: "AuthenticationFirebaseService.signIn()",
-                  message: "You have an Un-Authorized-Access permssions"),
+                  message:
+                      "The user you are trying to log in with has no records registered"),
             );
           }
         }
       }
-
       return Success.unit();
     } on FirebaseAuthException catch (e) {
       return Error(

@@ -56,10 +56,12 @@ class _SessionRedirectionScreenState extends State<SessionRedirectionScreen> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    currentMemberClubRole =
-        await _sessionRedirectionViewModel!.getDataFromLocalDataBase(
-      keySearch: "memberOfficalRole",
-    );
+    if (!widget.isAGuest) {
+      currentMemberClubRole =
+          await _sessionRedirectionViewModel!.getDataFromLocalDataBase(
+        keySearch: "memberOfficalRole",
+      );
+    }
   }
 
   @override

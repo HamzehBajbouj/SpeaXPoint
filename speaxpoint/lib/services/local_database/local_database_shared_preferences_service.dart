@@ -21,4 +21,10 @@ class LocalDataBaseSharedPreferencesService extends ILocalDataBaseService {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(searchKey, data);
   }
+
+  @override
+  Future<void> clearLocalDatabase() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+  }
 }

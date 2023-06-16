@@ -8,6 +8,7 @@ import 'package:speaxpoint/models/club_account.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:speaxpoint/util/ui_widgets/buttons.dart';
 import 'package:speaxpoint/view_models/club_president_vm/club_profile_view_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -52,9 +53,7 @@ class _ClubProfileManagementScreenState
                     color: Color(AppMainColors.backgroundAndContent),
                   ),
                   onPressed: () {
-                    context
-                        .pushRoute(const EditClubProfileRouter())
-                        .then((value) {
+                    context.pushRoute(const EditClubProfileRouter()).then((_) {
                       setState(() {});
                     });
                   },
@@ -99,53 +98,69 @@ class _ClubProfileManagementScreenState
             if (snapshot.hasData) {
               ClubAccount clubAccount = snapshot.data!;
 
-              if (clubAccount.clubProfileWasSetUp != null &&
-                  !clubAccount.clubProfileWasSetUp!) {
+              if (clubAccount.clubProfileWasSetUp == null ||
+                  (clubAccount.clubProfileWasSetUp != null &&
+                      !clubAccount.clubProfileWasSetUp!)) {
                 return Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const SizedBox(
-                        height: 50,
-                      ),
-                      SvgPicture.asset(
-                        fit: BoxFit.fill,
-                        "assets/images/searching.svg",
-                        allowDrawingOutsideViewBox: false,
-                        width: 150,
-                        height: 200,
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      const Text(
-                        "Could Not Find The Club Profile",
-                        style: TextStyle(
-                          fontFamily: CommonUIProperties.fontType,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          color: Color(AppMainColors.p90),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(
+                          height: 50,
                         ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      const SizedBox(
-                        width: 320,
-                        child: Text(
-                          "We could not find the club profile details, as the club president has not "
-                          " created the club profile yet.",
-                          maxLines: 4,
-                          textAlign: TextAlign.center,
+                        SvgPicture.asset(
+                          fit: BoxFit.fill,
+                          "assets/images/searching.svg",
+                          allowDrawingOutsideViewBox: false,
+                          width: 150,
+                          height: 200,
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        const Text(
+                          "Could Not Find The Club Profile",
                           style: TextStyle(
                             fontFamily: CommonUIProperties.fontType,
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                            color: Color(AppMainColors.p50),
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            color: Color(AppMainColors.p90),
                           ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        const SizedBox(
+                          width: 320,
+                          child: Text(
+                            "We could not find the club profile details, as the club president has not "
+                            " created the club profile yet.",
+                            maxLines: 4,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: CommonUIProperties.fontType,
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
+                              color: Color(AppMainColors.p50),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        outlinedButton(
+                            callBack: () {
+                              context
+                                  .pushRoute(const EditClubProfileRouter())
+                                  .then((_) {
+                                setState(() {});
+                              });
+                            },
+                            content: "Set Up Now"),
+                      ],
+                    ),
                   ),
                 );
               } else {

@@ -234,7 +234,7 @@ class _ManageMemberAccountScreenState extends State<ManageMemberAccountScreen> {
               },
             ),
           ],
-          leading: BackButton(
+          leading: const BackButton(
             color: Color(AppMainColors.p70),
           ),
           backgroundColor: Colors.transparent,
@@ -250,7 +250,7 @@ class _ManageMemberAccountScreenState extends State<ManageMemberAccountScreen> {
             ),
           ),
         ),
-        backgroundColor: Color(AppMainColors.backgroundAndContent),
+        backgroundColor: const Color(AppMainColors.backgroundAndContent),
         body: SafeArea(
           child: Form(
             key: _formKey,
@@ -285,7 +285,7 @@ class _ManageMemberAccountScreenState extends State<ManageMemberAccountScreen> {
                                       color: Colors.black.withOpacity(0.16),
                                       spreadRadius: 0,
                                       blurRadius: 24,
-                                      offset: Offset(0, 4),
+                                      offset: const Offset(0, 4),
                                     ),
                                   ],
                                 ),
@@ -300,9 +300,8 @@ class _ManageMemberAccountScreenState extends State<ManageMemberAccountScreen> {
                                     height: 100,
                                     placeholder: (context, url) =>
                                         const CircularProgressIndicator(
-                                                        color: Color(AppMainColors.p40),
-
-                                        ),
+                                      color: Color(AppMainColors.p40),
+                                    ),
                                     errorWidget: (context, url, error) =>
                                         const Icon(Icons.error),
                                     imageUrl:
@@ -479,6 +478,7 @@ class _ManageMemberAccountScreenState extends State<ManageMemberAccountScreen> {
                         onTapCallBack: () {
                           DatePicker.showDatePicker(
                             context,
+                            maxTime: DateTime.now(),
                             showTitleActions: true,
                             onConfirm: (data) {
                               _dateOfBirth.text = DateFormat.yMd().format(data);

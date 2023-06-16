@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:speaxpoint/models/club_account.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
+import 'package:speaxpoint/util/input_regex_validation.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart';
 import 'package:speaxpoint/util/ui_widgets/common_widgets.dart';
 import 'package:speaxpoint/util/ui_widgets/text_fields.dart';
@@ -357,6 +358,10 @@ class _EditClubProfileDetailsScreenState
                           controller: _clubOfficialEmail,
                           hintText: "Club Official Email",
                           isRequired: true,
+                          validators: [
+                            isValidEmail(
+                                _clubOfficialEmail.text, "invalid emails")
+                          ],
                         ),
                         const SizedBox(
                           height: 10,

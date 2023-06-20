@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:speaxpoint/models/online_session.dart';
 import 'package:speaxpoint/models/online_session_captured_data.dart';
 import 'package:speaxpoint/models/speech_timing.dart';
+import 'package:speaxpoint/util/common_methods.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
 import 'package:speaxpoint/util/ui_widgets/buttons.dart';
@@ -323,40 +324,5 @@ class _TimingSummaryState extends State<TimingSummary> {
         );
       },
     );
-  }
-
-  String getSpeakerTimingSummary(
-      {required String startingTime,
-      required String endingTime,
-      required int greenTime,
-      required int yellow,
-      required int red,
-      required speakerName}) {
-    double timeDifferecne = getDateTimeDifferenceInMinutes(
-        startingDateTime: startingTime, endDateTime: endingTime);
-    int speechMinutes = timeDifferecne.toInt();
-    double speechSecondDouble =
-        ((timeDifferecne - timeDifferecne.toInt()) * 60);
-    int speechSeconds = speechSecondDouble.toInt();
-    String message = "";
-    if (timeDifferecne < greenTime) {
-      return message =
-          "Speaker \"$speakerName\" spent $speechMinutes minutes & $speechSeconds seconds, which is less than the minimum speech time, making \"$speakerName\" NOT eligible for voting.";
-    }
-
-    if (timeDifferecne <= yellow) {
-      return message =
-          "Speaker \"$speakerName\" spent $speechMinutes minutes & $speechSeconds seconds, which is more than the minimum speech time, making \"$speakerName\" eligible for voting.";
-    }
-    if (timeDifferecne <= red) {
-      return message =
-          "Speaker \"$speakerName\" spent $speechMinutes minutes & $speechSeconds seconds, which is less than the maximum speech time, making \"$speakerName\" eligible for voting.";
-    }
-
-    if (timeDifferecne > red) {
-      return message =
-          "Speaker \"$speakerName\" spent $speechMinutes minutes & $speechSeconds seconds, which is more than the maximum speech time, making \"$speakerName\" NOT eligible for voting.";
-    }
-    return message;
   }
 }

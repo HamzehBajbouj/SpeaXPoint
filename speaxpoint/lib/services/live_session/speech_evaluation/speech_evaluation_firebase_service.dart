@@ -217,7 +217,6 @@ class SpeechEvaluationFirebaseService extends ISpeechEvaluationService {
     }
   }
 
-
   @override
   Stream<List<SpeechEvaluationNote>> getTakenSpeechNotesByAppGuest(
       {required String chapterMeetingInvitationCode,
@@ -369,7 +368,7 @@ class SpeechEvaluationFirebaseService extends ISpeechEvaluationService {
   }
 
   @override
-  Stream<List<SpeechEvaluationNote>> getAllEvaluationNotes(
+  Stream<List<SpeechEvaluationNote>> getAllLiveDataEvaluationNotes(
       {required bool currentSpeakerisAppGuest,
       String? currentSpeakerToastmasterId,
       String? currentSpeakerGuestInvitationCode,
@@ -414,6 +413,71 @@ class SpeechEvaluationFirebaseService extends ISpeechEvaluationService {
     } catch (e) {
       log(e.toString());
       yield* evaluationNotes;
+    }
+  }
+
+  @override
+  Future<Result<List<SpeechEvaluationNote>, Failure>> getAllEvaluationNotes(
+      {required bool currentSpeakerisAppGuest,
+      String? currentSpeakerToastmasterId,
+      String? currentSpeakerGuestInvitationCode,
+      String? chapterMeetingInvitationCode,
+      String? chapterMeetingId}) async {
+    try {
+      List<SpeechEvaluationNote> evaluationNotes = [];
+      QuerySnapshot onlineSessionCapturedDataQS;
+      if (currentSpeakerisAppGuest) {
+        onlineSessionCapturedDataQS = await _onlineSessionCapturedDataC
+            .where("chapterMeetingInvitationCode",
+                isEqualTo: chapterMeetingInvitationCode)
+            .where("guestInvitationCode",
+                isEqualTo: currentSpeakerGuestInvitationCode)
+            .get();
+      } else {
+        onlineSessionCapturedDataQS = await _onlineSessionCapturedDataC
+            .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+            .where("toastmasterId", isEqualTo: currentSpeakerToastmasterId)
+            .get();
+      }
+
+      if (onlineSessionCapturedDataQS.docs.isNotEmpty) {
+        QuerySnapshot speechEvaluationNotesQS =
+            await onlineSessionCapturedDataQS.docs.first.reference
+                .collection("SpeechEvaluationNotes")
+                .get();
+
+        if (speechEvaluationNotesQS.docs.isNotEmpty) {
+          evaluationNotes = speechEvaluationNotesQS.docs
+              .map((e) => SpeechEvaluationNote.fromJson(
+                  e.data() as Map<String, dynamic>))
+              .toList();
+        }
+      } else {
+        return const Error(
+          Failure(
+              code: "No-Speaker-Found",
+              location:
+                  "SpeechEvaluationFirebaseService.getAllEvaluationNotes()",
+              message: "Could not found a speaker speech record"),
+        );
+      }
+
+      return Success(evaluationNotes);
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location: "SpeechEvaluationFirebaseService.getAllEvaluationNotes()",
+            message: e.message ??
+                "Database Error While getting speech evaluation notes"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location: "SpeechEvaluationFirebaseService.getAllEvaluationNotes()",
+            message: e.toString()),
+      );
     }
   }
 }

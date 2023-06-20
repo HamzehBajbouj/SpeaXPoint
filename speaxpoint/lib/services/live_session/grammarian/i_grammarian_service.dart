@@ -61,7 +61,7 @@ abstract class IGrammarianService {
     String? chapterMeetingId,
   });
 
-    Stream<int> getTotalNumberOfGrammaticalNotes({
+  Future<Result<List<GrammarianNote>, Failure>> getAllTakenGrammaticalNotes({
     required bool currentSpeakerisAppGuest,
     String? currentSpeakerToastmasterId,
     String? currentSpeakerGuestInvitationCode,
@@ -69,4 +69,12 @@ abstract class IGrammarianService {
     String? chapterMeetingId,
   });
 
+
+  Stream<int> getTotalNumberOfGrammaticalNotes({
+    required bool currentSpeakerisAppGuest,
+    String? currentSpeakerToastmasterId,
+    String? currentSpeakerGuestInvitationCode,
+    String? chapterMeetingInvitationCode,
+    String? chapterMeetingId,
+  });
 }

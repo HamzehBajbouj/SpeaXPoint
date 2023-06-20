@@ -44,8 +44,6 @@ abstract class ISpeechEvaluationService {
     String? evaluatedSpeakerGuestInvitationCode,
   });
 
-
-
   //this will return a stream of the notes which were taken by an app user speech
   //evaluator, to a speaker whether he is an app user or app guest
   Stream<List<SpeechEvaluationNote>> getTakenSpeechNotesByAppUser({
@@ -66,7 +64,7 @@ abstract class ISpeechEvaluationService {
     required String? evaluatedSpeakerGuestInvitationCode,
   });
 
-      Stream<int> getTotalNumberOfEvaluationNotes({
+  Stream<int> getTotalNumberOfEvaluationNotes({
     required bool currentSpeakerisAppGuest,
     String? currentSpeakerToastmasterId,
     String? currentSpeakerGuestInvitationCode,
@@ -74,7 +72,7 @@ abstract class ISpeechEvaluationService {
     String? chapterMeetingId,
   });
 
-    Stream<List<SpeechEvaluationNote>> getAllEvaluationNotes({
+  Stream<List<SpeechEvaluationNote>> getAllLiveDataEvaluationNotes({
     required bool currentSpeakerisAppGuest,
     String? currentSpeakerToastmasterId,
     String? currentSpeakerGuestInvitationCode,
@@ -82,4 +80,11 @@ abstract class ISpeechEvaluationService {
     String? chapterMeetingId,
   });
 
+  Future<Result<List<SpeechEvaluationNote>, Failure>> getAllEvaluationNotes({
+    required bool currentSpeakerisAppGuest,
+    String? currentSpeakerToastmasterId,
+    String? currentSpeakerGuestInvitationCode,
+    String? chapterMeetingInvitationCode,
+    String? chapterMeetingId,
+  });
 }

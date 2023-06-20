@@ -25,7 +25,9 @@ class ManageComingSessionsFirebaseSerivce extends IManageComingSessionsService {
         since it's fetched from the sharedPreferences
         */
         chapterMeeting.toastmasterId = _auth.currentUser!.uid;
-        await _chapterMeetingsCollection.add(chapterMeeting.toJson());
+        await _chapterMeetingsCollection
+            .doc(chapterMeeting.chapterMeetingId)
+            .set(chapterMeeting.toJson());
       } else {
         return const Error(
           Failure(

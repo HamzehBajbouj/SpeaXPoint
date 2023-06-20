@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:drop_down_list/drop_down_list.dart';
 import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:speaxpoint/util/constants/app_main_colors.dart';
 import 'package:speaxpoint/util/constants/common_enums.dart';
 import 'package:speaxpoint/util/constants/common_ui_properties.dart';
@@ -716,62 +717,6 @@ Widget timeoutErrorMessage(
   it's used almost in all the role players tools screens
 */
 
-// Widget currentSpeechSpeakerCard(
-//     {required String title, required String content}) {
-//   return Container(
-//     constraints: const BoxConstraints(
-//       minHeight: 30,
-//       maxHeight: 40,
-//     ),
-//     decoration: BoxDecoration(
-//       border: Border.all(
-//         color: const Color(AppMainColors.p40),
-//         width: 1.3,
-//       ),
-//       borderRadius: BorderRadius.circular(CommonUIProperties.cardRoundedEdges),
-//     ),
-//     child: Row(
-//       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//       children: [
-//         Container(
-//           padding: const EdgeInsets.all(10),
-//           child: Center(
-//             child: FittedBox(
-//               fit: BoxFit.scaleDown,
-//               child: Text(
-//                 textAlign: TextAlign.center,
-//                 title,
-//                 style: const TextStyle(
-//                   fontFamily: CommonUIProperties.fontType,
-//                   fontSize: 16,
-//                   fontWeight: FontWeight.w500,
-//                   color: Color(AppMainColors.p50),
-//                 ),
-//               ),
-//             ),
-//           ),
-//         ),
-//         Container(
-//           padding: const EdgeInsets.all(10),
-//           child: FittedBox(
-//             fit: BoxFit.scaleDown,
-//             child: Text(
-//               content,
-//               overflow: TextOverflow.ellipsis,
-//               style: const TextStyle(
-//                 fontFamily: CommonUIProperties.fontType,
-//                 fontSize: 16,
-//                 fontWeight: FontWeight.normal,
-//                 color: Color(AppMainColors.p50),
-//               ),
-//             ),
-//           ),
-//         ),
-//       ],
-//     ),
-//   );
-// }
-
 void displaySpeechesSpeakersDropMenu({
   required List<SelectedListItem> dataList,
   required void Function(List<dynamic>)? selectedItemsCallBack,
@@ -893,6 +838,91 @@ Widget timerFillerDataSummaryCard({
             fontSize: 14,
             fontWeight: FontWeight.normal,
             color: Color(AppMainColors.p50),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget recordedSessionCard({
+  required String chapterMeetingTitle,
+  required String dataOfTheSession,
+  required String roleName,
+  required void Function() iconButtonAction,
+}) {
+  return Container(
+    padding: const EdgeInsets.fromLTRB(15, 10, 10, 5),
+    constraints: const BoxConstraints(
+      minHeight: 30,
+      maxHeight: 85,
+    ),
+    decoration: BoxDecoration(
+      border: Border.all(
+        color: const Color(AppMainColors.p50),
+        width: 1.3,
+      ),
+      borderRadius: BorderRadius.circular(CommonUIProperties.cardRoundedEdges),
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+                chapterMeetingTitle,
+                style: const TextStyle(
+                  fontFamily: CommonUIProperties.fontType,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color(AppMainColors.p70),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Text(
+                DateFormat("h:mm a, EEEE, MMM d, yyyy").format(
+                  DateTime.parse(dataOfTheSession),
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: const TextStyle(
+                  fontFamily: CommonUIProperties.fontType,
+                  fontSize: 14,
+                  fontWeight: FontWeight.normal,
+                  color: Color(AppMainColors.p50),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Text(
+                "Role Name : $roleName",
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontFamily: CommonUIProperties.fontType,
+                  fontSize: 14,
+                  fontWeight: FontWeight.normal,
+                  color: Color(AppMainColors.p50),
+                ),
+              ),
+            ],
+          ),
+        ),
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          child: IconButton(
+            iconSize: 35,
+            onPressed: iconButtonAction,
+            icon: const Icon(
+              Icons.arrow_forward_ios_rounded,
+              color: Color(AppMainColors.p50),
+            ),
           ),
         ),
       ],

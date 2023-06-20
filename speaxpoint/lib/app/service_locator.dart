@@ -37,6 +37,8 @@ import 'package:speaxpoint/services/search_chapter_meeting/i_search_chapter_meet
 import 'package:speaxpoint/services/search_chapter_meeting/search_chapter_meeting_firebase_service.dart';
 import 'package:speaxpoint/services/session_redirection/i_session_redirection_service.dart';
 import 'package:speaxpoint/services/session_redirection/session_redirection_firebase_service.dart';
+import 'package:speaxpoint/services/statistics/i_statistics_service.dart';
+import 'package:speaxpoint/services/statistics/statistics_firebase_service.dart';
 import 'package:speaxpoint/view_models/authentication_vm/club_registration_view_model.dart';
 import 'package:speaxpoint/view_models/authentication_vm/log_in_view_model.dart';
 import 'package:speaxpoint/view_models/club_president_vm/club_members_management_view_model.dart';
@@ -57,6 +59,8 @@ import 'package:speaxpoint/view_models/toastmaster_vm/profile_management_view_mo
 import 'package:speaxpoint/view_models/toastmaster_vm/scheduled_meetings_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/search_chapter_meeting_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/session_redirection_view_model.dart';
+import 'package:speaxpoint/view_models/toastmaster_vm/statisitcs/recorded_sessions_view_model.dart';
+import 'package:speaxpoint/view_models/toastmaster_vm/statisitcs/session_statistics_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/volunteer_announcement_view_details_view_model.dart';
 
 final serviceLocator = GetIt.instance;
@@ -136,6 +140,10 @@ Future<void> initServiceLocator() async {
   serviceLocator.registerLazySingleton<IClubProfileService>(
     () => ClubProfileFirebaseService(),
   );
+  serviceLocator.registerLazySingleton<IStatisticsService>(
+    () => StatisticsFirebaseService(),
+  );
+
 //this part is for the viewmodels objects
   serviceLocator.registerLazySingleton<ClubRegistrationViewModel>(
     () => ClubRegistrationViewModel(
@@ -276,6 +284,19 @@ Future<void> initServiceLocator() async {
   serviceLocator.registerLazySingleton<ClubProfileViewModel>(
     () => ClubProfileViewModel(
       serviceLocator<IClubProfileService>(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<RecordedSessionViewModel>(
+    () => RecordedSessionViewModel(
+      serviceLocator<IStatisticsService>(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<SessionStatisticsViewModel>(
+    () => SessionStatisticsViewModel(
+      serviceLocator<IGrammarianService>(),
+      serviceLocator<ISpeechEvaluationService>(),
+      serviceLocator<ITimeFillerService>(),
+      serviceLocator<ITimingRoleService>(),
     ),
   );
 }

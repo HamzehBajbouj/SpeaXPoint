@@ -94,7 +94,7 @@ class SpeechObservationsViewModel extends CommonLiveSessionMethodsViewModel {
     String? chapterMeetingInvitationCode,
     String? chapterMeetingId,
   }) {
-    return _speechEvaluationService.getAllEvaluationNotes(
+    return _speechEvaluationService.getAllLiveDataEvaluationNotes(
       currentSpeakerisAppGuest: currentSpeakerisAppGuest,
       chapterMeetingId: chapterMeetingId,
       chapterMeetingInvitationCode: chapterMeetingInvitationCode,

@@ -18,6 +18,8 @@ import 'package:speaxpoint/views/toastmaster_user/scheduled_meetings/toastmaster
 import 'package:speaxpoint/views/toastmaster_user/scheduled_meetings/view_scheduled_meeting_details_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/search_chapter_meetings/search_chapter_meeting_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/session_redirection/session_redirection_screen.dart';
+import 'package:speaxpoint/views/toastmaster_user/session_statisitcs/recorded_session_statistics_view.dart';
+import 'package:speaxpoint/views/toastmaster_user/session_statisitcs/recorded_sessions_screen.dart';
 import 'package:speaxpoint/views/toastmaster_user/toastmaster_home_screen.dart';
 import 'package:speaxpoint/views/user_authentication/club_registration_screens/club_setup_registrationScreen.dart';
 import 'package:speaxpoint/views/user_authentication/club_registration_screens/club_registration_screen.dart';
@@ -246,6 +248,25 @@ const toastMasterNav = AutoRoute(
       path: "toastmasterProfileManagement",
       name: "ToastmasterProfileManagementRouter",
       page: ToastmasterProfileManagementScreen,
+    ),
+    AutoRoute(
+      path: "recordedSessions",
+      name: "RecordedSessionsRouter",
+      page: EmptyRouterPage,
+      children: [
+        AutoRoute(
+          path: '',
+          page: RecordedSessionsScreen,
+          children: [
+            RedirectRoute(path: '*', redirectTo: ''),
+          ],
+        ),
+        AutoRoute(
+          path: "recordedSessionStatistics",
+          name: "RecordedSessionStatisticsViewRouter",
+          page: RecordedSessionStatisticsView,
+        ),
+      ],
     ),
   ],
 );

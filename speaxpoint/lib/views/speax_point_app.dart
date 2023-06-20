@@ -22,6 +22,8 @@ import 'package:speaxpoint/view_models/toastmaster_vm/profile_management_view_mo
 import 'package:speaxpoint/view_models/toastmaster_vm/scheduled_meetings_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/search_chapter_meeting_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/session_redirection_view_model.dart';
+import 'package:speaxpoint/view_models/toastmaster_vm/statisitcs/recorded_sessions_view_model.dart';
+import 'package:speaxpoint/view_models/toastmaster_vm/statisitcs/session_statistics_view_model.dart';
 import 'package:speaxpoint/view_models/toastmaster_vm/volunteer_announcement_view_details_view_model.dart';
 
 class SpeaxPointApp extends StatelessWidget {
@@ -75,6 +77,10 @@ class SpeaxPointApp extends StatelessWidget {
             create: (_) => serviceLocator<SpeechObservationsViewModel>()),
         ChangeNotifierProvider(
             create: (_) => serviceLocator<ClubProfileViewModel>()),
+        ChangeNotifierProvider(
+            create: (_) => serviceLocator<RecordedSessionViewModel>()),
+        ChangeNotifierProvider(
+            create: (_) => serviceLocator<SessionStatisticsViewModel>()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

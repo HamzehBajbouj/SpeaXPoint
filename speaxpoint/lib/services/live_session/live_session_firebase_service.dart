@@ -350,7 +350,7 @@ class LiveSessionFirebaseService implements ILiveSessionService {
         return Error(
           Failure(
               code: "No-Chapter-Meeting-Found",
-              location: "LiveSessionFirebaseService.endChapterMeetingSession()",
+              location: "LiveSessionFirebaseService.selectSpeech()",
               message:
                   "Could not found a chapter meeting with id : $chapterMeetingId"),
         );
@@ -360,7 +360,7 @@ class LiveSessionFirebaseService implements ILiveSessionService {
       return Error(
         Failure(
             code: e.code,
-            location: "LiveSessionFirebaseService.endChapterMeetingSession()",
+            location: "LiveSessionFirebaseService.selectSpeech()",
             message: e.message ??
                 "Database Error While ending the chapter meeting session"),
       );
@@ -368,7 +368,7 @@ class LiveSessionFirebaseService implements ILiveSessionService {
       return Error(
         Failure(
             code: e.toString(),
-            location: "LiveSessionFirebaseService.endChapterMeetingSession()",
+            location: "LiveSessionFirebaseService.selectSpeech()",
             message: e.toString()),
       );
     }

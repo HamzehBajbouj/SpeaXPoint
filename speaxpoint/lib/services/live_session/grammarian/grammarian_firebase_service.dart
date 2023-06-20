@@ -481,4 +481,63 @@ class GrammarianFirebaseService extends IGrammarianService {
       yield* grammaticalNoteCounter;
     }
   }
+
+  @override
+  Future<Result<List<GrammarianNote>, Failure>> getAllTakenGrammaticalNotes(
+      {required bool currentSpeakerisAppGuest,
+      String? currentSpeakerToastmasterId,
+      String? currentSpeakerGuestInvitationCode,
+      String? chapterMeetingInvitationCode,
+      String? chapterMeetingId}) async {
+    List<GrammarianNote> grammarianNotes = [];
+    try {
+      QuerySnapshot onlineSessionCapturedDataQS;
+      if (currentSpeakerisAppGuest) {
+        onlineSessionCapturedDataQS = await _onlineSessionCapturedDataC
+            .where("chapterMeetingInvitationCode",
+                isEqualTo: chapterMeetingInvitationCode)
+            .where("guestInvitationCode",
+                isEqualTo: currentSpeakerGuestInvitationCode)
+            .get();
+      } else {
+        onlineSessionCapturedDataQS = await _onlineSessionCapturedDataC
+            .where("chapterMeetingId", isEqualTo: chapterMeetingId)
+            .where("toastmasterId", isEqualTo: currentSpeakerToastmasterId)
+            .get();
+      }
+      if (onlineSessionCapturedDataQS.docs.isNotEmpty) {
+        CollectionReference grammarianCapturedDataC =
+            onlineSessionCapturedDataQS.docs.first.reference
+                .collection("GrammarianCapturedData");
+        // Create a stream transformer to convert the QuerySnapshot to Map<String, int>
+        QuerySnapshot grammarianCapturedDataQS =
+            await grammarianCapturedDataC.get();
+
+        if (grammarianCapturedDataQS.docs.isNotEmpty) {
+          grammarianNotes = grammarianCapturedDataQS.docs
+              .map(
+                (data) => GrammarianNote.fromJson(
+                    data.data() as Map<String, dynamic>),
+              )
+              .toList();
+        }
+      }
+      return Success(grammarianNotes);
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location: "GrammarianFirebaseService.getAllTakenGrammaticalNotes()",
+            message: e.message ??
+                "Database Error While getting grammatical notes data"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location: "GrammarianFirebaseService.getAllTakenGrammaticalNotes()",
+            message: e.toString()),
+      );
+    }
+  }
 }

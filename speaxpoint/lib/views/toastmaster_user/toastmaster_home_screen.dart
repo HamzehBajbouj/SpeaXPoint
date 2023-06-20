@@ -20,6 +20,7 @@ class _ToastmasterHomeScreenState extends State<ToastmasterHomeScreen> {
         ToastmasterDashboardRouter(),
         ToastmasterScheduledMeetingsRouter(),
         ToastmasterProfileManagementRouter(),
+        RecordedSessionsRouter(),
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
         return SalomonBottomBar(
@@ -46,7 +47,7 @@ class _ToastmasterHomeScreenState extends State<ToastmasterHomeScreen> {
                   Icons.calendar_month_outlined,
                   size: 30,
                 ),
-                title: const Text('Scheduled Meetings'),
+                title: const Text('Meetings'),
               ),
               SalomonBottomBarItem(
                 selectedColor: const Color(AppMainColors.p70),
@@ -56,6 +57,15 @@ class _ToastmasterHomeScreenState extends State<ToastmasterHomeScreen> {
                   size: 30,
                 ),
                 title: const Text('Profile'),
+              ),
+              SalomonBottomBarItem(
+                selectedColor: const Color(AppMainColors.p70),
+                unselectedColor: const Color(AppMainColors.p40),
+                icon: const Icon(
+                  Icons.bar_chart_rounded,
+                  size: 30,
+                ),
+                title: const Text('Statistics'),
               ),
             ]);
       },

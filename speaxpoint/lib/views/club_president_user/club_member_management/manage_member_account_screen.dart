@@ -373,10 +373,7 @@ class _ManageMemberAccountScreenState extends State<ManageMemberAccountScreen> {
                               hintText: "Enter Member Email",
                               isRequired: !widget.isInEditMode,
                               readOnly: widget.isInEditMode,
-                              validators: [
-                                input_validators.isValidEmail(
-                                    _email.text, "invalid emails")
-                              ],
+                              validators: [],
                             ),
                             const SizedBox(
                               height: 10,

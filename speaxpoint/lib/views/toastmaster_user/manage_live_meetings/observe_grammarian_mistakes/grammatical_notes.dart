@@ -54,7 +54,7 @@ class _GrammaticalNotesState extends State<GrammaticalNotes> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text(
-              "Time Fillers Notes",
+              "Grmmatical Notes",
               style: TextStyle(
                 fontFamily: CommonUIProperties.fontType,
                 fontSize: 17,

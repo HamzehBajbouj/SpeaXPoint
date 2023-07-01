@@ -375,7 +375,7 @@ class _ManageMemberAccountScreenState extends State<ManageMemberAccountScreen> {
                               readOnly: widget.isInEditMode,
                               validators: [
                                 input_validators.isValidEmail(
-                                    _email.text.toString(), "invalid emails")
+                                    _email.text, "invalid emails")
                               ],
                             ),
                             const SizedBox(

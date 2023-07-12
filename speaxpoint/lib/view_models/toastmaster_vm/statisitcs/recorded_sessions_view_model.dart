@@ -5,12 +5,9 @@ import 'package:speaxpoint/util/constants/common_enums.dart';
 import 'package:speaxpoint/view_models/base_view_mode.dart';
 
 class RecordedSessionViewModel extends BaseViewModel {
-
   final IStatisticsService _statisticsService;
 
-  RecordedSessionViewModel(
-  
-      this._statisticsService);
+  RecordedSessionViewModel(this._statisticsService);
   bool hasMore = true;
   DocumentSnapshot? _lastDocument;
   Map<String, List<Map<String, dynamic>>> recordedSession = {};
@@ -41,7 +38,7 @@ class RecordedSessionViewModel extends BaseViewModel {
       },
     );
 
-    if (documents["ChapterMeetings"]!.length < 10) {
+    if (documents.isNotEmpty && documents["ChapterMeetings"]!.length < 10) {
       hasMore = false;
     }
     _lastDocument = documents.isNotEmpty
@@ -78,7 +75,6 @@ class RecordedSessionViewModel extends BaseViewModel {
             .toList());
       }
     }
-
     setLoading(loading: false);
   }
 }

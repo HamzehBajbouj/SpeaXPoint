@@ -81,11 +81,12 @@ class _TimingStatisticsTabViewState extends State<TimingStatisticsTabView> {
                             Text(
                               speechTiming.timeCounterStartingTime == null
                                   ? "No Timing Data"
-                                  : DateFormat.jms(
+                                  : DateFormat.jms().format(
                                       findTimeDifferenceLocalNowAndReceivedUTC(
-                                      receivedUTCTime:
-                                          speechTiming.timeCounterStartingTime!,
-                                    )).toString(),
+                                        receivedUTCTime: speechTiming
+                                            .timeCounterStartingTime!,
+                                      ),
+                                    ),
                               style: const TextStyle(
                                 fontFamily: CommonUIProperties.fontType,
                                 fontSize: 17,
@@ -115,12 +116,12 @@ class _TimingStatisticsTabViewState extends State<TimingStatisticsTabView> {
                             Text(
                               speechTiming.timeCounterEndingTime == null
                                   ? "No Timing Data"
-                                  : DateFormat.jms(
+                                  : DateFormat.jms().format(
                                       findTimeDifferenceLocalNowAndReceivedUTC(
                                         receivedUTCTime:
                                             speechTiming.timeCounterEndingTime!,
                                       ),
-                                    ).toString(),
+                                    ),
                               style: const TextStyle(
                                 fontFamily: CommonUIProperties.fontType,
                                 fontSize: 17,
@@ -337,7 +338,6 @@ class _TimingStatisticsTabViewState extends State<TimingStatisticsTabView> {
       },
     );
   }
-
 
   String _getSpeechTime(
       {required String startingDate, required String endingDate}) {

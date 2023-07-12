@@ -17,10 +17,10 @@ class AddMeetingToScheduledMeetingsDialog extends StatefulWidget {
   final String clubId;
   @override
   State<AddMeetingToScheduledMeetingsDialog> createState() =>
-      _ExitRedirectionScreenConfirmationDialogState();
+      _AddMeetingToScheduledMeetingsDialogState();
 }
 
-class _ExitRedirectionScreenConfirmationDialogState
+class _AddMeetingToScheduledMeetingsDialogState
     extends State<AddMeetingToScheduledMeetingsDialog> {
   late ManageChapterMeetingAnnouncementViewModel manageAnnouncementVM;
 
@@ -59,7 +59,7 @@ class _ExitRedirectionScreenConfirmationDialogState
                 ),
                 SizedBox(height: 16.0),
                 Text(
-                  'Adding Meeting To Scheduled Meetings...',
+                  'Adding The Meeting To Scheduled Meetings...',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     height: 1.4,

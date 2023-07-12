@@ -210,14 +210,22 @@ class _LogInAsGuestState extends State<LogInAsGuestScreen> {
                                   .then(
                                 (value) {
                                   value.when(
-                                    (success) {
-                                      context.replaceRoute(
-                                        SessionRedirectionRouter(
-                                          chapterMeetingInvitationCode:
-                                              _invitationCode.text,
-                                          isAGuest: true,
-                                          guestHasRole: false,
-                                        ),
+                                    (success) async {
+                                      await _logInViewModel!
+                                          .increaseOnlinePeopleCounterForLoggedGuests(
+                                              chapterMeetingInvitationCode:
+                                                  _invitationCode.text)
+                                          .then(
+                                        (value) {
+                                          context.replaceRoute(
+                                            SessionRedirectionRouter(
+                                              chapterMeetingInvitationCode:
+                                                  _invitationCode.text,
+                                              isAGuest: true,
+                                              guestHasRole: false,
+                                            ),
+                                          );
+                                        },
                                       );
                                     },
                                     (error) {

@@ -154,6 +154,7 @@ Future<void> initServiceLocator() async {
   serviceLocator.registerLazySingleton(
     () => LogInViewModel(
       serviceLocator<IAuthenticationService>(),
+      serviceLocator<IScheduledMeetingManagementService>(),
     ),
   );
 

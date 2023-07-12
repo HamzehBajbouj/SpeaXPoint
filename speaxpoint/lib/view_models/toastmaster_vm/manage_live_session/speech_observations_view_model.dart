@@ -66,7 +66,7 @@ class SpeechObservationsViewModel extends CommonLiveSessionMethodsViewModel {
       currentSpeakerisAppGuest: currentSpeakerisAppGuest,
       chapterMeetingId: chapterMeetingId,
       chapterMeetingInvitationCode: chapterMeetingInvitationCode,
-      currentSpeakerGuestInvitationCode: chapterMeetingInvitationCode,
+      currentSpeakerGuestInvitationCode: currentSpeakerGuestInvitationCode,
       currentSpeakerToastmasterId: currentSpeakerToastmasterId,
     );
   }
@@ -82,7 +82,7 @@ class SpeechObservationsViewModel extends CommonLiveSessionMethodsViewModel {
       currentSpeakerisAppGuest: currentSpeakerisAppGuest,
       chapterMeetingId: chapterMeetingId,
       chapterMeetingInvitationCode: chapterMeetingInvitationCode,
-      currentSpeakerGuestInvitationCode: chapterMeetingInvitationCode,
+      currentSpeakerGuestInvitationCode: currentSpeakerGuestInvitationCode,
       currentSpeakerToastmasterId: currentSpeakerToastmasterId,
     );
   }
@@ -114,7 +114,7 @@ class SpeechObservationsViewModel extends CommonLiveSessionMethodsViewModel {
       currentSpeakerisAppGuest: currentSpeakerisAppGuest,
       chapterMeetingId: chapterMeetingId,
       chapterMeetingInvitationCode: chapterMeetingInvitationCode,
-      currentSpeakerGuestInvitationCode: chapterMeetingInvitationCode,
+      currentSpeakerGuestInvitationCode: currentSpeakerGuestInvitationCode,
       currentSpeakerToastmasterId: currentSpeakerToastmasterId,
     );
   }

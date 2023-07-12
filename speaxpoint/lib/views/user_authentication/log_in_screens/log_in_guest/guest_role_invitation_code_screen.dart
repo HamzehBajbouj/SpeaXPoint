@@ -144,18 +144,26 @@ class _GuestFavoriteNameState extends State<GuestRoleInvitationCodeScreen> {
                               .then(
                             (value) {
                               value.when(
-                                (success) {
-                                  context.router.pushAndPopUntil(
-                                    SessionRedirectionRouter(
-                                        chapterMeetingInvitationCode:
-                                            widget.chapterMeetingInvitationCode,
-                                        isAGuest: true,
-                                        guestHasRole: true,
-                                        guestInvitationCode:
-                                            _guestInvitationCodeController
-                                                .text),
-                                    predicate: ModalRoute.withName(
-                                        UserTypeSelectionRouter.name),
+                                (success) async {
+                                  await _logInViewModel!
+                                      .increaseOnlinePeopleCounterForLoggedGuests(
+                                          chapterMeetingInvitationCode: widget
+                                              .chapterMeetingInvitationCode)
+                                      .then(
+                                    (value) {
+                                      context.router.pushAndPopUntil(
+                                        SessionRedirectionRouter(
+                                            chapterMeetingInvitationCode: widget
+                                                .chapterMeetingInvitationCode,
+                                            isAGuest: true,
+                                            guestHasRole: true,
+                                            guestInvitationCode:
+                                                _guestInvitationCodeController
+                                                    .text),
+                                        predicate: ModalRoute.withName(
+                                            UserTypeSelectionRouter.name),
+                                      );
+                                    },
                                   );
                                 },
                                 (error) {

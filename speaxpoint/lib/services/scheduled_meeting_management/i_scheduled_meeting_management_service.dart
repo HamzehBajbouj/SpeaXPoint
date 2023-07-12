@@ -11,5 +11,11 @@ abstract class IScheduledMeetingManagementService {
   Future<Result<Unit, Failure>> lanuchChapterMeetingSessions(
       {required String chapterMeetingId});
 
-  Future<Result<Unit, Failure>> joinChapterMeetingSessionAppUser( {required String chapterMeetingId});
+//these two method are mean in the first palce to increase the online people counter
+  Future<Result<Unit, Failure>> joinChapterMeetingSessionAppUser({
+    required String chapterMeetingId,
+  });
+  Future<Result<Unit, Failure>> joinChapterMeetingSessionGuestUser({
+    required String chapterMeetingInvitationCode,
+  });
 }

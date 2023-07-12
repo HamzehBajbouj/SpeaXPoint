@@ -328,4 +328,56 @@ class ScheduledMeetingManagementFirebaseService
       );
     }
   }
+
+  @override
+  Future<Result<Unit, Failure>> joinChapterMeetingSessionGuestUser(
+      {required String chapterMeetingInvitationCode}) async {
+    try {
+      QuerySnapshot chapterMeetingQS = await _chapterMeetingsC
+          .where("invitationCode", isEqualTo: chapterMeetingInvitationCode)
+          .get();
+      if (chapterMeetingQS.docs.isNotEmpty) {
+        CollectionReference onlineSessionCollectoin =
+            chapterMeetingQS.docs.first.reference.collection("OnlineSession");
+
+        QuerySnapshot onlineSessionQS = await onlineSessionCollectoin.get();
+        if (onlineSessionQS.docs.isNotEmpty) {
+          Map<String, dynamic> onlineSessionData =
+              onlineSessionQS.docs.first.data() as Map<String, dynamic>;
+
+          int numberOfJoinedPeople = onlineSessionData["numberOfJoinedPeople"];
+          await onlineSessionQS.docs.first.reference.update(
+            {"numberOfJoinedPeople": numberOfJoinedPeople += 1},
+          );
+        }
+      } else {
+        return Error(
+          Failure(
+              code: "No-Chapter-Meeting-Found",
+              location:
+                  "ScheduledMeetingManagementFirebaseService.joinChapterMeetingSessionGuestUser()",
+              message:
+                  "Could not found a chapter meeting with invitation code : $chapterMeetingInvitationCode"),
+        );
+      }
+      return Success.unit();
+    } on FirebaseException catch (e) {
+      return Error(
+        Failure(
+            code: e.code,
+            location:
+                "ScheduledMeetingManagementFirebaseService.joinChapterMeetingSessionGuestUser()",
+            message: e.message ??
+                "Database Error While joing the scheduled meeting"),
+      );
+    } catch (e) {
+      return Error(
+        Failure(
+            code: e.toString(),
+            location:
+                "ScheduledMeetingManagementFirebaseService.joinChapterMeetingSessionGuestUser()",
+            message: e.toString()),
+      );
+    }
+  }
 }

@@ -1,11 +1,14 @@
 import 'package:multiple_result/multiple_result.dart';
 import 'package:speaxpoint/services/authentication/i_authentication_service.dart';
 import 'package:speaxpoint/services/Failure.dart';
+import 'package:speaxpoint/services/scheduled_meeting_management/i_scheduled_meeting_management_service.dart';
 import 'package:speaxpoint/view_models/base_view_mode.dart';
 
 class LogInViewModel extends BaseViewModel {
   final IAuthenticationService _authenticationService;
-  LogInViewModel(this._authenticationService);
+  final IScheduledMeetingManagementService _scheduledMeetingManagementService;
+  LogInViewModel(
+      this._authenticationService, this._scheduledMeetingManagementService);
 
   Result<Unit, Failure>? _logInStatus;
   Result<Unit, Failure>? get logInStatus => _logInStatus;
@@ -63,5 +66,11 @@ class LogInViewModel extends BaseViewModel {
     setLoading(loading: false);
 
     return result;
+  }
+
+  Future<void> increaseOnlinePeopleCounterForLoggedGuests(
+      {required String chapterMeetingInvitationCode}) async {
+    await _scheduledMeetingManagementService.joinChapterMeetingSessionGuestUser(
+        chapterMeetingInvitationCode: chapterMeetingInvitationCode);
   }
 }

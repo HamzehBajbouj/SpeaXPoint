@@ -115,16 +115,24 @@ class _ToastmasterScheduledMeetingsScreenState
                   final List<ChapterMeeting> chapterMeetings =
                       snapshot.data ?? [];
                   if (chapterMeetings.isEmpty) {
-                    return const Center(
-                      child: Text(
-                        "You Don't Have Any Scheduled Meetings",
-                        style: TextStyle(
-                          fontFamily: CommonUIProperties.fontType,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Color(AppMainColors.p50),
-                        ),
+                    return ListView.separated(
+                      itemCount: 1,
+                      separatorBuilder: (_, index) => const SizedBox(
+                        height: 10,
                       ),
+                      itemBuilder: (context, index) {
+                        return const Center(
+                          child: Text(
+                            "You Don't Have Any Scheduled Meetings",
+                            style: TextStyle(
+                              fontFamily: CommonUIProperties.fontType,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Color(AppMainColors.p50),
+                            ),
+                          ),
+                        );
+                      },
                     );
                   } else {
                     return ListView.separated(

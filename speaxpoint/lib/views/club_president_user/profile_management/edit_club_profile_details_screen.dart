@@ -358,10 +358,6 @@ class _EditClubProfileDetailsScreenState
                           controller: _clubOfficialEmail,
                           hintText: "Club Official Email",
                           isRequired: true,
-                          validators: [
-                            isValidEmail(
-                                _clubOfficialEmail.text, "invalid emails")
-                          ],
                         ),
                         const SizedBox(
                           height: 10,

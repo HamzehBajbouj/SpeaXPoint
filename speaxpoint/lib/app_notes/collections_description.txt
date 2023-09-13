@@ -1,0 +1,25 @@
+The AllocatedPlayerQuickSearch, 
+this collection is separated from the sub-collection AllocatedRolePlayers, it almost has the same data almost 
+but with the deletion of some of it.
+why we have it in the first place ? doesn't that mean we have redundant data?
+yes, the reason is because there was a poor design for the firestore database and because of the decision taken
+I ended up have such a case, I can solve it by making the AllocatedRolePlayers as a collection alone not as sub-collection
+and the reason i can't because i need a unique id for each document in the AllocatedRolePlayers. 
+and also because it's tightly related to chapterMeeting collection so i thought it's better to keep it 
+as a sub-collection.
+
+
+now what is the purpose of AllocatedPlayerQuickSearch?
+the main purpose it will play as quick search collection, becuase if i want to search for a certain rolePlayer in the AllocatedRolePlayers
+it would be so much expensive as i need first to download the chapterMeeting documents and loop through them which 
+will create hundred if not thousands of API reuqests.
+the second purpose is solve another problem "beucase the first reason" which is sometimes when a member in club B 
+joins a meeting in Club A, without this collection it would be difficult to search in all the chapterMeeting "due to the mentioned issue"
+to find the meeting that Club B member has joined and then display them in the ScheduledMeeting Page.
+
+operations on AllocatedPlayerQuickSearch?
+the operations on coolection will occure in these cases:
+1-when someone add the meeting into his ScheduledMeetings page from the Meeting Announcement from "add to schedule" button.
+2-when managing the allocatedRolePlayers, when deleting, adding, updating the role player allocation, it's always the same operations happens to the AllocatedPlayerQuickSearch as in AllocatedRolePlayers sub-collection.
+3-when delete the entire session in the ManageComingSessions page, all the documents related to the session/chpaterMeeting must be deleted. "currently we don't have this option in the manageComingSessions"
+
